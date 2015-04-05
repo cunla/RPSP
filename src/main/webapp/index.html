@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<!-- define angular app -->
+<html ng-app="scotchApp">
+
+<head>
+</head>
+
+<!-- define angular controller -->
+<body ng-controller="configController">
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">RecoverPoint for Virtual Machines</a>
+        </div>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><i class="fa fa-pie-chart"></i> Reports</a></li>
+            <li><a href="#config"><i class="fa fa-gear"></i> Configure</a></li>
+            <li><a href="#help"><i class="fa fa-question"></i> Help</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div id="main">
+    <!-- angular templating -->
+    <!-- this is where content will be injected -->
+    <div ng-view></div>
+</div>
+
+<footer class="text-center">
+    <!--<p>Created by Business Development Group at DMBU EMC</p>-->
+</footer>
+
+<!-- SCROLLS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" />
+
+<!-- SPELLS -->
+<!--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
+<link rel="stylesheet" type="text/css" href="libs/tablesort.css">
+<link rel="stylesheet" type="text/css" href="libs/xeditable.css">
+<link rel="stylesheet" type="text/css" href="libs/qurt.css">
+<script src="libs/jquery-2.1.3.js"></script>
+<script src="libs/angular.min.js"></script>
+<script src="libs/angular-route.js"></script>
+<script src="libs/spin.min.js"></script>
+<script src="libs/angular-spinner.js"></script>
+<script src="script.js"></script>
+<script src="libs/angular-tablesort.js"></script>
+<script src="libs/xeditable.min.js"></script>
+<script src="page-report/reportcontroller.js"></script>
+<script src="page-config/configcontroller.js"></script>
+<!--<script src="page-alldata/alldatacontroller.js"></script>-->
+
+</body>
+
+</html>
