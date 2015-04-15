@@ -213,6 +213,8 @@
             <version>${javax.inject.version}</version>
         </dependency>
     </dependencies>
+    
+    <!-- test commit #2 -->
 
     <build>
         <finalName>qurt</finalName>
