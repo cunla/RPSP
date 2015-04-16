@@ -1,5 +1,5 @@
-`GET http://localhost:8080/app/rest/login?user={user}&password={password}`
-Login using account {user} and {password}
+`GET http://localhost:8080/app/rest/login?account={account}&user={user}&password={password}`
+Login using account {account}\{user} and {password}
 Returns HTTP 200 OK in case of success or HTTP 401 Unauthorized in case of failure
 
 `GET http://localhost:8080/app/rest/ping`
