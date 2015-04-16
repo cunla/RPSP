@@ -52,6 +52,11 @@
         </dependency>
 
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>src.main.resources</groupId>
             <artifactId>fapi_client_4_1</artifactId>
             <version>1.0</version>
@@ -213,7 +218,7 @@
             <version>${javax.inject.version}</version>
         </dependency>
     </dependencies>
-    
+
     <!-- test commit #2 -->
 
     <build>
@@ -239,7 +244,9 @@
         <repository>
             <id>spring-snapshots</id>
             <url>http://repo.spring.io/snapshot</url>
-            <snapshots><enabled>true</enabled></snapshots>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>spring-milestones</id>
