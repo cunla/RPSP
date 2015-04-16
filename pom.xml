@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>com.emc</groupId>
-    <artifactId>qurt</artifactId>
+    <artifactId>rpsp</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
 
@@ -222,7 +222,7 @@
     <!-- test commit #2 -->
 
     <build>
-        <finalName>qurt</finalName>
+        <finalName>rpsp</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
