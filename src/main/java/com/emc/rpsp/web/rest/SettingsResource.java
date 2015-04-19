@@ -24,83 +24,92 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/app")
 public class SettingsResource {
-    private final Logger log = LoggerFactory.getLogger(SettingsResource.class);
+	private final Logger log = LoggerFactory.getLogger(SettingsResource.class);
 
-    @Inject
-    private SystemConnectionInfoRepository systemConnectionInfoRepository;
+	@Inject
+	private SystemConnectionInfoRepository systemConnectionInfoRepository;
 
-    @RequestMapping(value = "/rest/testSystem/{id}",
-                    method = RequestMethod.GET,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<SystemSettings>> testSystem(@PathVariable("id") Long id) {
-        log.debug("Testing systemSettings with id {}", id);
-        SystemSettings systemSettings = systemConnectionInfoRepository.findOne(id);
-        Client client = new Client(systemSettings);
-        client.getSystemTime();
-        systemConnectionInfoRepository.saveAndFlush(systemSettings);
-        return Optional.ofNullable(systemConnectionInfoRepository.findAll()).map(
-                clusterSettings -> new ResponseEntity<>(clusterSettings, HttpStatus.OK)).orElse(
-                new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+	@RequestMapping(value = "/rest/testSystem/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<SystemSettings>> testSystem(
+	        @PathVariable("id") Long id) {
+		log.debug("Testing systemSettings with id {}", id);
+		SystemSettings systemSettings = systemConnectionInfoRepository
+		        .findOne(id);
+		Client client = new Client(systemSettings);
+		client.getSystemTime();
+		systemConnectionInfoRepository.saveAndFlush(systemSettings);
+		return Optional
+		        .ofNullable(systemConnectionInfoRepository.findAll())
+		        .map(clusterSettings -> new ResponseEntity<>(clusterSettings,
+		                HttpStatus.OK))
+		        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
 
-    @RequestMapping(value = "/rest/addSystem",
-                    method = RequestMethod.POST,
-                    produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<SystemSettings>> addNewSystem(@RequestBody SystemSettings systemSettings) {
-        log.debug("Adding new systemSettings to the system {}", systemSettings);
-        validateNewSystem(systemSettings);
-        validateSystemData(systemSettings);
-        propagateClusterData(systemSettings);
-        validateNewClusters(systemSettings);
+	@RequestMapping(value = "/rest/addSystem", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<SystemSettings>> addNewSystem(
+	        @RequestBody SystemSettings systemSettings) {
+		log.debug("Adding new systemSettings to the system {}", systemSettings);
+		validateNewSystem(systemSettings);
+		validateSystemData(systemSettings);
+		propagateClusterData(systemSettings);
+		validateNewClusters(systemSettings);
 
-        systemConnectionInfoRepository.saveAndFlush(systemSettings);
+		systemConnectionInfoRepository.saveAndFlush(systemSettings);
 
-        log.debug("Returning list of all clusters");
-        return Optional.ofNullable(systemConnectionInfoRepository.findAll()).map(
-                clusterSettings -> new ResponseEntity<>(clusterSettings, HttpStatus.OK)).orElse(
-                new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+		log.debug("Returning list of all clusters");
+		return Optional
+		        .ofNullable(systemConnectionInfoRepository.findAll())
+		        .map(clusterSettings -> new ResponseEntity<>(clusterSettings,
+		                HttpStatus.OK))
+		        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
 
-    private void validateNewClusters(SystemSettings systemSettings) {
-        for (ClusterSettings cluster : systemSettings.getClusters()) {
-            List<ClusterSettings> results = systemConnectionInfoRepository.findCluster(cluster.getClusterId());
-            if (!results.isEmpty()) {
-                String error = String.format("Only a single vRPA cluster can be added per RecoverPoint for VM system. \n" +
-                        "The other cluster(s) are added automatically by the system");
-                log.warn("Entry for cluster {} exists already in system {}", cluster.getClusterId(),
-                        cluster.getSystemSettings().getSystemIp());
-                throw new RpspException(error);
-            }
-        }
-    }
+	private void validateNewClusters(SystemSettings systemSettings) {
+		for (ClusterSettings cluster : systemSettings.getClusters()) {
+			List<ClusterSettings> results = systemConnectionInfoRepository
+			        .findCluster(cluster.getClusterId());
+			if (!results.isEmpty()) {
+				String error = String
+				        .format("Only a single vRPA cluster can be added per RecoverPoint for VM system. \n"
+				                + "The other cluster(s) are added automatically by the system");
+				log.warn("Entry for cluster {} exists already in system {}",
+				        cluster.getClusterId(), cluster.getSystemSettings()
+				                .getSystemIp());
+				throw new RpspException(error);
+			}
+		}
+	}
 
-    private void propagateClusterData(SystemSettings systemSettings) {
-        Client client = new Client(systemSettings, systemConnectionInfoRepository);
-        client.getSystemTime();
-        Map<Long, String> clusters = client.getClusterNames();
-        for (Map.Entry<Long, String> entry : clusters.entrySet()) {
-            ClusterSettings cluster = new ClusterSettings(entry.getKey(), entry.getValue(), systemSettings);
-            systemSettings.addCluster(cluster);
-        }
-    }
+	private void propagateClusterData(SystemSettings systemSettings) {
+		Client client = new Client(systemSettings,
+		        systemConnectionInfoRepository);
+		client.getSystemTime();
+		Map<Long, String> clusters = client.getClusterNames();
+		for (Map.Entry<Long, String> entry : clusters.entrySet()) {
+			ClusterSettings cluster = new ClusterSettings(entry.getKey(),
+			        entry.getValue(), systemSettings);
+			systemSettings.addCluster(cluster);
+		}
+	}
 
-    private void validateNewSystem(SystemSettings cluster) {
-        List<SystemSettings> clustersWithIp =
-                systemConnectionInfoRepository.findClustersWithIpAddress(cluster.getSystemIp());
-        if (clustersWithIp.size() > 0) {
-            log.error("Entry with IP {} exists already", cluster.getSystemIp());
-            throw new RpspException("Entry with IP " + cluster.getSystemIp() + " exists already");
-        }
-    }
+	private void validateNewSystem(SystemSettings cluster) {
+		List<SystemSettings> clustersWithIp = systemConnectionInfoRepository
+		        .findClustersWithIpAddress(cluster.getSystemIp());
+		if (clustersWithIp.size() > 0) {
+			log.error("Entry with IP {} exists already", cluster.getSystemIp());
+			throw new RpspException("Entry with IP " + cluster.getSystemIp()
+			        + " exists already");
+		}
+	}
 
-    private void validateSystemData(SystemSettings settings) {
-        if(!InetAddressUtils.isIPv4Address(settings.getSystemIp())) {
-            if (InetAddressUtils.isIPv6Address(settings.getSystemIp())){
-                settings.setSystemIp("["+settings.getSystemIp()+"]");
-            }else{
-                log.error("Not a valid IP address for cluster {}", settings);
-                throw new RpspException("Not a valid IP address");
-            }
-        }
-    }
+	private void validateSystemData(SystemSettings settings) {
+		if (!InetAddressUtils.isIPv4Address(settings.getSystemIp())) {
+			if (InetAddressUtils.isIPv6Address(settings.getSystemIp())) {
+				settings.setSystemIp("[" + settings.getSystemIp() + "]");
+			} else {
+				log.error("Not a valid IP address for cluster {}", settings);
+				throw new RpspException("Not a valid IP address");
+			}
+		}
+	}
 }

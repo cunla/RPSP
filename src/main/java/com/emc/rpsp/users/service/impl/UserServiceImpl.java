@@ -18,20 +18,20 @@ import com.emc.rpsp.users.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Value("${rpsp.admin.login}")
 	private String adminLogin;
-	
+
 	@Value("${rpsp.admin.password}")
 	private String adminPaswword;
-	
+
 	@PostConstruct
-	public void init(){
+	public void init() {
 		User existingAdmin = userRepository.findOneByLogin(adminLogin);
-		if(existingAdmin == null){
+		if (existingAdmin == null) {
 			User newAdmin = new User();
 			newAdmin.setLogin(adminLogin);
 			newAdmin.setEncodedPassword(adminPaswword);
@@ -51,8 +51,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public CurrentUser findCurrentUser() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		CurrentUser currentUser = (CurrentUser)auth.getPrincipal();
+		Authentication auth = SecurityContextHolder.getContext()
+		        .getAuthentication();
+		CurrentUser currentUser = (CurrentUser) auth.getPrincipal();
 		return currentUser;
 	}
 
@@ -74,22 +75,22 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User updateUser(User user) {
 		User existingUser = userRepository.findOne(user.getId());
-		if(existingUser == null){
+		if (existingUser == null) {
 			return null;
 		}
-		if(user.getLogin() != null){
+		if (user.getLogin() != null) {
 			existingUser.setLogin(user.getLogin());
 		}
-		if(user.getPassword() != null){
+		if (user.getPassword() != null) {
 			existingUser.setEncodedPassword(user.getPassword());
 		}
-		if(user.getFirstName() != null){
+		if (user.getFirstName() != null) {
 			existingUser.setFirstName(user.getFirstName());
 		}
-		if(user.getLastName() != null){
+		if (user.getLastName() != null) {
 			existingUser.setLastName(user.getLastName());
 		}
-		if(user.getEmail() != null){
+		if (user.getEmail() != null) {
 			existingUser.setEmail(user.getEmail());
 		}
 		User updatedUser = userRepository.save(existingUser);
@@ -100,43 +101,32 @@ public class UserServiceImpl implements UserService {
 	public void deleteUser(Long id) {
 		userRepository.delete(id);
 	}
-	
-	
+
 	@Override
 	public User findUserByLogin(String login) {
 		User user = userRepository.findOneByLogin(login);
 		return user;
 	}
-	
-	
+
 	public String getAdminLogin() {
 		return adminLogin;
 	}
-
-
 
 	public void setAdminLogin(String adminLogin) {
 		this.adminLogin = adminLogin;
 	}
 
-
-
 	public String getAdminPaswword() {
 		return adminPaswword;
 	}
 
-
-
 	public void setAdminPaswword(String adminPaswword) {
 		this.adminPaswword = adminPaswword;
 	}
-	
-	
-	void updateAuditFields(User user){
+
+	void updateAuditFields(User user) {
 		user.setCreatedBy("Anonimous");
 		user.setCreatedDate(new DateTime());
 	}
-
-
 
 }

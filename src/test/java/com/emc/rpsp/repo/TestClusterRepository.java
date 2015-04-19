@@ -30,38 +30,40 @@ import static org.junit.Assert.*;
 @IntegrationTest
 @Transactional
 public class TestClusterRepository {
-    @Inject
-    private SystemConnectionInfoRepository clustersRepository;
+	@Inject
+	private SystemConnectionInfoRepository clustersRepository;
 
-    private MockMvc restUserMockMvc;
+	private MockMvc restUserMockMvc;
 
-    @Test
-     public void testAddNew() {
-        int existingCount = clustersRepository.findAll().size();
-       clustersRepository.saveAndFlush(getGoodClustersConnectionSettings());
-        int currentExisting = clustersRepository.findAll().size();
-        assertTrue(currentExisting == existingCount + 1);
-    }
+	@Test
+	public void testAddNew() {
+		int existingCount = clustersRepository.findAll().size();
+		clustersRepository.saveAndFlush(getGoodClustersConnectionSettings());
+		int currentExisting = clustersRepository.findAll().size();
+		assertTrue(currentExisting == existingCount + 1);
+	}
 
-    @Test(expected = RpspException.class)
-    public void testRemove() {
-        int existingCount = clustersRepository.findAll().size();
-        SystemSettings settings = getBadClustersConnectionSettings();
-        int currentExisting = clustersRepository.findAll().size();
-        assertTrue(currentExisting == existingCount + 1);
-    }
+	@Test(expected = RpspException.class)
+	public void testRemove() {
+		int existingCount = clustersRepository.findAll().size();
+		SystemSettings settings = getBadClustersConnectionSettings();
+		int currentExisting = clustersRepository.findAll().size();
+		assertTrue(currentExisting == existingCount + 1);
+	}
 
-    private SystemSettings getGoodClustersConnectionSettings(){
-        SystemSettings settings = new SystemSettings("10.76.16.150", "admin", "admin");
-        Client client = new Client(settings);
-        client.getSystemTime();
-        return settings;
-    }
+	private SystemSettings getGoodClustersConnectionSettings() {
+		SystemSettings settings = new SystemSettings("10.76.16.150", "admin",
+		        "admin");
+		Client client = new Client(settings);
+		client.getSystemTime();
+		return settings;
+	}
 
-    private SystemSettings getBadClustersConnectionSettings(){
-        SystemSettings settings = new SystemSettings("10.76.16.x", "admin", "admin");
-        Client client = new Client(settings);
-        client.getSystemTime();
-        return settings;
-    }
+	private SystemSettings getBadClustersConnectionSettings() {
+		SystemSettings settings = new SystemSettings("10.76.16.x", "admin",
+		        "admin");
+		Client client = new Client(settings);
+		client.getSystemTime();
+		return settings;
+	}
 }

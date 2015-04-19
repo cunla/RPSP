@@ -13,74 +13,75 @@ import javax.persistence.*;
 @Table(name = "T_CLUSTERS")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ClusterSettings {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 
-    @Column
-    private String country;
-    @Column
-    private Long clusterId;
-    @Column
-    private String clusterName;
-    @Column
-    private String friendlyName;
+	@Column
+	private String country;
+	@Column
+	private Long clusterId;
+	@Column
+	private String clusterName;
+	@Column
+	private String friendlyName;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    private SystemSettings systemSettings;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	private SystemSettings systemSettings;
 
-    public ClusterSettings() {
-    }
+	public ClusterSettings() {
+	}
 
-    public ClusterSettings(Long clusterId, String clusterName, SystemSettings systemSettings) {
-        this.clusterId = clusterId;
-        this.clusterName = clusterName;
-        this.systemSettings = systemSettings;
-    }
+	public ClusterSettings(Long clusterId, String clusterName,
+	        SystemSettings systemSettings) {
+		this.clusterId = clusterId;
+		this.clusterName = clusterName;
+		this.systemSettings = systemSettings;
+	}
 
-    public String getCountry() {
-        return country;
-    }
+	public String getCountry() {
+		return country;
+	}
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+	public void setCountry(String country) {
+		this.country = country;
+	}
 
-    public Long getClusterId() {
-        return clusterId;
-    }
+	public Long getClusterId() {
+		return clusterId;
+	}
 
-    public void setClusterId(Long clusterId) {
-        this.clusterId = clusterId;
-    }
+	public void setClusterId(Long clusterId) {
+		this.clusterId = clusterId;
+	}
 
-    public String getClusterName() {
-        return clusterName;
-    }
+	public String getClusterName() {
+		return clusterName;
+	}
 
-    public void setClusterName(String clusterName) {
-        this.clusterName = clusterName;
-    }
+	public void setClusterName(String clusterName) {
+		this.clusterName = clusterName;
+	}
 
-    public String getFriendlyName() {
-        return friendlyName;
-    }
+	public String getFriendlyName() {
+		return friendlyName;
+	}
 
-    public void setFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
-    }
+	public void setFriendlyName(String friendlyName) {
+		this.friendlyName = friendlyName;
+	}
 
-    public long getId() {
-        return id;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public SystemSettings getSystemSettings() {
-        return systemSettings;
-    }
+	public SystemSettings getSystemSettings() {
+		return systemSettings;
+	}
 
-    public void setSystemSettings(SystemSettings systemSettings) {
-        this.systemSettings = systemSettings;
-    }
+	public void setSystemSettings(SystemSettings systemSettings) {
+		this.systemSettings = systemSettings;
+	}
 
 }

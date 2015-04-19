@@ -25,35 +25,33 @@ import java.util.Optional;
 @RequestMapping("/app")
 public class UserResource {
 
-    private final Logger log = LoggerFactory.getLogger(UserResource.class);
+	private final Logger log = LoggerFactory.getLogger(UserResource.class);
 
-    @Inject
-    private UserRepository userRepository;
+	@Inject
+	private UserRepository userRepository;
 
-//    /**
-//     * GET  /rest/users/:login -> get the "login" user.
-//     */
-//    @RequestMapping(value = "/rest/users/{login}",
-//            method = RequestMethod.GET,
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-////    @Timed
-//    ResponseEntity<User> getUser(@PathVariable String login) {
-//        log.debug("REST request to get User : {}", login);
-//        return Optional.ofNullable(userRepository.findOne(login))
-//                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
-//                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-//    }
+	// /**
+	// * GET /rest/users/:login -> get the "login" user.
+	// */
+	// @RequestMapping(value = "/rest/users/{login}",
+	// method = RequestMethod.GET,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// // @Timed
+	// ResponseEntity<User> getUser(@PathVariable String login) {
+	// log.debug("REST request to get User : {}", login);
+	// return Optional.ofNullable(userRepository.findOne(login))
+	// .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+	// .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	// }
 
-    /**
-     * GET  /rest/users -> get all users list.
-     */
-    @RequestMapping(value = "/rest/users",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<List<User>> getUser() {
-        log.debug("REST request to get all users");
-        return Optional.ofNullable(userRepository.findAll())
-                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+	/**
+	 * GET /rest/users -> get all users list.
+	 */
+	@RequestMapping(value = "/rest/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<List<User>> getUser() {
+		log.debug("REST request to get all users");
+		return Optional.ofNullable(userRepository.findAll())
+		        .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+		        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
 }

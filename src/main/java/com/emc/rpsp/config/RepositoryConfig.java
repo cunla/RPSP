@@ -12,10 +12,11 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
  */
 @Configuration
 public class RepositoryConfig extends RepositoryRestMvcConfiguration {
-    @Override
-    protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-        config.exposeIdsFor(SystemSettings.class);
-        config.exposeIdsFor(ClusterSettings.class);
-        config.exposeIdsFor(VirtualMachineData.class);
-    }
+	@Override
+	protected void configureRepositoryRestConfiguration(
+	        RepositoryRestConfiguration config) {
+		config.exposeIdsFor(SystemSettings.class);
+		config.exposeIdsFor(ClusterSettings.class);
+		config.exposeIdsFor(VirtualMachineData.class);
+	}
 }

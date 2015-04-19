@@ -4,15 +4,16 @@ import org.springframework.security.core.authority.AuthorityUtils;
 
 import com.emc.rpsp.domain.User;
 
+public class CurrentUser extends
+        org.springframework.security.core.userdetails.User {
 
-public class CurrentUser extends org.springframework.security.core.userdetails.User {
-	
 	private User user;
 
 	public CurrentUser(User user) {
-		super(user.getLogin(), user.getPassword(), AuthorityUtils.createAuthorityList(user.getPermission()));
+		super(user.getLogin(), user.getPassword(), AuthorityUtils
+		        .createAuthorityList(user.getPermission()));
 		this.user = user;
-		
+
 	}
 
 	public User getUser() {
@@ -22,6 +23,5 @@ public class CurrentUser extends org.springframework.security.core.userdetails.U
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	
+
 }

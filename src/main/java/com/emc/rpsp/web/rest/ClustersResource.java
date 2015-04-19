@@ -21,30 +21,33 @@ import javax.transaction.Transactional;
 @RestController
 @RequestMapping("/app")
 public class ClustersResource {
-    private final Logger log = LoggerFactory.getLogger(ClustersResource.class);
-    @Inject
-    private SystemConnectionInfoRepository systemConnectionInfoRepository;
+	private final Logger log = LoggerFactory.getLogger(ClustersResource.class);
+	@Inject
+	private SystemConnectionInfoRepository systemConnectionInfoRepository;
 
-    @PersistenceContext
-    private EntityManager em;
+	@PersistenceContext
+	private EntityManager em;
 
-    @RequestMapping(value = "/rest/updateClusterForSystem/{id}",
-            method = RequestMethod.PUT,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Transactional
-    public ResponseEntity<ClusterSettings> updateClusterForSystem(@PathVariable("id") Long id,
-                                                                  @RequestBody ClusterSettings clusterSettings) {
-        log.debug("Trying to update cluster settings for system {}", id);
-        SystemSettings systemSettings = systemConnectionInfoRepository.findOne(id);
-        for (ClusterSettings cluster : systemSettings.getClusters()) {
-            if (cluster.getId() == clusterSettings.getId()) {
-                log.debug("Updating cluster {} country to {} and business name to {}", id, clusterSettings.getCountry(), clusterSettings.getFriendlyName());
-                cluster.setCountry(clusterSettings.getCountry());
-                cluster.setFriendlyName(clusterSettings.getFriendlyName());
-                em.merge(cluster);
-                em.flush();
-            }
-        }
-        return new ResponseEntity<>(clusterSettings, null, HttpStatus.OK);
-    }
+	@RequestMapping(value = "/rest/updateClusterForSystem/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public ResponseEntity<ClusterSettings> updateClusterForSystem(
+	        @PathVariable("id") Long id,
+	        @RequestBody ClusterSettings clusterSettings) {
+		log.debug("Trying to update cluster settings for system {}", id);
+		SystemSettings systemSettings = systemConnectionInfoRepository
+		        .findOne(id);
+		for (ClusterSettings cluster : systemSettings.getClusters()) {
+			if (cluster.getId() == clusterSettings.getId()) {
+				log.debug(
+				        "Updating cluster {} country to {} and business name to {}",
+				        id, clusterSettings.getCountry(),
+				        clusterSettings.getFriendlyName());
+				cluster.setCountry(clusterSettings.getCountry());
+				cluster.setFriendlyName(clusterSettings.getFriendlyName());
+				em.merge(cluster);
+				em.flush();
+			}
+		}
+		return new ResponseEntity<>(clusterSettings, null, HttpStatus.OK);
+	}
 }

@@ -17,54 +17,41 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-    
-    
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//    	
-//        http.csrf().disable()
-//        .authorizeRequests()
-//         .anyRequest().permitAll();
-//    }
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-    
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-    	
-        http.csrf().disable()
-        .authorizeRequests()
-         .antMatchers("/login/*").permitAll()
-         .anyRequest().fullyAuthenticated();
-        
-         http.formLogin()
-         .loginPage("/login/login-form.html")
-         .failureUrl("/login/login-form.html")
-         .loginProcessingUrl("/login-action")
-         .failureHandler(
-                 (request, response, authentication) -> {
-                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                 })
+	// @Override
+	// protected void configure(HttpSecurity http) throws Exception {
+	//
+	// http.csrf().disable()
+	// .authorizeRequests()
+	// .anyRequest().permitAll();
+	// }
 
-         .permitAll()
-         .and()
-         .httpBasic();
-         
-         http.logout()
-         .logoutUrl("/logout-action")
-         .logoutSuccessUrl("/login/login-form.html")
-         .permitAll();       
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
 
-    }
-    
-    
+		http.csrf().disable().authorizeRequests().antMatchers("/login/*")
+		        .permitAll().anyRequest().fullyAuthenticated();
 
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(new BCryptPasswordEncoder());
-    }
+		http.formLogin().loginPage("/login/login-form.html")
+		        .failureUrl("/login/login-form.html")
+		        .loginProcessingUrl("/login-action")
+		        .failureHandler((request, response, authentication) -> {
+			        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		        })
+
+		        .permitAll().and().httpBasic();
+
+		http.logout().logoutUrl("/logout-action")
+		        .logoutSuccessUrl("/login/login-form.html").permitAll();
+
+	}
+
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(
+		        new BCryptPasswordEncoder());
+	}
 
 }
