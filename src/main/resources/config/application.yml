@@ -1,5 +1,6 @@
 server:
     port: 8080
+    contextPath: /rpsp
 
 spring:
     profiles:
@@ -48,3 +49,9 @@ metrics:
 #    timeToLiveSeconds: 3600
 #    ehcache:
 #        maxBytesLocalHeap: 16M
+
+
+rpsp:
+  admin:
+    login: admin@system
+    password: 123

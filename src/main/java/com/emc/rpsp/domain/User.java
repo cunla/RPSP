@@ -1,26 +1,36 @@
 package com.emc.rpsp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import java.io.Serializable;
 
 @Entity
 @Table(name = "T_USER")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractAuditingEntity implements Serializable {
+	
+	@Id
+	@GeneratedValue 
+	private Long id;
 
     @NotNull
     @Size(min = 0, max = 50)
-    @Id
     @Column(length = 50)
     private String login;
 
@@ -41,16 +51,26 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Size(min = 0, max = 100)
     @Column(length = 100)
     private String email;
+    
 
+    @JsonIgnore
     private boolean activated = false;
 
+    @JsonIgnore
     @Size(min = 2, max = 5)
     @Column(name = "lang_key", length = 5)
     private String langKey;
 
+    @JsonIgnore
     @Size(min = 0, max = 20)
     @Column(name = "activation_key", length = 20)
     private String activationKey;
+    
+    
+    @JsonIgnore
+    @Size(min = 0, max = 100)
+    @Column(length = 100)
+    private String permission;
 
 
     public String getLogin() {
@@ -61,12 +81,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.login = login;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
-
-    public void setPassword(String password) {
+    
+    @JsonProperty
+    public void setPassword(String password) {    	
         this.password = password;
+    }
+    
+    public void setEncodedPassword(String password) {    	
+    	this.password = new BCryptPasswordEncoder().encode(password);
+    }
+    
+    public void encodePassword(){
+    	this.password = new BCryptPasswordEncoder().encode(password);
     }
 
     public String getFirstName() {
@@ -116,8 +146,26 @@ public class User extends AbstractAuditingEntity implements Serializable {
     public void setLangKey(String langKey) {
         this.langKey = langKey;
     }
+ 
 
-    @Override
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+
+	public String getPermission() {
+		return permission;
+	}
+
+	public void setPermission(String permission) {
+		this.permission = permission;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
