@@ -1,15 +1,14 @@
 package com.emc.rpsp.login.service;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.emc.rpsp.login.domain.CurrentUser;
+import com.emc.rpsp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.emc.rpsp.login.domain.CurrentUser;
-import com.emc.rpsp.repository.UserRepository;
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class CurrentUserDetailsService implements UserDetailsService {
@@ -22,7 +21,7 @@ public class CurrentUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String userName)
-	        throws UsernameNotFoundException {
+			throws UsernameNotFoundException {
 
 		com.emc.rpsp.domain.User user = userRepository.findOneByLogin(userName);
 		if (user == null) {

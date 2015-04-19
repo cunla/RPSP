@@ -12,7 +12,7 @@ public class VmCount {
 	private int totalVms;
 
 	public VmCount(int year, int month, String country, String state,
-	        long totalVms) {
+			long totalVms) {
 		this.country = country;
 		this.state = state;
 		this.year = year;
@@ -43,8 +43,8 @@ public class VmCount {
 	@Override
 	public String toString() {
 		return "VmCount{" + "country='" + country + '\'' + ", year=" + year
-		        + ", month=" + month + ", state='" + state + '\''
-		        + ", totalVms=" + totalVms + '}';
+				+ ", month=" + month + ", state='" + state + '\''
+				+ ", totalVms=" + totalVms + '}';
 	}
 
 	public static String csvTitle() {
@@ -53,6 +53,6 @@ public class VmCount {
 
 	public String asCsv() {
 		return String.format("%d,%d,%s,%s,%d", year, month, country, state,
-		        totalVms);
+				totalVms);
 	}
 }

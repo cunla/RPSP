@@ -12,8 +12,8 @@ import java.util.List;
  * Created by morand3 on 1/14/2015.
  */
 @RepositoryRestResource(collectionResourceRel = "systems", path = "systems")
-public interface SystemConnectionInfoRepository extends
-        JpaRepository<SystemSettings, Long> {
+public interface SystemConnectionInfoRepository
+		extends JpaRepository<SystemSettings, Long> {
 
 	@Query("select system from SystemSettings system where system.systemIp = ?1")
 	public List<SystemSettings> findClustersWithIpAddress(String ipAddress);

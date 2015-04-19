@@ -21,23 +21,25 @@ public class ClusterConnectorFactory {
 	}
 
 	public static ClusterConnector getConnector(SystemSettings settings) {
-		String verPath = settings.getSystemVersion().contains("4.3") ? "4_3/"
-		        : "4_1/";
+		String verPath = settings.getSystemVersion().contains("4.3") ?
+				"4_3/" :
+				"4_1/";
 		RestAdapter restAdapter = new RestAdapter.Builder()
-		        // .setLogLevel(RestAdapter.LogLevel.FULL)
-		        .setEndpoint(
-		                "https://" + settings.getSystemIp() + ":" + port
-		                        + "/fapi/rest/" + verPath)
-		        .setConverter(new JacksonConverter())
-		        .setRequestInterceptor(buildInterceptor(settings)).build();
+				// .setLogLevel(RestAdapter.LogLevel.FULL)
+				.setEndpoint("https://" + settings.getSystemIp() + ":" + port
+						+ "/fapi/rest/" + verPath)
+				.setConverter(new JacksonConverter())
+				.setRequestInterceptor(buildInterceptor(settings)).build();
 
 		ClusterConnector service = restAdapter.create(ClusterConnector.class);
 		return service;
 	}
 
-	private static RequestInterceptor buildInterceptor(SystemSettings settings) {
-		byte[] authEncBytes = Base64.encodeBase64(String.format("%s:%s",
-		        settings.getUser(), settings.getRealPassword()).getBytes());
+	private static RequestInterceptor buildInterceptor(
+			SystemSettings settings) {
+		byte[] authEncBytes = Base64.encodeBase64(
+				String.format("%s:%s", settings.getUser(),
+						settings.getRealPassword()).getBytes());
 		String authStringEnc = new String(authEncBytes);
 
 		RequestInterceptor requestInterceptor = new RequestInterceptor() {
@@ -52,25 +54,26 @@ public class ClusterConnectorFactory {
 	private static void disableSslVerification() {
 		try {
 			// Create a trust manager that does not validate certificate chains
-			TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-				public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-					return null;
-				}
+			TrustManager[] trustAllCerts = new TrustManager[] {
+					new X509TrustManager() {
+						public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+							return null;
+						}
 
-				public void checkClientTrusted(X509Certificate[] certs,
-				        String authType) {
-				}
+						public void checkClientTrusted(X509Certificate[] certs,
+								String authType) {
+						}
 
-				public void checkServerTrusted(X509Certificate[] certs,
-				        String authType) {
-				}
-			} };
+						public void checkServerTrusted(X509Certificate[] certs,
+								String authType) {
+						}
+					} };
 
 			// Install the all-trusting trust manager
 			SSLContext sc = SSLContext.getInstance("SSL");
 			sc.init(null, trustAllCerts, new java.security.SecureRandom());
 			HttpsURLConnection
-			        .setDefaultSSLSocketFactory(sc.getSocketFactory());
+					.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
 			// Create all-trusting host name verifier
 			HostnameVerifier allHostsValid = new HostnameVerifier() {

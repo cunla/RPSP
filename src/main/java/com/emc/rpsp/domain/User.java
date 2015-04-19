@@ -1,21 +1,15 @@
 package com.emc.rpsp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import java.io.Serializable;
 
 @Entity
@@ -184,9 +178,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Override
 	public String toString() {
 		return "User{" + "login='" + login + '\'' + ", password='" + password
-		        + '\'' + ", firstName='" + firstName + '\'' + ", lastName='"
-		        + lastName + '\'' + ", email='" + email + '\''
-		        + ", activated='" + activated + '\'' + ", langKey='" + langKey
-		        + '\'' + ", activationKey='" + activationKey + '\'' + "}";
+				+ '\'' + ", firstName='" + firstName + '\'' + ", lastName='"
+				+ lastName + '\'' + ", email='" + email + '\'' + ", activated='"
+				+ activated + '\'' + ", langKey='" + langKey + '\''
+				+ ", activationKey='" + activationKey + '\'' + "}";
 	}
 }

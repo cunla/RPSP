@@ -31,7 +31,7 @@ public class JacksonConverter implements Converter {
 	}
 
 	public Object fromBody(TypedInput body, Type type)
-	        throws ConversionException {
+			throws ConversionException {
 		try {
 			JavaType e = this.objectMapper.getTypeFactory().constructType(type);
 			return this.objectMapper.readValue(body.in(), e);
@@ -48,7 +48,7 @@ public class JacksonConverter implements Converter {
 		try {
 			String e = this.objectMapper.writeValueAsString(object);
 			return new TypedByteArray("application/json; charset=UTF-8",
-			        e.getBytes("UTF-8"));
+					e.getBytes("UTF-8"));
 		} catch (IOException var3) {
 			throw new AssertionError(var3);
 		}

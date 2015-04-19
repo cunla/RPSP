@@ -1,9 +1,9 @@
 package com.emc.rpsp.users.service.impl;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
+import com.emc.rpsp.domain.User;
+import com.emc.rpsp.login.domain.CurrentUser;
+import com.emc.rpsp.repository.UserRepository;
+import com.emc.rpsp.users.service.UserService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,10 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.emc.rpsp.domain.User;
-import com.emc.rpsp.login.domain.CurrentUser;
-import com.emc.rpsp.repository.UserRepository;
-import com.emc.rpsp.users.service.UserService;
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -52,7 +50,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public CurrentUser findCurrentUser() {
 		Authentication auth = SecurityContextHolder.getContext()
-		        .getAuthentication();
+				.getAuthentication();
 		CurrentUser currentUser = (CurrentUser) auth.getPrincipal();
 		return currentUser;
 	}

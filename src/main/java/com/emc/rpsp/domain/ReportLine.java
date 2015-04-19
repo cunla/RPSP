@@ -25,7 +25,7 @@ public class ReportLine {
 	}
 
 	public ReportLine(int year, int month, String country, int stateSource,
-	        int stateLocal, int stateRemote) {
+			int stateLocal, int stateRemote) {
 		this(country, year, month);
 		this.stateSource = stateSource;
 		this.stateLocal = stateLocal;
@@ -58,8 +58,9 @@ public class ReportLine {
 	}
 
 	public String asCsv() {
-		return String.format("%d,%d,%s,%d,%d,%d", month, year, country,
-		        stateSource, stateLocal, stateRemote);
+		return String
+				.format("%d,%d,%s,%d,%d,%d", month, year, country, stateSource,
+						stateLocal, stateRemote);
 	}
 
 	public String getCountry() {
@@ -99,8 +100,9 @@ public class ReportLine {
 			return false;
 		if (year != that.year)
 			return false;
-		if (country != null ? !country.equals(that.country)
-		        : that.country != null)
+		if (country != null ?
+				!country.equals(that.country) :
+				that.country != null)
 			return false;
 
 		return true;
@@ -115,12 +117,12 @@ public class ReportLine {
 	}
 
 	public void addPeriodClusterSample(int sampleNumber, int stateSource,
-	        int stateLocal, int stateRemote) {
+			int stateLocal, int stateRemote) {
 		this.stateSource = (this.stateSource * (sampleNumber - 1) + stateSource)
-		        / sampleNumber;
+				/ sampleNumber;
 		this.stateLocal = (this.stateLocal * (sampleNumber - 1) + stateLocal)
-		        / sampleNumber;
+				/ sampleNumber;
 		this.stateRemote = (this.stateRemote * (sampleNumber - 1) + stateRemote)
-		        / sampleNumber;
+				/ sampleNumber;
 	}
 }

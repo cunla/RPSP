@@ -24,14 +24,16 @@ public interface ClusterConnector {
 
 	@GET(BASE_URL + "clusters/{clusterId}/virtual_infrastructures/state")
 	public ClusterVirtualInfrastructuresState getVirtualInfrastructuresStateFromCluster(
-	        @Path("clusterId") long clusterId);
+			@Path("clusterId")
+			long clusterId);
 
 	@GET(BASE_URL + "clusters")
 	public RecoverPointClustersInformation getRpClustersInformation();
 
 	@GET(BASE_URL + "groups/{groupId}/copies/settings")
 	public ConsistencyGroupCopySettingsSet getAllGroupCopies(
-	        @Path("groupId") long groupId);
+			@Path("groupId")
+			long groupId);
 
 	@GET(BASE_URL + "groups")
 	public ConsistencyGroupUIDSet getAllGroupsUIDs();

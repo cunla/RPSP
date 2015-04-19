@@ -47,7 +47,7 @@ public class VirtualMachineData {
 	}
 
 	private VirtualMachineData(DateTime sampleTime, long clusterId,
-	        String clusterName, String vmId, String vmName) {
+			String clusterName, String vmId, String vmName) {
 		this.sampleTime = sampleTime;
 		this.vmId = vmId;
 		this.vmName = vmName;
@@ -56,8 +56,8 @@ public class VirtualMachineData {
 	}
 
 	public VirtualMachineData(DateTime sampleTime, long clusterId,
-	        String clusterName, String vmId, String vmName,
-	        String clusterCountry, String role) {
+			String clusterName, String vmId, String vmName,
+			String clusterCountry, String role) {
 		this(sampleTime, clusterId, clusterName, vmId, vmName);
 		this.role = role;
 		this.clusterCountry = clusterCountry;
@@ -137,17 +137,17 @@ public class VirtualMachineData {
 
 	public String asCsv() {
 		return id + "," + sampleTime + "," + vmId + "," + vmName + ","
-		        + clusterId + "," + clusterName + "," + clusterCountry + ","
-		        + role;
+				+ clusterId + "," + clusterName + "," + clusterCountry + ","
+				+ role;
 	}
 
 	@Override
 	public String toString() {
-		return "VirtualMachineData{" + "id=" + id + ", sampleTime="
-		        + sampleTime + ", vmId='" + vmId + '\'' + ", vmName='" + vmName
-		        + '\'' + ", clusterId=" + clusterId + ", clusterName='"
-		        + clusterName + '\'' + ", clusterCountry='" + clusterCountry
-		        + '\'' + ", role='" + role + '\'' + '}';
+		return "VirtualMachineData{" + "id=" + id + ", sampleTime=" + sampleTime
+				+ ", vmId='" + vmId + '\'' + ", vmName='" + vmName + '\''
+				+ ", clusterId=" + clusterId + ", clusterName='" + clusterName
+				+ '\'' + ", clusterCountry='" + clusterCountry + '\''
+				+ ", role='" + role + '\'' + '}';
 	}
 
 	public static String csvTitle() {

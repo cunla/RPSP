@@ -34,7 +34,7 @@ public class ClusterSettings {
 	}
 
 	public ClusterSettings(Long clusterId, String clusterName,
-	        SystemSettings systemSettings) {
+			SystemSettings systemSettings) {
 		this.clusterId = clusterId;
 		this.clusterName = clusterName;
 		this.systemSettings = systemSettings;

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by morand3 on 1/14/2015.
@@ -53,7 +53,7 @@ public class TestClusterRepository {
 
 	private SystemSettings getGoodClustersConnectionSettings() {
 		SystemSettings settings = new SystemSettings("10.76.16.150", "admin",
-		        "admin");
+				"admin");
 		Client client = new Client(settings);
 		client.getSystemTime();
 		return settings;
@@ -61,7 +61,7 @@ public class TestClusterRepository {
 
 	private SystemSettings getBadClustersConnectionSettings() {
 		SystemSettings settings = new SystemSettings("10.76.16.x", "admin",
-		        "admin");
+				"admin");
 		Client client = new Client(settings);
 		client.getSystemTime();
 		return settings;

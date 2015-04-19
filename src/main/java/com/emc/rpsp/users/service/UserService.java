@@ -1,9 +1,9 @@
 package com.emc.rpsp.users.service;
 
-import java.util.List;
-
 import com.emc.rpsp.domain.User;
 import com.emc.rpsp.login.domain.CurrentUser;
+
+import java.util.List;
 
 public interface UserService {
 
