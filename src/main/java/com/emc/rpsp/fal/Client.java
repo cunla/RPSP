@@ -17,7 +17,7 @@ import java.util.Map;
 public class Client {
     private SystemConnectionInfoRepository systemsRepo = null;
     private SystemSettings systemSettings;
-    private Cluster41Connector connector;
+    private ClusterConnector connector;
 
     public Client(SystemSettings settings) {
         this.systemSettings = settings;

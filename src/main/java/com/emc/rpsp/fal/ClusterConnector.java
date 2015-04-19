@@ -7,8 +7,8 @@ import retrofit.http.Path;
 /**
  * Created by morand3 on 1/13/2015.
  */
-public interface Cluster41Connector {
-    static final String BASE_URL = "/fapi/rest/4_1/";
+public interface ClusterConnector {
+    static final String BASE_URL = "";
 
     @GET(BASE_URL + "system/version")
     public RecoverPointVersion getSystemVersion();

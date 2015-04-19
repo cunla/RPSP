@@ -20,7 +20,7 @@ public class TestClusterConnector {
 
     @Test
     public void testClusterGetTime() {
-        Cluster41Connector connector = ClusterConnectorFactory.getConnector(systemSettings);
+        ClusterConnector connector = ClusterConnectorFactory.getConnector(systemSettings);
         long time = connector.getSystemTime().getTimeInMicroSeconds();
         DateTime d = new DateTime(time / 1000);
         System.out.println("Time on the server: " + d);
@@ -28,7 +28,7 @@ public class TestClusterConnector {
 
     @Test
     public void testClusterGetVms() {
-        Cluster41Connector connector = ClusterConnectorFactory.getConnector(systemSettings);
+        ClusterConnector connector = ClusterConnectorFactory.getConnector(systemSettings);
         FullRecoverPointSettings rpSettings = connector.getFullRecoverPointSettings();
         assertNotNull(rpSettings);
         List<ConsistencyGroupSettings> groupSettingsList = rpSettings.getGroupsSettings();
@@ -57,7 +57,7 @@ public class TestClusterConnector {
 
     @Test
     public void testgetClusterVirtualInfrastructuresStateSet() {
-        Cluster41Connector connector = ClusterConnectorFactory.getConnector(systemSettings);
+        ClusterConnector connector = ClusterConnectorFactory.getConnector(systemSettings);
         ClusterVirtualInfrastructuresStateSet stateSet = connector.getVirtualInfrastructuresStateFromAllCluster();
         for (ClusterVirtualInfrastructuresState state : stateSet.getInnerSet()) {
             List<VmState> vmStateList = state.getVirtualInfrastructuresState().getVmsState();
@@ -72,7 +72,7 @@ public class TestClusterConnector {
 
     @Test
     public void testGetClusterVirtualInfrastructuresStateForCluster() {
-        Cluster41Connector connector = ClusterConnectorFactory.getConnector(systemSettings);
+        ClusterConnector connector = ClusterConnectorFactory.getConnector(systemSettings);
         RecoverPointClustersInformation rpClusters = connector.getRpClustersInformation();
         for (ClusterInfo clusterInfo : rpClusters.getClustersInformation()) {
             ClusterVirtualInfrastructuresState state = connector.getVirtualInfrastructuresStateFromCluster(clusterInfo.getClusterUID().getId());
