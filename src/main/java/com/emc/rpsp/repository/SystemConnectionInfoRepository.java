@@ -1,7 +1,7 @@
 package com.emc.rpsp.repository;
 
-import com.emc.rpsp.domain.ClusterSettings;
-import com.emc.rpsp.domain.SystemSettings;
+import com.emc.rpsp.rpsystems.ClusterSettings;
+import com.emc.rpsp.rpsystems.SystemSettings;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;

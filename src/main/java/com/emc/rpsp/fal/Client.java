@@ -3,7 +3,7 @@ package com.emc.rpsp.fal;
 import com.emc.fapi.jaxws.*;
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
-import com.emc.rpsp.domain.SystemSettings;
+import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 import retrofit.RetrofitError;
 
@@ -71,6 +71,10 @@ public class Client {
 		return res;
 	}
 
+	/**
+	 * Provides a list of VMs per cluster
+	 * @return Map of clusterId => (Map of vmId => vmName)
+	 */
 	public Map<Long, Map<String, String>> getVmNamesAllClusters() {
 		ClusterVirtualInfrastructuresStateSet stateSet = connector
 		        .getVirtualInfrastructuresStateFromAllCluster();

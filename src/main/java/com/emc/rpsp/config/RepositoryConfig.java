@@ -1,8 +1,7 @@
 package com.emc.rpsp.config;
 
-import com.emc.rpsp.domain.ClusterSettings;
-import com.emc.rpsp.domain.SystemSettings;
-import com.emc.rpsp.domain.VirtualMachineData;
+import com.emc.rpsp.rpsystems.ClusterSettings;
+import com.emc.rpsp.rpsystems.SystemSettings;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
@@ -17,6 +16,6 @@ public class RepositoryConfig extends RepositoryRestMvcConfiguration {
 	        RepositoryRestConfiguration config) {
 		config.exposeIdsFor(SystemSettings.class);
 		config.exposeIdsFor(ClusterSettings.class);
-		config.exposeIdsFor(VirtualMachineData.class);
+//		config.exposeIdsFor(VirtualMachineData.class);
 	}
 }

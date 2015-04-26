@@ -1,6 +1,6 @@
 package com.emc.rpsp.fal;
 
-import com.emc.rpsp.domain.SystemSettings;
+import com.emc.rpsp.rpsystems.SystemSettings;
 import org.apache.tomcat.util.codec.binary.Base64;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;

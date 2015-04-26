@@ -1,7 +1,7 @@
 package com.emc.rpsp.fal;
 
 import com.emc.fapi.jaxws.*;
-import com.emc.rpsp.domain.SystemSettings;
+import com.emc.rpsp.rpsystems.SystemSettings;
 import org.joda.time.DateTime;
 import org.junit.Test;
 

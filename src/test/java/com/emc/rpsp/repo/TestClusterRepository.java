@@ -3,7 +3,7 @@ package com.emc.rpsp.repo;
 import com.emc.rpsp.Application;
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.config.Constants;
-import com.emc.rpsp.domain.SystemSettings;
+import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 import org.junit.Test;
