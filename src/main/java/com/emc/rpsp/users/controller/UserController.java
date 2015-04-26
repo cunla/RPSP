@@ -42,18 +42,14 @@ public class UserController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<User> findUser(
-			@PathVariable("id")
-			Long id) {
+	public ResponseEntity<User> findUser(@PathVariable("id") Long id) {
 		User user = userService.findUser(id);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> createUser(
-			@RequestBody
-			User user) {
+	public ResponseEntity<User> createUser(@RequestBody User user) {
 		User sameLoginUser = userService.findUserByLogin(user.getLogin());
 		if (sameLoginUser != null) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -62,22 +58,20 @@ public class UserController {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.add(HttpHeaders.LOCATION, "users/" + createdUser.getId());
 		return new ResponseEntity<>(createdUser, httpHeaders,
-				HttpStatus.CREATED);
+		        HttpStatus.CREATED);
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<User> updateUser(
-			@RequestBody
-			User user) {
+	public ResponseEntity<User> updateUser(@RequestBody User user) {
 		User existingUser = userService.findUser(user.getId());
 		if (existingUser == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		User sameLoginUser = userService.findUserByLogin(user.getLogin());
-		if (sameLoginUser != null && sameLoginUser.getId() != existingUser
-				.getId()) {
+		if (sameLoginUser != null
+		        && sameLoginUser.getId() != existingUser.getId()) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		User updatedUser = userService.updateUser(user);
@@ -87,9 +81,7 @@ public class UserController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public ResponseEntity<HttpStatus> deleteUser(
-			@PathVariable("id")
-			Long id) {
+	public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
 		User user = userService.findUser(id);
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -102,8 +94,7 @@ public class UserController {
 	@RequestMapping(value = "/users/login/{login}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public ResponseEntity<HttpStatus> deleteUserByLogin(
-			@PathVariable("login")
-			String login) {
+	        @PathVariable("login") String login) {
 		User user = userService.findUserByLogin(login);
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

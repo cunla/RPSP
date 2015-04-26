@@ -26,7 +26,7 @@ import java.util.Arrays;
 public class DatabaseConfiguration implements EnvironmentAware {
 
 	private final Logger log = LoggerFactory
-			.getLogger(DatabaseConfiguration.class);
+	        .getLogger(DatabaseConfiguration.class);
 
 	private RelaxedPropertyResolver propertyResolver;
 
@@ -36,7 +36,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
 	public void setEnvironment(Environment env) {
 		this.env = env;
 		this.propertyResolver = new RelaxedPropertyResolver(env,
-				"spring.datasource.");
+		        "spring.datasource.");
 	}
 
 	@Bean(destroyMethod = "shutdown")
@@ -44,32 +44,32 @@ public class DatabaseConfiguration implements EnvironmentAware {
 	public DataSource dataSource() {
 		log.debug("Configuring Datasource");
 		if (propertyResolver.getProperty("url") == null
-				&& propertyResolver.getProperty("databaseName") == null) {
+		        && propertyResolver.getProperty("databaseName") == null) {
 			log.error(
-					"Your database connection pool configuration is incorrect! The application"
-							+ "cannot start. Please check your Spring profile, current profiles are: {}",
-					Arrays.toString(env.getActiveProfiles()));
+			        "Your database connection pool configuration is incorrect! The application"
+			                + "cannot start. Please check your Spring profile, current profiles are: {}",
+			        Arrays.toString(env.getActiveProfiles()));
 
 			throw new ApplicationContextException(
-					"Database connection pool is not configured correctly");
+			        "Database connection pool is not configured correctly");
 		}
 		HikariConfig config = new HikariConfig();
-		config.setDataSourceClassName(
-				propertyResolver.getProperty("dataSourceClassName"));
-		if (propertyResolver.getProperty("url") == null || ""
-				.equals(propertyResolver.getProperty("url"))) {
+		config.setDataSourceClassName(propertyResolver
+		        .getProperty("dataSourceClassName"));
+		if (propertyResolver.getProperty("url") == null
+		        || "".equals(propertyResolver.getProperty("url"))) {
 			config.addDataSourceProperty("databaseName",
-					propertyResolver.getProperty("databaseName"));
+			        propertyResolver.getProperty("databaseName"));
 			config.addDataSourceProperty("serverName",
-					propertyResolver.getProperty("serverName"));
+			        propertyResolver.getProperty("serverName"));
 		} else {
 			config.addDataSourceProperty("url",
-					propertyResolver.getProperty("url"));
+			        propertyResolver.getProperty("url"));
 		}
 		config.addDataSourceProperty("user",
-				propertyResolver.getProperty("username"));
+		        propertyResolver.getProperty("username"));
 		config.addDataSourceProperty("password",
-				propertyResolver.getProperty("password"));
+		        propertyResolver.getProperty("password"));
 
 		return new HikariDataSource(config);
 	}

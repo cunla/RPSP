@@ -113,8 +113,8 @@ public class SystemSettings {
 	}
 
 	public void setPassword(String password) {
-		this.password = StringXORer
-				.encrypt(ENCRYPT_KEY1, ENCRYPT_KEY2, password);
+		this.password = StringXORer.encrypt(ENCRYPT_KEY1, ENCRYPT_KEY2,
+		        password);
 	}
 
 	public DateTime getLastCollected() {

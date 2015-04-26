@@ -25,7 +25,7 @@ public class Client {
 	}
 
 	public Client(SystemSettings systemSettings,
-			SystemConnectionInfoRepository systemConnectionInfoRepository) {
+	        SystemConnectionInfoRepository systemConnectionInfoRepository) {
 		this(systemSettings);
 		this.systemsRepo = systemConnectionInfoRepository;
 	}
@@ -49,8 +49,8 @@ public class Client {
 				systemSettings.setTestResult(false);
 				systemsRepo.saveAndFlush(systemSettings);
 			}
-			throw new RpspException(
-					"Couldn't access host " + systemSettings.getSystemIp());
+			throw new RpspException("Couldn't access host "
+			        + systemSettings.getSystemIp());
 		}
 	}
 
@@ -59,9 +59,9 @@ public class Client {
 	 */
 	public Map<String, String> getVmNamesInCluster(long clusterId) {
 		ClusterVirtualInfrastructuresState state = connector
-				.getVirtualInfrastructuresStateFromCluster(clusterId);
+		        .getVirtualInfrastructuresStateFromCluster(clusterId);
 		List<VmState> vmStateList = state.getVirtualInfrastructuresState()
-				.getVmsState();
+		        .getVmsState();
 		Map<String, String> res = new HashMap<>();
 		for (VmState vmState : vmStateList) {
 			String vmId = vmState.getVmUID().getUuid();
@@ -73,7 +73,7 @@ public class Client {
 
 	public Map<Long, Map<String, String>> getVmNamesAllClusters() {
 		ClusterVirtualInfrastructuresStateSet stateSet = connector
-				.getVirtualInfrastructuresStateFromAllCluster();
+		        .getVirtualInfrastructuresStateFromAllCluster();
 		return getVmNames(stateSet);
 	}
 
@@ -82,28 +82,27 @@ public class Client {
 	 */
 	public Map<Long, String> getClusterNames() {
 		RecoverPointClustersInformation rpClusters = connector
-				.getRpClustersInformation();
+		        .getRpClustersInformation();
 		systemSettings.setTestResult(true);
 		return getClusterNames(rpClusters);
 	}
 
 	private Map<Long, String> getClusterNames(
-			RecoverPointClustersInformation rpClusters) {
+	        RecoverPointClustersInformation rpClusters) {
 		Map<Long, String> res = new HashMap<>();
 		for (ClusterInfo clusterInfo : rpClusters.getClustersInformation()) {
 			res.put(clusterInfo.getClusterUID().getId(),
-					clusterInfo.getClusterName());
+			        clusterInfo.getClusterName());
 		}
 		return res;
 	}
 
 	private Map<Long, Map<String, String>> getVmNames(
-			ClusterVirtualInfrastructuresStateSet stateSet) {
+	        ClusterVirtualInfrastructuresStateSet stateSet) {
 		Map<Long, Map<String, String>> res = new HashMap<>();
-		for (ClusterVirtualInfrastructuresState state : stateSet
-				.getInnerSet()) {
+		for (ClusterVirtualInfrastructuresState state : stateSet.getInnerSet()) {
 			List<VmState> vmStateList = state.getVirtualInfrastructuresState()
-					.getVmsState();
+			        .getVmsState();
 			long clusterId = state.getClusterUID().getId();
 			Map<String, String> vms = res.get(clusterId);
 			if (null == vms) {
@@ -121,39 +120,37 @@ public class Client {
 
 	public Map<String, String> getVmState() {
 		FullRecoverPointSettings rpSettings = connector
-				.getFullRecoverPointSettings();
+		        .getFullRecoverPointSettings();
 		return getVmState(rpSettings);
 	}
 
-	private Map<String, String> getVmState(
-			FullRecoverPointSettings rpSettings) {
+	private Map<String, String> getVmState(FullRecoverPointSettings rpSettings) {
 		Map<String, String> res = new HashMap<>();
-		Map<Long, List<ConsistencyGroupCopyUID>> productionCopies = getProductionCopies(
-				rpSettings);
+		Map<Long, List<ConsistencyGroupCopyUID>> productionCopies = getProductionCopies(rpSettings);
 
 		List<ConsistencyGroupSettings> groupSettingsList = rpSettings
-				.getGroupsSettings();
+		        .getGroupsSettings();
 		for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 			List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
-					.getVmReplicationSetsSettings();
+			        .getVmReplicationSetsSettings();
 			for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {
 				List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
-						.getReplicatedVMs();
+				        .getReplicatedVMs();
 				for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
 					String vmId = vmReplication.getVmUID().getUuid();
 					ConsistencyGroupCopyUID copyId = vmReplication
-							.getGroupCopyUID();
+					        .getGroupCopyUID();
 					Long clusterId = copyId.getGlobalCopyUID().getClusterUID()
-							.getId();
+					        .getId();
 					List<ConsistencyGroupCopyUID> production = productionCopies
-							.get(copyId.getGroupUID().getId());
+					        .get(copyId.getGroupUID().getId());
 					if (production.contains(copyId)) {
 						res.put(vmId, StatesConsts.STATE_SOURCE);
 					} else {
 						String state = StatesConsts.STATE_REMOTE;
 						for (ConsistencyGroupCopyUID copy : production) {
 							if (clusterId == copy.getGlobalCopyUID()
-									.getClusterUID().getId()) {
+							        .getClusterUID().getId()) {
 								state = StatesConsts.STATE_LOCAL;
 							}
 						}
@@ -167,13 +164,13 @@ public class Client {
 
 	// Propogate to data a map groupId --> Set of production copies
 	private Map<Long, List<ConsistencyGroupCopyUID>> getProductionCopies(
-			FullRecoverPointSettings rpSettings) {
+	        FullRecoverPointSettings rpSettings) {
 		Map<Long, List<ConsistencyGroupCopyUID>> res = new HashMap<>();
 		List<ConsistencyGroupSettings> groupSettingsList = rpSettings
-				.getGroupsSettings();
+		        .getGroupsSettings();
 		for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 			List<ConsistencyGroupCopyUID> productionCopiesList = groupSettings
-					.getProductionCopiesUID();
+			        .getProductionCopiesUID();
 			res.put(groupSettings.getGroupUID().getId(), productionCopiesList);
 
 		}

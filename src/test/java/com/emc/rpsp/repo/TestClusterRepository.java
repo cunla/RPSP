@@ -53,7 +53,7 @@ public class TestClusterRepository {
 
 	private SystemSettings getGoodClustersConnectionSettings() {
 		SystemSettings settings = new SystemSettings("10.76.16.150", "admin",
-				"admin");
+		        "admin");
 		Client client = new Client(settings);
 		client.getSystemTime();
 		return settings;
@@ -61,7 +61,7 @@ public class TestClusterRepository {
 
 	private SystemSettings getBadClustersConnectionSettings() {
 		SystemSettings settings = new SystemSettings("10.76.16.x", "admin",
-				"admin");
+		        "admin");
 		Client client = new Client(settings);
 		client.getSystemTime();
 		return settings;

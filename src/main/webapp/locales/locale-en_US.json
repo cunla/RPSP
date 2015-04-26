@@ -1,0 +1,19 @@
+{
+"HOME":{
+		"WELCOME_MSG": "Welcome",
+		"LOGOUT_MSG": "Logout",
+		"RECOVER_POINT_FOR_VM_MSG": "RecoverPoint for Virtual Machines",
+		"HOMEPAGE_TITLE_MSG": "RPSP Homepage",
+		"UNDER_CONSTRUCTION_MSG": "under construction"
+		},
+"LOGIN":{
+		 "RECOVER_POINT_FOR_VM_MSG": "RecoverPoint for Virtual Machines",
+		 "ACCOUNT_MSG": "Account",
+		 "USERNAME_MSG": "Username",
+		 "PASSWORD_MSG": "Password",
+		 "SIGN_IN_MSG": "Sign in"
+		}
+}
+
+
+

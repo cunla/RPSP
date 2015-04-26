@@ -21,7 +21,7 @@ public class CurrentUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String userName)
-			throws UsernameNotFoundException {
+	        throws UsernameNotFoundException {
 
 		com.emc.rpsp.domain.User user = userRepository.findOneByLogin(userName);
 		if (user == null) {

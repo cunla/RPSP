@@ -31,19 +31,17 @@ public class ClustersResource {
 	@RequestMapping(value = "/rest/updateClusterForSystem/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	public ResponseEntity<ClusterSettings> updateClusterForSystem(
-			@PathVariable("id")
-			Long id,
-			@RequestBody
-			ClusterSettings clusterSettings) {
+	        @PathVariable("id") Long id,
+	        @RequestBody ClusterSettings clusterSettings) {
 		log.debug("Trying to update cluster settings for system {}", id);
 		SystemSettings systemSettings = systemConnectionInfoRepository
-				.findOne(id);
+		        .findOne(id);
 		for (ClusterSettings cluster : systemSettings.getClusters()) {
 			if (cluster.getId() == clusterSettings.getId()) {
 				log.debug(
-						"Updating cluster {} country to {} and business name to {}",
-						id, clusterSettings.getCountry(),
-						clusterSettings.getFriendlyName());
+				        "Updating cluster {} country to {} and business name to {}",
+				        id, clusterSettings.getCountry(),
+				        clusterSettings.getFriendlyName());
 				cluster.setCountry(clusterSettings.getCountry());
 				cluster.setFriendlyName(clusterSettings.getFriendlyName());
 				em.merge(cluster);

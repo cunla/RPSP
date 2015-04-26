@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public CurrentUser findCurrentUser() {
 		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
+		        .getAuthentication();
 		CurrentUser currentUser = (CurrentUser) auth.getPrincipal();
 		return currentUser;
 	}

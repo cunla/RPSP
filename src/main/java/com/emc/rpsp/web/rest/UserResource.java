@@ -50,7 +50,7 @@ public class UserResource {
 	ResponseEntity<List<User>> getUser() {
 		log.debug("REST request to get all users");
 		return Optional.ofNullable(userRepository.findAll())
-				.map(user -> new ResponseEntity<>(user, HttpStatus.OK))
-				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+		        .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+		        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 }

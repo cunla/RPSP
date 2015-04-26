@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RPSP</title>
+    
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<script src="login-controller.js"></script>	
+	<script src="../../assets/js/angular-translate.min.js"></script> 
+  	<script src="../../assets/js/angular-translate-loader-static-files.min.js"></script>
+  	<script src="../locale/locale-service.js"></script>
+	   	
+   	<link rel="stylesheet" href="login-form.css">
+   	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" />
+	<link rel="stylesheet" type="text/css" href="../../assets/css/navbar.css">
+    
+  </head>
+  <body ng-app="login" ng-controller="loginController as loginController">
+  
+  	<nav class="navbar navbar-default">
+	    <div class="container">
+	        <div class="navbar-header">
+	            <a class="navbar-brand" href="/">{{'LOGIN.RECOVER_POINT_FOR_VM_MSG' | translate }}</a>
+	        </div>
+	    </div>
+	</nav>
+    <div class="container">
+      <form class="login-form" ng-submit="loginController.postForm()">
+        <h2>RPSP</h2>
+        <label for="inputAccount" class="sr-only">Account</label>
+        <input type="text" id="inputAccount" class="form-control" placeholder="{{'LOGIN.ACCOUNT_MSG' | translate}}" required autofocus ng-model="loginController.inputData.account">        
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="text" id="inputUsername" class="form-control" placeholder="{{'LOGIN.USERNAME_MSG' | translate}}" required autofocus ng-model="loginController.inputData.username">
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="{{'LOGIN.PASSWORD_MSG' | translate}}" required ng-model="loginController.inputData.password">
+        <br>
+		<div class="alert alert-danger" role="alert" ng-show="errorMsg">{{errorMsg}}</div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">{{'LOGIN.SIGN_IN_MSG' | translate}}</button>
+        <br/>
+        <br/>	       	
+      </form>      
+    </div> 
+  </body>
+</html>

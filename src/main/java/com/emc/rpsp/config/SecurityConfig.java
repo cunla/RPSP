@@ -31,27 +31,31 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.csrf().disable().authorizeRequests().antMatchers("/login/*")
-				.permitAll().anyRequest().fullyAuthenticated();
+		http.csrf().disable().authorizeRequests().antMatchers("/app/login/*")
+		        .permitAll().antMatchers("/assets/js/*").permitAll()
+		        .antMatchers("/assets/css/*").permitAll()
+		        .antMatchers("/locale").permitAll().antMatchers("/locales/*")
+		        .permitAll().antMatchers("/app/locale/*").permitAll()
+		        .anyRequest().fullyAuthenticated();
 
-		http.formLogin().loginPage("/login/login-form.html")
-				.failureUrl("/login/login-form.html")
-				.loginProcessingUrl("/login-action")
-				.failureHandler((request, response, authentication) -> {
-					response.setStatus(HttpStatus.UNAUTHORIZED.value());
-				})
+		http.formLogin().loginPage("/app/login/login-form.html")
+		        .failureUrl("/app/login/login-form.html")
+		        .loginProcessingUrl("/login-action")
+		        .failureHandler((request, response, authentication) -> {
+			        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		        })
 
-				.permitAll().and().httpBasic();
+		        .permitAll().and().httpBasic();
 
 		http.logout().logoutUrl("/logout-action")
-				.logoutSuccessUrl("/login/login-form.html").permitAll();
+		        .logoutSuccessUrl("/app/login/login-form.html").permitAll();
 
 	}
 
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService)
-				.passwordEncoder(new BCryptPasswordEncoder());
+		auth.userDetailsService(userDetailsService).passwordEncoder(
+		        new BCryptPasswordEncoder());
 	}
 
 }

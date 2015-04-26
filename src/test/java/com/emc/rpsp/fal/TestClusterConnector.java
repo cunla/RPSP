@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestClusterConnector {
 	private static SystemSettings systemSettings = new SystemSettings(
-			"10.76.16.150", "admin", "admin");
+	        "10.76.16.150", "admin", "admin");
 
 	// private static ClusterSettings clusterSettings = new
 	// ClusterSettings("10.64.125.226", "admin", "admin", "Israel");
@@ -23,7 +23,7 @@ public class TestClusterConnector {
 	@Test
 	public void testClusterGetTime() {
 		ClusterConnector connector = ClusterConnectorFactory
-				.getConnector(systemSettings);
+		        .getConnector(systemSettings);
 		long time = connector.getSystemTime().getTimeInMicroSeconds();
 		DateTime d = new DateTime(time / 1000);
 		System.out.println("Time on the server: " + d);
@@ -32,41 +32,41 @@ public class TestClusterConnector {
 	@Test
 	public void testClusterGetVms() {
 		ClusterConnector connector = ClusterConnectorFactory
-				.getConnector(systemSettings);
+		        .getConnector(systemSettings);
 		FullRecoverPointSettings rpSettings = connector
-				.getFullRecoverPointSettings();
+		        .getFullRecoverPointSettings();
 		assertNotNull(rpSettings);
 		List<ConsistencyGroupSettings> groupSettingsList = rpSettings
-				.getGroupsSettings();
+		        .getGroupsSettings();
 		assertNotNull(groupSettingsList);
 		for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 			List<ConsistencyGroupCopyUID> productionCopies = groupSettings
-					.getProductionCopiesUID();
+			        .getProductionCopiesUID();
 			assertTrue(productionCopies.size() > 0);
 			for (ConsistencyGroupCopyUID productionCopy : productionCopies) {
 				int copyId = productionCopy.getGlobalCopyUID().getCopyUID();
 				long clusterId = productionCopy.getGlobalCopyUID()
-						.getClusterUID().getId();
-				System.out.println(
-						String.format("Found copy %d in cluster %d", copyId,
-								clusterId));
+				        .getClusterUID().getId();
+				System.out.println(String.format("Found copy %d in cluster %d",
+				        copyId, clusterId));
 			}
 			List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
-					.getVmReplicationSetsSettings();
+			        .getVmReplicationSetsSettings();
 			for (VmReplicationSetSettings replicationSetSettings : vmReplicationSetSettingsList) {
 				List<VmReplicationSettings> vms = replicationSetSettings
-						.getReplicatedVMs();
+				        .getReplicatedVMs();
 				for (VmReplicationSettings vm : vms) {
 					String vmId = vm.getVmUID().getUuid();
 					String vCenterId = vm.getVmUID().getVirtualCenterUID()
-							.getUuid();
+					        .getUuid();
 					int copyId = vm.getGroupCopyUID().getGlobalCopyUID()
-							.getCopyUID();
+					        .getCopyUID();
 					long clusterId = vm.getGroupCopyUID().getGlobalCopyUID()
-							.getClusterUID().getId();
-					System.out.println(String.format(
-							"VM %s in vCenter %s is under copy %d in cluster %d",
-							vmId, vCenterId, copyId, clusterId));
+					        .getClusterUID().getId();
+					System.out
+					        .println(String
+					                .format("VM %s in vCenter %s is under copy %d in cluster %d",
+					                        vmId, vCenterId, copyId, clusterId));
 				}
 			}
 		}
@@ -75,20 +75,19 @@ public class TestClusterConnector {
 	@Test
 	public void testgetClusterVirtualInfrastructuresStateSet() {
 		ClusterConnector connector = ClusterConnectorFactory
-				.getConnector(systemSettings);
+		        .getConnector(systemSettings);
 		ClusterVirtualInfrastructuresStateSet stateSet = connector
-				.getVirtualInfrastructuresStateFromAllCluster();
-		for (ClusterVirtualInfrastructuresState state : stateSet
-				.getInnerSet()) {
+		        .getVirtualInfrastructuresStateFromAllCluster();
+		for (ClusterVirtualInfrastructuresState state : stateSet.getInnerSet()) {
 			List<VmState> vmStateList = state.getVirtualInfrastructuresState()
-					.getVmsState();
+			        .getVmsState();
 			long clusterId = state.getClusterUID().getId();
 			for (VmState vmState : vmStateList) {
 				String vmId = vmState.getVmUID().getUuid();
 				String vmName = vmState.getName();
-				System.out.println(
-						String.format("VM %s in cluster %d has name %s", vmId,
-								clusterId, vmName));
+				System.out.println(String.format(
+				        "VM %s in cluster %d has name %s", vmId, clusterId,
+				        vmName));
 			}
 		}
 	}
@@ -96,22 +95,22 @@ public class TestClusterConnector {
 	@Test
 	public void testGetClusterVirtualInfrastructuresStateForCluster() {
 		ClusterConnector connector = ClusterConnectorFactory
-				.getConnector(systemSettings);
+		        .getConnector(systemSettings);
 		RecoverPointClustersInformation rpClusters = connector
-				.getRpClustersInformation();
+		        .getRpClustersInformation();
 		for (ClusterInfo clusterInfo : rpClusters.getClustersInformation()) {
 			ClusterVirtualInfrastructuresState state = connector
-					.getVirtualInfrastructuresStateFromCluster(
-							clusterInfo.getClusterUID().getId());
+			        .getVirtualInfrastructuresStateFromCluster(clusterInfo
+			                .getClusterUID().getId());
 			List<VmState> vmStateList = state.getVirtualInfrastructuresState()
-					.getVmsState();
+			        .getVmsState();
 			long clusterId = state.getClusterUID().getId();
 			for (VmState vmState : vmStateList) {
 				String vmId = vmState.getVmUID().getUuid();
 				String vmName = vmState.getName();
-				System.out.println(
-						String.format("VM %s in cluster %d has name %s", vmId,
-								clusterId, vmName));
+				System.out.println(String.format(
+				        "VM %s in cluster %d has name %s", vmId, clusterId,
+				        vmName));
 			}
 		}
 	}
