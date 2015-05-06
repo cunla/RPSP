@@ -1,0 +1,22 @@
+.right-border {
+    border-right: 1px solid #ccc;
+}
+
+.left-border {
+    border-left: 1px solid #ccc;
+}
+
+.bottom-border {
+    border-bottom: 1px solid #ccc;
+}
+
+.top-border {
+    border-top: 1px solid #ccc;
+}
+
+.all-borders{
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+}

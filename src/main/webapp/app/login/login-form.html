@@ -13,9 +13,11 @@
   	<script src="../locale/locale-service.js"></script>
 	   	
    	<link rel="stylesheet" href="login-form.css">
+    <link rel="stylesheet" href="../../custom/css/custom.css">
    	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" />
 	<link rel="stylesheet" type="text/css" href="../../assets/css/navbar.css">
+	<link rel="stylesheet" type="text/css" href="../../assets/css/layout.css">
     
   </head>
   <body ng-app="login" ng-controller="loginController as loginController">
@@ -23,13 +25,14 @@
   	<nav class="navbar navbar-default">
 	    <div class="container">
 	        <div class="navbar-header">
-	            <a class="navbar-brand" href="/">{{'LOGIN.RECOVER_POINT_FOR_VM_MSG' | translate }}</a>
+	            <a class="navbar-brand" href="/">{{'LOGIN.DISASTER_RECOVERY_MSG' | translate }}</a>
 	        </div>
 	    </div>
 	</nav>
     <div class="container">
       <form class="login-form" ng-submit="loginController.postForm()">
-        <h2>RPSP</h2>
+        <div class="image"></div>
+        <!--  <img class="profile-img" src="../../assets/images/login.png"> -->
         <label for="inputAccount" class="sr-only">Account</label>
         <input type="text" id="inputAccount" class="form-control" placeholder="{{'LOGIN.ACCOUNT_MSG' | translate}}" required autofocus ng-model="loginController.inputData.account">        
         <label for="inputUsername" class="sr-only">Username</label>
@@ -39,9 +42,22 @@
         <br>
 		<div class="alert alert-danger" role="alert" ng-show="errorMsg">{{errorMsg}}</div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">{{'LOGIN.SIGN_IN_MSG' | translate}}</button>
+        <div id="createAccount">   
+        <br/>
+  		<a href="/rpsp">Forgot password?</a>
+  		<white-space>                        </white-space>
+  		<a href="/rpsp">Register</a>  		
+	</div>
         <br/>
         <br/>	       	
       </form>      
     </div> 
+    
+    <div class="navbar navbar-default navbar-fixed-bottom">
+	     <div class="container">
+	     	<p class="navbar-text pull-left" id="corp-footer"> EMC Corporation ©2015</p>
+		    <!-- <p class="navbar-text pull-right">  something </p>	 -->	     
+	   	 </div>
+   	</div>
   </body>
 </html>

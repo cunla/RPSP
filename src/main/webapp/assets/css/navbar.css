@@ -9,3 +9,7 @@
 .navbar-default .navbar-nav>li>a{
     color: #ffffff;
 }
+.navbar-fixed-bottom{
+    background-color: #336699;
+    color: #ffffff;   
+}

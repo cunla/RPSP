@@ -13,6 +13,8 @@
     	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" />
 		<link rel="stylesheet" href="assets/css/navbar.css">
+		<link rel="stylesheet" href="assets/css/styles.css">
+		<link rel="stylesheet" href="assets/css/layout.css">
 
 	</head>
 	
@@ -21,7 +23,7 @@
 		<nav class="navbar navbar-default">
 		    <div class="container">
 		        <div class="navbar-header">
-		            <a class="navbar-brand" href="/">{{ 'HOME.RECOVER_POINT_FOR_VM_MSG' | translate }}</a>
+		            <a class="navbar-brand" href="/">{{ 'HOME.DISASTER_RECOVERY_MSG' | translate }}</a>
 		        </div>
 		
 		        <ul class="nav navbar-nav navbar-right">
@@ -30,7 +32,104 @@
 		        </ul>
 		    </div>
 		</nav>
-		<h1>{{ 'HOME.HOMEPAGE_TITLE_MSG' | translate }}</h1>
-		<h2>-{{ 'HOME.UNDER_CONSTRUCTION_MSG' | translate }}-</h2>
+
+		
+		
+		  <div class="container">
+		    <div class="row">
+		     <div class="col-xs-8 col-sm-8 col-md-8" ng-controller="vmStructureController">
+		     </div>	
+		     <div class="col-xs-2 col-sm-2 col-md-2" ng-controller="vmStructureController">
+		     	<div class="msg-alert-info"> 	
+			        <div class="centered-text">Protected VMs: {{protectedVms}}</div>
+			        <div class="centered-text">Total VMs: {{totalVms}}</div>
+		        </div>    
+		     </div>
+		     <div class="col-xs-2 col-sm-2 col-md-2" ng-controller="vmStructureController">
+		     	<div class="msg-alert-error">	
+			     	<div class="centered-text">Errors: 1</div>
+			        <div class="centered-text">Warnings: 3</div>
+		        </div>	        	        
+		     </div>
+		    </div>	
+		   </div>
+		
+		
+		
+		<br></br>
+			
+ 		<div class="col-xs-12 col-sm-12 col-md-12 container top-border">
+			  <button type="button" class="btn btn-primary margin-top">Test</button>
+			  <button type="button" class="btn btn-primary margin-top">Failover</button>
+			  <button type="button" class="btn btn-primary margin-top">Restore</button>
+			  <button type="button" class="btn btn-primary margin-top">Enable/Disable</button>
+			  <button type="button" class="btn btn-primary margin-top">Add Bookmark/Resume</button>
+			  <button type="button" class="btn btn-primary margin-top">Show History</button>
+			  <button type="button" class="btn btn-primary margin-top">Service Request</button>
+		</div>
+			
+		<br></br>
+		
+		<div class="panel panel-default">
+		  <div class="panel-body">
+		    <div class="row">
+		     <div class="col-xs-9 col-sm-9 col-md-9 right-border" ng-controller="vmStructureController">      
+					<table class="table table-condensed table-striped">
+					    <thead>
+					      <tr>
+					        <th></th>
+							<th>Production</th>
+							<th>Replica(s)</th>
+							<th>State</th>
+							<th>Replication</th>
+							<th>Size(GB)</th>
+							<th>Image Access</th>
+					      </tr>
+					    </thead>
+					   <tbody>
+					     	<tr ng-repeat="row in vmGsAndCgFlatData" ng-click="toggleSelect($index)" ng-class="{'selected' : selectedIndex == $index}">					
+								<td>
+								    <cg-offset ng-if="row.parent != null">
+								   		<white-space>         </white-space>
+								   	</cg-offset>{{row.name}}
+								    <div ng-repeat="vm in row.vms">
+								        <cg-offset ng-if="row.parent != null">
+								        	<white-space>         </white-space>
+							        	</cg-offset>
+							        	<vm-offset>
+							        		<white-space>     </white-space>
+							        	</vm-offset>{{vm.name}}
+					        		</div>
+				        		</td>				
+								<td>{{row.productionCluster.name}}</td>
+								<td>{{row.replicaClusters[0].name}}</td>
+								<td>{{row.replicationEnabled}}</td>
+								<td>{{row.replicationActive}}</td>
+								<td>{{row.size}}</td>
+								<td>{{row.imageAccessEnabled}}</td>
+							</tr>
+					    </tbody>
+					    
+					</table>
+				</div>	
+				<div class="col-xs-3 col-sm-3 col-md-3" ng-controller="vmStructureController">      
+					<table class="table table-condensed table-striped">
+					    <thead>
+					      <tr>
+							<th class="centered-text">Unprotected VMs</th>
+					      </tr>
+					    </thead>
+					    <tbody>
+					     	<tr ng-repeat="row in vmStructureData.unprotectedVms" ng-click="toggleSelect($index)" ng-class="{'selected' : selectedIndex == $index}">									
+								<td class="centered-text">{{row.name}}</td>
+							</tr>
+					    </tbody>
+					</table>
+				</div>	
+  		 </div>	
+		
+		  </div>
+		</div>	
+		
 	</body>
 </html>
