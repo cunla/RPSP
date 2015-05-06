@@ -73,6 +73,7 @@ public class Client {
 
 	/**
 	 * Provides a list of VMs per cluster
+	 * 
 	 * @return Map of clusterId => (Map of vmId => vmName)
 	 */
 	public Map<Long, Map<String, String>> getVmNamesAllClusters() {

@@ -1,10 +1,10 @@
 package com.emc.rpsp.vmstructure.domain;
 
 public class VmDefinition {
-	
+
 	private String id;
 	private String name;
-	
+
 	public VmDefinition(String id, String name) {
 		super();
 		this.id = id;
@@ -26,5 +26,5 @@ public class VmDefinition {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

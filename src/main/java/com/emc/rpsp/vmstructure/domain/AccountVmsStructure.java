@@ -3,21 +3,18 @@ package com.emc.rpsp.vmstructure.domain;
 import java.util.List;
 
 public class AccountVmsStructure {
-	
+
 	private String id;
 	private String name;
 	private List<VmDefinition> unprotectedVms;
 	private List<VmContainer> protectedVms;
-	
-	
-	
-	
+
 	public AccountVmsStructure() {
 		super();
 	}
 
 	public AccountVmsStructure(String id, String name,
-			List<VmDefinition> unprotectedVms, List<VmContainer> protectedVms) {
+	        List<VmDefinition> unprotectedVms, List<VmContainer> protectedVms) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -56,9 +53,5 @@ public class AccountVmsStructure {
 	public void setProtectedVms(List<VmContainer> protectedVms) {
 		this.protectedVms = protectedVms;
 	}
-	
-	
-	
-	
 
 }

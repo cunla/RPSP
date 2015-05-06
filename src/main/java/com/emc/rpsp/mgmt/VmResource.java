@@ -30,18 +30,19 @@ public class VmResource {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/rest/listVms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<VmOwnership>> findCurrentUser() {
-		List<SystemSettings> rpSystems = systemConnectionInfoRepository.findAll();
+		List<SystemSettings> rpSystems = systemConnectionInfoRepository
+		        .findAll();
 		List<String> vmIdList = new LinkedList<>();
-		for(SystemSettings rpSystem:rpSystems){
+		for (SystemSettings rpSystem : rpSystems) {
 			Client client = new Client(rpSystem);
 			Map<Long, Map<String, String>> vms = client.getVmNamesAllClusters();
 			vmIdList.addAll(extractVmIds(vms));
 		}
 		List<VmOwnership> res = new LinkedList<>();
-		for(String vmId:vmIdList){
+		for (String vmId : vmIdList) {
 			VmOwnership vmOwnership = vmOwnershipRepo.findVmOwner(vmId);
-			if(null==vmOwnership){
-				vmOwnership = new VmOwnership(null,vmId);
+			if (null == vmOwnership) {
+				vmOwnership = new VmOwnership(null, vmId);
 				vmOwnershipRepo.save(vmOwnership);
 			}
 			res.add(vmOwnership);
@@ -52,9 +53,9 @@ public class VmResource {
 
 	private List<String> extractVmIds(Map<Long, Map<String, String>> vms) {
 		List<String> res = new LinkedList<>();
-		for(Long clusterId:vms.keySet()){
-			Map<String,String> vmsInCluster = vms.get(clusterId);
-			for(String vmId:vmsInCluster.keySet()){
+		for (Long clusterId : vms.keySet()) {
+			Map<String, String> vmsInCluster = vms.get(clusterId);
+			for (String vmId : vmsInCluster.keySet()) {
 				res.add(vmId);
 			}
 		}

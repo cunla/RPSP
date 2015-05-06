@@ -16,6 +16,6 @@ public class RepositoryConfig extends RepositoryRestMvcConfiguration {
 	        RepositoryRestConfiguration config) {
 		config.exposeIdsFor(SystemSettings.class);
 		config.exposeIdsFor(ClusterSettings.class);
-//		config.exposeIdsFor(VirtualMachineData.class);
+		// config.exposeIdsFor(VirtualMachineData.class);
 	}
 }

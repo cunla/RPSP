@@ -31,24 +31,22 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.csrf().disable().authorizeRequests()
-		        .antMatchers("/app/login/*").permitAll()
-		        
+		http.csrf().disable().authorizeRequests().antMatchers("/app/login/*")
+		        .permitAll()
+
 		        .antMatchers("/assets/js/*").permitAll()
-		        .antMatchers("/assets/css/*").permitAll() 
+		        .antMatchers("/assets/css/*").permitAll()
 		        .antMatchers("/assets/images/*").permitAll()
-		        
+
 		        .antMatchers("/custom/js/*").permitAll()
-		        .antMatchers("/custom/css/*").permitAll() 
+		        .antMatchers("/custom/css/*").permitAll()
 		        .antMatchers("/custom/images/*").permitAll()
-		        
-		        .antMatchers("/locale").permitAll()
-		        .antMatchers("/locales/*").permitAll()
-		        .antMatchers("/app/locale/*").permitAll()
+
+		        .antMatchers("/locale").permitAll().antMatchers("/locales/*")
+		        .permitAll().antMatchers("/app/locale/*").permitAll()
 		        .anyRequest().fullyAuthenticated();
 
-				http.formLogin()
-				.loginPage("/app/login/login-form.html")
+		http.formLogin().loginPage("/app/login/login-form.html")
 		        .failureUrl("/app/login/login-form.html")
 		        .loginProcessingUrl("/login-action")
 		        .failureHandler((request, response, authentication) -> {

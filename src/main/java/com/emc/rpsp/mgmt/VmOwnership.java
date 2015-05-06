@@ -23,11 +23,12 @@ public class VmOwnership {
 	private String vmId;
 
 	public VmOwnership(Long accountId, String vmId) {
-		this.accountId=accountId;
-		this.vmId=vmId;
+		this.accountId = accountId;
+		this.vmId = vmId;
 	}
 
-	public VmOwnership(){}
+	public VmOwnership() {
+	}
 
 	public long getId() {
 		return id;

@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 import java.util.Arrays;
 
 @Configuration
-@EnableJpaRepositories({"com.emc.rpsp.repository","com.emc.rpsp.mgmt"})
+@EnableJpaRepositories({ "com.emc.rpsp.repository", "com.emc.rpsp.mgmt" })
 // @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
 public class DatabaseConfiguration implements EnvironmentAware {

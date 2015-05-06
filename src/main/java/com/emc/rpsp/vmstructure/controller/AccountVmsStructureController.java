@@ -20,15 +20,14 @@ public class AccountVmsStructureController {
 	@Autowired
 	private AccountVmsStructureService accountVmsStructureService;
 
-
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/account-vms/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<AccountVmsStructure> findUser(@PathVariable("id") String id) {
-		AccountVmsStructure accountVmsStructure = accountVmsStructureService.getAccountVmsStrucure(id);
+	public ResponseEntity<AccountVmsStructure> findUser(
+	        @PathVariable("id") String id) {
+		AccountVmsStructure accountVmsStructure = accountVmsStructureService
+		        .getAccountVmsStrucure(id);
 		return new ResponseEntity<>(accountVmsStructure, HttpStatus.OK);
 	}
-
-	
 
 }
