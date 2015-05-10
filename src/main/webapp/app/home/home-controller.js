@@ -68,18 +68,111 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
 	$scope.getVmStructureData();
 	
     
-    $scope.selectedIndex = -1;
-    $scope.toggleSelect = function(ind){
-        if( ind === $scope.selectedIndex ){
-            $scope.selectedIndex = -1;
-        } else{
-            $scope.selectedIndex = ind;
-        }
+    $scope.protectedSelectedIndex = -1;
+    $scope.unprotectedSelectedIndex = -1;
+    $scope.toggleSelect = function(ind, isProtected){
+    	if(isProtected == true){
+	        if( ind === $scope.protectedSelectedIndex ){
+	            $scope.protectedSelectedIndex = -1;
+	        } else{
+	            $scope.protectedSelectedIndex = ind;
+	        }
+	        $scope.unprotectedSelectedIndex = -1;
+    	}
+    	else{
+	        if( ind === $scope.unprotectedSelectedIndex ){
+	            $scope.unprotectedSelectedIndex = -1;
+	        } else{
+	            $scope.unprotectedSelectedIndex = ind;
+	        }
+	        $scope.protectedSelectedIndex = -1;
+    	}
     }
+    
+    
+    $scope.moveVm = function(vmId, sgId) {
+
+    	//this is protect
+    	if(sgId !== undefined){
+	    	var unprotectedVms = $scope.vmStructureData.unprotectedVms;
+	        for (var i = 0; i < unprotectedVms.length; i++) {
+	 
+	            var currVm = unprotectedVms[i];
+	                 
+	            if (currVm.id == vmId) {
+	            	var allCgAndGs = $scope.vmGsAndCgFlatData;
+	            	for (var j = 0; j < allCgAndGs.length; j++) {
+	            		if(allCgAndGs[j].id == sgId){
+	            			allCgAndGs[j].vms.push(currVm);
+	            		}
+	            	}
+	 
+	                unprotectedVms.splice(i, 1);
+	            }
+	        }
+    	}
+    	//this is unprotect
+    	else{
+    		var allCgAndGs = $scope.vmGsAndCgFlatData
+    		for (var i = 0; i < allCgAndGs.length; i++) {
+    			
+    			//this is not group set
+    			if(allCgAndGs[i].type == 'cg'){
+	    			for (var j = 0; j < allCgAndGs[i].vms.length; j++) {
+	    				
+	    				var currVm = allCgAndGs[i].vms[j];
+	    				
+	            		if(currVm.id == vmId){
+	            			$scope.vmStructureData.unprotectedVms.push(currVm);
+	            			allCgAndGs[i].vms.splice(j, 1);
+	            		}
+	            	}
+    			}
+        	}
+    	}
+ 
+        $scope.$apply();
+    };
     
     
     
 }]);
+
+
+angular.module('home').directive('draggable', function() {
+	return {
+        restrict: "A",
+        link: function(scope, element, attributes, ctlr) {
+            element.attr("draggable", true);
+ 
+            element.bind("dragstart", function(eventObject) {
+                eventObject.dataTransfer.setData("text", attributes.vmid);
+            });
+        }
+    };
+});
+
+
+angular.module('home').directive('droppable', function() {
+    return {
+        restrict: "A",
+        link: function (scope, element, attributes, ctlr) {
+ 
+            element.bind("dragover", function(eventObject){
+                eventObject.preventDefault();
+            });
+ 
+            element.bind("drop", function(eventObject) {
+                 
+                // invoke controller/scope move method
+                scope.moveVm(eventObject.dataTransfer.getData("text"), attributes.cgid);
+ 
+                // cancel actual UI element from dropping, since the angular will recreate a the UI element
+                eventObject.preventDefault();
+            });
+        }
+    };
+});
 
 
 angular.module('home').run(['localeService', function(localeService){
