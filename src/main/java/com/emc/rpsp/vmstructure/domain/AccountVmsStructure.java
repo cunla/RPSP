@@ -1,5 +1,6 @@
 package com.emc.rpsp.vmstructure.domain;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class AccountVmsStructure {
@@ -11,6 +12,8 @@ public class AccountVmsStructure {
 
 	public AccountVmsStructure() {
 		super();
+		unprotectedVms = new LinkedList<VmDefinition>();
+		protectedVms = new LinkedList<VmContainer>();
 	}
 
 	public AccountVmsStructure(String id, String name,

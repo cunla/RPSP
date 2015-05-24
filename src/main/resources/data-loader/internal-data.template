@@ -1,0 +1,77 @@
+[
+	{
+		"user": "admin",
+		"password": "admin",
+		"ip": "10.64.125.51",
+		"accounts": [
+			{
+				"name": "emc",
+				"label": "emc storage account",
+				"vms": [
+					{
+						"vmId": "5027fa0d-83bb-26ff-fdc8-8f7bd0190d38",
+						"vmName": "vm-1"
+					},
+					{
+						"vmId": "50277042-0f04-d963-5a5d-062598ecd88a",
+						"vmName": "vm-2"
+					},
+					{
+						"vmId": "50277bd9-884b-5683-46ca-ee474254209a",
+						"vmName": "vm-3"
+					},
+					{
+						"vmId": "5027b406-b9ff-8baf-3d3d-669e79a98a8b",
+						"vmName": "vm-4"
+					},
+					{
+						"vmId": "50275904-cc9f-7f4c-d129-edf945706472",
+						"vmName": "vm-5"
+					},
+					{
+						"vmId": "5027b79c-d421-f5df-aa48-1b9cfbbdedfd",
+						"vmName": "vm-6"
+					},
+					{
+						"vmId": "50273442-c641-f88d-ab91-36bc87050e46",
+						"vmName": "vm-7"
+					},
+					{
+						"vmId": "50275ba3-84ac-bab6-de03-27c85a5817e1",
+						"vmName": "vm-8"
+					}
+				],
+				"users": [
+					{
+						"login": "storage-admin@emc",
+						"firstName": "boris",
+						"lastName": "shpilyuck",
+						"password": "123"
+					}
+				]
+			},
+			{
+				"name": "vmware",
+				"label": "vmware infra account",
+				"vms": [
+					{
+						"vmId": "50272642-a560-84ac-7647-2fb4ea4a29a5",
+						"vmName": "vm-9"
+					},
+					{
+						"vmId": "5027a916-8776-6cd7-833f-2a088f0fb72f",
+						"vmName": "vm-10"
+					}
+				],
+				"users": [
+					{
+						"login": "infra-admin@vmware",
+						"firstName": "fabio",
+						"lastName": "rodrigues",
+						"password": "123"
+					}
+				]
+			}
+		]
+	}
+]

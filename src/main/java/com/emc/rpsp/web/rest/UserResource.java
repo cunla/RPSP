@@ -2,8 +2,11 @@ package com.emc.rpsp.web.rest;
 
 //import com.codahale.metrics.annotation.Timed;
 
-import com.emc.rpsp.domain.User;
-import com.emc.rpsp.repository.UserRepository;
+import java.util.List;
+import java.util.Optional;
+
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
-import java.util.List;
-import java.util.Optional;
+import com.emc.rpsp.users.domain.User;
+import com.emc.rpsp.users.repository.UserRepository;
 
 /**
  * REST controller for managing users.

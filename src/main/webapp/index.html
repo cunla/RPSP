@@ -21,9 +21,9 @@
 	</head>
 	
 
-	<body ng-controller="homeController">
+	<body  ng-controller="vmStructureController">
 		<nav class="navbar navbar-default">
-		    <div class="container">
+		    <div class="container" ng-controller="homeController">
 		        <div class="navbar-header">
 		            <a class="navbar-brand" href="/">{{ 'HOME.DISASTER_RECOVERY_MSG' | translate }}</a>
 		        </div>
@@ -39,15 +39,15 @@
 		
 		  <div class="container">
 		    <div class="row">
-		     <div class="col-xs-8 col-sm-8 col-md-8" ng-controller="vmStructureController">
+		     <div class="col-xs-8 col-sm-8 col-md-8">
 		     </div>	
-		     <div class="col-xs-2 col-sm-2 col-md-2" ng-controller="vmStructureController">
+		     <div class="col-xs-2 col-sm-2 col-md-2">
 		     	<div class="msg-alert-info"> 	
 			        <div class="centered-text">Protected VMs: {{protectedVms}}</div>
 			        <div class="centered-text">Total VMs: {{totalVms}}</div>
 		        </div>    
 		     </div>
-		     <div class="col-xs-2 col-sm-2 col-md-2" ng-controller="vmStructureController">
+		     <div class="col-xs-2 col-sm-2 col-md-2">
 		     	<div class="msg-alert-error">	
 			     	<div class="centered-text">Errors: 1</div>
 			        <div class="centered-text">Warnings: 3</div>
@@ -74,7 +74,7 @@
 		
 		<div class="panel panel-default">
 		  <div class="panel-body">
-		    <div class="row"  ng-controller="vmStructureController">
+		    <div class="row">
 		     <div class="col-xs-9 col-sm-9 col-md-9 right-border">      
 					<table class="table table-condensed table-striped">
 					    <thead>

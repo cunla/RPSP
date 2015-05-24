@@ -1,15 +1,25 @@
 package com.emc.rpsp.fal;
 
-import com.emc.fapi.jaxws.*;
-import com.emc.rpsp.RpspException;
-import com.emc.rpsp.StatesConsts;
-import com.emc.rpsp.rpsystems.SystemSettings;
-import com.emc.rpsp.repository.SystemConnectionInfoRepository;
-import retrofit.RetrofitError;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import retrofit.RetrofitError;
+
+import com.emc.fapi.jaxws.ClusterInfo;
+import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
+import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
+import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
+import com.emc.fapi.jaxws.ConsistencyGroupSettings;
+import com.emc.fapi.jaxws.FullRecoverPointSettings;
+import com.emc.fapi.jaxws.RecoverPointClustersInformation;
+import com.emc.fapi.jaxws.VmReplicationSetSettings;
+import com.emc.fapi.jaxws.VmReplicationSettings;
+import com.emc.fapi.jaxws.VmState;
+import com.emc.rpsp.RpspException;
+import com.emc.rpsp.StatesConsts;
+import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import com.emc.rpsp.rpsystems.SystemSettings;
 
 /**
  * Created by morand3 on 1/14/2015.
@@ -122,6 +132,13 @@ public class Client {
 		}
 		return res;
 	}
+	
+	
+	public FullRecoverPointSettings getFullRecoverPointSettings() {
+		FullRecoverPointSettings rpSettings = connector
+		        .getFullRecoverPointSettings();
+		return rpSettings;
+	}
 
 	public Map<String, String> getVmState() {
 		FullRecoverPointSettings rpSettings = connector
@@ -136,11 +153,19 @@ public class Client {
 		List<ConsistencyGroupSettings> groupSettingsList = rpSettings
 		        .getGroupsSettings();
 		for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
+			
+			
 			List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
 			        .getVmReplicationSetsSettings();
+			
+			
 			for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {
+				
+				
 				List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
 				        .getReplicatedVMs();
+				
+				
 				for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
 					String vmId = vmReplication.getVmUID().getUuid();
 					ConsistencyGroupCopyUID copyId = vmReplication

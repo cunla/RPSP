@@ -1,9 +1,11 @@
 package com.emc.rpsp.config;
 
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import java.util.Arrays;
+
+import javax.sql.DataSource;
+
 import liquibase.integration.spring.SpringLiquibase;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
@@ -16,11 +18,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
-import java.util.Arrays;
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@EnableJpaRepositories({ "com.emc.rpsp.repository", "com.emc.rpsp.mgmt" })
+@EnableJpaRepositories({ "com.emc.rpsp.repository", "com.emc.rpsp.mgmt", "com.emc.rpsp.accounts.repository", "com.emc.rpsp.vms.repository", "com.emc.rpsp.users.repository" })
 // @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
 public class DatabaseConfiguration implements EnvironmentAware {

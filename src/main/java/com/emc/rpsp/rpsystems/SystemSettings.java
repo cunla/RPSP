@@ -1,16 +1,27 @@
 package com.emc.rpsp.rpsystems;
 
-import com.emc.rpsp.tools.StringXORer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-import javax.persistence.*;
-import java.util.LinkedList;
-import java.util.List;
+import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.tools.StringXORer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by morand3 on 1/13/2015.
@@ -23,7 +34,7 @@ public class SystemSettings {
 	private static final String ENCRYPT_KEY2 = "ThisIsASecretKey";
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	@JsonProperty("ip")
 	@Column
 	private String systemIp;
@@ -47,15 +58,25 @@ public class SystemSettings {
 	@OneToMany(mappedBy = "systemSettings", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JsonProperty("clusters")
 	private List<ClusterSettings> clusters;
+	
+	
+	@Column
+	@OneToMany(mappedBy = "systemSettings", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JsonProperty("accounts")
+	private List<Account> accounts;
+	
+	
+	
+	
 
 	public static enum TestResult {
 		OK, AUTH_FAILED, FAILED
 	}
 
-	;
 
 	public SystemSettings() {
 		clusters = new LinkedList<>();
+		accounts = new LinkedList<>();
 	}
 
 	public SystemSettings(String systemIp, String user, String password) {
@@ -74,7 +95,7 @@ public class SystemSettings {
 	}
 
 	@JsonProperty("id")
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -136,5 +157,25 @@ public class SystemSettings {
 	public List<ClusterSettings> getClusters() {
 		return clusters;
 	}
+
+	public List<Account> getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
+	public void addAccount(Account account){
+		accounts.add(account);
+	}
+	
+	
+	
 
 }

@@ -1,24 +1,38 @@
 package com.emc.rpsp.users.service.impl;
 
-import com.emc.rpsp.domain.User;
-import com.emc.rpsp.login.domain.CurrentUser;
-import com.emc.rpsp.repository.UserRepository;
-import com.emc.rpsp.users.service.UserService;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import java.util.List;
+import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.accounts.repository.AccountRepository;
+import com.emc.rpsp.login.domain.CurrentUser;
+import com.emc.rpsp.users.domain.User;
+import com.emc.rpsp.users.repository.UserRepository;
+import com.emc.rpsp.users.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private AccountRepository accountRepository;
+		
+	@PersistenceContext
+	private EntityManager entityManager;
+	
 
 	@Value("${rpsp.admin.login}")
 	private String adminLogin;
@@ -60,15 +74,36 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findOne(id);
 		return user;
 	}
-
+	
+	
 	@Override
-	public User createUser(User user) {
+	@Transactional
+	public User createUser(User user, Long accountId) {
+		updateAuditFields(user);
+		user.setEncodedPassword(user.getPassword());
+		user.setPermission("USER");
+		
+		entityManager.persist(user);
+		entityManager.flush();
+		Account account = accountRepository.findOne(accountId);
+		user.setAccount(account);
+		User createdUser = entityManager.merge(user);
+		entityManager.flush();
+		return createdUser;
+	}
+	
+
+/*	@Override
+	public User createUser(User user, Long accountId) {
 		updateAuditFields(user);
 		user.setEncodedPassword(user.getPassword());
 		user.setPermission("USER");
 		User createdUser = userRepository.save(user);
 		return createdUser;
-	}
+	}*/
+	
+	
+	
 
 	@Override
 	public User updateUser(User user) {

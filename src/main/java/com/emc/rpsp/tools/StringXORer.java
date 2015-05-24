@@ -1,13 +1,15 @@
 package com.emc.rpsp.tools;
 
-import org.apache.tomcat.util.codec.binary.Base64;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import java.io.IOException;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
+
+import org.apache.tomcat.util.codec.binary.Base64;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 public class StringXORer {
 

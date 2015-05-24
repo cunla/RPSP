@@ -1,12 +1,13 @@
 package com.emc.rpsp.repository;
 
-import com.emc.rpsp.rpsystems.ClusterSettings;
-import com.emc.rpsp.rpsystems.SystemSettings;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import java.util.List;
+import com.emc.rpsp.rpsystems.ClusterSettings;
+import com.emc.rpsp.rpsystems.SystemSettings;
 
 /**
  * Created by morand3 on 1/14/2015.

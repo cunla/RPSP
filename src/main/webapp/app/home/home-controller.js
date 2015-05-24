@@ -19,7 +19,7 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
 	$scope.protectedVms = {};
 	
 	$scope.getVmStructureData = function(){
-		    $http.get('/rpsp/account-vms/id')
+		    $http.get('/rpsp/account-vms')
 		    .success(function(data,status,headers,config){
 		        $scope.vmStructureData = data;
 		        
@@ -54,6 +54,10 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
 		        var unprotectedVmsCount = 0;
 		        if($scope.vmStructureData.unprotectedVms != null){
 		        	unprotectedVmsCount = $scope.vmStructureData.unprotectedVms.length;
+		        }
+		        else{
+		        	$scope.vmStructureData.unprotectedVms = new Array();
+		        	unprotectedVmsCount = 0;
 		        }
 		        
 		        //summary

@@ -1,20 +1,26 @@
 package com.emc.rpsp.rpsystems;
 
-import com.emc.rpsp.RpspException;
-import com.emc.rpsp.fal.Client;
-import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.inject.Inject;
+
 import org.apache.commons.httpclient.protocol.InetAddressUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import com.emc.rpsp.RpspException;
+import com.emc.rpsp.fal.Client;
+import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 
 /**
  * Created by morand3 on 1/29/2015.
@@ -26,6 +32,27 @@ public class SettingsResource {
 
 	@Inject
 	private SystemConnectionInfoRepository systemConnectionInfoRepository;
+	
+	
+	@RequestMapping(value = "/rest/systems", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<SystemSettings>> findSystems() {
+		List<SystemSettings> systemsSettings = systemConnectionInfoRepository
+		        .findAll();
+		return new ResponseEntity<>(systemsSettings, 
+		        HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/rest/systems/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SystemSettings> findSystem(
+	        @PathVariable("id") Long id) {
+		log.debug("Testing systemSettings with id {}", id);
+		SystemSettings systemSettings = systemConnectionInfoRepository
+		        .findOne(id);
+		return new ResponseEntity<>(systemSettings, 
+		        HttpStatus.OK);
+	}
+	
 
 	@RequestMapping(value = "/rest/testSystem/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<SystemSettings>> testSystem(
@@ -43,7 +70,10 @@ public class SettingsResource {
 		        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
-	@RequestMapping(value = "/rest/addSystem", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+
+	
+	
+	@RequestMapping(value = "/rest/addSystem", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<SystemSettings>> addNewSystem(
 	        @RequestBody SystemSettings systemSettings) {
 		log.debug("Adding new systemSettings to the system {}", systemSettings);

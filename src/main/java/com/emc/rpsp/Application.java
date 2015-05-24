@@ -1,6 +1,11 @@
 package com.emc.rpsp;
 
-import com.emc.rpsp.config.Constants;
+import java.io.IOException;
+import java.util.Arrays;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -10,10 +15,7 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import java.io.IOException;
-import java.util.Arrays;
+import com.emc.rpsp.config.Constants;
 
 @SpringBootApplication
 @EnableAsync

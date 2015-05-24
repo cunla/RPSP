@@ -1,14 +1,22 @@
 package com.emc.rpsp.fal;
 
-import com.emc.rpsp.rpsystems.SystemSettings;
-import org.apache.tomcat.util.codec.binary.Base64;
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-
-import javax.net.ssl.*;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import org.apache.tomcat.util.codec.binary.Base64;
+
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
+
+import com.emc.rpsp.rpsystems.SystemSettings;
 
 /**
  * Created by morand3 on 1/13/2015.
@@ -20,9 +28,11 @@ public class ClusterConnectorFactory {
 		disableSslVerification();
 	}
 
+	
+	
 	public static ClusterConnector getConnector(SystemSettings settings) {
-		String verPath = settings.getSystemVersion().contains("4.3") ? "4_3/"
-		        : "4_1/";
+		//String verPath = settings.getSystemVersion().contains("4.3") ? "4_3/": "4_1/";
+		String verPath = "4_1/";
 		RestAdapter restAdapter = new RestAdapter.Builder()
 		        // .setLogLevel(RestAdapter.LogLevel.FULL)
 		        .setEndpoint(
@@ -34,6 +44,7 @@ public class ClusterConnectorFactory {
 		ClusterConnector service = restAdapter.create(ClusterConnector.class);
 		return service;
 	}
+
 
 	private static RequestInterceptor buildInterceptor(SystemSettings settings) {
 		byte[] authEncBytes = Base64.encodeBase64(String.format("%s:%s",

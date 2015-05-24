@@ -1,14 +1,24 @@
 package com.emc.rpsp.fal;
 
-import com.emc.fapi.jaxws.*;
-import com.emc.rpsp.rpsystems.SystemSettings;
-import org.joda.time.DateTime;
-import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.joda.time.DateTime;
+import org.junit.Test;
+
+import com.emc.fapi.jaxws.ClusterInfo;
+import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
+import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
+import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
+import com.emc.fapi.jaxws.ConsistencyGroupSettings;
+import com.emc.fapi.jaxws.FullRecoverPointSettings;
+import com.emc.fapi.jaxws.RecoverPointClustersInformation;
+import com.emc.fapi.jaxws.VmReplicationSetSettings;
+import com.emc.fapi.jaxws.VmReplicationSettings;
+import com.emc.fapi.jaxws.VmState;
+import com.emc.rpsp.rpsystems.SystemSettings;
 
 /**
  * Created by morand3 on 1/13/2015.

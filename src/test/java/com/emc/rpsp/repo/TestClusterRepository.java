@@ -1,11 +1,9 @@
 package com.emc.rpsp.repo;
 
-import com.emc.rpsp.Application;
-import com.emc.rpsp.RpspException;
-import com.emc.rpsp.config.Constants;
-import com.emc.rpsp.rpsystems.SystemSettings;
-import com.emc.rpsp.fal.Client;
-import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import static org.junit.Assert.assertTrue;
+
+import javax.inject.Inject;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.IntegrationTest;
@@ -16,9 +14,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-
-import static org.junit.Assert.assertTrue;
+import com.emc.rpsp.Application;
+import com.emc.rpsp.RpspException;
+import com.emc.rpsp.config.Constants;
+import com.emc.rpsp.fal.Client;
+import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import com.emc.rpsp.rpsystems.SystemSettings;
 
 /**
  * Created by morand3 on 1/14/2015.

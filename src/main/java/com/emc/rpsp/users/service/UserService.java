@@ -1,9 +1,9 @@
 package com.emc.rpsp.users.service;
 
-import com.emc.rpsp.domain.User;
-import com.emc.rpsp.login.domain.CurrentUser;
-
 import java.util.List;
+
+import com.emc.rpsp.login.domain.CurrentUser;
+import com.emc.rpsp.users.domain.User;
 
 public interface UserService {
 
@@ -15,10 +15,12 @@ public interface UserService {
 
 	public User findUserByLogin(String login);
 
-	public User createUser(User user);
+	public User createUser(User user, Long accountId);
 
 	public User updateUser(User user);
 
 	public void deleteUser(Long id);
+	
+	public String getAdminLogin();
 
 }

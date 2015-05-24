@@ -1,9 +1,7 @@
 package com.emc.rpsp.users.controller;
 
-import com.emc.rpsp.domain.User;
-import com.emc.rpsp.login.domain.CurrentUser;
-import com.emc.rpsp.repository.UserRepository;
-import com.emc.rpsp.users.service.UserService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,24 +9,46 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.accounts.service.AccountService;
+import com.emc.rpsp.login.domain.CurrentUser;
+import com.emc.rpsp.users.domain.User;
+import com.emc.rpsp.users.service.UserService;
 
 @Controller
 public class UserController {
 
 	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private AccountService accountService;
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<User>> findUsers() {
 		List<User> users = userService.findUsers();
+		return new ResponseEntity<>(users, HttpStatus.OK);
+	}
+	
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value = "/users", params = {"accountId"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<User>> findAccountUsers(@RequestParam("accountId") Long accountId) {
+		Account account = accountService.findById(accountId);
+		if(account == null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		List<User> users = account.getUsers();
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
@@ -48,13 +68,13 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value = "/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> createUser(@RequestBody User user) {
+	@RequestMapping(value = "/users", params = {"accountId"}, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> createUser(@RequestBody User user, @RequestParam("accountId") Long accountId) {
 		User sameLoginUser = userService.findUserByLogin(user.getLogin());
 		if (sameLoginUser != null) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
-		User createdUser = userService.createUser(user);
+		User createdUser = userService.createUser(user, accountId);
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.add(HttpHeaders.LOCATION, "users/" + createdUser.getId());
 		return new ResponseEntity<>(createdUser, httpHeaders,

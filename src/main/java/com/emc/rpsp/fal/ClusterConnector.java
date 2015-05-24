@@ -1,14 +1,22 @@
 package com.emc.rpsp.fal;
 
-import com.emc.fapi.jaxws.*;
 import retrofit.http.GET;
 import retrofit.http.Path;
+
+import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
+import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
+import com.emc.fapi.jaxws.ConsistencyGroupCopySettingsSet;
+import com.emc.fapi.jaxws.ConsistencyGroupUIDSet;
+import com.emc.fapi.jaxws.FullRecoverPointSettings;
+import com.emc.fapi.jaxws.RecoverPointClustersInformation;
+import com.emc.fapi.jaxws.RecoverPointTimeStamp;
+import com.emc.fapi.jaxws.RecoverPointVersion;
 
 /**
  * Created by morand3 on 1/13/2015.
  */
 public interface ClusterConnector {
-	static final String BASE_URL = "";
+	static final String BASE_URL = "/";
 
 	@GET(BASE_URL + "system/version")
 	public RecoverPointVersion getSystemVersion();
