@@ -10,7 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -53,18 +54,17 @@ public class Account implements Serializable {
 	private List<User> users;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
-	private SystemSettings systemSettings;
-	
-	
-	
+	@JoinTable(name="T_ACCOUNT_SYSTEMS")
+	@ManyToMany(targetEntity = com.emc.rpsp.rpsystems.SystemSettings.class, fetch = FetchType.LAZY)
+	private List<SystemSettings> systemSettings;	
 	
 	
 	
 	public Account() {
 		super();
 		vms = new LinkedList<>();
-		users = new LinkedList<>();		
+		users = new LinkedList<>();	
+		systemSettings = new LinkedList<>();
 	}
 
 	
@@ -110,13 +110,13 @@ public class Account implements Serializable {
 	}	
 	
 	
-	public SystemSettings getSystemSettings() {
+	public List<SystemSettings> getSystemSettings() {
 		return systemSettings;
 	}
 
 
 
-	public void setSystemSettings(SystemSettings systemSettings) {
+	public void setSystemSettings(List<SystemSettings> systemSettings) {
 		this.systemSettings = systemSettings;
 	}
 	
@@ -127,36 +127,12 @@ public class Account implements Serializable {
 	public void addUser(User user){
 		users.add(user);
 	}
-
-
 	
-
-/*	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-
-		Account user = (Account) o;
-
-		if (!id.equals(user.id)) {
-			return false;
-		}
-
-		return true;
+	public void addSystem(SystemSettings systemSettings){
+		this.systemSettings.add(systemSettings);
 	}
 
-	@Override
-	public int hashCode() {
-		return id.hashCode();
-	}*/
-
-
-
-
+	
 	@Override
 	public String toString() {
 		return "Account{" + "id='" + id + '\'' + ", name='" + name

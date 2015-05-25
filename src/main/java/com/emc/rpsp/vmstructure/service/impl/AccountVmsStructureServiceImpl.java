@@ -36,12 +36,20 @@ public class AccountVmsStructureServiceImpl implements
 	
 	@Override
 	public AccountVmsStructure getAccountVmsStrucure() {
+		
 		AccountVmsStructure accountVmsStructure = new AccountVmsStructure();
 		Account account = userService.findCurrentUser().getUser().getAccount();
+
 		if(account != null){
-			SystemSettings rpSystem = account.getSystemSettings();
-			Client client = new Client(rpSystem);
-			accountVmsStructure = getAccountVmsStrucure(client, account);
+			accountVmsStructure.setId(account.getId().toString());
+			accountVmsStructure.setName(account.getName());
+			List<SystemSettings> systems = account.getSystemSettings();
+			for(SystemSettings currSystem : systems){
+				Client client = new Client(currSystem);
+				AccountVmsStructure currAccountVmsStructure = getAccountVmsStrucure(client, account);
+				accountVmsStructure.getUnprotectedVms().addAll(currAccountVmsStructure.getUnprotectedVms());
+				accountVmsStructure.getProtectedVms().addAll(currAccountVmsStructure.getProtectedVms());
+			}
 		}
 		return accountVmsStructure;
 	}

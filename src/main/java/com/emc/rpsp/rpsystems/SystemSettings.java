@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -61,13 +62,10 @@ public class SystemSettings {
 	
 	
 	@Column
-	@OneToMany(mappedBy = "systemSettings", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@ManyToMany(targetEntity = com.emc.rpsp.accounts.domain.Account.class, mappedBy = "systemSettings", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonProperty("accounts")
 	private List<Account> accounts;
-	
-	
-	
-	
+		
 
 	public static enum TestResult {
 		OK, AUTH_FAILED, FAILED
@@ -165,6 +163,7 @@ public class SystemSettings {
 	public void setAccounts(List<Account> accounts) {
 		this.accounts = accounts;
 	}
+
 
 	public void setId(Long id) {
 		this.id = id;

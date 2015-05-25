@@ -1,6 +1,5 @@
 package com.emc.rpsp.dataloader.service.impl;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
@@ -79,7 +78,7 @@ public class DataLoaderServiceImpl implements DataLoaderService{
 				settings.addAccount(account);
 				account.setName(currAccount.get("name").toString());
 				account.setLabel(currAccount.get("label").toString());
-				account.setSystemSettings(settings);
+				account.addSystem(settings);
 				
 				//vms data
 				List<Map<String, Object>> vms = (List<Map<String, Object>>)currAccount.get("vms");

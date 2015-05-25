@@ -44,6 +44,8 @@ public class ClusterConnectorFactory {
 		ClusterConnector service = restAdapter.create(ClusterConnector.class);
 		return service;
 	}
+	
+	
 
 
 	private static RequestInterceptor buildInterceptor(SystemSettings settings) {

@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService{
 		entityManager.persist(account);
 		entityManager.flush();
 		SystemSettings systemSettings = systemConnectionInfoRepository.findOne(systemId);
-		account.setSystemSettings(systemSettings);
+		account.addSystem(systemSettings);
 		Account newAccount = entityManager.merge(account);
 		entityManager.flush();
 		return newAccount;
