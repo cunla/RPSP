@@ -46,6 +46,23 @@ public class ClusterConnectorFactory {
 	}
 	
 	
+	
+/*	public static ClusterConnector getConnector(SystemSettings settings) {
+		//String verPath = settings.getSystemVersion().contains("4.3") ? "4_3/": "4_1/";
+		String verPath = "4_1/";
+		RestAdapter restAdapter = new RestAdapter.Builder()
+		        // .setLogLevel(RestAdapter.LogLevel.FULL)
+		        .setEndpoint(
+		                "https://" + "localhost" + ":" + "9999"
+		                        + "/fapi/rest/" + verPath)
+		        .setConverter(new JacksonConverter())
+		        .setRequestInterceptor(buildInterceptor(settings)).build();
+
+		ClusterConnector service = restAdapter.create(ClusterConnector.class);
+		return service;
+	}*/
+	
+	
 
 
 	private static RequestInterceptor buildInterceptor(SystemSettings settings) {

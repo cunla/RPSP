@@ -39,6 +39,18 @@
 					{
 						"vmId": "50275ba3-84ac-bab6-de03-27c85a5817e1",
 						"vmName": "vm-8"
+					},
+					{
+						"vmId": "5027f5a6-c5df-27ed-9ec5-d7304eb84f6b",
+						"vmName": "vm-11"
+					},
+					{
+						"vmId": "5027e376-68d3-23ba-b1f8-838dff5d8aac",
+						"vmName": "vm-12"
+					},
+					{
+						"vmId": "50274826-eb99-c64a-360c-cc6568293148",
+						"vmName": "vm-13"
 					}
 				],
 				"users": [

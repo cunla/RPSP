@@ -92,11 +92,11 @@
 					     	<tr ng-repeat="row in vmGsAndCgFlatData" droppable="true" cgid="{{row.id}}" ng-click="toggleSelect($index, true)" ng-class="{'selected' : protectedSelectedIndex == $index}">					
 								<td>
 								    <cg-offset ng-if="row.parent != null">
-								   		<white-space>         </white-space>
+								   		<white-space>     </white-space>
 								   	</cg-offset>{{row.name}}
 								    <div ng-repeat="vm in row.vms" draggable="true" vmid="{{vm.id}}">
 								        <cg-offset ng-if="row.parent != null">
-								        	<white-space>         </white-space>
+								        	<white-space>     </white-space>
 							        	</cg-offset>
 							        	<vm-offset>
 							        		<white-space>     </white-space>
