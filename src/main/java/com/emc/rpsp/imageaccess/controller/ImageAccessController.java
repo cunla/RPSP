@@ -20,8 +20,16 @@ public class ImageAccessController {
 
 	@RequestMapping(value = "/image-access/enable", params = {"clusterId", "groupId"}, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<HttpStatus> findAccountVmsStructure(@RequestParam("clusterId") Long clusterId, @RequestParam("groupId") Long groupId) {
-		imageAccessService.accessImage(clusterId, groupId);
+	public ResponseEntity<HttpStatus> enableImageAccess(@RequestParam("clusterId") Long clusterId, @RequestParam("groupId") Long groupId) {
+		imageAccessService.enableImageAccess(clusterId, groupId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/image-access/disable", params = {"clusterId", "groupId"}, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<HttpStatus> disableImageAccess(@RequestParam("clusterId") Long clusterId, @RequestParam("groupId") Long groupId) {
+		imageAccessService.disableImageAccess(clusterId, groupId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

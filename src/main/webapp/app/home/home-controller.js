@@ -139,11 +139,17 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
     };
     
     
-    $scope.enableImageAccess = function(){
+    $scope.imageAccess = function(enable){
     	var currCg = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex];
     	var cgId = currCg.id;
     	var replicaClusterId = currCg.replicaClusters[0].id;
-    	var url = '/rpsp/image-access/enable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId;
+    	var url;
+    	if(enable == true){
+    	   url = '/rpsp/image-access/enable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId;
+    	}
+    	else{
+    	   url = '/rpsp/image-access/disable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId;
+    	}
     	   	
 	    $http.put(url)
 	    .success(function(data,status,headers,config){

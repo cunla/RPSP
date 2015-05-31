@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit.RetrofitError;
-import retrofit.http.Path;
 
 import com.emc.fapi.jaxws.ClusterInfo;
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
@@ -14,7 +13,6 @@ import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
 import com.emc.fapi.jaxws.ConsistencyGroupSettings;
 import com.emc.fapi.jaxws.EnableLatestImageAccessParams;
-import com.emc.fapi.jaxws.EnableLatestImageAccessResponse;
 import com.emc.fapi.jaxws.FullRecoverPointSettings;
 import com.emc.fapi.jaxws.ImageAccessMode;
 import com.emc.fapi.jaxws.ImageAccessScenario;
@@ -158,6 +156,18 @@ public class Client {
 		params.setMode(ImageAccessMode.LOGGED_ACCESS);
 		try{
 			connector.enableLatestImageAccess(clusterId, groupId, params);
+		}
+		catch (Throwable e){
+			if(!isEOFCause(e)){
+				throw e;
+			}
+		}
+	}
+	
+	
+	public void disableImageAccess(Long clusterId, Long groupId) {
+		try{
+			connector.disableLatestImageAccess(clusterId, groupId);
 		}
 		catch (Throwable e){
 			if(!isEOFCause(e)){

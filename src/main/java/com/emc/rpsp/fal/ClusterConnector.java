@@ -9,6 +9,7 @@ import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.ConsistencyGroupCopySettingsSet;
 import com.emc.fapi.jaxws.ConsistencyGroupUIDSet;
+import com.emc.fapi.jaxws.DisableImageAccessResponse;
 import com.emc.fapi.jaxws.EnableLatestImageAccessParams;
 import com.emc.fapi.jaxws.EnableLatestImageAccessResponse;
 import com.emc.fapi.jaxws.FullRecoverPointSettings;
@@ -51,5 +52,9 @@ public interface ClusterConnector {
 	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/0/image_access/latest/enable")
 	public EnableLatestImageAccessResponse enableLatestImageAccess(
 			@Path("clusterId") long clusterId, @Path("groupId") long groupId, @Body EnableLatestImageAccessParams params);
+	
+	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/0/disable_image_access?startTransfer=true")
+	public DisableImageAccessResponse disableLatestImageAccess(
+			@Path("clusterId") long clusterId, @Path("groupId") long groupId);
 
 }
