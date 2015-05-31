@@ -47,7 +47,7 @@ public class ClusterConnectorFactory {
 	
 	
 	
-/*	public static ClusterConnector getConnector(SystemSettings settings) {
+	/*public static ClusterConnector getConnector(SystemSettings settings) {
 		//String verPath = settings.getSystemVersion().contains("4.3") ? "4_3/": "4_1/";
 		String verPath = "4_1/";
 		RestAdapter restAdapter = new RestAdapter.Builder()

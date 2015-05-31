@@ -1,17 +1,23 @@
 package com.emc.rpsp.fal;
 
+import java.io.EOFException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import retrofit.RetrofitError;
+import retrofit.http.Path;
 
 import com.emc.fapi.jaxws.ClusterInfo;
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
 import com.emc.fapi.jaxws.ConsistencyGroupSettings;
+import com.emc.fapi.jaxws.EnableLatestImageAccessParams;
+import com.emc.fapi.jaxws.EnableLatestImageAccessResponse;
 import com.emc.fapi.jaxws.FullRecoverPointSettings;
+import com.emc.fapi.jaxws.ImageAccessMode;
+import com.emc.fapi.jaxws.ImageAccessScenario;
 import com.emc.fapi.jaxws.RecoverPointClustersInformation;
 import com.emc.fapi.jaxws.VmReplicationSetSettings;
 import com.emc.fapi.jaxws.VmReplicationSettings;
@@ -145,6 +151,20 @@ public class Client {
 		        .getFullRecoverPointSettings();
 		return getVmState(rpSettings);
 	}
+	
+	public void enableImageAccess(Long clusterId, Long groupId) {
+		EnableLatestImageAccessParams params = new EnableLatestImageAccessParams();
+		params.setScenario(ImageAccessScenario.TEST_REPLICA);
+		params.setMode(ImageAccessMode.LOGGED_ACCESS);
+		try{
+			connector.enableLatestImageAccess(clusterId, groupId, params);
+		}
+		catch (Throwable e){
+			if(!isEOFCause(e)){
+				throw e;
+			}
+		}
+	}
 
 	private Map<String, String> getVmState(FullRecoverPointSettings rpSettings) {
 		Map<String, String> res = new HashMap<>();
@@ -206,5 +226,18 @@ public class Client {
 		}
 		return res;
 	}
+	
+	private boolean isEOFCause(Throwable e){
+		boolean res = false;
+		if(e.getCause() != null 
+				&& e.getCause().getCause() != null
+				    && e.getCause().getCause() instanceof EOFException){
+			res = true;
+		}
+		return res;
+	}
+	
+	
+	
 
 }

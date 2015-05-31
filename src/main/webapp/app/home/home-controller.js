@@ -139,6 +139,20 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
     };
     
     
+    $scope.enableImageAccess = function(){
+    	var currCg = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex];
+    	var cgId = currCg.id;
+    	var replicaClusterId = currCg.replicaClusters[0].id;
+    	var url = '/rpsp/image-access/enable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId;
+    	   	
+	    $http.put(url)
+	    .success(function(data,status,headers,config){
+	        
+	    })	    	
+    	
+    }
+    
+    
     
 }]);
 

@@ -61,7 +61,7 @@
 		<br></br>
 			
  		<div class="col-xs-12 col-sm-12 col-md-12 container top-border">
-			  <button type="button" class="btn btn-primary margin-top">Test</button>
+			  <button type="button" class="btn btn-primary margin-top" ng-click="enableImageAccess()">Test</button>
 			  <button type="button" class="btn btn-primary margin-top">Failover</button>
 			  <button type="button" class="btn btn-primary margin-top">Restore</button>
 			  <button type="button" class="btn btn-primary margin-top">Enable/Disable</button>
@@ -89,7 +89,7 @@
 					      </tr>
 					    </thead>
 					   <tbody>
-					     	<tr ng-repeat="row in vmGsAndCgFlatData" droppable="true" cgid="{{row.id}}" ng-click="toggleSelect($index, true)" ng-class="{'selected' : protectedSelectedIndex == $index}">					
+					     	<tr ng-repeat="row in vmGsAndCgFlatData" droppable="true" cgid="{{row.id}}" prod-cluster-id="{{row.productionCluster.id}}" replica-cluster-id="{{row.replicaClusters[0].id}}" ng-click="toggleSelect($index, true)" ng-class="{'selected' : protectedSelectedIndex == $index}">					
 								<td>
 								    <cg-offset ng-if="row.parent != null">
 								   		<white-space>     </white-space>

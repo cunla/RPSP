@@ -1,12 +1,16 @@
 package com.emc.rpsp.fal;
 
+import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.PUT;
 import retrofit.http.Path;
 
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.ConsistencyGroupCopySettingsSet;
 import com.emc.fapi.jaxws.ConsistencyGroupUIDSet;
+import com.emc.fapi.jaxws.EnableLatestImageAccessParams;
+import com.emc.fapi.jaxws.EnableLatestImageAccessResponse;
 import com.emc.fapi.jaxws.FullRecoverPointSettings;
 import com.emc.fapi.jaxws.RecoverPointClustersInformation;
 import com.emc.fapi.jaxws.RecoverPointTimeStamp;
@@ -43,5 +47,9 @@ public interface ClusterConnector {
 
 	@GET(BASE_URL + "groups")
 	public ConsistencyGroupUIDSet getAllGroupsUIDs();
+	
+	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/0/image_access/latest/enable")
+	public EnableLatestImageAccessResponse enableLatestImageAccess(
+			@Path("clusterId") long clusterId, @Path("groupId") long groupId, @Body EnableLatestImageAccessParams params);
 
 }
