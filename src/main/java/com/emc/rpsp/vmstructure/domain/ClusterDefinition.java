@@ -1,14 +1,22 @@
 package com.emc.rpsp.vmstructure.domain;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class ClusterDefinition {
 
 	private String id;
 	private String name;
+	private List<GroupCopySettings> groupCopySettings = new LinkedList<GroupCopySettings>();
 
 	public ClusterDefinition(String id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
+	}
+	
+	public void addGroupCopy(GroupCopySettings groupCopySetting){
+		groupCopySettings.add(groupCopySetting);
 	}
 
 	public String getId() {
@@ -26,5 +34,15 @@ public class ClusterDefinition {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public List<GroupCopySettings> getGroupCopySettings() {
+		return groupCopySettings;
+	}
+
+	public void setGroupCopySettings(List<GroupCopySettings> groupCopySettings) {
+		this.groupCopySettings = groupCopySettings;
+	}
+	
+	
 
 }

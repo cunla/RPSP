@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.emc.fapi.jaxws.ConsistencyGroupCopySettings;
 import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
 import com.emc.fapi.jaxws.ConsistencyGroupSetSettings;
 import com.emc.fapi.jaxws.ConsistencyGroupSettings;
@@ -25,6 +26,7 @@ import com.emc.rpsp.vms.domain.VmOwnership;
 import com.emc.rpsp.vmstructure.domain.AccountVmsStructure;
 import com.emc.rpsp.vmstructure.domain.ClusterDefinition;
 import com.emc.rpsp.vmstructure.domain.ConsistencyGroup;
+import com.emc.rpsp.vmstructure.domain.GroupCopySettings;
 import com.emc.rpsp.vmstructure.domain.GroupSet;
 import com.emc.rpsp.vmstructure.domain.VmContainer;
 import com.emc.rpsp.vmstructure.domain.VmDefinition;
@@ -125,6 +127,8 @@ public class AccountVmsStructureServiceImpl implements
 					//this vm belongs to replica					
 					else {
 						ClusterDefinition replicaCluster = new ClusterDefinition(clusterId.toString(), clusterName);
+						GroupCopySettings groupCopySettings = getGroupCopySettings(copyId, groupSettings);
+						replicaCluster.addGroupCopy(groupCopySettings);
 						replicaClusters.add(replicaCluster);
 					}
 					
@@ -201,6 +205,28 @@ public class AccountVmsStructureServiceImpl implements
 			
 		}
 		return notEmptyGroupsSets;
+	}
+	
+	
+	private GroupCopySettings getGroupCopySettings(ConsistencyGroupCopyUID copyId,
+			                                            ConsistencyGroupSettings consistencyGroupSettings){
+		
+		GroupCopySettings groupCopySettings = null;
+		List<ConsistencyGroupCopySettings> allCopiesSettings = consistencyGroupSettings.getGroupCopiesSettings();
+		for(ConsistencyGroupCopySettings currGroupCopySettings : allCopiesSettings){
+			if(currGroupCopySettings.getCopyUID().equals(copyId)){
+				groupCopySettings = new GroupCopySettings();
+				groupCopySettings.setId(new Integer(copyId.getGlobalCopyUID().getCopyUID()).toString());
+				groupCopySettings.setName(currGroupCopySettings.getName());
+				groupCopySettings.setClusterId(new Long(currGroupCopySettings.getCopyUID().getGlobalCopyUID().getClusterUID().getId()).toString());
+				if(currGroupCopySettings.getImageAccessInformation() != null 
+						 && currGroupCopySettings.getImageAccessInformation().isImageAccessEnabled()){
+					groupCopySettings.setImageAccessActive(true);
+				}
+			}
+		}
+		
+		return groupCopySettings;
 	}
 
 }

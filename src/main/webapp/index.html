@@ -70,6 +70,9 @@
 			  <button type="button" class="btn btn-primary margin-top">Show History</button>
 			  <button type="button" class="btn btn-primary margin-top">Service Request</button>
 		</div>
+		
+		
+
 			
 		<br></br>
 		
@@ -103,13 +106,14 @@
 							        		<white-space>     </white-space>
 							        	</vm-offset>{{vm.name}}
 					        		</div>
-				        		</td>				
+				        		</td>			
+				        			
 								<td>{{row.productionCluster.name}}</td>
 								<td>{{row.replicaClusters[0].name}}</td>
 								<td>{{row.replicationEnabled}}</td>
 								<td>{{row.replicationActive}}</td>
 								<td>{{row.size}}</td>
-								<td>{{row.imageAccessEnabled}}</td>
+								<td>{{row.replicaClusters[0].groupCopySettings[0].imageAccessActive}}</td>
 							</tr>
 					    </tbody>
 					    
