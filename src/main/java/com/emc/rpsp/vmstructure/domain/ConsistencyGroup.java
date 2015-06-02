@@ -6,9 +6,7 @@ public class ConsistencyGroup implements VmContainer {
 	
 	private String id;
 	private String name;
-	private boolean isReplicationEnabled;
-	private boolean isReplicationActive;
-	private boolean isImageAccessEnabled;
+	private Long maxVolumeSize;
 	private List<VmDefinition> vms;
 	private ClusterDefinition productionCluster;
 	private List<ClusterDefinition> replicaClusters;
@@ -19,24 +17,6 @@ public class ConsistencyGroup implements VmContainer {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public boolean isReplicationEnabled() {
-		return isReplicationEnabled;
-	}
-	public void setReplicationEnabled(boolean isReplicationEnabled) {
-		this.isReplicationEnabled = isReplicationEnabled;
-	}
-	public boolean isReplicationActive() {
-		return isReplicationActive;
-	}
-	public void setReplicationActive(boolean isReplicationActive) {
-		this.isReplicationActive = isReplicationActive;
-	}
-	public boolean isImageAccessEnabled() {
-		return isImageAccessEnabled;
-	}
-	public void setImageAccessEnabled(boolean isImageAccessEnabled) {
-		this.isImageAccessEnabled = isImageAccessEnabled;
 	}
 	public List<VmDefinition> getVms() {
 		return vms;
@@ -68,6 +48,14 @@ public class ConsistencyGroup implements VmContainer {
 	
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public Long getMaxVolumeSize() {
+		return maxVolumeSize;
+	}
+	
+	public void setMaxVolumeSize(Long maxVolumeSize) {
+		this.maxVolumeSize = maxVolumeSize;
 	}
 	
 	

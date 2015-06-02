@@ -8,7 +8,9 @@ import retrofit.http.Path;
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.ConsistencyGroupCopySettingsSet;
+import com.emc.fapi.jaxws.ConsistencyGroupStateSet;
 import com.emc.fapi.jaxws.ConsistencyGroupUIDSet;
+import com.emc.fapi.jaxws.ConsistencyGroupVolumesStateSet;
 import com.emc.fapi.jaxws.DisableImageAccessResponse;
 import com.emc.fapi.jaxws.EnableLatestImageAccessParams;
 import com.emc.fapi.jaxws.EnableLatestImageAccessResponse;
@@ -56,5 +58,13 @@ public interface ClusterConnector {
 	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/0/disable_image_access?startTransfer=true")
 	public DisableImageAccessResponse disableLatestImageAccess(
 			@Path("clusterId") long clusterId, @Path("groupId") long groupId);
+	
+	@GET(BASE_URL + "groups/state")
+	public ConsistencyGroupStateSet getConsistencyGroupStateSet();
+	
+	@GET(BASE_URL + "groups/volumes/state")
+	public ConsistencyGroupVolumesStateSet getConsistencyGroupVolumesStateSet();
+
+	
 
 }

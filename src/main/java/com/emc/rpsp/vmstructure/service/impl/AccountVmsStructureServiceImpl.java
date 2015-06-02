@@ -12,10 +12,18 @@ import org.springframework.stereotype.Service;
 
 import com.emc.fapi.jaxws.ConsistencyGroupCopySettings;
 import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
+import com.emc.fapi.jaxws.ConsistencyGroupLinkState;
 import com.emc.fapi.jaxws.ConsistencyGroupSetSettings;
 import com.emc.fapi.jaxws.ConsistencyGroupSettings;
+import com.emc.fapi.jaxws.ConsistencyGroupState;
+import com.emc.fapi.jaxws.ConsistencyGroupStateSet;
 import com.emc.fapi.jaxws.ConsistencyGroupUID;
+import com.emc.fapi.jaxws.ConsistencyGroupVolumesState;
+import com.emc.fapi.jaxws.ConsistencyGroupVolumesStateSet;
 import com.emc.fapi.jaxws.FullRecoverPointSettings;
+import com.emc.fapi.jaxws.GlobalCopyUID;
+import com.emc.fapi.jaxws.PipeState;
+import com.emc.fapi.jaxws.ReplicationSetVolumesState;
 import com.emc.fapi.jaxws.VmReplicationSetSettings;
 import com.emc.fapi.jaxws.VmReplicationSettings;
 import com.emc.rpsp.accounts.domain.Account;
@@ -23,6 +31,8 @@ import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.service.UserService;
 import com.emc.rpsp.vms.domain.VmOwnership;
+import com.emc.rpsp.vmstructure.constants.ImageAccess;
+import com.emc.rpsp.vmstructure.constants.TransferState;
 import com.emc.rpsp.vmstructure.domain.AccountVmsStructure;
 import com.emc.rpsp.vmstructure.domain.ClusterDefinition;
 import com.emc.rpsp.vmstructure.domain.ConsistencyGroup;
@@ -67,6 +77,8 @@ public class AccountVmsStructureServiceImpl implements
 		AccountVmsStructure accountVmsStructure = new AccountVmsStructure();
 		List<VmContainer> protectedVms = new LinkedList<VmContainer>();
 		
+		
+		
 		FullRecoverPointSettings rpSettings = client.getFullRecoverPointSettings();
 		
 		Map<String, VmOwnership> vmsMap = getVmsMap(account);
@@ -75,16 +87,21 @@ public class AccountVmsStructureServiceImpl implements
 
 		List<ConsistencyGroupSetSettings> groupSetsSettings = rpSettings.getGroupsSetsSettings();
 		Map<String, GroupSet> groupIdToGroupSetMap = getGroupIdToGroupSetMap(groupSetsSettings);
+		
+		Map<ConsistencyGroupCopyUID, String> transferStatesMap = getGroupCopiesTransferStates(client);
+		Map<String, Long> volumesMaxSizesMap = getGroupVolumesMaxSizes(client);
 
 		List<ConsistencyGroupSettings> groupSettingsList = rpSettings
 		        .getGroupsSettings();
 		for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 			
+			Map<String, ClusterDefinition> handledCustersMap = new HashMap<String, ClusterDefinition>();
 			ConsistencyGroup consistencyGroup = new ConsistencyGroup();
 			String groupId = new Long(groupSettings.getGroupUID().getId()).toString();
 			String groupName = groupSettings.getName();			
 			consistencyGroup.setId(groupId);
 			consistencyGroup.setName(groupName);
+			consistencyGroup.setMaxVolumeSize(volumesMaxSizesMap.get(groupId));
 			
 			
 			
@@ -117,6 +134,7 @@ public class AccountVmsStructureServiceImpl implements
 					if (production.contains(copyId)) {
 						//process vm only if it belongs to account
 						if(vmsMap.get(vmId) != null){
+							//remove from unprotected candidates
 							vmsMap.remove(vmId);
 							VmDefinition currVm = new VmDefinition(vmId, vmName);
 							vmsList.add(currVm);
@@ -125,11 +143,23 @@ public class AccountVmsStructureServiceImpl implements
 						}
 					} 
 					//this vm belongs to replica					
-					else {
-						ClusterDefinition replicaCluster = new ClusterDefinition(clusterId.toString(), clusterName);
-						GroupCopySettings groupCopySettings = getGroupCopySettings(copyId, groupSettings);
-						replicaCluster.addGroupCopy(groupCopySettings);
-						replicaClusters.add(replicaCluster);
+					else {	
+						    ClusterDefinition replicaCluster = null;
+							if(handledCustersMap.get(clusterId.toString()) != null){
+								replicaCluster = handledCustersMap.get(clusterId.toString());
+							}
+							else{
+								replicaCluster = new ClusterDefinition(clusterId.toString(), clusterName);
+								handledCustersMap.put(clusterId.toString(), replicaCluster);
+								replicaClusters.add(replicaCluster);
+							}
+							GroupCopySettings groupCopySettings = getGroupCopySettings(copyId, groupSettings, transferStatesMap);
+							//add the copy in case it wasn't added in context of another vm
+							if(!replicaCluster.isExistingCopy(groupCopySettings)){
+								replicaCluster.addGroupCopy(groupCopySettings);
+							}
+							
+
 					}
 					
 				}	
@@ -209,7 +239,8 @@ public class AccountVmsStructureServiceImpl implements
 	
 	
 	private GroupCopySettings getGroupCopySettings(ConsistencyGroupCopyUID copyId,
-			                                            ConsistencyGroupSettings consistencyGroupSettings){
+			                                            ConsistencyGroupSettings consistencyGroupSettings, 
+			                                            Map<ConsistencyGroupCopyUID, String> transferStatesMap){
 		
 		GroupCopySettings groupCopySettings = null;
 		List<ConsistencyGroupCopySettings> allCopiesSettings = consistencyGroupSettings.getGroupCopiesSettings();
@@ -221,12 +252,75 @@ public class AccountVmsStructureServiceImpl implements
 				groupCopySettings.setClusterId(new Long(currGroupCopySettings.getCopyUID().getGlobalCopyUID().getClusterUID().getId()).toString());
 				if(currGroupCopySettings.getImageAccessInformation() != null 
 						 && currGroupCopySettings.getImageAccessInformation().isImageAccessEnabled()){
-					groupCopySettings.setImageAccessActive(true);
+					groupCopySettings.setImageAccess(ImageAccess.ENABLED.value());
 				}
+				else{
+					groupCopySettings.setImageAccess(ImageAccess.DISABLED.value());
+				}
+				groupCopySettings.setReplication(transferStatesMap.get(currGroupCopySettings.getCopyUID()));
 			}
 		}
 		
 		return groupCopySettings;
 	}
+
+	
+	
+	private Map<ConsistencyGroupCopyUID, String> getGroupCopiesTransferStates(Client client){
+		Map<ConsistencyGroupCopyUID, String> statesMap = new HashMap<ConsistencyGroupCopyUID, String>();
+		ConsistencyGroupStateSet consistencyGroupStateSet = client.getConsistencyGroupStateSet();
+		List<ConsistencyGroupState> groupsStates = consistencyGroupStateSet.getInnerSet();
+		
+		for(ConsistencyGroupState currGroupState : groupsStates){
+			List<ConsistencyGroupLinkState> linksStates = currGroupState.getLinksState();
+			for(ConsistencyGroupLinkState consistencyGroupLinkState : linksStates){
+				ConsistencyGroupUID consistencyGroupUID = consistencyGroupLinkState.getGroupLinkUID().getGroupUID();
+				GlobalCopyUID globalCopyUID = consistencyGroupLinkState.getGroupLinkUID().getSecondCopy();
+				ConsistencyGroupCopyUID consistencyGroupCopyUID = new ConsistencyGroupCopyUID(consistencyGroupUID, globalCopyUID);
+				PipeState pipeState = consistencyGroupLinkState.getPipeState();
+				switch(pipeState){
+					case INITIALIZING:
+						statesMap.put(consistencyGroupCopyUID, TransferState.INITIALIZING.value());
+						break;
+					case ACTIVE:
+						statesMap.put(consistencyGroupCopyUID, TransferState.ACTIVE.value());
+						break;
+					case PAUSED:
+						statesMap.put(consistencyGroupCopyUID, TransferState.PAUSED.value());
+						break;
+					case ERROR:
+						statesMap.put(consistencyGroupCopyUID, TransferState.ERROR.value());
+						break;
+					case UNKNOWN:
+						statesMap.put(consistencyGroupCopyUID, TransferState.UNKNOWN.value());
+						break;
+					default: 
+						statesMap.put(consistencyGroupCopyUID, TransferState.UNKNOWN.value());
+		                break;
+				}
+			}
+		}
+		
+		return statesMap;
+		
+	}
+	
+	public Map<String, Long> getGroupVolumesMaxSizes(Client client){
+		Map<String, Long> volumesMaxSizes = new HashMap<String, Long>();
+		ConsistencyGroupVolumesStateSet volumesStateSet = client.getConsistencyGroupVolumesStateSet();
+		List<ConsistencyGroupVolumesState> volumesStates = volumesStateSet.getInnerSet();
+		for(ConsistencyGroupVolumesState consistencyGroupVolumesState : volumesStates){
+			Long groupId = consistencyGroupVolumesState.getGroupUID().getId();
+			List<ReplicationSetVolumesState> replicationSetVolumesState = consistencyGroupVolumesState.getReplicationSetsVolumesState();
+			long totalVolumeSize = 0;
+			for(ReplicationSetVolumesState volumeState : replicationSetVolumesState){
+				totalVolumeSize += volumeState.getMaxPossibleSizeInBytes();
+			}
+			Long totalVolumeSizeGB = totalVolumeSize/1000/1000/1000;
+			volumesMaxSizes.put(groupId.toString(), totalVolumeSizeGB);
+		}
+		return volumesMaxSizes;
+	}
+	
 
 }

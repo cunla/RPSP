@@ -5,7 +5,8 @@ public class GroupCopySettings {
 	private String id;
 	private String name;
 	private String clusterId;
-	private boolean isImageAccessActive;
+	private String imageAccess;
+	private String replication;
 		
 	
 	public GroupCopySettings() {
@@ -31,11 +32,21 @@ public class GroupCopySettings {
 	public void setClusterId(String clusterId) {
 		this.clusterId = clusterId;
 	}
-	public boolean isImageAccessActive() {
-		return isImageAccessActive;
+	public String getImageAccess() {
+		return imageAccess;
 	}
-	public void setImageAccessActive(boolean isImageAccessActive) {
-		this.isImageAccessActive = isImageAccessActive;
+	public void setImageAccess(String imageAccess) {
+		this.imageAccess = imageAccess;
+	}
+
+
+	public String getReplication() {
+		return replication;
+	}
+
+
+	public void setReplication(String replication) {
+		this.replication = replication;
 	}
 	
 	

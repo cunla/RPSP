@@ -18,6 +18,16 @@ public class ClusterDefinition {
 	public void addGroupCopy(GroupCopySettings groupCopySetting){
 		groupCopySettings.add(groupCopySetting);
 	}
+	
+	public boolean isExistingCopy(GroupCopySettings copySetting){
+		boolean res = false;
+		for(GroupCopySettings currCopySettings :  groupCopySettings){
+			if(currCopySettings.getId().equals(copySetting.getId())){
+				res = true;
+			}
+		}
+		return res;
+	}
 
 	public String getId() {
 		return id;

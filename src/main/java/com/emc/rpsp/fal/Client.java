@@ -12,6 +12,8 @@ import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
 import com.emc.fapi.jaxws.ConsistencyGroupSettings;
+import com.emc.fapi.jaxws.ConsistencyGroupStateSet;
+import com.emc.fapi.jaxws.ConsistencyGroupVolumesStateSet;
 import com.emc.fapi.jaxws.EnableLatestImageAccessParams;
 import com.emc.fapi.jaxws.FullRecoverPointSettings;
 import com.emc.fapi.jaxws.ImageAccessMode;
@@ -174,6 +176,17 @@ public class Client {
 				throw e;
 			}
 		}
+	}
+	
+	public ConsistencyGroupStateSet getConsistencyGroupStateSet(){
+		ConsistencyGroupStateSet consistencyGroupStateSet = connector.getConsistencyGroupStateSet();
+		return consistencyGroupStateSet;
+	}
+	
+	
+	public ConsistencyGroupVolumesStateSet getConsistencyGroupVolumesStateSet(){
+		ConsistencyGroupVolumesStateSet consistencyGroupVolumesStateSet = connector.getConsistencyGroupVolumesStateSet();
+		return consistencyGroupVolumesStateSet;
 	}
 
 	private Map<String, String> getVmState(FullRecoverPointSettings rpSettings) {

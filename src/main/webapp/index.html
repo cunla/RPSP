@@ -109,11 +109,11 @@
 				        		</td>			
 				        			
 								<td>{{row.productionCluster.name}}</td>
-								<td>{{row.replicaClusters[0].name}}</td>
-								<td>{{row.replicationEnabled}}</td>
-								<td>{{row.replicationActive}}</td>
-								<td>{{row.size}}</td>
-								<td>{{row.replicaClusters[0].groupCopySettings[0].imageAccessActive}}</td>
+								<td>{{row.replicaClusters[0].name}}</td>						
+								<td>{{row.consistencyGroups == null ? 'Enabled' : null}}</td>
+								<td>{{row.replicaClusters[0].groupCopySettings[0].replication}}</td>
+								<td>{{row.maxVolumeSize}}</td>
+								<td>{{row.replicaClusters[0].groupCopySettings[0].imageAccess}}</td>
 							</tr>
 					    </tbody>
 					    
