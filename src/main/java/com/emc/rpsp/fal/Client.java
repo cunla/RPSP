@@ -152,12 +152,12 @@ public class Client {
 		return getVmState(rpSettings);
 	}
 	
-	public void enableImageAccess(Long clusterId, Long groupId) {
+	public void enableImageAccess(Long clusterId, Long groupId, Integer copyId) {
 		EnableLatestImageAccessParams params = new EnableLatestImageAccessParams();
 		params.setScenario(ImageAccessScenario.TEST_REPLICA);
 		params.setMode(ImageAccessMode.LOGGED_ACCESS);
 		try{
-			connector.enableLatestImageAccess(clusterId, groupId, params);
+			connector.enableLatestImageAccess(clusterId, groupId, copyId, params);
 		}
 		catch (Throwable e){
 			if(!isEOFCause(e)){
@@ -167,9 +167,9 @@ public class Client {
 	}
 	
 	
-	public void disableImageAccess(Long clusterId, Long groupId) {
+	public void disableImageAccess(Long clusterId, Long groupId, Integer copyId) {
 		try{
-			connector.disableLatestImageAccess(clusterId, groupId);
+			connector.disableLatestImageAccess(clusterId, groupId, copyId);
 		}
 		catch (Throwable e){
 			if(!isEOFCause(e)){

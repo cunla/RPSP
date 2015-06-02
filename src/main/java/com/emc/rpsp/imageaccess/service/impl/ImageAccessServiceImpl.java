@@ -18,12 +18,12 @@ public class ImageAccessServiceImpl implements ImageAccessService {
 	
 
 	@Override
-	public void enableImageAccess(Long clusterId, Long groupId) {
+	public void enableImageAccess(Long clusterId, Long groupId, Integer copyId) {
 		Account account = userService.findCurrentUser().getUser().getAccount();
 		if(account != null){
 			SystemSettings system = account.getSystemSettings().get(0);
 			Client client = new Client(system);
-			client.enableImageAccess(clusterId, groupId);
+			client.enableImageAccess(clusterId, groupId, copyId);
 		}
 		
 	}
@@ -31,12 +31,12 @@ public class ImageAccessServiceImpl implements ImageAccessService {
 
 
 	@Override
-	public void disableImageAccess(Long clusterId, Long groupId) {
+	public void disableImageAccess(Long clusterId, Long groupId, Integer copyId) {
 		Account account = userService.findCurrentUser().getUser().getAccount();
 		if(account != null){
 			SystemSettings system = account.getSystemSettings().get(0);
 			Client client = new Client(system);
-			client.disableImageAccess(clusterId, groupId);
+			client.disableImageAccess(clusterId, groupId, copyId);
 		}
 	}
 	

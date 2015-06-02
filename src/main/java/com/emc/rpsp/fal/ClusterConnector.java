@@ -51,13 +51,13 @@ public interface ClusterConnector {
 	@GET(BASE_URL + "groups")
 	public ConsistencyGroupUIDSet getAllGroupsUIDs();
 	
-	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/0/image_access/latest/enable")
+	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image_access/latest/enable")
 	public EnableLatestImageAccessResponse enableLatestImageAccess(
-			@Path("clusterId") long clusterId, @Path("groupId") long groupId, @Body EnableLatestImageAccessParams params);
+			@Path("clusterId") long clusterId, @Path("groupId") long groupId, @Path("copyId") int copyId, @Body EnableLatestImageAccessParams params);
 	
-	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/0/disable_image_access?startTransfer=true")
+	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/disable_image_access?startTransfer=true")
 	public DisableImageAccessResponse disableLatestImageAccess(
-			@Path("clusterId") long clusterId, @Path("groupId") long groupId);
+			@Path("clusterId") long clusterId, @Path("groupId") long groupId, @Path("copyId") int copyId);
 	
 	@GET(BASE_URL + "groups/state")
 	public ConsistencyGroupStateSet getConsistencyGroupStateSet();

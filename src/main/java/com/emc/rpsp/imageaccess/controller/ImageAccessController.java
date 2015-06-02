@@ -18,18 +18,18 @@ public class ImageAccessController {
 	@Autowired
 	private ImageAccessService imageAccessService;
 
-	@RequestMapping(value = "/image-access/enable", params = {"clusterId", "groupId"}, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/image-access/enable", params = {"clusterId", "groupId", "copyId"}, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<HttpStatus> enableImageAccess(@RequestParam("clusterId") Long clusterId, @RequestParam("groupId") Long groupId) {
-		imageAccessService.enableImageAccess(clusterId, groupId);
+	public ResponseEntity<HttpStatus> enableImageAccess(@RequestParam("clusterId") Long clusterId, @RequestParam("groupId") Long groupId, @RequestParam("copyId") Integer copyId) {
+		imageAccessService.enableImageAccess(clusterId, groupId, copyId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	
-	@RequestMapping(value = "/image-access/disable", params = {"clusterId", "groupId"}, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/image-access/disable", params = {"clusterId", "groupId", "copyId"}, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<HttpStatus> disableImageAccess(@RequestParam("clusterId") Long clusterId, @RequestParam("groupId") Long groupId) {
-		imageAccessService.disableImageAccess(clusterId, groupId);
+	public ResponseEntity<HttpStatus> disableImageAccess(@RequestParam("clusterId") Long clusterId, @RequestParam("groupId") Long groupId, @RequestParam("copyId") Integer copyId) {
+		imageAccessService.disableImageAccess(clusterId, groupId, copyId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

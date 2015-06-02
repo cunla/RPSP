@@ -143,12 +143,13 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
     	var currCg = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex];
     	var cgId = currCg.id;
     	var replicaClusterId = currCg.replicaClusters[0].id;
+    	var copyId = currCg.replicaClusters[0].groupCopySettings[0].id;
     	var url;
     	if(enable == true){
-    	   url = '/rpsp/image-access/enable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId;
+    	   url = '/rpsp/image-access/enable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId + '&' + 'copyId=' + copyId;
     	}
     	else{
-    	   url = '/rpsp/image-access/disable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId;
+    	   url = '/rpsp/image-access/disable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId + '&' + 'copyId=' + copyId;
     	}
     	   	
 	    $http.put(url)
