@@ -17,6 +17,7 @@
 		<link rel="stylesheet" href="assets/css/navbar.css">
 		<link rel="stylesheet" href="assets/css/styles.css">
 		<link rel="stylesheet" href="assets/css/layout.css">
+		<link rel="stylesheet" href="custom/css/custom.css">
 
 	</head>
 	
@@ -29,6 +30,8 @@
 		        </div>
 		
 		        <ul class="nav navbar-nav navbar-right">
+		        	<!-- <li><img style="width: 71px; height: 43px; margin-top: 8px; margin-bottom: 8px; padding-right: 10px" src="custom/images/cloud-1.png"></li> -->
+		        	<li><div class="logo-image"></div></li>
 		            <li><a> {{ 'HOME.WELCOME_MSG' | translate }}, {{currentUser.login}}</a></li>
 		            <li><a href="/rpsp/logout-action">{{ 'HOME.LOGOUT_MSG' | translate }}</a></li>
 		        </ul>
@@ -137,6 +140,11 @@
 		
 		  </div>
 		</div>	
-		
+		<div class="navbar navbar-default navbar-fixed-bottom">
+	     <div class="container">
+	     	<p class="navbar-text pull-left" id="corp-footer"> Powered by RecoverPoint for VMs</p>
+		    <!-- <p class="navbar-text pull-right">  something </p>	 -->	     
+	   	 </div>
+   	</div>
 	</body>
 </html>

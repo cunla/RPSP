@@ -7,7 +7,7 @@ body {
   background-size: cover;
 }
 
-
+*/
 
 div.image {
    width: 140px;
@@ -17,7 +17,25 @@ div.image {
    background-size:contain;
    background-image:url("../images/login.png");	
 }
-*/
+
+
+div.logo-image {
+   width: 36px;
+   height: 36px;
+   margin-top: 8px; 
+   margin-bottom: 8px;
+   display: block;
+   background-size:contain;
+   background-image:url("../images/login.png");	
+}	
+
+
+
+
+
+
+
+
 
 
 
