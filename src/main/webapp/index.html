@@ -22,7 +22,10 @@
 	</head>
 	
 
-	<body  ng-controller="vmStructureController">
+	<body ng-controller="vmStructureController">
+	
+	<div class="div-grey">
+	
 		<nav class="navbar navbar-default">
 		    <div class="container" ng-controller="homeController">
 		        <div class="navbar-header">
@@ -30,40 +33,45 @@
 		        </div>
 		
 		        <ul class="nav navbar-nav navbar-right">
-		        	<!-- <li><img style="width: 71px; height: 43px; margin-top: 8px; margin-bottom: 8px; padding-right: 10px" src="custom/images/cloud-1.png"></li> -->
 		        	<li><div class="logo-image"></div></li>
 		            <li><a> {{ 'HOME.WELCOME_MSG' | translate }}, {{currentUser.login}}</a></li>
 		            <li><a href="/rpsp/logout-action">{{ 'HOME.LOGOUT_MSG' | translate }}</a></li>
 		        </ul>
 		    </div>
 		</nav>
-
 		
-		
-		  <div class="container">
-		    <div class="row">
-		     <div class="col-xs-8 col-sm-8 col-md-8">
-		     </div>	
+		<div class="container-fluid">
+		    <div class="row">		     
 		     <div class="col-xs-2 col-sm-2 col-md-2">
 		     	<div class="msg-alert-info"> 	
 			        <div class="centered-text">Protected VMs: {{protectedVms}}</div>
 			        <div class="centered-text">Total VMs: {{totalVms}}</div>
 		        </div>    
 		     </div>
-		     <div class="col-xs-2 col-sm-2 col-md-2">
+		     <div class="col-xs-1 col-sm-1 col-md-1">
 		     	<div class="msg-alert-error">	
 			     	<div class="centered-text">Errors: 1</div>
 			        <div class="centered-text">Warnings: 3</div>
 		        </div>	        	        
 		     </div>
+		     <div class="col-xs-2 col-sm-2 col-md-2">
+		     	<div class="msg-alert-info">	
+			     	<div class="centered-text">New messages: 2</div>
+			     	<div class="centered-text"><white-space>     </white-space></div>
+		        </div>	        	        
+		     </div>
+		     <div class="col-xs-7 col-sm-7 col-md-7">
+		     </div>	
 		    </div>	
 		   </div>
 		
-		
-		
-		<br></br>
+			<br></br>
 			
- 		<div class="col-xs-12 col-sm-12 col-md-12 container top-border">
+			
+		</div>
+		
+			
+ 		<div class="col-xs-12 col-sm-12 col-md-12 container top-border div-grey">
 			  <button type="button" class="btn btn-primary margin-top" ng-click="imageAccess(true)">Test</button>
 			  <button type="button" class="btn btn-primary margin-top" ng-click="imageAccess(false)">Undo Test</button>
 			  <button type="button" class="btn btn-primary margin-top">Failover</button>

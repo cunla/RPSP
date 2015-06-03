@@ -7,7 +7,20 @@ body {
   background-size: cover;
 }
 
+
+body.body-grey {  
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color: #F5F5F5;
+}
+
+div.div-solid-grey {  
+  background-color: #B7B7B7;
+}
 */
+
 
 div.image {
    width: 140px;

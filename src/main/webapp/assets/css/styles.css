@@ -21,6 +21,11 @@
 	border-top: 1px solid #ccc;
 }
 
+div.div-grey {  
+  background-color: #F5F5F5;
+}
+
+
 .modal-header-primary {
 	color:#fff;
     padding:9px 15px;
