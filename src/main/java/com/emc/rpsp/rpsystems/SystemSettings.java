@@ -1,7 +1,9 @@
 package com.emc.rpsp.rpsystems;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -172,6 +174,14 @@ public class SystemSettings {
 	
 	public void addAccount(Account account){
 		accounts.add(account);
+	}
+	
+	public Map<String, ClusterSettings> getNameToClusterMap(){
+		Map<String, ClusterSettings> clustersMap = new HashMap<String, ClusterSettings>();
+		for(ClusterSettings clusterSettings : clusters){
+			clustersMap.put(clusterSettings.getClusterName(), clusterSettings);
+		}
+		return clustersMap;
 	}
 	
 	

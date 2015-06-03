@@ -3,6 +3,10 @@
 		"user": "admin",
 		"password": "admin",
 		"ip": "10.64.125.51",
+		"clusterFriendlyNames": {
+				"dc01-cl01-attempt2": "New York",
+				"dc02-cl02-attempt2": "London"
+		},
 		"accounts": [
 			{
 				"name": "emc",

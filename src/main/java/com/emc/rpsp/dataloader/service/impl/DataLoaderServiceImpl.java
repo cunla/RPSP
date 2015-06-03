@@ -64,11 +64,12 @@ public class DataLoaderServiceImpl implements DataLoaderService{
 			String userName = currSettings.get("user").toString();
 			String ip = currSettings.get("ip").toString();
 			String password = currSettings.get("password").toString();
+			Map<String, Object> clusterFriendlyNames = (Map<String, Object>)currSettings.get("clusterFriendlyNames");
 			
 			settings.setUser(userName);
 			settings.setPassword(password);
 			settings.setSystemIp(ip);		
-			propagateClusterData(settings);
+			propagateClusterData(settings, clusterFriendlyNames);
 			
 			
 			//accounts data
@@ -135,13 +136,14 @@ public class DataLoaderServiceImpl implements DataLoaderService{
 
 
 	
-	private void propagateClusterData(SystemSettings systemSettings) {
+	private void propagateClusterData(SystemSettings systemSettings, Map<String, Object> clusterFriendlyNames) {
 		Client client = new Client(systemSettings,
 		        systemConnectionInfoRepository);
 		Map<Long, String> clusters = client.getClusterNames();
 		for (Map.Entry<Long, String> entry : clusters.entrySet()) {
 			ClusterSettings cluster = new ClusterSettings(entry.getKey(),
 			        entry.getValue(), systemSettings);
+			cluster.setFriendlyName(clusterFriendlyNames.get(entry.getValue()).toString());
 			systemSettings.addCluster(cluster);
 		}
 	}

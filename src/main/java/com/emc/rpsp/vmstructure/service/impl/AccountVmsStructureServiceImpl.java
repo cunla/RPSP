@@ -63,7 +63,7 @@ public class AccountVmsStructureServiceImpl implements
 			List<SystemSettings> systems = account.getSystemSettings();
 			for(SystemSettings currSystem : systems){
 				Client client = new Client(currSystem);
-				AccountVmsStructure currAccountVmsStructure = getAccountVmsStrucure(client, account);
+				AccountVmsStructure currAccountVmsStructure = getAccountVmsStrucure(client, account, currSystem);
 				accountVmsStructure.getUnprotectedVms().addAll(currAccountVmsStructure.getUnprotectedVms());
 				accountVmsStructure.getProtectedVms().addAll(currAccountVmsStructure.getProtectedVms());
 			}
@@ -72,7 +72,7 @@ public class AccountVmsStructureServiceImpl implements
 	}
 
 	
-	private AccountVmsStructure getAccountVmsStrucure(Client client, Account account){
+	private AccountVmsStructure getAccountVmsStrucure(Client client, Account account, SystemSettings currSystem){
 		
 		AccountVmsStructure accountVmsStructure = new AccountVmsStructure();
 		List<VmContainer> protectedVms = new LinkedList<VmContainer>();
@@ -128,6 +128,9 @@ public class AccountVmsStructureServiceImpl implements
 					ConsistencyGroupCopyUID copyId = vmReplication.getGroupCopyUID();
 					Long clusterId = copyId.getGlobalCopyUID().getClusterUID().getId();
 					String clusterName = clusterNames.get(clusterId);
+					if(currSystem.getNameToClusterMap().get(clusterName) != null){
+						clusterName = currSystem.getNameToClusterMap().get(clusterName).getFriendlyName();
+					}
 					String vmName = vmNamesAllClusters.get(clusterId).get(vmId);
 					List<ConsistencyGroupCopyUID> production = groupSettings.getProductionCopiesUID();
 					//this vm belongs to production
