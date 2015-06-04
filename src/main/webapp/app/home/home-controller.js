@@ -1,10 +1,23 @@
 angular.module('home',  ['pascalprecht.translate', 'locale'])
   .controller('homeController', ['$scope', '$http', function($scope, $http) {   
-	  $scope.currentUser = {};	  
+	  $scope.currentUser = {};
+	  $scope.welcomeData = {};
 	  $scope.getCurrentUser = function(){
 		    $http.get('users/current-user')
 		    .success(function(data,status,headers,config){
 		        $scope.currentUser = data;
+		        var account;
+		        var user;
+		        
+		        if(data.account.label != null){
+		        	account = data.account.label;
+		        }
+		        else{
+		        	account = data.account.name;
+		        }
+
+		        user = data.firstName + ' ' + data.lastName; 
+		        $scope.welcomeData = user + '@' + account;
 		    })		   
 	   };
 	   $scope.getCurrentUser();

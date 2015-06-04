@@ -72,7 +72,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	private String permission;
 	
 	
-	@JsonIgnore
+	//@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Account account;
 	

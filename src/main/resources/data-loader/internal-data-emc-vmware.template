@@ -9,8 +9,8 @@
 		},
 		"accounts": [
 			{
-				"name": "28652",
-				"label": "Springfield bank",
+				"name": "emc",
+				"label": "emc storage account",
 				"vms": [
 					{
 						"vmId": "5027fa0d-83bb-26ff-fdc8-8f7bd0190d38",
@@ -59,10 +59,32 @@
 				],
 				"users": [
 					{
-						"login": "john.smith@28652",
-						"firstName": "John",
-						"lastName": "Smith",
-						"password": "12345"
+						"login": "storage-admin@emc",
+						"firstName": "boris",
+						"lastName": "shpilyuck",
+						"password": "123"
+					}
+				]
+			},
+			{
+				"name": "vmware",
+				"label": "vmware infra account",
+				"vms": [
+					{
+						"vmId": "50272642-a560-84ac-7647-2fb4ea4a29a5",
+						"vmName": "vm-9"
+					},
+					{
+						"vmId": "5027a916-8776-6cd7-833f-2a088f0fb72f",
+						"vmName": "vm-10"
+					}
+				],
+				"users": [
+					{
+						"login": "infra-admin@vmware",
+						"firstName": "fabio",
+						"lastName": "rodrigues",
+						"password": "123"
 					}
 				]
 			}

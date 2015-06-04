@@ -34,7 +34,8 @@
 		
 		        <ul class="nav navbar-nav navbar-right">
 		        	<li><div class="logo-image"></div></li>
-		            <li><a> {{ 'HOME.WELCOME_MSG' | translate }}, {{currentUser.login}}</a></li>
+		            <!-- <li><a> {{ 'HOME.WELCOME_MSG' | translate }}, {{currentUser.login}}</a></li> -->
+		            <li><a> {{ 'HOME.WELCOME_MSG' | translate }}, {{welcomeData}}</a></li>
 		            <li><a href="/rpsp/logout-action">{{ 'HOME.LOGOUT_MSG' | translate }}</a></li>
 		        </ul>
 		    </div>
