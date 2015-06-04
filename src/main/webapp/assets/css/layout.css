@@ -10,4 +10,12 @@
     margin-top: 2px;
 }
 
+.padding-top {
+    padding-top: 20px;
+}
+
+.padding-bottom {
+    padding-bottom: 20px;
+}
+
 white-space { white-space: pre; }
