@@ -16,9 +16,7 @@ body.body-grey {
   background-color: #F5F5F5;
 }
 
-div.div-solid-grey {  
-  background-color: #B7B7B7;
-}
+
 */
 
 
@@ -41,6 +39,9 @@ div.logo-image {
    background-size:contain;
    background-image:url("../images/login.png");	
 }	
+
+
+
 
 
 

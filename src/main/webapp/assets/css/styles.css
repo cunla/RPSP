@@ -21,9 +21,16 @@
 	border-top: 1px solid #ccc;
 }
 
+
 div.div-grey {  
   background-color: #F5F5F5;
 }
+
+
+div.div-solid-grey {  
+  background-color: #B7B7B7;
+}
+
 
 
 .modal-header-primary {

@@ -8,16 +8,21 @@ angular.module('home',  ['pascalprecht.translate', 'locale'])
 		        $scope.currentUser = data;
 		        var account;
 		        var user;
-		        
-		        if(data.account.label != null){
-		        	account = data.account.label;
+		        if(data.account == null){
+		        	$scope.welcomeData = data.login;
 		        }
 		        else{
-		        	account = data.account.name;
+			        if(data.account.label != null){
+			        	account = data.account.label;
+			        }
+			        else{
+			        	account = data.account.name;
+			        }
+			        user = data.firstName + ' ' + data.lastName; 
+			        $scope.welcomeData = user + '@' + account;
 		        }
 
-		        user = data.firstName + ' ' + data.lastName; 
-		        $scope.welcomeData = user + '@' + account;
+		       
 		    })		   
 	   };
 	   $scope.getCurrentUser();

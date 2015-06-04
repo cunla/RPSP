@@ -18,9 +18,10 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" />
 	<link rel="stylesheet" type="text/css" href="../../assets/css/navbar.css">
 	<link rel="stylesheet" type="text/css" href="../../assets/css/layout.css">
+	<link rel="stylesheet" type="text/css" href="../../assets/css/styles.css">
     
   </head>
-  <body class="body-grey" ng-app="login" ng-controller="loginController as loginController">
+  <body class="body-blue" ng-app="login" ng-controller="loginController as loginController">
   
   	<nav class="navbar navbar-default">
 	    <div class="container">
@@ -33,27 +34,31 @@
 	    </div>
 	</nav>
     <div class="container">
-      <form class="login-form" ng-submit="loginController.postForm()">
-        <div class="image"></div>
-        <!--  <img class="profile-img" src="../../assets/images/login.png"> -->
-        <label for="inputAccount" class="sr-only">Account</label>
-        <input type="text" id="inputAccount" class="form-control" placeholder="{{'LOGIN.ACCOUNT_MSG' | translate}}" required autofocus ng-model="loginController.inputData.account">        
-        <label for="inputUsername" class="sr-only">Username</label>
-        <input type="text" id="inputUsername" class="form-control" placeholder="{{'LOGIN.USERNAME_MSG' | translate}}" required autofocus ng-model="loginController.inputData.username">
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="{{'LOGIN.PASSWORD_MSG' | translate}}" required ng-model="loginController.inputData.password">
-        <br>
-		<div class="alert alert-danger" role="alert" ng-show="errorMsg">{{errorMsg}}</div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">{{'LOGIN.SIGN_IN_MSG' | translate}}</button>
-        <div id="createAccount">   
-        <br/>
-  		<a href="/rpsp">Forgot password?</a>
-  		<white-space>                        </white-space>
-  		<a href="/rpsp">Register</a>  		
-	</div>
-        <br/>
-        <br/>	       	
-      </form>      
+      <div class="row">
+	      <div class="col-md-4 col-md-offset-4 div-grey all-borders">
+		      <form class="login-form" ng-submit="loginController.postForm()">
+		        <div class="image"></div>
+		        <label for="inputAccount" class="sr-only">Account</label>
+		        <input type="text" id="inputAccount" class="form-control" placeholder="{{'LOGIN.ACCOUNT_MSG' | translate}}" required autofocus ng-model="loginController.inputData.account">        
+		        <label for="inputUsername" class="sr-only">Username</label>
+		        <input type="text" id="inputUsername" class="form-control" placeholder="{{'LOGIN.USERNAME_MSG' | translate}}" required autofocus ng-model="loginController.inputData.username">
+		        <label for="inputPassword" class="sr-only">Password</label>
+		        <input type="password" id="inputPassword" class="form-control" placeholder="{{'LOGIN.PASSWORD_MSG' | translate}}" required ng-model="loginController.inputData.password">
+		        <br>
+				<div class="alert alert-danger" role="alert" ng-show="errorMsg">{{errorMsg}}</div>
+		        <button class="btn btn-lg btn-primary btn-block" type="submit">{{'LOGIN.SIGN_IN_MSG' | translate}}</button>
+			        <div id="createAccount">   
+				        <br/>
+				  		<a href="/rpsp">Forgot password?</a>
+				  		<!-- <white-space>                        </white-space> -->
+				  		<white-space>             </white-space>
+				  		<a href="/rpsp">Register</a>  		
+					</div>
+		        <br/>
+		        <br/>	       	
+		      </form> 
+	      </div> 
+      </div>    
     </div> 
     
     <div class="navbar navbar-default navbar-fixed-bottom">
