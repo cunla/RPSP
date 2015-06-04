@@ -32,14 +32,6 @@ div.image {
 }
 
 
-
-/* old way of adding image */
-
-/* div.image {
-   width: 140px;
-   height: 140px;
-   margin: 0 auto 20px;
-   display: block;	
-   content:url(../../assets/images/login.png);
+div.container-padding-top {
+    padding-top: 100px;
 }
- */
