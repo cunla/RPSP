@@ -56,6 +56,10 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
 		            	}
 		            }
 		        }
+		        var newCg = {};
+		        newCg.id = 'new-section';
+		        newCg.name = 'New ...';
+		        vmGsAndCgFlatDataArr.push(newCg);
 		        $scope.vmGsAndCgFlatData = vmGsAndCgFlatDataArr;
 		        
 		        //count protected vms

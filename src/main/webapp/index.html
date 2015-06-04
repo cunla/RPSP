@@ -106,7 +106,7 @@
 					      </tr>
 					    </thead>
 					   <tbody>
-					     	<tr ng-repeat="row in vmGsAndCgFlatData" droppable="true" cgid="{{row.id}}" prod-cluster-id="{{row.productionCluster.id}}" replica-cluster-id="{{row.replicaClusters[0].id}}" ng-click="toggleSelect($index, true)" ng-class="{'selected' : protectedSelectedIndex == $index}">					
+					     	<tr ng-repeat="row in vmGsAndCgFlatData" droppable="true" cgid="{{row.id}}" prod-cluster-id="{{row.productionCluster.id}}" replica-cluster-id="{{row.replicaClusters[0].id}}" ng-click="toggleSelect($index, true)" ng-class="{'selected' : (protectedSelectedIndex == $index )}">					
 								<td>
 								    <cg-offset ng-if="row.parent != null">
 								   		<white-space>     </white-space>
@@ -119,11 +119,15 @@
 							        		<white-space>     </white-space>
 							        	</vm-offset>{{vm.name}}
 					        		</div>
+					        		<div ng-if="row.id == 'new-section'"><white-space>     </white-space></div>
+					        		<div ng-if="row.id == 'new-section'"><white-space>     </white-space></div>
+					        		<div ng-if="row.id == 'new-section'"><white-space>     </white-space></div>
+					        		<div ng-if="row.id == 'new-section'"><white-space>     </white-space></div>
 				        		</td>			
 				        			
 								<td>{{row.productionCluster.name}}</td>
 								<td>{{row.replicaClusters[0].name}}</td>						
-								<td>{{row.consistencyGroups == null ? 'Enabled' : null}}</td>
+								<td>{{row.type == 'cg' ? 'Enabled' : null}}</td>
 								<td>{{row.replicaClusters[0].groupCopySettings[0].replication}}</td>
 								<td>{{row.maxVolumeSize}}</td>
 								<td>{{row.replicaClusters[0].groupCopySettings[0].imageAccess}}</td>
@@ -131,6 +135,7 @@
 					    </tbody>
 					    
 					</table>
+					<!-- <div class="row div-solid-grey">Zalupa</div> -->
 				</div>	
 				<div class="col-xs-3 col-sm-3 col-md-3">      
 					<table droppable="true" class="table table-condensed table-striped">
