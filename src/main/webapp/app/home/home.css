@@ -23,4 +23,8 @@ table.table tr.selected td {
 	color: #ffffff;
 }
 
+.modal-dialog {
+    max-width: 40vw;
+}
+
 
