@@ -29,8 +29,7 @@ angular.module('home',  ['pascalprecht.translate', 'locale'])
 }])
 
 
-angular.module('home').controller('vmStructureController', ['$scope', '$http', function ($scope, $http) {
-	
+angular.module('home').controller('vmStructureController', ['$scope', '$http', function ($scope, $http) {	
 	$scope.vmStructureData = {};
 	$scope.vmGsAndCgFlatData = {};
 	$scope.totalVms = {};
@@ -100,8 +99,11 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
     	if(isProtected == true){
 	        if( ind === $scope.protectedSelectedIndex ){
 	            $scope.protectedSelectedIndex = -1;
-	        } else{
+	        } else{	        	
 	            $scope.protectedSelectedIndex = ind;
+	            if($scope.vmGsAndCgFlatData[ind].type == 'cg'){
+	            	$scope.selectedCopy = $scope.vmGsAndCgFlatData[ind].replicaClusters[0].groupCopySettings[0];
+	            }
 	        }
 	        $scope.unprotectedSelectedIndex = -1;
     	}
@@ -161,23 +163,26 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
     };
     
     
-    $scope.imageAccess = function(enable){
+    $scope.imageAccess = function(){
     	var currCg = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex];
     	var cgId = currCg.id;
-    	var replicaClusterId = currCg.replicaClusters[0].id;
-    	var copyId = currCg.replicaClusters[0].groupCopySettings[0].id;
+    	var replicaClusterId = $scope.selectedCopy.clusterId;
+    	var copyId = $scope.selectedCopy.id;
     	var url;
-    	if(enable == true){
+    	if($scope.selectedCopy.imageAccess == 'Disabled'){
     	   url = '/rpsp/image-access/enable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId + '&' + 'copyId=' + copyId;
+    	   $scope.selectedCopy.imageAccess = 'Enabled';
     	}
     	else{
     	   url = '/rpsp/image-access/disable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId + '&' + 'copyId=' + copyId;
+    	   $scope.selectedCopy.imageAccess = 'Disabled';
     	}
+    	
     	   	
 	    $http.put(url)
 	    .success(function(data,status,headers,config){
 	        
-	    })	    	
+	    }) 	
     	
     }
     
@@ -211,10 +216,7 @@ angular.module('home').directive('droppable', function() {
  
             element.bind("drop", function(eventObject) {
                  
-                // invoke controller/scope move method
-                scope.moveVm(eventObject.dataTransfer.getData("text"), attributes.cgid);
- 
-                // cancel actual UI element from dropping, since the angular will recreate a the UI element
+                scope.moveVm(eventObject.dataTransfer.getData("text"), attributes.cgid); 
                 eventObject.preventDefault();
             });
         }
