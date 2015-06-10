@@ -39,7 +39,7 @@ All operations are done through RP4VM REST API.
  3. Run Application class from the WAR file using the command `java -jar rpsp.war`
  4. You can also deploy the WAR on your own web-container (tomcat/etc.)
 
-####INSTALLATION – WINDOWS
+####INSTALLATION AS WINDOWS SERVICE
 It is recommended to configure RPSP to run as a Windows Service as explained in this guide: https://nssm.cc/usage
 
 ##USER OPERATIONS
@@ -55,9 +55,35 @@ RPSP UI provides the following functionality:
  2. Generate report of #VMs per month per country
      - Select report quarter (past or current)
  
-####RPSP REST API
-The following methods are supported in the RPSP RESP API
-TODO
+###RPSP REST API
+The following methods are supported in the RPSP RESP API, with base being http://<hostname>:<port>/rpsp
+
+1. Accounts API *(admin permissions only)*
+	 - `GET /accounts`  Get all accounts
+	 - `GET  /accounts?systemId=”your-system-id”` Get accounts related to specific system 
+	 - `GET /accounts/{id}` Get specific account 
+	 - `POST /accounts?systemId=”your-system-id”` Create account under specific system 
+	 - `POST /accounts/{id}` Update specific account 
+	 - `DELETE /accounts/{id}` Delete specific account 
+	
+2.  Users API *(admin permissions only)*
+     - `GET /users` Get all users 
+     - `GET /users?accountId =”your-account-id”` Get users related to specific account 
+     - `GET /users/{id}` Get specific user 
+     - `POST /users?accountId =”your-account-id”` Create user under specific account 
+     - `POST /users/{id}` Update specific user 
+     - `DELETE /users/{id}` Delete specific user 
+
+3. VMs API *(admin permissions only)*
+     - `GET /vmownership` Get all vms 
+     - `GET /vmownership?accountId =”your-account-id”` Get vms related to specific account 
+     - `GET /vmownership/{id}` Get specific vm 
+     - `POST /vmownership?accountId =”your-account-id”` Create vm under specific account 
+     - `POST /vmownership/{id}`  Update specific vm 
+     - `DELETE /vmownership/{id}` Delete specific vm 
+
+4. Full VMs hierarchy data restricted by logged in user and his related account info  (protected\unprotected\cg etc)  
+    - `GET /account-vms`
 
 ###CONTRIBUTION INSTRUCTIONS
 Create a fork of the project into your own repository. 
