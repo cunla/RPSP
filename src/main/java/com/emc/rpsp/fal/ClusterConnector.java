@@ -4,14 +4,18 @@ import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.PUT;
 import retrofit.http.Path;
+import retrofit.http.Query;
 
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.ConsistencyGroupCopySettingsSet;
+import com.emc.fapi.jaxws.ConsistencyGroupCopySnapshots;
+import com.emc.fapi.jaxws.ConsistencyGroupSnapshots;
 import com.emc.fapi.jaxws.ConsistencyGroupStateSet;
 import com.emc.fapi.jaxws.ConsistencyGroupUIDSet;
 import com.emc.fapi.jaxws.ConsistencyGroupVolumesStateSet;
 import com.emc.fapi.jaxws.DisableImageAccessResponse;
+import com.emc.fapi.jaxws.EnableImageAccessParams;
 import com.emc.fapi.jaxws.EnableLatestImageAccessParams;
 import com.emc.fapi.jaxws.EnableLatestImageAccessResponse;
 import com.emc.fapi.jaxws.FullRecoverPointSettings;
@@ -51,9 +55,15 @@ public interface ClusterConnector {
 	@GET(BASE_URL + "groups")
 	public ConsistencyGroupUIDSet getAllGroupsUIDs();
 	
+	
+	
 	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image_access/latest/enable")
 	public EnableLatestImageAccessResponse enableLatestImageAccess(
 			@Path("clusterId") long clusterId, @Path("groupId") long groupId, @Path("copyId") int copyId, @Body EnableLatestImageAccessParams params);
+	
+	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/snapshots")
+	public ConsistencyGroupCopySnapshots enableSnapshotImageAccess(
+			@Path("clusterId") long clusterId, @Path("groupId") long groupId, @Path("copyId") int copyId, @Body EnableImageAccessParams params);
 	
 	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/disable_image_access?startTransfer=true")
 	public DisableImageAccessResponse disableLatestImageAccess(
@@ -64,7 +74,13 @@ public interface ClusterConnector {
 	
 	@GET(BASE_URL + "groups/volumes/state")
 	public ConsistencyGroupVolumesStateSet getConsistencyGroupVolumesStateSet();
-
+	
+	@GET(BASE_URL + "groups/{groupId}/snapshots")
+	public ConsistencyGroupSnapshots getGroupSnapshots(@Path("groupId") long groupId, 
+			                             @Query("startTime") Long startTime, 
+			                                         @Query("endTime") Long endTime);
+	
+	
 	
 
 }

@@ -72,7 +72,7 @@
 		
 			
  		<div class="col-xs-12 col-sm-12 col-md-12 container top-border div-solid-grey">
-			  <button type="button" class="btn btn-primary margin-top" data-toggle="modal" data-target="#myModal">DR Test</button>
+			  <button type="button" class="btn btn-primary margin-top" ng-click="imageAccessInit()" data-toggle="modal" data-target="#myModal">DR Test</button>
 			  <!-- <button type="button" class="btn btn-primary margin-top" ng-click="imageAccess(false)">Undo Test</button> -->
 			  <button type="button" class="btn btn-primary margin-top">Failover</button>
 			  <button type="button" class="btn btn-primary margin-top">Restore Production</button>
@@ -113,7 +113,7 @@
 									</td>			
 									<td>
 									        <div class="row">
-												<div class="col-xs-6 col-sm-6 col-md-6 margin-top">
+												<div class="col-xs-5 col-sm-5 col-md-5 margin-top">
 												
 													<select ng-model="selectedCopy" 
 						                                    ng-options="copy.name for copy in vmGsAndCgFlatData[protectedSelectedIndex].
@@ -122,7 +122,7 @@
 												
 													</select>
 												</div>	
-												<div class="col-xs-6 col-sm-6 col-md-6 margin-top">
+												<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
 												</div>	
 											</div>
 
@@ -140,43 +140,41 @@
 										<div class="row">
 											<div class="col-xs-12 col-sm-12 col-md-12 radio">
 												<label>
-													<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" class="checked" checked="checked">
+													<input type="radio" ng-model="imageAccessType" value="latest">
 												Latest Image
 													</input>
 												</label>
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-xs-6 col-sm-6 col-md-6 radio" >
+											<div class="col-xs-5 col-sm-5 col-md-5 radio" >
 												<label>
-													<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" disabled="disabled">
+													<input type="radio" ng-model="imageAccessType" value="snapshot">
 												From Snapshot List
 													</input>
 												</label>
 											</div>
-											<div class="col-xs-6 col-sm-6 col-md-6 margin-top">
-												<select class="form-control" disabled="disabled">
-													<option>Snapshot_1</option>
-													<option>Snapshot_2</option>
-													<option>Snapshot_3</option>
+											<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+												<select ng-model="selectedSnapshot" 
+						                                    ng-options="snapshot.closingTimestamp for snapshot in selectedCopy.snapshots" class="form-control">
+						                                        <!-- <option value="" ng-if="false"></option> -->												
 												</select>
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-xs-6 col-sm-6 col-md-6 radio" disabled="disabled">
+											<div class="col-xs-5 col-sm-5 col-md-5 radio">
 												<label>
-													<input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled="disabled">
+													<input type="radio" ng-model="imageAccessType" value="bookmark">
 											Specific Bookmark
 													</input>
 												</label>
 											</div>
-											<div class="col-xs-6 col-sm-6 col-md-6 margin-top">
-												<select class="form-control" disabled="disabled">
-													<option>Bookmark_A</option>
-													<option>Bookmark_B</option>
-													<option>Bookmark_C</option>
-												</select>
-											</div>	
+											<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+													<select ng-model="selectedBookmark" 
+						                                    ng-options="bookmark.name for bookmark in selectedCopy.bookmarks" class="form-control">
+						                                            <!-- <option value="" ng-if="false"></option>	 -->											
+													</select>
+											</div>
 										</div>
 									</td>
 								</tr>

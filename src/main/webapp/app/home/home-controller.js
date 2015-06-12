@@ -101,9 +101,6 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
 	            $scope.protectedSelectedIndex = -1;
 	        } else{	        	
 	            $scope.protectedSelectedIndex = ind;
-	            if($scope.vmGsAndCgFlatData[ind].type == 'cg'){
-	            	$scope.selectedCopy = $scope.vmGsAndCgFlatData[ind].replicaClusters[0].groupCopySettings[0];
-	            }
 	        }
 	        $scope.unprotectedSelectedIndex = -1;
     	}
@@ -114,6 +111,21 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
 	            $scope.unprotectedSelectedIndex = ind;
 	        }
 	        $scope.protectedSelectedIndex = -1;
+    	}
+    }
+    
+    $scope.imageAccessInit = function(){
+    	if($scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type == 'cg'){
+	    	$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
+	    	$scope.selectedSnapshot = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0].snapshots[0];
+	    	$scope.selectedBookmark = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0].bookmarks[0];
+	    	$scope.imageAccessType = {};
+    	}
+    	else{
+    		$scope.selectedCopy = {};
+	    	$scope.selectedSnapshot = {};
+	    	$scope.selectedBookmark = {};
+	    	$scope.imageAccessType = {};
     	}
     }
     
@@ -168,9 +180,16 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
     	var cgId = currCg.id;
     	var replicaClusterId = $scope.selectedCopy.clusterId;
     	var copyId = $scope.selectedCopy.id;
+    	var accessType = $scope.imageAccessType;
     	var url;
     	if($scope.selectedCopy.imageAccess == 'Disabled'){
     	   url = '/rpsp/image-access/enable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId + '&' + 'copyId=' + copyId;
+    	   if(accessType == 'snapshot'){
+    		   url += '&' + 'snapshotId=' + $scope.selectedSnapshot.id;
+    	   }
+    	   else if(accessType == 'bookmark'){
+    		   url += '&' + 'snapshotId=' + $scope.selectedBookmark.id;
+    	   }
     	   $scope.selectedCopy.imageAccess = 'Enabled';
     	}
     	else{
@@ -178,11 +197,12 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
     	   $scope.selectedCopy.imageAccess = 'Disabled';
     	}
     	
+    
     	   	
-	    $http.put(url)
+	   $http.put(url)
 	    .success(function(data,status,headers,config){
 	        
-	    }) 	
+	    })
     	
     }
     

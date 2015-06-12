@@ -6,19 +6,27 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit.RetrofitError;
+import retrofit.http.Body;
+import retrofit.http.Path;
 
 import com.emc.fapi.jaxws.ClusterInfo;
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
+import com.emc.fapi.jaxws.ConsistencyGroupCopySnapshots;
 import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
 import com.emc.fapi.jaxws.ConsistencyGroupSettings;
+import com.emc.fapi.jaxws.ConsistencyGroupSnapshots;
 import com.emc.fapi.jaxws.ConsistencyGroupStateSet;
 import com.emc.fapi.jaxws.ConsistencyGroupVolumesStateSet;
+import com.emc.fapi.jaxws.EnableImageAccessParams;
 import com.emc.fapi.jaxws.EnableLatestImageAccessParams;
 import com.emc.fapi.jaxws.FullRecoverPointSettings;
 import com.emc.fapi.jaxws.ImageAccessMode;
 import com.emc.fapi.jaxws.ImageAccessScenario;
 import com.emc.fapi.jaxws.RecoverPointClustersInformation;
+import com.emc.fapi.jaxws.RecoverPointTimeStamp;
+import com.emc.fapi.jaxws.Snapshot;
+import com.emc.fapi.jaxws.SnapshotUID;
 import com.emc.fapi.jaxws.VmReplicationSetSettings;
 import com.emc.fapi.jaxws.VmReplicationSettings;
 import com.emc.fapi.jaxws.VmState;
@@ -26,6 +34,7 @@ import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
 import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
+import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
 /**
  * Created by morand3 on 1/14/2015.
@@ -152,7 +161,7 @@ public class Client {
 		return getVmState(rpSettings);
 	}
 	
-	public void enableImageAccess(Long clusterId, Long groupId, Integer copyId) {
+	public void enableLatestImageAccess(Long clusterId, Long groupId, Integer copyId) {
 		EnableLatestImageAccessParams params = new EnableLatestImageAccessParams();
 		params.setScenario(ImageAccessScenario.TEST_REPLICA);
 		params.setMode(ImageAccessMode.LOGGED_ACCESS);
@@ -188,6 +197,33 @@ public class Client {
 		ConsistencyGroupVolumesStateSet consistencyGroupVolumesStateSet = connector.getConsistencyGroupVolumesStateSet();
 		return consistencyGroupVolumesStateSet;
 	}
+	
+	public ConsistencyGroupSnapshots getGroupSnapshots(Long groupId){
+		
+		/*long dayInMicroseconds = 1000 * 1000 * 60 * 60 * 24;
+		long currTime = connector.getSystemTime().getTimeInMicroSeconds() - dayInMicroseconds;
+		Long startTime = new Long(currTime - dayInMicroseconds);
+		Long endTime = new Long(currTime);*/
+		
+		
+		Long startTime = null;
+		Long endTime = null;
+		ConsistencyGroupSnapshots consistencyGroupSnapshots = connector.getGroupSnapshots(groupId, startTime, endTime);
+		return consistencyGroupSnapshots;
+	}
+	
+	
+	public void enableSnapshotImageAccess(
+			Long clusterId, Long groupId, int copyId, CopySnapshot copySnapshot){	
+		EnableImageAccessParams enableImageAccessParams = new EnableImageAccessParams();
+		enableImageAccessParams.setScenario(ImageAccessScenario.TEST_REPLICA);
+		enableImageAccessParams.setMode(ImageAccessMode.LOGGED_ACCESS);
+		Snapshot snapshot = new Snapshot();
+		snapshot.setSnapshotUID(new SnapshotUID(copySnapshot.getId()));
+		enableImageAccessParams.setSnapshot(snapshot);
+		connector.enableSnapshotImageAccess(clusterId, groupId, copyId, enableImageAccessParams);
+	}
+
 
 	private Map<String, String> getVmState(FullRecoverPointSettings rpSettings) {
 		Map<String, String> res = new HashMap<>();

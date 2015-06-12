@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.emc.rpsp.imageaccess.service.ImageAccessService;
+import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
 @Controller
 public class ImageAccessController {
@@ -20,8 +21,20 @@ public class ImageAccessController {
 
 	@RequestMapping(value = "/image-access/enable", params = {"clusterId", "groupId", "copyId"}, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<HttpStatus> enableImageAccess(@RequestParam("clusterId") Long clusterId, @RequestParam("groupId") Long groupId, @RequestParam("copyId") Integer copyId) {
-		imageAccessService.enableImageAccess(clusterId, groupId, copyId);
+	public ResponseEntity<HttpStatus> enableLatestImageAccess(@RequestParam("clusterId") Long clusterId, @RequestParam("groupId") Long groupId, @RequestParam("copyId") Integer copyId) {
+		imageAccessService.enableLatestImageAccess(clusterId, groupId, copyId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/image-access/enable", params = {"clusterId", "groupId", "copyId", "snapshotId"}, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<HttpStatus> enableSnapshotImageAccess(@RequestParam("clusterId") Long clusterId, 
+			                                                       @RequestParam("groupId") Long groupId, 
+			                                                            @RequestParam("copyId") Integer copyId,
+			                                                                @RequestParam("snapshotId") Long snapshotId) {
+		CopySnapshot copySnapshot = new CopySnapshot();
+		copySnapshot.setId(snapshotId);
+		//imageAccessService.enableSnapshotImageAccess(clusterId, groupId, copyId, copySnapshot);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

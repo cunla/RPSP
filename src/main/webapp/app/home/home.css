@@ -24,7 +24,12 @@ table.table tr.selected td {
 }
 
 .modal-dialog {
-    max-width: 40vw;
+    max-width: 42vw;
 }
 
+
+/* .modal-dialog {
+    max-width: 47vw;
+}
+ */
 

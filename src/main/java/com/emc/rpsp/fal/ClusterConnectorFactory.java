@@ -53,7 +53,7 @@ public class ClusterConnectorFactory {
 		RestAdapter restAdapter = new RestAdapter.Builder()
 		        // .setLogLevel(RestAdapter.LogLevel.FULL)
 		        .setEndpoint(
-		                "https://" + "localhost" + ":" + "9999"
+		                "https://" + "localhost" + ":" + "7777"
 		                        + "/fapi/rest/" + verPath)
 		        .setConverter(new JacksonConverter())
 		        .setRequestInterceptor(buildInterceptor(settings)).build();

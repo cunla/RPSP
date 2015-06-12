@@ -8,6 +8,7 @@ import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.imageaccess.service.ImageAccessService;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.service.UserService;
+import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
 @Service
 public class ImageAccessServiceImpl implements ImageAccessService {
@@ -18,17 +19,31 @@ public class ImageAccessServiceImpl implements ImageAccessService {
 	
 
 	@Override
-	public void enableImageAccess(Long clusterId, Long groupId, Integer copyId) {
+	public void enableLatestImageAccess(Long clusterId, Long groupId, Integer copyId) {
 		Account account = userService.findCurrentUser().getUser().getAccount();
 		if(account != null){
 			SystemSettings system = account.getSystemSettings().get(0);
 			Client client = new Client(system);
-			client.enableImageAccess(clusterId, groupId, copyId);
+			client.enableLatestImageAccess(clusterId, groupId, copyId);
 		}
 		
 	}
 
 
+
+	@Override
+	public void enableSnapshotImageAccess(Long clusterId, Long groupId, int copyId,
+			CopySnapshot copySnapshot) {
+		Account account = userService.findCurrentUser().getUser().getAccount();
+		if(account != null){
+			SystemSettings system = account.getSystemSettings().get(0);
+			Client client = new Client(system);
+			client.enableSnapshotImageAccess(clusterId, groupId, copyId, copySnapshot);
+		}
+		
+	}
+	
+	
 
 	@Override
 	public void disableImageAccess(Long clusterId, Long groupId, Integer copyId) {

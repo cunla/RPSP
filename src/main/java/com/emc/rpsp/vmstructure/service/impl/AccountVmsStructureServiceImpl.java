@@ -1,5 +1,7 @@
 package com.emc.rpsp.vmstructure.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,14 +9,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.emc.fapi.jaxws.ConsistencyGroupCopySettings;
+import com.emc.fapi.jaxws.ConsistencyGroupCopySnapshots;
 import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
 import com.emc.fapi.jaxws.ConsistencyGroupLinkState;
 import com.emc.fapi.jaxws.ConsistencyGroupSetSettings;
 import com.emc.fapi.jaxws.ConsistencyGroupSettings;
+import com.emc.fapi.jaxws.ConsistencyGroupSnapshots;
 import com.emc.fapi.jaxws.ConsistencyGroupState;
 import com.emc.fapi.jaxws.ConsistencyGroupStateSet;
 import com.emc.fapi.jaxws.ConsistencyGroupUID;
@@ -23,7 +28,10 @@ import com.emc.fapi.jaxws.ConsistencyGroupVolumesStateSet;
 import com.emc.fapi.jaxws.FullRecoverPointSettings;
 import com.emc.fapi.jaxws.GlobalCopyUID;
 import com.emc.fapi.jaxws.PipeState;
+import com.emc.fapi.jaxws.RecoverPointTimeStamp;
 import com.emc.fapi.jaxws.ReplicationSetVolumesState;
+import com.emc.fapi.jaxws.Snapshot;
+import com.emc.fapi.jaxws.SnapshotUID;
 import com.emc.fapi.jaxws.VmReplicationSetSettings;
 import com.emc.fapi.jaxws.VmReplicationSettings;
 import com.emc.rpsp.accounts.domain.Account;
@@ -36,6 +44,7 @@ import com.emc.rpsp.vmstructure.constants.TransferState;
 import com.emc.rpsp.vmstructure.domain.AccountVmsStructure;
 import com.emc.rpsp.vmstructure.domain.ClusterDefinition;
 import com.emc.rpsp.vmstructure.domain.ConsistencyGroup;
+import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 import com.emc.rpsp.vmstructure.domain.GroupCopySettings;
 import com.emc.rpsp.vmstructure.domain.GroupSet;
 import com.emc.rpsp.vmstructure.domain.VmContainer;
@@ -90,11 +99,13 @@ public class AccountVmsStructureServiceImpl implements
 		
 		Map<ConsistencyGroupCopyUID, String> transferStatesMap = getGroupCopiesTransferStates(client);
 		Map<String, Long> volumesMaxSizesMap = getGroupVolumesMaxSizes(client);
+		
 
 		List<ConsistencyGroupSettings> groupSettingsList = rpSettings
 		        .getGroupsSettings();
 		for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 			
+			Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copySnapshotsMap = getGroupCopiesSnapshots(client, groupSettings.getGroupUID().getId());
 			Map<String, ClusterDefinition> handledCustersMap = new HashMap<String, ClusterDefinition>();
 			ConsistencyGroup consistencyGroup = new ConsistencyGroup();
 			String groupId = new Long(groupSettings.getGroupUID().getId()).toString();
@@ -156,7 +167,7 @@ public class AccountVmsStructureServiceImpl implements
 								handledCustersMap.put(clusterId.toString(), replicaCluster);
 								replicaClusters.add(replicaCluster);
 							}
-							GroupCopySettings groupCopySettings = getGroupCopySettings(copyId, groupSettings, transferStatesMap);
+							GroupCopySettings groupCopySettings = getGroupCopySettings(copyId, groupSettings, transferStatesMap, copySnapshotsMap);
 							//add the copy in case it wasn't added in context of another vm
 							if(!replicaCluster.isExistingCopy(groupCopySettings)){
 								replicaCluster.addGroupCopy(groupCopySettings);
@@ -243,7 +254,8 @@ public class AccountVmsStructureServiceImpl implements
 	
 	private GroupCopySettings getGroupCopySettings(ConsistencyGroupCopyUID copyId,
 			                                            ConsistencyGroupSettings consistencyGroupSettings, 
-			                                            Map<ConsistencyGroupCopyUID, String> transferStatesMap){
+			                                            Map<ConsistencyGroupCopyUID, String> transferStatesMap, 
+			                                                  Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copySnapshotsMap){
 		
 		GroupCopySettings groupCopySettings = null;
 		List<ConsistencyGroupCopySettings> allCopiesSettings = consistencyGroupSettings.getGroupCopiesSettings();
@@ -261,6 +273,9 @@ public class AccountVmsStructureServiceImpl implements
 					groupCopySettings.setImageAccess(ImageAccess.DISABLED.value());
 				}
 				groupCopySettings.setReplication(transferStatesMap.get(currGroupCopySettings.getCopyUID()));
+				List<CopySnapshot> allSnapshots = copySnapshotsMap.get(currGroupCopySettings.getCopyUID());
+				groupCopySettings.setSnapshots(getSnapshotsByType(allSnapshots, false));
+				groupCopySettings.setBookmarks(getSnapshotsByType(allSnapshots, true));
 			}
 		}
 		
@@ -308,7 +323,7 @@ public class AccountVmsStructureServiceImpl implements
 		
 	}
 	
-	public Map<String, Long> getGroupVolumesMaxSizes(Client client){
+	private Map<String, Long> getGroupVolumesMaxSizes(Client client){
 		Map<String, Long> volumesMaxSizes = new HashMap<String, Long>();
 		ConsistencyGroupVolumesStateSet volumesStateSet = client.getConsistencyGroupVolumesStateSet();
 		List<ConsistencyGroupVolumesState> volumesStates = volumesStateSet.getInnerSet();
@@ -324,6 +339,63 @@ public class AccountVmsStructureServiceImpl implements
 		}
 		return volumesMaxSizes;
 	}
+	
+	
+	private Map<ConsistencyGroupCopyUID, List<CopySnapshot>> getGroupCopiesSnapshots(Client client, Long groupId){
+		Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copyUIDToSnapshotsMap = new HashMap<ConsistencyGroupCopyUID, List<CopySnapshot>>();
+		ConsistencyGroupSnapshots consistencyGroupSnapshots = client.getGroupSnapshots(groupId);
+		List<ConsistencyGroupCopySnapshots> copiesSnapshots = consistencyGroupSnapshots.getCopiesSnapshots();
+		
+		for(ConsistencyGroupCopySnapshots currCopy : copiesSnapshots){
+			ConsistencyGroupCopyUID copyUID = currCopy.getCopyUID();
+			List<Snapshot> snapshots = currCopy.getSnapshots();
+			List<CopySnapshot> snapshotsList = new LinkedList<CopySnapshot>();
+			int maxSnapshots = 50;
+			int currSnapshotCounter = 0;
+			for(Snapshot currSnapshot : snapshots){
+				if(currSnapshotCounter < maxSnapshots || 
+						      (currSnapshot.getRelevantEvent() != null && !StringUtils.isEmpty(currSnapshot.getRelevantEvent().getDetails()))){
+					RecoverPointTimeStamp timestamp = currSnapshot.getClosingTimeStamp();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
+					String dateStr = dateFormat.format(new Date(timestamp.getTimeInMicroSeconds()/1000));
+					SnapshotUID snapshotUID = currSnapshot.getSnapshotUID();
+					CopySnapshot snapshot = new CopySnapshot();
+					snapshot.setId(snapshotUID.getId());
+					snapshot.setClosingTimestamp(dateStr);
+					if(currSnapshot.getRelevantEvent() != null){
+						snapshot.setName(currSnapshot.getRelevantEvent().getDetails());
+					}
+					snapshotsList.add(snapshot);
+				}
+				currSnapshotCounter ++;
+			}
+			copyUIDToSnapshotsMap.put(copyUID, snapshotsList);
+		}
+		return copyUIDToSnapshotsMap;
+		
+	}
+	
+	
+	private List<CopySnapshot> getSnapshotsByType(List<CopySnapshot> snapshots, boolean isBookmark){
+		List<CopySnapshot> res = new LinkedList<CopySnapshot>();
+		if(snapshots != null){
+			for(CopySnapshot currSnapshot : snapshots){
+				if(isBookmark){
+					if(!StringUtils.isEmpty(currSnapshot.getName())){
+						res.add(currSnapshot);
+					}
+				}
+				else{
+					if(StringUtils.isEmpty(currSnapshot.getName())){
+						res.add(currSnapshot);
+					}
+				}
+			}
+		}
+		return res;
+	}
+	
+	
 	
 
 }
