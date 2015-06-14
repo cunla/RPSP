@@ -220,8 +220,18 @@ public class Client {
 		enableImageAccessParams.setMode(ImageAccessMode.LOGGED_ACCESS);
 		Snapshot snapshot = new Snapshot();
 		snapshot.setSnapshotUID(new SnapshotUID(copySnapshot.getId()));
+		snapshot.setClosingTimeStamp(new RecoverPointTimeStamp(copySnapshot.getOriginalClosingTimeStamp()));
+		snapshot.setDescription("");
 		enableImageAccessParams.setSnapshot(snapshot);
-		connector.enableSnapshotImageAccess(clusterId, groupId, copyId, enableImageAccessParams);
+		try{
+			connector.enableSnapshotImageAccess(clusterId, groupId, copyId, enableImageAccessParams);
+		}
+		catch (Throwable e){
+			if(!isEOFCause(e)){
+				throw e;
+			}
+		}
+		
 	}
 
 

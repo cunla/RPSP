@@ -31,10 +31,12 @@ public class ImageAccessController {
 	public ResponseEntity<HttpStatus> enableSnapshotImageAccess(@RequestParam("clusterId") Long clusterId, 
 			                                                       @RequestParam("groupId") Long groupId, 
 			                                                            @RequestParam("copyId") Integer copyId,
-			                                                                @RequestParam("snapshotId") Long snapshotId) {
+			                                                                @RequestParam("snapshotId") Long snapshotId,
+			                                                                	@RequestParam("timestamp") Long timestamp) {
 		CopySnapshot copySnapshot = new CopySnapshot();
 		copySnapshot.setId(snapshotId);
-		//imageAccessService.enableSnapshotImageAccess(clusterId, groupId, copyId, copySnapshot);
+		copySnapshot.setOriginalClosingTimeStamp(timestamp);
+		imageAccessService.enableSnapshotImageAccess(clusterId, groupId, copyId, copySnapshot);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

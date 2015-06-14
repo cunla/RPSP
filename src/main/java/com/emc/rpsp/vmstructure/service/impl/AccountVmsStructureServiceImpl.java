@@ -362,6 +362,7 @@ public class AccountVmsStructureServiceImpl implements
 					CopySnapshot snapshot = new CopySnapshot();
 					snapshot.setId(snapshotUID.getId());
 					snapshot.setClosingTimestamp(dateStr);
+					snapshot.setOriginalClosingTimeStamp(timestamp.getTimeInMicroSeconds());
 					if(currSnapshot.getRelevantEvent() != null){
 						snapshot.setName(currSnapshot.getRelevantEvent().getDetails());
 					}

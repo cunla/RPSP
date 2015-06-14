@@ -185,10 +185,10 @@ angular.module('home').controller('vmStructureController', ['$scope', '$http', f
     	if($scope.selectedCopy.imageAccess == 'Disabled'){
     	   url = '/rpsp/image-access/enable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId + '&' + 'copyId=' + copyId;
     	   if(accessType == 'snapshot'){
-    		   url += '&' + 'snapshotId=' + $scope.selectedSnapshot.id;
+    		   url += '&' + 'snapshotId=' + $scope.selectedSnapshot.id + '&' + 'timestamp=' + $scope.selectedSnapshot.originalClosingTimeStamp;
     	   }
     	   else if(accessType == 'bookmark'){
-    		   url += '&' + 'snapshotId=' + $scope.selectedBookmark.id;
+    		   url += '&' + 'snapshotId=' + $scope.selectedBookmark.id + '&' + 'timestamp=' + $scope.selectedBookmark.originalClosingTimeStamp;
     	   }
     	   $scope.selectedCopy.imageAccess = 'Enabled';
     	}
