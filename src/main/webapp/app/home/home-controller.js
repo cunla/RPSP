@@ -37,10 +37,11 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', 'vmStructu
 	$scope.getVmStructureData();
 	
 	
-	$scope.openModal = function(){
+	
+	$scope.openImageAccessModal = function(){
 		var modalInstance = $modal.open({
-             templateUrl: 'app/image-access/test-modal.html',
-             controller: 'testController'
+             templateUrl: 'app/image-access/image-access-modal.html',
+             controller: 'imageAccessController'
          });
 		
 		modalInstance.result.then(function(){{}});
@@ -60,44 +61,13 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', 'vmStructu
     
     
     
-    $scope.imageAccessInit = function(){
-    	vmStructureService.imageAccessInit();
-    	$scope.selectedCopy = vmStructureService.getSelectedCopy();
-    	$scope.selectedSnapshot = vmStructureService.getSelectedSnapshot();
-    	$scope.selectedBookmark = vmStructureService.getSelectedBookmark();
-    	$scope.imageAccessType = vmStructureService.getImageAccessType();
-    };
-    
-    
     $scope.moveVm = function(vmId, sgId) {
     	vmStructureService.moveVm(vmId, sgId);
     	$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
     	$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
         $scope.$apply();
     };
-    
-    
-    $scope.imageAccessInit = function(){
-    	if($scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type == 'cg'){
-	    	$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
-	    	$scope.selectedSnapshot = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0].snapshots[0];
-	    	$scope.selectedBookmark = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0].bookmarks[0];
-	    	$scope.imageAccessType = {};
-    	}
-    	else{
-    		$scope.selectedCopy = {};
-	    	$scope.selectedSnapshot = {};
-	    	$scope.selectedBookmark = {};
-	    	$scope.imageAccessType = {};
-    	}
-    }
-    
-    
-    $scope.imageAccess = function(){
-    	vmStructureService.imageAccess($scope.selectedCopy, $scope.imageAccessType, $scope.selectedSnapshot, $scope.selectedBookmark);    	
-    }
-    
-    
+        
     
 }]);
 

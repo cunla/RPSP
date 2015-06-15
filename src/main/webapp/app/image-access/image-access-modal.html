@@ -1,0 +1,105 @@
+<div class="modal-header modal-header-primary">
+    <a class="close" ng-click="cancel()">x</a>
+	<h3 class="modal-title">
+		<div class="centered-text">DR Test: {{vmGsAndCgFlatData[protectedSelectedIndex].name}}</div>
+	</h3>
+</div>
+<div class="modal-body">
+
+	<br/>
+	<table class="table table-condensed table-striped">
+		<thead>
+		</thead>
+		<tbody>
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Select Copy:	
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-5 col-sm-5 col-md-5 margin-top">
+							
+								<select ng-model="selectedCopy" 
+	                                    ng-options="copy.name for copy in vmGsAndCgFlatData[protectedSelectedIndex].
+	                                                      replicaClusters[0].groupCopySettings" class="form-control">
+	                                                          <!-- <option value="" ng-if="false"></option> -->
+							
+								</select>
+							</div>	
+							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+			<tr>					
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Select Image:	
+						</div>
+					</div>										
+				</td>				
+				<td>	
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+							<label>
+								<input type="radio" ng-model="imageAccessType" value="latest">
+							Latest Image
+								</input>
+							</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5 col-sm-5 col-md-5 radio" >
+							<label>
+								<input type="radio" ng-model="imageAccessType" value="snapshot">
+							From Snapshot List
+								</input>
+							</label>
+						</div>
+						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+							<select ng-model="selectedSnapshot" 
+	                                    ng-options="snapshot.closingTimestamp for snapshot in selectedCopy.snapshots" class="form-control">
+	                                        <!-- <option value="" ng-if="false"></option> -->												
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5 col-sm-5 col-md-5 radio">
+							<label>
+								<input type="radio" ng-model="imageAccessType" value="bookmark">
+						Specific Bookmark
+								</input>
+							</label>
+						</div>
+						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+								<select ng-model="selectedBookmark" 
+	                                    ng-options="bookmark.name for bookmark in selectedCopy.bookmarks" class="form-control">
+	                                            <!-- <option value="" ng-if="false"></option>	 -->											
+								</select>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>					
+				<td>
+						Test Network:
+				</td>				
+				<td>
+						Tenant1 Testing
+				</td>
+			</tr>
+		</tbody>					    
+	</table>
+</div>
+<div class="modal-footer centered-text div-grey">
+	<button type="button" class="btn btn-primary" ng-click="imageAccess()">
+	         {{selectedCopy.imageAccess == 'Disabled' ? 'Enable':'Disable'}} Access
+	</button>
+</div>
+

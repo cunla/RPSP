@@ -27,6 +27,10 @@ table.table tr.selected td {
     max-width: 42vw;
 }
 
+.modal-backdrop {
+  bottom: 0;
+}
+
 
 /* .modal-dialog {
     max-width: 47vw;
