@@ -72,38 +72,6 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', 'vmStructu
 }]);
 
 
-angular.module('home').directive('draggable', function() {
-	return {
-        restrict: "A",
-        link: function(scope, element, attributes, ctlr) {
-            element.attr("draggable", true);
- 
-            element.bind("dragstart", function(eventObject) {
-                eventObject.dataTransfer.setData("text", attributes.vmid);
-            });
-        }
-    };
-});
-
-
-angular.module('home').directive('droppable', function() {
-    return {
-        restrict: "A",
-        link: function (scope, element, attributes, ctlr) {
- 
-            element.bind("dragover", function(eventObject){
-                eventObject.preventDefault();
-            });
- 
-            element.bind("drop", function(eventObject) {
-                 
-                scope.moveVm(eventObject.dataTransfer.getData("text"), attributes.cgid); 
-                eventObject.preventDefault();
-            });
-        }
-    };
-});
-
 
 angular.module('home').run(['localeService', function(localeService){
 	localeService.setLocale();
