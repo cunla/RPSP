@@ -60,6 +60,21 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', 'vmStructu
     };
     
     
+    $scope.isActionApplicable = function(){
+    	var res;    	
+    	if($scope.protectedSelectedIndex != -1){
+    		var entityType = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type;
+    		if(entityType == 'cg' || entityType == 'gs'){
+				res = true;
+			}
+    	}
+    	else{
+    		res = false;
+    	}
+    	return res;
+    };
+    
+    
     
     $scope.moveVm = function(vmId, sgId) {
     	vmStructureService.moveVm(vmId, sgId);

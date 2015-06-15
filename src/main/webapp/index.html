@@ -77,14 +77,14 @@
 		
 			
  		<div class="col-xs-12 col-sm-12 col-md-12 container top-border div-solid-grey">
-			  <button type="button" class="btn btn-primary margin-top" ng-click="openImageAccessModal()">DR Test</button>
-			  <button type="button" class="btn btn-primary margin-top">Failover</button>
-			  <button type="button" class="btn btn-primary margin-top">Restore Production</button>
+			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}" ng-click="openImageAccessModal()">DR Test</button>
+			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}">Failover</button>
+			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}">Restore Production</button>
 			  <white-space>     </white-space>
-			  <button type="button" class="btn btn-primary margin-top">Enable/Disable</button>
-			  <button type="button" class="btn btn-primary margin-top">Add Bookmark</button>
-			  <button type="button" class="btn btn-primary margin-top">Show History</button>
-			  <button type="button" class="btn btn-primary margin-top">Service Request</button>
+			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}">Enable/Disable</button>
+			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}">Add Bookmark</button>
+			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}">Show History</button>
+			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}">Service Request</button>
 		</div>		
 			
 		<br></br>
