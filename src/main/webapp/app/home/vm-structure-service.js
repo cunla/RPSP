@@ -163,6 +163,7 @@ app.service('vmStructureService', ['$http', function ($http) {
     	var copyId = selectedCopy.id;
     	var accessType = imageAccessType;
     	var url;
+    	
     	if(selectedCopy.imageAccess == 'Disabled'){
     	   url = '/rpsp/image-access/enable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId + '&' + 'copyId=' + copyId;
     	   if(accessType == 'snapshot'){

@@ -31,6 +31,18 @@ app.controller('imageAccessController', ['$scope', '$http', '$modal', '$modalIns
 	    	vmStructureService.imageAccess($scope.selectedCopy, $scope.imageAccessType, $scope.selectedSnapshot, $scope.selectedBookmark);    	
 	}
 	
+	
+	$scope.isActionApplicable = function(){
+    	var res = false;  
+    	
+    	if($scope.selectedCopy.imageAccess == 'Enabled' || Object.keys($scope.imageAccessType).length != 0){
+    		res = true; 
+    	}
+    	
+    	return res;
+    };
+	
+	
 	$scope.cancel = function(){
 		$modalInstance.dismiss('cancel');
 	}
