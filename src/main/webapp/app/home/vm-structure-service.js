@@ -182,9 +182,8 @@ app.service('vmStructureService', ['$http', function ($http) {
     	
     	console.log(url);
     	   	
-	   $http.put(url)
-	    .success(function(data,status,headers,config){
-	        
+	    $http.put(url)
+	    	.success(function(data,status,headers,config){	        
 	    })
     	
     }

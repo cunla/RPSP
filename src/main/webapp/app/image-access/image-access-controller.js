@@ -78,7 +78,6 @@ app.controller('imageAccessController', ['$scope', '$http', '$modal', '$modalIns
 	
 	$scope.imageAccess = function(){
 	    	vmStructureService.imageAccess($scope.selectedCopy, $scope.imageAccessType, $scope.selectedSnapshot, $scope.selectedBookmark);  
-	    	//$scope.imageAccessType = 'latest';
 	    	$scope.initData();
 	}
 	
