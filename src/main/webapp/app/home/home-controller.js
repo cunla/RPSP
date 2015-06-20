@@ -24,14 +24,17 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', 'vmStructu
 	$scope.vmGsAndCgFlatData = {};
 	$scope.totalVms = {};
 	$scope.protectedVms = {};
+	$scope.loading = true;
 	
 	$scope.getVmStructureData = function(){
 			vmStructureService.getVmStructureData().then(function(allData) {
 		      $scope.vmStructureData = allData.vmStructureData;
 		      $scope.vmGsAndCgFlatData = allData.vmGsAndCgFlatData;
 		      $scope.totalVms = allData.totalVms;
-		      $scope.protectedVms = allData.protectedVms;
-		   });
+		      $scope.protectedVms = allData.protectedVms;		      
+		   }).finally(function (res) {
+			  $scope.loading = false;			  
+		   })
 	};
 	   
 	$scope.getVmStructureData();

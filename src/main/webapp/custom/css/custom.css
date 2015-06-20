@@ -20,28 +20,6 @@ body.body-grey {
 */
 
 
-/*
-div.image {
-   width: 140px;
-   height: 140px;
-   margin: 0 auto 20px;
-   display: block;
-   background-size:contain;
-   background-image:url("../images/login.png");	
-}
-
-
-div.logo-image {
-   width: 36px;
-   height: 36px;
-   margin-top: 8px; 
-   margin-bottom: 8px;
-   display: block;
-   background-size:contain;
-   background-image:url("../images/login.png");	
-}
-*/
-
 
 div.image {
    width: 142px;
@@ -62,6 +40,8 @@ div.logo-image {
    background-size:contain;
    background-image:url("../images/login.png");	
 }	
+
+
 
 
 

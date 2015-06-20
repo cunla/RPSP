@@ -36,4 +36,14 @@ table.table tr.selected td {
     max-width: 47vw;
 }
  */
-
+ 
+ div.spinner-gif {
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   width: 64px;
+   height: 64px;
+   display: block;
+   background-size:contain;	
+   background-image:url("../../assets/images/loader.gif");	
+}
