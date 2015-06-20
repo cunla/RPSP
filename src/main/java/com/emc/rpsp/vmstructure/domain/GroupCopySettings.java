@@ -1,5 +1,6 @@
 package com.emc.rpsp.vmstructure.domain;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class GroupCopySettings {
@@ -9,8 +10,8 @@ public class GroupCopySettings {
 	private String clusterId;
 	private String imageAccess;
 	private String replication;
-	private List<CopySnapshot> snapshots;
-	private List<CopySnapshot> bookmarks;
+	private List<CopySnapshot> snapshots = new LinkedList<CopySnapshot>();
+	private List<CopySnapshot> bookmarks = new LinkedList<CopySnapshot>();
 		
 	
 	public GroupCopySettings() {

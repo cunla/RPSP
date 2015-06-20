@@ -261,6 +261,7 @@ public class AccountVmsStructureServiceImpl implements
 		List<ConsistencyGroupCopySettings> allCopiesSettings = consistencyGroupSettings.getGroupCopiesSettings();
 		for(ConsistencyGroupCopySettings currGroupCopySettings : allCopiesSettings){
 			if(currGroupCopySettings.getCopyUID().equals(copyId)){
+				Long imageAccessTimeStamp = 0L;
 				groupCopySettings = new GroupCopySettings();
 				groupCopySettings.setId(new Integer(copyId.getGlobalCopyUID().getCopyUID()).toString());
 				groupCopySettings.setName(currGroupCopySettings.getName());
@@ -268,18 +269,37 @@ public class AccountVmsStructureServiceImpl implements
 				if(currGroupCopySettings.getImageAccessInformation() != null 
 						 && currGroupCopySettings.getImageAccessInformation().isImageAccessEnabled()){
 					groupCopySettings.setImageAccess(ImageAccess.ENABLED.value());
+					imageAccessTimeStamp = currGroupCopySettings.
+							                    getImageAccessInformation().
+							                             getImageInformation().
+							                                    getTimeStamp().getTimeInMicroSeconds();
 				}
 				else{
 					groupCopySettings.setImageAccess(ImageAccess.DISABLED.value());
 				}
 				groupCopySettings.setReplication(transferStatesMap.get(currGroupCopySettings.getCopyUID()));
 				List<CopySnapshot> allSnapshots = copySnapshotsMap.get(currGroupCopySettings.getCopyUID());
+				if(groupCopySettings.getImageAccess().equals(ImageAccess.ENABLED.value())){
+					setSnapshotImageAccess(allSnapshots, imageAccessTimeStamp);
+				}
 				groupCopySettings.setSnapshots(getSnapshotsByType(allSnapshots, false));
 				groupCopySettings.setBookmarks(getSnapshotsByType(allSnapshots, true));
 			}
 		}
 		
 		return groupCopySettings;
+	}
+	
+	
+	
+	private void setSnapshotImageAccess(List<CopySnapshot> allSnapshots, Long imageAccessTimeStamp){
+		if(allSnapshots != null){
+			for(CopySnapshot currCopySnapshot : allSnapshots){
+				if(currCopySnapshot.getOriginalClosingTimeStamp().equals(imageAccessTimeStamp)){
+					currCopySnapshot.setImageAccessEnabled(true);
+				}
+			}
+		}
 	}
 
 	

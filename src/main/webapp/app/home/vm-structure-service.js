@@ -172,12 +172,13 @@ app.service('vmStructureService', ['$http', function ($http) {
     	   else if(accessType == 'bookmark'){
     		   url += '&' + 'snapshotId=' + selectedBookmark.id + '&' + 'timestamp=' + selectedBookmark.originalClosingTimeStamp;
     	   }
-    	   selectedCopy.imageAccess = 'Enabled';
+    	   this.updateImageAccessFlags(selectedCopy, imageAccessType, selectedSnapshot, selectedBookmark, true);
     	}
     	else{
     	   url = '/rpsp/image-access/disable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId + '&' + 'copyId=' + copyId;
-    	   selectedCopy.imageAccess = 'Disabled';
+    	   this.updateImageAccessFlags(selectedCopy, imageAccessType, selectedSnapshot, selectedBookmark, false);
     	}
+    	
     	
     	console.log(url);
     	   	
@@ -187,6 +188,46 @@ app.service('vmStructureService', ['$http', function ($http) {
 	    })
     	
     }
+    
+    
+    
+    this.updateImageAccessFlags = function(selectedCopy, imageAccessType, selectedSnapshot, selectedBookmark, isEnableAccess){
+    	var serviceDataSelectedCopy = vmGsAndCgFlatData[protectedSelectedIndex].replicaClusters[0].groupCopySettings[selectedCopy.id];
+    	
+    	var currSnapshot = null;
+    	
+    	if(imageAccessType == 'snapshot'){
+    		currSnapshot = this.locateSnapshot(serviceDataSelectedCopy.snapshots, selectedSnapshot);
+    	}
+    	else if(imageAccessType == 'bookmark'){
+    		currSnapshot = this.locateSnapshot(serviceDataSelectedCopy.bookmarks, selectedBookmark);
+    	}
+    	
+    	if(isEnableAccess == true){
+    		serviceDataSelectedCopy.imageAccess = 'Enabled';
+    		if(currSnapshot != null){
+    			currSnapshot.imageAccessEnabled = true;
+    		}
+    	}
+    	else{
+    		serviceDataSelectedCopy.imageAccess = 'Disabled';
+    		if(currSnapshot != null){
+    			currSnapshot.imageAccessEnabled = false;
+    		}
+    	}
+    };
+    
+    
+    this.locateSnapshot = function(snapshots, snapshotToSearch){
+    	var length = snapshots.length;
+		
+        for (var i = 0; i < length; i++) {
+            var currSnapshot = snapshots[i];
+            if(currSnapshot.id == snapshotToSearch.id){
+            	return currSnapshot;
+            }
+        }
+    };
     
             
     

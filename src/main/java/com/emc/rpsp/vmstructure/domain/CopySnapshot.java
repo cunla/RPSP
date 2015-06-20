@@ -7,6 +7,7 @@ public class CopySnapshot {
 	private String closingTimestamp;
 	private Long originalClosingTimeStamp;
 	private String name;
+	private boolean isImageAccessEnabled;
 	
 	public CopySnapshot() {
 		super();
@@ -48,6 +49,14 @@ public class CopySnapshot {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isImageAccessEnabled() {
+		return isImageAccessEnabled;
+	}
+
+	public void setImageAccessEnabled(boolean isImageAccessEnabled) {
+		this.isImageAccessEnabled = isImageAccessEnabled;
 	}
 
 	
