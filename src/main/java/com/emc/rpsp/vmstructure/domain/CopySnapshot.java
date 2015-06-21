@@ -1,65 +1,61 @@
 package com.emc.rpsp.vmstructure.domain;
 
-
 public class CopySnapshot {
-	
-	private Long id;
-	private String closingTimestamp;
-	private Long originalClosingTimeStamp;
-	private String name;
-	private boolean isImageAccessEnabled;
-	
-	public CopySnapshot() {
-		super();
-	}
 
-	public CopySnapshot(Long id, String closingTimestamp) {
-		super();
-		this.id = id;
-		this.closingTimestamp = closingTimestamp;
-	}
+    private Long id;
+    private String closingTimestamp;
+    private Long originalClosingTimeStamp;
+    private String name;
+    private boolean isImageAccessEnabled;
 
-	public Long getId() {
-		return id;
-	}
+    public CopySnapshot() {
+        super();
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public CopySnapshot(Long id, String closingTimestamp) {
+        super();
+        this.id = id;
+        this.closingTimestamp = closingTimestamp;
+    }
 
-	public String getClosingTimestamp() {
-		return closingTimestamp;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setClosingTimestamp(String closingTimestamp) {
-		this.closingTimestamp = closingTimestamp;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Long getOriginalClosingTimeStamp() {
-		return originalClosingTimeStamp;
-	}
+    public String getClosingTimestamp() {
+        return closingTimestamp;
+    }
 
-	public void setOriginalClosingTimeStamp(Long originalClosingTimeStamp) {
-		this.originalClosingTimeStamp = originalClosingTimeStamp;
-	}
+    public void setClosingTimestamp(String closingTimestamp) {
+        this.closingTimestamp = closingTimestamp;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Long getOriginalClosingTimeStamp() {
+        return originalClosingTimeStamp;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setOriginalClosingTimeStamp(Long originalClosingTimeStamp) {
+        this.originalClosingTimeStamp = originalClosingTimeStamp;
+    }
 
-	public boolean isImageAccessEnabled() {
-		return isImageAccessEnabled;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setImageAccessEnabled(boolean isImageAccessEnabled) {
-		this.isImageAccessEnabled = isImageAccessEnabled;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	
-	
-	
+    public boolean isImageAccessEnabled() {
+        return isImageAccessEnabled;
+    }
+
+    public void setImageAccessEnabled(boolean isImageAccessEnabled) {
+        this.isImageAccessEnabled = isImageAccessEnabled;
+    }
+
 }
