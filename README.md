@@ -45,7 +45,7 @@ It is recommended to configure RPSP to run as a Windows Service as explained in 
 ##USER OPERATIONS
 To access RPSP either AngularJS client or the REST API can be used
 ##RPSP UI – AngularJS Client
-The QURT Web client can be accessed in: http://<hostname>:8080/rpsp (8080 is the default port) 
+The QURT Web client can be accessed in: http://hostname:8080/rpsp (8080 is the default port) 
 
 RPSP UI provides the following functionality:
  1. RPSP Configuration – Define RP systems to collect data from
@@ -56,7 +56,7 @@ RPSP UI provides the following functionality:
      - Select report quarter (past or current)
  
 ###RPSP REST API
-The following methods are supported in the RPSP RESP API, with base being http://<hostname>:<port>/rpsp
+The following methods are supported in the RPSP RESP API, with base being http://*hostname*:*port*/rpsp
 
 1. Accounts API *(admin permissions only)*
 	 - `GET /accounts`  Get all accounts
@@ -82,8 +82,12 @@ The following methods are supported in the RPSP RESP API, with base being http:/
      - `POST /vmownership/{id}`  Update specific vm 
      - `DELETE /vmownership/{id}` Delete specific vm 
 
-4. Full VMs hierarchy data restricted by logged in user and his related account info  (protected\unprotected\cg etc)  
-    - `GET /account-vms`
+4. User actions
+    - `POST /login-action` Login with user
+        Headers: `Content-Type: application/x-www-form-urlencoded`
+        Body example: `username=user@account&password=xxxx`
+    - `POST /logout-action` Logout
+    - `GET /account-vms` - Full VMs hierarchy data restricted by logged in user and his related account info  (protected\unprotected\cg etc)
 
 ###CONTRIBUTION INSTRUCTIONS
 Create a fork of the project into your own repository. 
