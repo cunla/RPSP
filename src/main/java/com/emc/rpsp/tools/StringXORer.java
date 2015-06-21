@@ -1,15 +1,13 @@
 package com.emc.rpsp.tools;
 
-import java.io.IOException;
+import org.apache.tomcat.util.codec.binary.Base64;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.tomcat.util.codec.binary.Base64;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import java.io.IOException;
 
 public class StringXORer {
 
@@ -33,13 +31,11 @@ public class StringXORer {
 		try {
 			IvParameterSpec iv = new IvParameterSpec(key2.getBytes("UTF-8"));
 
-			SecretKeySpec skeySpec = new SecretKeySpec(key1.getBytes("UTF-8"),
-			        "AES");
+			SecretKeySpec skeySpec = new SecretKeySpec(key1.getBytes("UTF-8"), "AES");
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
 			cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
 			byte[] encrypted = cipher.doFinal(value.getBytes());
-			System.out.println("encrypted string:"
-			        + Base64.encodeBase64String(encrypted));
+			System.out.println("encrypted string:" + Base64.encodeBase64String(encrypted));
 			return Base64.encodeBase64String(encrypted);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -51,8 +47,7 @@ public class StringXORer {
 		try {
 			IvParameterSpec iv = new IvParameterSpec(key2.getBytes("UTF-8"));
 
-			SecretKeySpec skeySpec = new SecretKeySpec(key1.getBytes("UTF-8"),
-			        "AES");
+			SecretKeySpec skeySpec = new SecretKeySpec(key1.getBytes("UTF-8"), "AES");
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
 			cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
 			byte[] original = cipher.doFinal(Base64.decodeBase64(encrypted));

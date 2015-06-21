@@ -1,40 +1,17 @@
 package com.emc.rpsp.fal;
 
-import java.io.EOFException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import retrofit.RetrofitError;
-import retrofit.http.Body;
-import retrofit.http.Path;
-
-import com.emc.fapi.jaxws.ClusterInfo;
-import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
-import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
-import com.emc.fapi.jaxws.ConsistencyGroupCopySnapshots;
-import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
-import com.emc.fapi.jaxws.ConsistencyGroupSettings;
-import com.emc.fapi.jaxws.ConsistencyGroupSnapshots;
-import com.emc.fapi.jaxws.ConsistencyGroupStateSet;
-import com.emc.fapi.jaxws.ConsistencyGroupVolumesStateSet;
-import com.emc.fapi.jaxws.EnableImageAccessParams;
-import com.emc.fapi.jaxws.EnableLatestImageAccessParams;
-import com.emc.fapi.jaxws.FullRecoverPointSettings;
-import com.emc.fapi.jaxws.ImageAccessMode;
-import com.emc.fapi.jaxws.ImageAccessScenario;
-import com.emc.fapi.jaxws.RecoverPointClustersInformation;
-import com.emc.fapi.jaxws.RecoverPointTimeStamp;
-import com.emc.fapi.jaxws.Snapshot;
-import com.emc.fapi.jaxws.SnapshotUID;
-import com.emc.fapi.jaxws.VmReplicationSetSettings;
-import com.emc.fapi.jaxws.VmReplicationSettings;
-import com.emc.fapi.jaxws.VmState;
+import com.emc.fapi.jaxws.*;
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
 import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
+import retrofit.RetrofitError;
+
+import java.io.EOFException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by morand3 on 1/14/2015.
@@ -50,7 +27,7 @@ public class Client {
 	}
 
 	public Client(SystemSettings systemSettings,
-	        SystemConnectionInfoRepository systemConnectionInfoRepository) {
+			SystemConnectionInfoRepository systemConnectionInfoRepository) {
 		this(systemSettings);
 		this.systemsRepo = systemConnectionInfoRepository;
 	}
@@ -74,8 +51,7 @@ public class Client {
 				systemSettings.setTestResult(false);
 				systemsRepo.saveAndFlush(systemSettings);
 			}
-			throw new RpspException("Couldn't access host "
-			        + systemSettings.getSystemIp());
+			throw new RpspException("Couldn't access host " + systemSettings.getSystemIp());
 		}
 	}
 
@@ -84,9 +60,8 @@ public class Client {
 	 */
 	public Map<String, String> getVmNamesInCluster(long clusterId) {
 		ClusterVirtualInfrastructuresState state = connector
-		        .getVirtualInfrastructuresStateFromCluster(clusterId);
-		List<VmState> vmStateList = state.getVirtualInfrastructuresState()
-		        .getVmsState();
+				.getVirtualInfrastructuresStateFromCluster(clusterId);
+		List<VmState> vmStateList = state.getVirtualInfrastructuresState().getVmsState();
 		Map<String, String> res = new HashMap<>();
 		for (VmState vmState : vmStateList) {
 			String vmId = vmState.getVmUID().getUuid();
@@ -98,12 +73,12 @@ public class Client {
 
 	/**
 	 * Provides a list of VMs per cluster
-	 * 
+	 *
 	 * @return Map of clusterId => (Map of vmId => vmName)
 	 */
 	public Map<Long, Map<String, String>> getVmNamesAllClusters() {
 		ClusterVirtualInfrastructuresStateSet stateSet = connector
-		        .getVirtualInfrastructuresStateFromAllCluster();
+				.getVirtualInfrastructuresStateFromAllCluster();
 		return getVmNames(stateSet);
 	}
 
@@ -111,28 +86,24 @@ public class Client {
 	 * @return Map of clusterId => clusterName
 	 */
 	public Map<Long, String> getClusterNames() {
-		RecoverPointClustersInformation rpClusters = connector
-		        .getRpClustersInformation();
+		RecoverPointClustersInformation rpClusters = connector.getRpClustersInformation();
 		systemSettings.setTestResult(true);
 		return getClusterNames(rpClusters);
 	}
 
-	private Map<Long, String> getClusterNames(
-	        RecoverPointClustersInformation rpClusters) {
+	private Map<Long, String> getClusterNames(RecoverPointClustersInformation rpClusters) {
 		Map<Long, String> res = new HashMap<>();
 		for (ClusterInfo clusterInfo : rpClusters.getClustersInformation()) {
-			res.put(clusterInfo.getClusterUID().getId(),
-			        clusterInfo.getClusterName());
+			res.put(clusterInfo.getClusterUID().getId(), clusterInfo.getClusterName());
 		}
 		return res;
 	}
 
 	private Map<Long, Map<String, String>> getVmNames(
-	        ClusterVirtualInfrastructuresStateSet stateSet) {
+			ClusterVirtualInfrastructuresStateSet stateSet) {
 		Map<Long, Map<String, String>> res = new HashMap<>();
 		for (ClusterVirtualInfrastructuresState state : stateSet.getInnerSet()) {
-			List<VmState> vmStateList = state.getVirtualInfrastructuresState()
-			        .getVmsState();
+			List<VmState> vmStateList = state.getVirtualInfrastructuresState().getVmsState();
 			long clusterId = state.getClusterUID().getId();
 			Map<String, String> vms = res.get(clusterId);
 			if (null == vms) {
@@ -147,129 +118,114 @@ public class Client {
 		}
 		return res;
 	}
-	
-	
+
 	public FullRecoverPointSettings getFullRecoverPointSettings() {
-		FullRecoverPointSettings rpSettings = connector
-		        .getFullRecoverPointSettings();
+		FullRecoverPointSettings rpSettings = connector.getFullRecoverPointSettings();
 		return rpSettings;
 	}
 
 	public Map<String, String> getVmState() {
-		FullRecoverPointSettings rpSettings = connector
-		        .getFullRecoverPointSettings();
+		FullRecoverPointSettings rpSettings = connector.getFullRecoverPointSettings();
 		return getVmState(rpSettings);
 	}
-	
+
 	public void enableLatestImageAccess(Long clusterId, Long groupId, Integer copyId) {
 		EnableLatestImageAccessParams params = new EnableLatestImageAccessParams();
 		params.setScenario(ImageAccessScenario.TEST_REPLICA);
 		params.setMode(ImageAccessMode.LOGGED_ACCESS);
-		try{
+		try {
 			connector.enableLatestImageAccess(clusterId, groupId, copyId, params);
-		}
-		catch (Throwable e){
-			if(!isEOFCause(e)){
+		} catch (Throwable e) {
+			if (!isEOFCause(e)) {
 				throw e;
 			}
 		}
 	}
-	
-	
+
 	public void disableImageAccess(Long clusterId, Long groupId, Integer copyId) {
-		try{
+		try {
 			connector.disableLatestImageAccess(clusterId, groupId, copyId);
-		}
-		catch (Throwable e){
-			if(!isEOFCause(e)){
+		} catch (Throwable e) {
+			if (!isEOFCause(e)) {
 				throw e;
 			}
 		}
 	}
-	
-	public ConsistencyGroupStateSet getConsistencyGroupStateSet(){
+
+	public ConsistencyGroupStateSet getConsistencyGroupStateSet() {
 		ConsistencyGroupStateSet consistencyGroupStateSet = connector.getConsistencyGroupStateSet();
 		return consistencyGroupStateSet;
 	}
-	
-	
-	public ConsistencyGroupVolumesStateSet getConsistencyGroupVolumesStateSet(){
-		ConsistencyGroupVolumesStateSet consistencyGroupVolumesStateSet = connector.getConsistencyGroupVolumesStateSet();
+
+	public ConsistencyGroupVolumesStateSet getConsistencyGroupVolumesStateSet() {
+		ConsistencyGroupVolumesStateSet consistencyGroupVolumesStateSet = connector
+				.getConsistencyGroupVolumesStateSet();
 		return consistencyGroupVolumesStateSet;
 	}
-	
-	public ConsistencyGroupSnapshots getGroupSnapshots(Long groupId){
+
+	public ConsistencyGroupSnapshots getGroupSnapshots(Long groupId) {
 		
 		/*long dayInMicroseconds = 1000 * 1000 * 60 * 60 * 24;
 		long currTime = connector.getSystemTime().getTimeInMicroSeconds() - dayInMicroseconds;
 		Long startTime = new Long(currTime - dayInMicroseconds);
 		Long endTime = new Long(currTime);*/
-		
-		
+
 		Long startTime = null;
 		Long endTime = null;
-		ConsistencyGroupSnapshots consistencyGroupSnapshots = connector.getGroupSnapshots(groupId, startTime, endTime);
+		ConsistencyGroupSnapshots consistencyGroupSnapshots = connector
+				.getGroupSnapshots(groupId, startTime, endTime);
 		return consistencyGroupSnapshots;
 	}
-	
-	
-	public void enableSnapshotImageAccess(
-			Long clusterId, Long groupId, int copyId, CopySnapshot copySnapshot){	
+
+	public void enableSnapshotImageAccess(Long clusterId, Long groupId, int copyId,
+			CopySnapshot copySnapshot) {
 		EnableImageAccessParams enableImageAccessParams = new EnableImageAccessParams();
 		enableImageAccessParams.setScenario(ImageAccessScenario.TEST_REPLICA);
 		enableImageAccessParams.setMode(ImageAccessMode.LOGGED_ACCESS);
 		Snapshot snapshot = new Snapshot();
 		snapshot.setSnapshotUID(new SnapshotUID(copySnapshot.getId()));
-		snapshot.setClosingTimeStamp(new RecoverPointTimeStamp(copySnapshot.getOriginalClosingTimeStamp()));
+		snapshot.setClosingTimeStamp(
+				new RecoverPointTimeStamp(copySnapshot.getOriginalClosingTimeStamp()));
 		snapshot.setDescription("");
 		enableImageAccessParams.setSnapshot(snapshot);
-		try{
-			connector.enableSnapshotImageAccess(clusterId, groupId, copyId, enableImageAccessParams);
-		}
-		catch (Throwable e){
-			if(!isEOFCause(e)){
+		try {
+			connector
+					.enableSnapshotImageAccess(clusterId, groupId, copyId, enableImageAccessParams);
+		} catch (Throwable e) {
+			if (!isEOFCause(e)) {
 				throw e;
 			}
 		}
-		
-	}
 
+	}
 
 	private Map<String, String> getVmState(FullRecoverPointSettings rpSettings) {
 		Map<String, String> res = new HashMap<>();
 		Map<Long, List<ConsistencyGroupCopyUID>> productionCopies = getProductionCopies(rpSettings);
 
-		List<ConsistencyGroupSettings> groupSettingsList = rpSettings
-		        .getGroupsSettings();
+		List<ConsistencyGroupSettings> groupSettingsList = rpSettings.getGroupsSettings();
 		for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
-			
-			
+
 			List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
-			        .getVmReplicationSetsSettings();
-			
-			
+					.getVmReplicationSetsSettings();
+
 			for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {
-				
-				
+
 				List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
-				        .getReplicatedVMs();
-				
-				
+						.getReplicatedVMs();
+
 				for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
 					String vmId = vmReplication.getVmUID().getUuid();
-					ConsistencyGroupCopyUID copyId = vmReplication
-					        .getGroupCopyUID();
-					Long clusterId = copyId.getGlobalCopyUID().getClusterUID()
-					        .getId();
+					ConsistencyGroupCopyUID copyId = vmReplication.getGroupCopyUID();
+					Long clusterId = copyId.getGlobalCopyUID().getClusterUID().getId();
 					List<ConsistencyGroupCopyUID> production = productionCopies
-					        .get(copyId.getGroupUID().getId());
+							.get(copyId.getGroupUID().getId());
 					if (production.contains(copyId)) {
 						res.put(vmId, StatesConsts.STATE_SOURCE);
 					} else {
 						String state = StatesConsts.STATE_REMOTE;
 						for (ConsistencyGroupCopyUID copy : production) {
-							if (clusterId == copy.getGlobalCopyUID()
-							        .getClusterUID().getId()) {
+							if (clusterId == copy.getGlobalCopyUID().getClusterUID().getId()) {
 								state = StatesConsts.STATE_LOCAL;
 							}
 						}
@@ -283,30 +239,25 @@ public class Client {
 
 	// Propogate to data a map groupId --> Set of production copies
 	private Map<Long, List<ConsistencyGroupCopyUID>> getProductionCopies(
-	        FullRecoverPointSettings rpSettings) {
+			FullRecoverPointSettings rpSettings) {
 		Map<Long, List<ConsistencyGroupCopyUID>> res = new HashMap<>();
-		List<ConsistencyGroupSettings> groupSettingsList = rpSettings
-		        .getGroupsSettings();
+		List<ConsistencyGroupSettings> groupSettingsList = rpSettings.getGroupsSettings();
 		for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 			List<ConsistencyGroupCopyUID> productionCopiesList = groupSettings
-			        .getProductionCopiesUID();
+					.getProductionCopiesUID();
 			res.put(groupSettings.getGroupUID().getId(), productionCopiesList);
 
 		}
 		return res;
 	}
-	
-	private boolean isEOFCause(Throwable e){
+
+	private boolean isEOFCause(Throwable e) {
 		boolean res = false;
-		if(e.getCause() != null 
-				&& e.getCause().getCause() != null
-				    && e.getCause().getCause() instanceof EOFException){
+		if (e.getCause() != null && e.getCause().getCause() != null && e.getCause()
+				.getCause() instanceof EOFException) {
 			res = true;
 		}
 		return res;
 	}
-	
-	
-	
 
 }

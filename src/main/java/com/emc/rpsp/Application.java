@@ -1,11 +1,6 @@
 package com.emc.rpsp;
 
-import java.io.IOException;
-import java.util.Arrays;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
+import com.emc.rpsp.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -15,7 +10,10 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import com.emc.rpsp.config.Constants;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import java.io.IOException;
+import java.util.Arrays;
 
 @SpringBootApplication
 @EnableAsync
@@ -40,7 +38,7 @@ public class Application {
 			log.warn("No Spring profile configured, running with default configuration");
 		} else {
 			log.info("Running with Spring profile(s) : {}",
-			        Arrays.toString(env.getActiveProfiles()));
+					Arrays.toString(env.getActiveProfiles()));
 		}
 	}
 
@@ -52,8 +50,7 @@ public class Application {
 		SpringApplication app = new SpringApplication(Application.class);
 		app.setShowBanner(false);
 
-		SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(
-		        args);
+		SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
 
 		// Check if the selected profile has been set as argument.
 		// if not the development profile will be added
@@ -66,7 +63,7 @@ public class Application {
 	 * Set a default profile if it has not been set
 	 */
 	private static void addDefaultProfile(SpringApplication app,
-	        SimpleCommandLinePropertySource source) {
+			SimpleCommandLinePropertySource source) {
 		if (!source.containsProperty("spring.profiles.active")) {
 			app.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
 		}

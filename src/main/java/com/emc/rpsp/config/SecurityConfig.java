@@ -31,39 +31,33 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.csrf().disable().authorizeRequests().antMatchers("/app/login/*")
-		        .permitAll()
+		http.csrf().disable().authorizeRequests().antMatchers("/app/login/*").permitAll()
 
-		        .antMatchers("/assets/js/*").permitAll()
-		        .antMatchers("/assets/css/*").permitAll()
-		        .antMatchers("/assets/images/*").permitAll()
+				.antMatchers("/assets/js/*").permitAll().antMatchers("/assets/css/*").permitAll()
+				.antMatchers("/assets/images/*").permitAll()
 
-		        .antMatchers("/custom/js/*").permitAll()
-		        .antMatchers("/custom/css/*").permitAll()
-		        .antMatchers("/custom/images/*").permitAll()
+				.antMatchers("/custom/js/*").permitAll().antMatchers("/custom/css/*").permitAll()
+				.antMatchers("/custom/images/*").permitAll()
 
-		        .antMatchers("/locale").permitAll().antMatchers("/locales/*")
-		        .permitAll().antMatchers("/app/locale/*").permitAll()
-		        .anyRequest().fullyAuthenticated();
+				.antMatchers("/locale").permitAll().antMatchers("/locales/*").permitAll()
+				.antMatchers("/app/locale/*").permitAll().anyRequest().fullyAuthenticated();
 
 		http.formLogin().loginPage("/app/login/login-form.html")
-		        .failureUrl("/app/login/login-form.html")
-		        .loginProcessingUrl("/login-action")
-		        .failureHandler((request, response, authentication) -> {
-			        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-		        })
+				.failureUrl("/app/login/login-form.html").loginProcessingUrl("/login-action")
+				.failureHandler((request, response, authentication) -> {
+					response.setStatus(HttpStatus.UNAUTHORIZED.value());
+				})
 
-		        .permitAll().and().httpBasic();
+				.permitAll().and().httpBasic();
 
-		http.logout().logoutUrl("/logout-action")
-		        .logoutSuccessUrl("/app/login/login-form.html").permitAll();
+		http.logout().logoutUrl("/logout-action").logoutSuccessUrl("/app/login/login-form.html")
+				.permitAll();
 
 	}
 
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(
-		        new BCryptPasswordEncoder());
+		auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
 	}
 
 }
