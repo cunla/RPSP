@@ -88,10 +88,28 @@ The following methods are supported in the RPSP RESP API, with base being http:/
         Body example: `username=user@account&password=xxxx`
     - `POST /logout-action` Logout
     - `GET /account-vms` - Full VMs hierarchy data restricted by logged in user and his related account info  (protected\unprotected\cg etc)
+    - `PUT /image-access/enable?clusterId={clusterId}&groupId={groupId}&copyId={copyId}` - Enable image access to latest image
+      Additional query params:
+      * snapshotId={snapshotId} - specific snapshot
+      * timestamp={timestamp} - specific timestamp
 
 ###CONTRIBUTION INSTRUCTIONS
 Create a fork of the project into your own repository. 
 Make all your necessary changes and create a pull request with a description on what was added or removed and details explaining the changes in lines of code. If approved, project owners will merge it.
+
+### Technologies used
+#####Server side
+* JAVA + maven
+* Spring
+* Spring-boot
+* Hibernate + MySQL database
+* retrofit (REST API consumption)
+* jackson (json serialization)
+* logback (logger)
+#####Client side
+* AngularJS + Bootstrap
+* angular-translate
+* jQuery
 
 ###LICENSING
 The MIT License (MIT)
