@@ -31,8 +31,9 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', 'vmStructu
 		      $scope.vmStructureData = allData.vmStructureData;
 		      $scope.vmGsAndCgFlatData = allData.vmGsAndCgFlatData;
 		      $scope.totalVms = allData.totalVms;
-		      $scope.protectedVms = allData.protectedVms;		      
-		   }).finally(function (res) {
+		      $scope.protectedVms = allData.protectedVms;
+		   })
+		   .finally(function (res) {
 			  $scope.loading = false;			  
 		   })
 	};

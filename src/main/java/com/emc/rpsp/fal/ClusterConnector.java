@@ -1,6 +1,8 @@
 package com.emc.rpsp.fal;
 
 import com.emc.fapi.jaxws.*;
+
+import retrofit.client.Response;
 import retrofit.http.*;
 import retrofit.http.Path;
 
@@ -53,6 +55,11 @@ public interface ClusterConnector {
 
     @GET(BASE_URL + "groups/{groupId}/snapshots")
     public ConsistencyGroupSnapshots getGroupSnapshots(@Path("groupId") long groupId,
-    @Query("startTime") Long startTime, @Query("endTime") Long endTime);
+    @Query("startTime") Long startTime, @Query("endTime") Long endTime);    
+    
+    @PUT(BASE_URL + "groups/{groupId}/virtual_machines")
+    public Response addVmToCG(@Path("groupId") long groupId, 
+    		                                        VmReplicationSetParamSet vmReplicationSetParamSet);
+
 
 }

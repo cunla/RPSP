@@ -59,6 +59,10 @@
 					{
 						"vmId": "50274c33-f460-9857-257b-8e6a605bbefc",
 						"vmName": "vm-win7-b"
+					},
+					{
+						"vmId": "5027da96-5d05-da0e-4c05-33cd0e7d72a6",
+						"vmName": "vm-16"
 					}
 				],
 				"users": [

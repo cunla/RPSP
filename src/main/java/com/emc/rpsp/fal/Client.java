@@ -6,10 +6,13 @@ import com.emc.rpsp.StatesConsts;
 import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
+
 import retrofit.RetrofitError;
+import retrofit.http.Path;
 
 import java.io.EOFException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -197,6 +200,51 @@ public class Client {
             }
         }
 
+    }
+    
+    public void addVmToCG(String vmId, Long clusterId, Long groupId){
+    	
+    	List<ReplicatedVMParams> replicationSetVms = new LinkedList<ReplicatedVMParams>();
+    	
+    	//add source parameter
+    	ReplicatedVMParams sourceReplicatedVMParam = new ReplicatedVMParams();   
+    	
+    	SourceVmParam sourceVmParam = new SourceVmParam();
+    	VmUID vmUID = new VmUID();
+    	vmUID.setUuid(vmId);
+    	VirtualCenterUID virtualCenterUID = new VirtualCenterUID("D10EFCEB-6F69-44D4-AE67-09A573241EA1");   	
+    	vmUID.setVirtualCenterUID(virtualCenterUID);    	
+    	sourceVmParam.setVmUID(vmUID);
+    	//sourceVmParam.setClusterUID(new ClusterUID(clusterId));
+    	
+    	GlobalCopyUID globalCopyUID = new GlobalCopyUID(new ClusterUID(clusterId), 0);
+    	
+    	sourceReplicatedVMParam.setVmParam(sourceVmParam);
+    	sourceReplicatedVMParam.setCopyUID(globalCopyUID);
+    	
+    	replicationSetVms.add(sourceReplicatedVMParam);
+    	
+    	
+    	//add target parameter
+    	ReplicatedVMParams targetReplicatedVMParam = new ReplicatedVMParams();
+    	CreateVMParam createVMParam = new CreateVMParam();
+    	createVMParam.setTargetDatastoreUID(new DatastoreUID("49c5e420-28fb8b82"));
+    	createVMParam.setTargetVirtualCenterUID(new VirtualCenterUID("D0939A9B-0846-4699-AAD3-2EBE04421FCE"));
+    	createVMParam.setTargetResourcePlacementParam(new CreateTargetVMManualResourcePlacementParam(new EsxUID("4210b625-9ed7-9a37-9c50-76caee8efa96")));
+    	GlobalCopyUID targetGlobalCopyUID = new GlobalCopyUID(new ClusterUID(8136211321005052104L), 0);
+    	
+    	targetReplicatedVMParam.setVmParam(createVMParam);
+    	targetReplicatedVMParam.setCopyUID(targetGlobalCopyUID);
+    	
+    	replicationSetVms.add(targetReplicatedVMParam);
+    	VmReplicationSetParam replicationSetParam = new VmReplicationSetParam(replicationSetVms);
+    	
+    	List<VmReplicationSetParam> innerSet = new LinkedList<VmReplicationSetParam>(); 
+    	innerSet.add(replicationSetParam);
+    	VmReplicationSetParamSet vmReplicationSetParamSet = new VmReplicationSetParamSet(innerSet);
+    	    	
+    	
+    	connector.addVmToCG(groupId, vmReplicationSetParamSet);
     }
 
     private Map<String, String> getVmState(FullRecoverPointSettings rpSettings) {

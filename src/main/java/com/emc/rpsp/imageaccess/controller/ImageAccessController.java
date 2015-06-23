@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller public class ImageAccessController {
 
-    @Autowired private ImageAccessService imageAccessService;
+    @Autowired 
+    private ImageAccessService imageAccessService;
 
     @RequestMapping(value = "/image-access/enable", params = { "clusterId", "groupId",
     "copyId" }, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
