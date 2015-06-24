@@ -2,6 +2,7 @@ package com.emc.rpsp.dataloader.service.impl;
 
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.accounts.service.AccountService;
 import com.emc.rpsp.dataloader.service.DataLoaderService;
 import com.emc.rpsp.fal.Client;
@@ -12,6 +13,7 @@ import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.users.service.UserService;
 import com.emc.rpsp.vms.domain.VmOwnership;
 import com.emc.rpsp.vms.service.VmOwnershipService;
+
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +96,20 @@ import java.util.Map;
                     user.setFirstName(currUser.get("firstName").toString());
                     user.setLastName(currUser.get("lastName").toString());
                     user.setAccount(account);
+                }
+                
+                //account configurations data
+                List<Map<String, Object>> accountConfigs = (List<Map<String, Object>>) currAccount
+                .get("accountConfigs");
+                for (Map<String, Object> currAccountConfig : accountConfigs) {
+                	AccountConfig accountConfig = new AccountConfig();
+                	account.addAccountConfig(accountConfig);
+                	accountConfig.setClusterId(Long.parseLong(currAccountConfig.get("clusterId").toString()));
+                	accountConfig.setDatastoreId(currAccountConfig.get("datastoreId").toString());
+                	accountConfig.setEsxId(currAccountConfig.get("esxId").toString());
+                	accountConfig.setVcId(currAccountConfig.get("vcId").toString());
+                	accountConfig.setTestNetworkId(currAccountConfig.get("testNetworkId").toString());
+                	accountConfig.setAccount(account);
                 }
 
             }

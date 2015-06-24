@@ -72,8 +72,18 @@
 						"lastName": "Smith",
 						"password": "12345"
 					}
+				],
+				"accountConfigs": [
+					{
+						"clusterId": "8136211321005052104",
+						"vcId": "D0939A9B-0846-4699-AAD3-2EBE04421FCE",
+						"esxId": "4210b625-9ed7-9a37-9c50-76caee8efa96",
+						"datastoreId": "datastore-47",
+						"testNetworkId": "testNetworkId"
+					}
 				]
 			}
 		]
 	}
 ]
+

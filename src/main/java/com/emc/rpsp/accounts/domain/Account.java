@@ -44,6 +44,7 @@ public class Account implements Serializable {
         vms = new LinkedList<>();
         users = new LinkedList<>();
         systemSettings = new LinkedList<>();
+        accountConfigs = new LinkedList<AccountConfig>();
     }
 
     public Long getId() {
@@ -93,6 +94,14 @@ public class Account implements Serializable {
     public void setSystemSettings(List<SystemSettings> systemSettings) {
         this.systemSettings = systemSettings;
     }
+    
+    public List<AccountConfig> getAccountConfigs() {
+		return accountConfigs;
+	}
+
+	public void setAccountConfigs(List<AccountConfig> accountConfigs) {
+		this.accountConfigs = accountConfigs;
+	}
 
     public void addVm(VmOwnership vmOwnership) {
         vms.add(vmOwnership);
@@ -101,18 +110,16 @@ public class Account implements Serializable {
     public void addUser(User user) {
         users.add(user);
     }
+    
+    public void addAccountConfig(AccountConfig accountConfig) {
+        accountConfigs.add(accountConfig);
+    }
 
     public void addSystem(SystemSettings systemSettings) {
         this.systemSettings.add(systemSettings);
     }
 
-    public List<AccountConfig> getAccountConfigs() {
-		return accountConfigs;
-	}
-
-	public void setAccountConfigs(List<AccountConfig> accountConfigs) {
-		this.accountConfigs = accountConfigs;
-	}
+   
 
 	@Override public String toString() {
         return "Account{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", label='" + label
