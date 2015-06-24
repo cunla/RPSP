@@ -8,6 +8,7 @@ import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
 import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.http.Path;
 
 import java.io.EOFException;
@@ -215,7 +216,7 @@ public class Client {
     	VirtualCenterUID virtualCenterUID = new VirtualCenterUID("D10EFCEB-6F69-44D4-AE67-09A573241EA1");   	
     	vmUID.setVirtualCenterUID(virtualCenterUID);    	
     	sourceVmParam.setVmUID(vmUID);
-    	//sourceVmParam.setClusterUID(new ClusterUID(clusterId));
+    	sourceVmParam.setClusterUID(new ClusterUID(clusterId));
     	
     	GlobalCopyUID globalCopyUID = new GlobalCopyUID(new ClusterUID(clusterId), 0);
     	
@@ -228,7 +229,7 @@ public class Client {
     	//add target parameter
     	ReplicatedVMParams targetReplicatedVMParam = new ReplicatedVMParams();
     	CreateVMParam createVMParam = new CreateVMParam();
-    	createVMParam.setTargetDatastoreUID(new DatastoreUID("49c5e420-28fb8b82"));
+    	createVMParam.setTargetDatastoreUID(new DatastoreUID("datastore-47"));
     	createVMParam.setTargetVirtualCenterUID(new VirtualCenterUID("D0939A9B-0846-4699-AAD3-2EBE04421FCE"));
     	createVMParam.setTargetResourcePlacementParam(new CreateTargetVMManualResourcePlacementParam(new EsxUID("4210b625-9ed7-9a37-9c50-76caee8efa96")));
     	GlobalCopyUID targetGlobalCopyUID = new GlobalCopyUID(new ClusterUID(8136211321005052104L), 0);
@@ -243,8 +244,9 @@ public class Client {
     	innerSet.add(replicationSetParam);
     	VmReplicationSetParamSet vmReplicationSetParamSet = new VmReplicationSetParamSet(innerSet);
     	    	
-    	
-    	connector.addVmToCG(groupId, vmReplicationSetParamSet);
+
+    	Response response = connector.addVmToCG(groupId, vmReplicationSetParamSet);
+    	System.out.println(response);
     }
 
     private Map<String, String> getVmState(FullRecoverPointSettings rpSettings) {

@@ -57,9 +57,9 @@ public interface ClusterConnector {
     public ConsistencyGroupSnapshots getGroupSnapshots(@Path("groupId") long groupId,
     @Query("startTime") Long startTime, @Query("endTime") Long endTime);    
     
-    @PUT(BASE_URL + "groups/{groupId}/virtual_machines")
+    @POST(BASE_URL + "groups/{groupId}/virtual_machines")
     public Response addVmToCG(@Path("groupId") long groupId, 
-    		                                        VmReplicationSetParamSet vmReplicationSetParamSet);
+    		@Body VmReplicationSetParamSet vmReplicationSetParamSet);
 
 
 }

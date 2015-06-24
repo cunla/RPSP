@@ -29,6 +29,11 @@ public class Account implements Serializable {
     @JsonIgnore @Column
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<User> users;
+    
+    @JsonIgnore 
+    @Column
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<AccountConfig> accountConfigs;
 
     @JsonIgnore @JoinTable(name = "T_ACCOUNT_SYSTEMS")
     @ManyToMany(targetEntity = com.emc.rpsp.rpsystems.SystemSettings.class, fetch = FetchType.LAZY)
@@ -101,7 +106,15 @@ public class Account implements Serializable {
         this.systemSettings.add(systemSettings);
     }
 
-    @Override public String toString() {
+    public List<AccountConfig> getAccountConfigs() {
+		return accountConfigs;
+	}
+
+	public void setAccountConfigs(List<AccountConfig> accountConfigs) {
+		this.accountConfigs = accountConfigs;
+	}
+
+	@Override public String toString() {
         return "Account{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", label='" + label
         + "}";
     }
