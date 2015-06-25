@@ -25,6 +25,17 @@ public class ProtectServiceImpl implements ProtectService {
         }
 	}
 
+	@Override
+	public void removeVmsFromCG(String vmId, Long groupId) {
+		Account account = userService.findCurrentUser().getUser().getAccount();
+        if (account != null) {
+            SystemSettings system = account.getSystemSettings().get(0);
+            Client client = new Client(system);
+            client.removeVmsFromCG(vmId, groupId, account);
+        }
+		
+	}
+
     
 
 }

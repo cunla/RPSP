@@ -27,5 +27,15 @@ public class ProtectController {
 		protectService.addVmToCG(vmId,  groupId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/unprotect", params = { "vmId", "groupId" }, 
+			method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<HttpStatus> removeVmsFromCG(
+			@RequestParam("vmId") String vmId,
+			@RequestParam("groupId") Long groupId) {
+		protectService.removeVmsFromCG(vmId,  groupId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
 }

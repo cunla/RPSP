@@ -60,6 +60,11 @@ public interface ClusterConnector {
     @POST(BASE_URL + "groups/{groupId}/virtual_machines")
     public Response addVmToCG(@Path("groupId") long groupId, 
     		@Body VmReplicationSetParamSet vmReplicationSetParamSet);
+    
+    
+    @BODY_DELETE(BASE_URL + "groups/{groupId}/virtual_machines")
+    public Response removeVmsFromCG(@Path("groupId") long groupId, 
+    		@Body VmUIDSet vmUIDSet);
 
 
 }

@@ -11,6 +11,7 @@ import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.http.Body;
 import retrofit.http.Path;
 
 import java.io.EOFException;
@@ -275,6 +276,29 @@ public class Client {
     	Response response = connector.addVmToCG(groupId, vmReplicationSetParamSet);
     	System.out.println(response);
     }
+    
+    
+    
+    public void removeVmsFromCG(String vmId, Long groupId, Account account){
+    	
+    	ConsistencyGroupCopySettingsSet consistencyGroupCopySettingsSet = connector.getAllGroupCopies(groupId);   	
+    	List<ConsistencyGroupCopySettings> consistencyGroupCopySettingsList = consistencyGroupCopySettingsSet.getInnerSet();
+    	Long productionClusterId = 0L;
+    	for(ConsistencyGroupCopySettings currConsistencyGroupCopySettings : consistencyGroupCopySettingsList){
+    		if(currConsistencyGroupCopySettings.getRoleInfo().getSourceCopyUID() == null){
+    			productionClusterId = currConsistencyGroupCopySettings.getCopyUID().getGlobalCopyUID().getClusterUID().getId();
+    		}
+    	}
+    	String productionVcId = account.getAccountConfigsMap().get(productionClusterId).getVcId();
+    	VirtualCenterUID productionVirtualCenterUID = new VirtualCenterUID(productionVcId);
+    	VmUID vmUID = new VmUID(vmId, productionVirtualCenterUID);
+    	List<VmUID> innerSet = new LinkedList<VmUID>();
+    	innerSet.add(vmUID);
+    	VmUIDSet vmUIDSet = new VmUIDSet(innerSet);
+    	connector.removeVmsFromCG(groupId, vmUIDSet);
+    }
+    
+    
 
     private Map<String, String> getVmState(FullRecoverPointSettings rpSettings) {
         Map<String, String> res = new HashMap<>();
