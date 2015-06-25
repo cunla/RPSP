@@ -16,12 +16,12 @@ public class ProtectServiceImpl implements ProtectService {
 	private UserService userService = null;
 
 	@Override
-	public void addVmToCG(String vmId, Long clusterId, Long groupId) {
+	public void addVmToCG(String vmId, Long groupId) {
 		Account account = userService.findCurrentUser().getUser().getAccount();
         if (account != null) {
             SystemSettings system = account.getSystemSettings().get(0);
             Client client = new Client(system);
-            client.addVmToCG(vmId, clusterId, groupId);
+            client.addVmToCG(vmId, groupId, account);
         }
 	}
 

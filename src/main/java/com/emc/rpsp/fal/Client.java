@@ -3,6 +3,8 @@ package com.emc.rpsp.fal;
 import com.emc.fapi.jaxws.*;
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
+import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
@@ -203,47 +205,72 @@ public class Client {
 
     }
     
-    public void addVmToCG(String vmId, Long clusterId, Long groupId){
+    public void addVmToCG(String vmId, Long groupId, Account account){
     	
-    	List<ReplicatedVMParams> replicationSetVms = new LinkedList<ReplicatedVMParams>();
-    	
-    	//add source parameter
-    	ReplicatedVMParams sourceReplicatedVMParam = new ReplicatedVMParams();   
-    	
-    	SourceVmParam sourceVmParam = new SourceVmParam();
-    	VmUID vmUID = new VmUID();
-    	vmUID.setUuid(vmId);
-    	VirtualCenterUID virtualCenterUID = new VirtualCenterUID("D10EFCEB-6F69-44D4-AE67-09A573241EA1");   	
-    	vmUID.setVirtualCenterUID(virtualCenterUID);    	
-    	sourceVmParam.setVmUID(vmUID);
-    	sourceVmParam.setClusterUID(new ClusterUID(clusterId));
-    	
-    	GlobalCopyUID globalCopyUID = new GlobalCopyUID(new ClusterUID(clusterId), 0);
-    	
-    	sourceReplicatedVMParam.setVmParam(sourceVmParam);
-    	sourceReplicatedVMParam.setCopyUID(globalCopyUID);
-    	
-    	replicationSetVms.add(sourceReplicatedVMParam);
+    	ConsistencyGroupCopySettingsSet consistencyGroupCopySettingsSet = connector.getAllGroupCopies(groupId);   	
+    	List<ConsistencyGroupCopySettings> consistencyGroupCopySettingsList = consistencyGroupCopySettingsSet.getInnerSet();
+    	Long productionClusterId = 0L;
+    	int productionCopyId = 0;
+    	for(ConsistencyGroupCopySettings currConsistencyGroupCopySettings : consistencyGroupCopySettingsList){
+    		if(currConsistencyGroupCopySettings.getRoleInfo().getSourceCopyUID() == null){
+    			productionClusterId = currConsistencyGroupCopySettings.getCopyUID().getGlobalCopyUID().getClusterUID().getId();
+    			productionCopyId = currConsistencyGroupCopySettings.getCopyUID().getGlobalCopyUID().getCopyUID();
+    		}
+    	}
     	
     	
-    	//add target parameter
-    	ReplicatedVMParams targetReplicatedVMParam = new ReplicatedVMParams();
-    	CreateVMParam createVMParam = new CreateVMParam();
-    	createVMParam.setTargetDatastoreUID(new DatastoreUID("datastore-47"));
-    	createVMParam.setTargetVirtualCenterUID(new VirtualCenterUID("D0939A9B-0846-4699-AAD3-2EBE04421FCE"));
-    	createVMParam.setTargetResourcePlacementParam(new CreateTargetVMManualResourcePlacementParam(new EsxUID("4210b625-9ed7-9a37-9c50-76caee8efa96")));
-    	GlobalCopyUID targetGlobalCopyUID = new GlobalCopyUID(new ClusterUID(8136211321005052104L), 0);
+    	List<ReplicatedVMParams> replicatedVmParams = new LinkedList<ReplicatedVMParams>();
+    	Map<Long, AccountConfig> accountConfigsMap = account.getAccountConfigsMap();
     	
-    	targetReplicatedVMParam.setVmParam(createVMParam);
-    	targetReplicatedVMParam.setCopyUID(targetGlobalCopyUID);
-    	
-    	replicationSetVms.add(targetReplicatedVMParam);
-    	VmReplicationSetParam replicationSetParam = new VmReplicationSetParam(replicationSetVms);
+    	for(ConsistencyGroupCopySettings currConsistencyGroupCopySettings : consistencyGroupCopySettingsList){
+    		if(currConsistencyGroupCopySettings.getRoleInfo().getSourceCopyUID() != null){
+    			
+    			
+    			//add source parameter
+    	    	ReplicatedVMParams sourceReplicatedVMParam = new ReplicatedVMParams();   
+    	    	
+    	    	SourceVmParam sourceVmParam = new SourceVmParam();
+    	    	VmUID vmUID = new VmUID();
+    	    	vmUID.setUuid(vmId);
+    	    	String prodVcId = accountConfigsMap.get(productionClusterId).getVcId();
+    	    	VirtualCenterUID virtualCenterUID = new VirtualCenterUID(prodVcId);   	
+    	    	vmUID.setVirtualCenterUID(virtualCenterUID);    	
+    	    	sourceVmParam.setVmUID(vmUID);
+    	    	sourceVmParam.setClusterUID(new ClusterUID(productionClusterId));
+    	    	
+    	    	GlobalCopyUID globalCopyUID = new GlobalCopyUID(new ClusterUID(productionClusterId), productionCopyId);
+    	    	
+    	    	sourceReplicatedVMParam.setVmParam(sourceVmParam);
+    	    	sourceReplicatedVMParam.setCopyUID(globalCopyUID);
+    	    	
+    	    	replicatedVmParams.add(sourceReplicatedVMParam);
+    	    	
+    	    	
+    	    	//add target parameter
+    	    	ReplicatedVMParams targetReplicatedVMParam = new ReplicatedVMParams();
+    	    	CreateVMParam createVMParam = new CreateVMParam();
+    	    	GlobalCopyUID targetGlobalCopyUID = currConsistencyGroupCopySettings.getCopyUID().getGlobalCopyUID();
+    	    	String replicaVcId = accountConfigsMap.get(targetGlobalCopyUID.getClusterUID().getId()).getVcId();
+    	    	String replicaDataStoreId = accountConfigsMap.get(targetGlobalCopyUID.getClusterUID().getId()).getDatastoreId();
+    	    	String replicaEsxId = accountConfigsMap.get(targetGlobalCopyUID.getClusterUID().getId()).getEsxId();
+    	    	createVMParam.setTargetVirtualCenterUID(new VirtualCenterUID(replicaVcId));
+    	    	createVMParam.setTargetDatastoreUID(new DatastoreUID(replicaDataStoreId));    	    	
+    	    	createVMParam.setTargetResourcePlacementParam(new CreateTargetVMManualResourcePlacementParam(new EsxUID(replicaEsxId)));    	    	
+    	    	
+    	    	
+    	    	targetReplicatedVMParam.setVmParam(createVMParam);
+    	    	targetReplicatedVMParam.setCopyUID(targetGlobalCopyUID);
+    	    	
+    	    	replicatedVmParams.add(targetReplicatedVMParam);
+    		}
+    	}
+  	
+    
+    	VmReplicationSetParam replicationSetParam = new VmReplicationSetParam(replicatedVmParams);
     	
     	List<VmReplicationSetParam> innerSet = new LinkedList<VmReplicationSetParam>(); 
     	innerSet.add(replicationSetParam);
-    	VmReplicationSetParamSet vmReplicationSetParamSet = new VmReplicationSetParamSet(innerSet);
-    	    	
+    	VmReplicationSetParamSet vmReplicationSetParamSet = new VmReplicationSetParamSet(innerSet);   	    	
 
     	Response response = connector.addVmToCG(groupId, vmReplicationSetParamSet);
     	System.out.println(response);

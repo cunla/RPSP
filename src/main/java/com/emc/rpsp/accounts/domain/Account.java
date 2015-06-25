@@ -4,14 +4,18 @@ import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.vms.domain.VmOwnership;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Entity @Table(name = "T_ACCOUNT") @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Account implements Serializable {
@@ -98,6 +102,12 @@ public class Account implements Serializable {
     public List<AccountConfig> getAccountConfigs() {
 		return accountConfigs;
 	}
+    
+    public Map<Long, AccountConfig> getAccountConfigsMap() {
+        Map<Long, AccountConfig> accountConfigsMap = accountConfigs.stream()
+        .collect(Collectors.toMap(AccountConfig::getClusterId, (p) -> p));
+		return accountConfigsMap;
+	}
 
 	public void setAccountConfigs(List<AccountConfig> accountConfigs) {
 		this.accountConfigs = accountConfigs;
@@ -114,6 +124,7 @@ public class Account implements Serializable {
     public void addAccountConfig(AccountConfig accountConfig) {
         accountConfigs.add(accountConfig);
     }
+    
 
     public void addSystem(SystemSettings systemSettings) {
         this.systemSettings.add(systemSettings);

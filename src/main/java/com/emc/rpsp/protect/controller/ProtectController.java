@@ -18,14 +18,13 @@ public class ProtectController {
 	@Autowired
 	private ProtectService protectService;
 
-	@RequestMapping(value = "/protect", params = { "vmId", "clusterId","groupId" }, 
+	@RequestMapping(value = "/protect", params = { "vmId", "groupId" }, 
 			method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<HttpStatus> addVmToCG(
 			@RequestParam("vmId") String vmId,
-			@RequestParam("clusterId") Long clusterId,
 			@RequestParam("groupId") Long groupId) {
-		protectService.addVmToCG(vmId, clusterId, groupId);
+		protectService.addVmToCG(vmId,  groupId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
