@@ -14,6 +14,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity @Table(name = "T_ACCOUNT_CONFIG") 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class AccountConfig implements Serializable {
@@ -41,7 +43,7 @@ public class AccountConfig implements Serializable {
     @Column(name = "datastore_id", length = 100) 
     private String datastoreId;
     
-  //@JsonIgnore
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER) 
     private Account account;
 
