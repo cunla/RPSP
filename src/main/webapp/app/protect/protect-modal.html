@@ -1,0 +1,110 @@
+<div class="modal-header modal-header-primary protect-modal">
+    <a class="close" ng-click="cancel()">x</a>
+	<h3 class="modal-title">
+		<div class="centered-text">Add VM: {{vmName}} to Consistency Group: {{cgName}}</div>
+	</h3>
+</div>
+<div class="modal-body">
+
+	<br/>
+	<table class="table table-condensed table-striped">
+		<thead>
+		</thead>
+		<tbody>
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Target Copies:	
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-5 col-sm-5 col-md-5 margin-top">
+								<select ng-model="selectedCopy" 
+	                                          ng-options="copy.name for copy in vmGsAndCgFlatData[protectedSelectedIndex].
+	                                                      replicaClusters[0].groupCopySettings" 
+	                                               ng-disabled="selectedCopy.imageAccess == 'Enabled'"
+			                                              class="form-control">
+			                                                          <!-- <option value="" ng-if="false"></option> -->
+							
+								</select>
+							</div>	
+							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+			<tr>				
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Replica VM:	
+						</div>
+					</div>										
+				</td>				
+				<td>	
+					<div class="row">
+						<div class="col-xs-5 col-sm-5 col-md-5 margin-top-lg">
+							 Server Class
+						</div>
+						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+							<select class="form-control">
+								<option>Premium</option>
+								<option>Standard</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5 col-sm-5 col-md-5 margin-top-lg">
+						     Storage Class
+						</div>
+						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+								<select class="form-control">
+									<option>Premium</option>
+									<option>Standard</option>
+								</select>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>					
+				<td>
+					<div class="margin-top-lg">
+							Boot Order:
+					</div>
+				</td>				
+				<td>
+					<div class="row">
+						<div class="col-xs-5 col-sm-5 col-md-5 margin-top margin-top-lg">
+						     VM Priority in CG
+						</div>
+						<div class="col-xs-3 col-sm-3 col-md-3 margin-top">
+								<select class="form-control">
+									<option>1</option>
+									<option>2</option>
+								</select>
+						</div>
+						<div class="col-xs-4 col-sm-4 col-md-4">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5 col-sm-5 col-md-5">
+						     <label class="checkbox-inline">
+							  	<input type="checkbox" id="inlineCheckbox1" value="option1"> Critical VM
+							</label>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>					    
+	</table>
+</div>
+<div class="modal-footer centered-text div-grey">
+	<button type="button" class="btn btn-primary" ng-click="moveVm()">
+	         Protect VM
+	</button>
+</div>
+

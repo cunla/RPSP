@@ -79,6 +79,16 @@ app.service('vmStructureService', ['$http', function ($http) {
     	return vmGsAndCgFlatData;
     };
     
+    this.getCachedProtectedVms = function(){
+    	return protectedVms;
+    };
+    
+    this.getCachedTotalVms = function(){
+    	return totalVms;
+    };
+    
+    
+    
     
 	   
     var protectedSelectedIndex = -1;
@@ -114,6 +124,8 @@ app.service('vmStructureService', ['$http', function ($http) {
 
     
     this.moveVm = function(vmId, sgId) {
+    	
+    	var url;
 
     	//this is protect
     	if(sgId !== undefined){
@@ -131,8 +143,11 @@ app.service('vmStructureService', ['$http', function ($http) {
 	            	}
 	 
 	                unprotectedVms.splice(i, 1);
+	                protectedVms += 1;
 	            }
 	        }
+	        
+	        url = '/rpsp/protect' + '?' + 'vmId=' + vmId + '&' + 'groupId=' + sgId;
     	}
     	//this is unprotect
     	else{
@@ -152,7 +167,14 @@ app.service('vmStructureService', ['$http', function ($http) {
 	            	}
     			}
         	}
+    		url = '/rpsp/unprotect' + '?' + 'vmId=' + vmId + '&' + 'groupId=' + sgId;
     	}
+    	
+    	console.log(url);
+    	
+    	/*$http.put(url)
+    	.success(function(data,status,headers,config){	        
+    	})*/
     };
     
     
@@ -180,7 +202,7 @@ app.service('vmStructureService', ['$http', function ($http) {
     	}
     	
     	
-    	console.log(url);
+    	//console.log(url);
     	   	
 	    $http.put(url)
 	    	.success(function(data,status,headers,config){	        

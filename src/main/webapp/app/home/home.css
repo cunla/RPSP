@@ -23,19 +23,22 @@ table.table tr.selected td {
 	color: #ffffff;
 }
 
-.modal-dialog {
-    max-width: 42vw;
+
+.protect-modal .modal-dialog {
+  max-width: 40vw;
 }
 
+.image-access-modal .modal-dialog {
+  max-width: 42vw;
+}
+
+/* .modal-dialog {
+    max-width: 42vw;
+}
+ */
 .modal-backdrop {
   bottom: 0;
 }
-
-
-/* .modal-dialog {
-    max-width: 47vw;
-}
- */
 
  div.spinner-gif {
    position: absolute;

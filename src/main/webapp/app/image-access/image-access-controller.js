@@ -6,24 +6,6 @@ app.controller('imageAccessController', ['$scope', '$http', '$modal', '$modalIns
 	$scope.vmGsAndCgFlatData = {};
 	$scope.protectedSelectedIndex = -1;
 	
-/*	$scope.initData = function(){
-		$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
-		$scope.protectedSelectedIndex = vmStructureService.getProtectedSelectedIndex();
-		
-		if($scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type == 'cg'){
-	    	$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
-	    	$scope.selectedSnapshot = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0].snapshots[0];
-	    	$scope.selectedBookmark = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0].bookmarks[0];
-	    	$scope.imageAccessType = {};
-    	}
-    	else{
-    		$scope.selectedCopy = {};
-	    	$scope.selectedSnapshot = {};
-	    	$scope.selectedBookmark = {};
-	    	$scope.imageAccessType = {};
-    	}
-	};*/
-	
 	
 	$scope.initData = function(){
 		$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();

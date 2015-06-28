@@ -45,10 +45,38 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', 'vmStructu
 	$scope.openImageAccessModal = function(){
 		var modalInstance = $modal.open({
              templateUrl: 'app/image-access/image-access-modal.html',
-             controller: 'imageAccessController'
+             controller: 'imageAccessController',
+             windowClass: 'image-access-modal'
          });
 		
 		modalInstance.result.then(function(){{}});
+	};
+	
+	
+	$scope.openProtectModal = function(vmIndex, cgIndex){
+		var params = {};
+		params.vmIndex = vmIndex;
+		params.cgIndex = cgIndex;
+		var modalInstance = $modal.open({
+             templateUrl: 'app/protect/protect-modal.html',
+             controller: 'protectController',
+             windowClass: 'protect-modal',
+             resolve: {
+                 modalParams : function () {
+                   return params;
+                 }
+             }
+         });
+		
+		modalInstance.result.finally(function(){
+				$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
+		    	$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
+		    	$scope.totalVms = vmStructureService.getCachedTotalVms();
+		    	$scope.protectedVms = vmStructureService.getCachedProtectedVms();
+		        //$scope.$apply();
+		});
+		
+		
 	};
 	
 	
@@ -78,14 +106,6 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', 'vmStructu
     	return res;
     };
     
-    
-    
-    $scope.moveVm = function(vmId, sgId) {
-    	vmStructureService.moveVm(vmId, sgId);
-    	$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
-    	$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
-        $scope.$apply();
-    };
         
     
 }]);
