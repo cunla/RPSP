@@ -163,6 +163,7 @@ app.service('vmStructureService', ['$http', function ($http) {
 	            		if(currVm.id == vmId){
 	            			vmStructureData.unprotectedVms.push(currVm);
 	            			allCgAndGs[i].vms.splice(j, 1);
+	            			protectedVms -= 1;
 	            		}
 	            	}
     			}

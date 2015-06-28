@@ -53,27 +53,42 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', 'vmStructu
 	};
 	
 	
-	$scope.openProtectModal = function(vmId, cgId){
+	$scope.openRelevantProtectionModal = function(vmId, cgId){
 		var params = {};
 		params.vmId = vmId;
 		params.cgId = cgId;
-		var modalInstance = $modal.open({
-             templateUrl: 'app/protect/protect-modal.html',
-             controller: 'protectController',
-             windowClass: 'protect-modal',
-             resolve: {
-                 modalParams : function () {
-                   return params;
-                 }
-             }
-         });
+		var modalInstance;
+		
+		if(cgId !== undefined){
+			modalInstance = $modal.open({
+	             templateUrl: 'app/protect/protect-modal.html',
+	             controller: 'protectController',
+	             windowClass: 'protect-modal',
+	             resolve: {
+	                 modalParams : function () {
+	                   return params;
+	                 }
+	             }
+	         });
+		}
+		else{
+			modalInstance = $modal.open({
+	             templateUrl: 'app/unprotect/unprotect-modal.html',
+	             controller: 'unprotectController',
+	             windowClass: 'protect-modal',
+	             resolve: {
+	                 modalParams : function () {
+	                   return params;
+	                 }
+	             }
+	         });
+		}
 		
 		modalInstance.result.finally(function(){
 				$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
 		    	$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
 		    	$scope.totalVms = vmStructureService.getCachedTotalVms();
 		    	$scope.protectedVms = vmStructureService.getCachedProtectedVms();
-		        //$scope.$apply();
 		});
 		
 		

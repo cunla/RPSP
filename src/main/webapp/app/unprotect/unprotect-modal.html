@@ -1,7 +1,7 @@
 <div class="modal-header modal-header-primary protect-modal">
     <a class="close" ng-click="cancel()">x</a>
 	<h3 class="modal-title">
-		<div class="centered-text">Add VM: {{vmName}} to Consistency Group: {{cgName}}</div>
+		<div class="centered-text">Remove VM: {{vmName}} from Consistency Group: {{cgName}}</div>
 	</h3>
 </div>
 <div class="modal-body">
@@ -25,7 +25,9 @@
 								<select ng-model="selectedCopy" 
 	                                          ng-options="copy.name for copy in vmGsAndCgFlatData[protectedSelectedIndex].
 	                                                      replicaClusters[0].groupCopySettings" 
+	                                                          ng-disabled="true"	                                            
 			                                              		class="form-control">
+			                                                          <!-- <option value="" ng-if="false"></option> -->
 							
 								</select>
 							</div>	
@@ -49,7 +51,7 @@
 							 Server Class
 						</div>
 						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
-							<select class="form-control">
+							<select class="form-control" ng-disabled="true">
 								<option>Premium</option>
 								<option>Standard</option>
 							</select>
@@ -60,7 +62,7 @@
 						     Storage Class
 						</div>
 						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
-								<select class="form-control">
+								<select class="form-control" ng-disabled="true">
 									<option>Premium</option>
 									<option>Standard</option>
 								</select>
@@ -80,7 +82,7 @@
 						     VM Priority in CG
 						</div>
 						<div class="col-xs-3 col-sm-3 col-md-3 margin-top">
-								<select class="form-control">
+								<select class="form-control" ng-disabled="true">
 									<option>1</option>
 									<option>2</option>
 								</select>
@@ -91,7 +93,7 @@
 					<div class="row">
 						<div class="col-xs-5 col-sm-5 col-md-5">
 						     <label class="checkbox-inline">
-							  	<input type="checkbox" id="inlineCheckbox1" value="option1"> Critical VM
+							  	<input type="checkbox" id="inlineCheckbox1" value="option1" ng-disabled="true"> Critical VM
 							</label>
 						</div>
 					</div>
@@ -102,7 +104,7 @@
 </div>
 <div class="modal-footer centered-text div-grey">
 	<button type="button" class="btn btn-primary" ng-click="moveVm()">
-	         Protect VM
+	         Unprotect VM
 	</button>
 </div>
 

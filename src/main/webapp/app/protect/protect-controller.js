@@ -75,13 +75,7 @@ app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstanc
 	$scope.cancel = function(){
 		$modalInstance.dismiss('cancel');
 	}
-	
-	
-	
-
-	
-
-	   
+		   
     
 }]);
 

@@ -24,8 +24,7 @@ app.directive('droppable', function() {
             });
  
             element.bind("drop", function(eventObject) {
-            	scope.openProtectModal(eventObject.dataTransfer.getData("text"), attributes.cgid);
-                //scope.moveVm(eventObject.dataTransfer.getData("text"), attributes.cgid); 
+            	scope.openRelevantProtectionModal(eventObject.dataTransfer.getData("text"), attributes.cgid);
                 eventObject.preventDefault();
             });
         }
