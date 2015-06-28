@@ -53,10 +53,10 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', 'vmStructu
 	};
 	
 	
-	$scope.openProtectModal = function(vmIndex, cgIndex){
+	$scope.openProtectModal = function(vmId, cgId){
 		var params = {};
-		params.vmIndex = vmIndex;
-		params.cgIndex = cgIndex;
+		params.vmId = vmId;
+		params.cgId = cgId;
 		var modalInstance = $modal.open({
              templateUrl: 'app/protect/protect-modal.html',
              controller: 'protectController',

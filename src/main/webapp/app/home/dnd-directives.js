@@ -7,7 +7,7 @@ app.directive('draggable', function() {
             element.attr("draggable", true);
  
             element.bind("dragstart", function(eventObject) {
-                eventObject.dataTransfer.setData("text", attributes.index);
+            	eventObject.dataTransfer.setData("text", attributes.vmid);
             });
         }
     };
@@ -24,7 +24,7 @@ app.directive('droppable', function() {
             });
  
             element.bind("drop", function(eventObject) {
-            	scope.openProtectModal(eventObject.dataTransfer.getData("text"), attributes.index);
+            	scope.openProtectModal(eventObject.dataTransfer.getData("text"), attributes.cgid);
                 //scope.moveVm(eventObject.dataTransfer.getData("text"), attributes.cgid); 
                 eventObject.preventDefault();
             });

@@ -13,29 +13,74 @@ app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstanc
 
 	
 	
+	$scope.locateVmInfo = function(vmId, vmStructureData){
+		var res;
+	    for(var i = 0; i < vmStructureData.unprotectedVms.length; i++){
+	    	if(vmStructureData.unprotectedVms[i].id == vmId){
+	    		res = vmStructureData.unprotectedVms[i];
+	    	}
+	    }
+	    return res;
+	};
+	
+	
+	
+	$scope.locateCgInfo = function(cgId, vmGsAndCgFlatData){
+		var res;
+	    for(var i = 0; i < vmGsAndCgFlatData.length; i++){
+	    	if(vmGsAndCgFlatData[i].id == cgId){
+	    		res = vmGsAndCgFlatData[i];
+	    	}
+	    }
+	    return res;
+	};
+	
+	
+	
+	$scope.locateCgIndex = function(cgId, vmGsAndCgFlatData){
+		var res;
+	    for(var i = 0; i < vmGsAndCgFlatData.length; i++){
+	    	if(vmGsAndCgFlatData[i].id == cgId){
+	    		res = i
+	    	}
+	    }
+	    return res;
+	};
+	
+	
 	$scope.initData = function(){
 		$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
 		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
-		$scope.vmId = $scope.vmStructureData.unprotectedVms[modalParams.vmIndex].id;
-		$scope.cgId = $scope.vmGsAndCgFlatData[modalParams.cgIndex].id;
-		$scope.vmName = $scope.vmStructureData.unprotectedVms[modalParams.vmIndex].name;
-		$scope.cgName = $scope.vmGsAndCgFlatData[modalParams.cgIndex].name;
-		$scope.protectedSelectedIndex = modalParams.cgIndex;		
+		$scope.vmId = modalParams.vmId;
+		$scope.cgId = modalParams.cgId;
+		var vmInfo = $scope.locateVmInfo($scope.vmId, $scope.vmStructureData);
+		$scope.vmName = vmInfo.name;
+		var cgInfo = $scope.locateCgInfo($scope.cgId, $scope.vmGsAndCgFlatData);
+		$scope.cgName = cgInfo.name;
+		$scope.protectedSelectedIndex = $scope.locateCgIndex($scope.cgId, $scope.vmGsAndCgFlatData);	
 		$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
 	};
+	
 	   
 	$scope.initData();
 	
 	
+	
 	$scope.moveVm = function(){
-		    vmStructureService.moveVm($scope.vmId, $scope.cgId);
-		    $modalInstance.dismiss('cancel');
+	    vmStructureService.moveVm($scope.vmId, $scope.cgId);
+	    $modalInstance.dismiss('cancel');
 	}
-	
-	
+
+
 	$scope.cancel = function(){
 		$modalInstance.dismiss('cancel');
 	}
+	
+	
+	
+
+	
+
 	   
     
 }]);
