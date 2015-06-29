@@ -1,8 +1,8 @@
 package com.emc.rpsp.accounts.service;
 
-import com.emc.rpsp.accounts.domain.Account;
-
 import java.util.List;
+
+import com.emc.rpsp.accounts.domain.Account;
 
 public interface AccountService {
     public List<Account> findAll();

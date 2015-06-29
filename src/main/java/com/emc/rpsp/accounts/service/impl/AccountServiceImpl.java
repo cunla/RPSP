@@ -1,21 +1,26 @@
 package com.emc.rpsp.accounts.service.impl;
 
-import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.accounts.repository.AccountRepository;
-import com.emc.rpsp.accounts.service.AccountService;
-import com.emc.rpsp.repository.SystemConnectionInfoRepository;
-import com.emc.rpsp.rpsystems.SystemSettings;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
+import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.accounts.repository.AccountConfigsRepository;
+import com.emc.rpsp.accounts.repository.AccountRepository;
+import com.emc.rpsp.accounts.service.AccountService;
+import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import com.emc.rpsp.rpsystems.SystemSettings;
 
 @Service public class AccountServiceImpl implements AccountService {
 
     @Autowired private AccountRepository accountRepository;
+    
+    @Autowired private AccountConfigsRepository accountConfigRepository;
 
     @Autowired private SystemConnectionInfoRepository systemConnectionInfoRepository;
 
@@ -58,5 +63,7 @@ import java.util.List;
         accountRepository.delete(id);
 
     }
+
+	
 
 }

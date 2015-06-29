@@ -51,6 +51,10 @@ public class AccountConfig implements Serializable {
     public AccountConfig() {
         super();
     }
+    
+    public void addAccount(Account account){
+    	this.account = account;
+    }
 
 
 	public Long getId() {
