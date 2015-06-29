@@ -67,7 +67,7 @@ app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstanc
 	
 	
 	$scope.moveVm = function(){
-	    vmStructureService.moveVm($scope.vmId, $scope.cgId);
+	    vmStructureService.moveVm($scope.vmId, $scope.cgId, 'protect');
 	    $modalInstance.dismiss('cancel');
 	}
 

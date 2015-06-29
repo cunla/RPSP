@@ -123,12 +123,12 @@ app.service('vmStructureService', ['$http', function ($http) {
     
 
     
-    this.moveVm = function(vmId, sgId) {
+    this.moveVm = function(vmId, sgId, actionType) {
     	
     	var url;
 
     	//this is protect
-    	if(sgId !== undefined){
+    	if(actionType == 'protect'){
 	    	var unprotectedVms = vmStructureData.unprotectedVms;
 	        for (var i = 0; i < unprotectedVms.length; i++) {
 	 
@@ -147,7 +147,10 @@ app.service('vmStructureService', ['$http', function ($http) {
 	            }
 	        }
 	        
-	        url = '/rpsp/protect' + '?' + 'vmId=' + vmId + '&' + 'groupId=' + sgId;
+	       /* url = '/rpsp/protect' + '?' + 'vmId=' + vmId + '&' + 'groupId=' + sgId;
+	        $http.put(url)
+	    	.success(function(data,status,headers,config){	        
+	    	})*/
     	}
     	//this is unprotect
     	else{
@@ -168,14 +171,15 @@ app.service('vmStructureService', ['$http', function ($http) {
 	            	}
     			}
         	}
-    		url = '/rpsp/unprotect' + '?' + 'vmId=' + vmId + '&' + 'groupId=' + sgId;
+    		/*url = '/rpsp/unprotect' + '?' + 'vmId=' + vmId + '&' + 'groupId=' + sgId;
+    		$http.delete(url)
+        	.success(function(data,status,headers,config){	        
+        	})*/
     	}
     	
     	console.log(url);
     	
-    	/*$http.put(url)
-    	.success(function(data,status,headers,config){	        
-    	})*/
+    	
     };
     
     
