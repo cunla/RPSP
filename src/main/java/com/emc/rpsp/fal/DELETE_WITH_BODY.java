@@ -10,6 +10,6 @@ import retrofit.http.RestMethod;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @RestMethod(value = "DELETE", hasBody = true)
-public @interface BODY_DELETE {
+public @interface DELETE_WITH_BODY {
   String value();
 }

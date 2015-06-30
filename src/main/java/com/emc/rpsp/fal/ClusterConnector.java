@@ -62,7 +62,7 @@ public interface ClusterConnector {
     		@Body VmReplicationSetParamSet vmReplicationSetParamSet);
     
     
-    @BODY_DELETE(BASE_URL + "groups/{groupId}/virtual_machines")
+    @DELETE_WITH_BODY(BASE_URL + "groups/{groupId}/virtual_machines")
     public Response removeVmsFromCG(@Path("groupId") long groupId, 
     		@Body VmUIDSet vmUIDSet);
 
