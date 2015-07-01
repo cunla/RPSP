@@ -147,10 +147,12 @@ app.service('vmStructureService', ['$http', function ($http) {
 	            }
 	        }
 	        
-	       /* url = '/rpsp/protect' + '?' + 'vmId=' + vmId + '&' + 'groupId=' + sgId;
-	        $http.put(url)
+	        url = '/rpsp/groups/' + sgId + '/vms';
+	        var vmData = {};
+	        vmData.id = vmId;
+	        $http.post(url,vmData)
 	    	.success(function(data,status,headers,config){	        
-	    	})*/
+	    	})
     	}
     	//this is unprotect
     	else{
@@ -171,10 +173,10 @@ app.service('vmStructureService', ['$http', function ($http) {
 	            	}
     			}
         	}
-    		/*url = '/rpsp/unprotect' + '?' + 'vmId=' + vmId + '&' + 'groupId=' + sgId;
+    		url = url = '/rpsp/groups/' + sgId + '/vms/' + vmId;
     		$http.delete(url)
         	.success(function(data,status,headers,config){	        
-        	})*/
+        	});
     	}
     	
     	console.log(url);
@@ -190,28 +192,45 @@ app.service('vmStructureService', ['$http', function ($http) {
     	var copyId = selectedCopy.id;
     	var accessType = imageAccessType;
     	var url;
+    	var snapshotParams = null;
     	
     	if(selectedCopy.imageAccess == 'Disabled'){
-    	   url = '/rpsp/image-access/enable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId + '&' + 'copyId=' + copyId;
+    	   url = '/rpsp/groups/' + cgId + '/clusters/' + replicaClusterId + '/copies/' + copyId;    	   
     	   if(accessType == 'snapshot'){
-    		   url += '&' + 'snapshotId=' + selectedSnapshot.id + '&' + 'timestamp=' + selectedSnapshot.originalClosingTimeStamp;
+    		   url += '/image-access/enable';
+    		   snapshotParams = {};
+    		   snapshotParams.snapshotId = selectedSnapshot.id;
+    		   snapshotParams.timestamp = selectedSnapshot.originalClosingTimeStamp; 		  
     	   }
     	   else if(accessType == 'bookmark'){
-    		   url += '&' + 'snapshotId=' + selectedBookmark.id + '&' + 'timestamp=' + selectedBookmark.originalClosingTimeStamp;
+    		   url += '/image-access/enable';
+    		   snapshotParams = {};
+    		   snapshotParams.snapshotId = selectedBookmark.id;
+    		   snapshotParams.timestamp = selectedBookmark.originalClosingTimeStamp;
+    	   }
+    	   else{
+    		   url += '/image-access/enable-latest';
     	   }
     	   this.updateImageAccessFlags(selectedCopy, imageAccessType, selectedSnapshot, selectedBookmark, true);
     	}
     	else{
-    	   url = '/rpsp/image-access/disable' + '?' + 'clusterId=' + replicaClusterId + '&' + 'groupId=' + cgId + '&' + 'copyId=' + copyId;
+    	   url = '/rpsp/groups/' + cgId + '/clusters/' + replicaClusterId + '/copies/' + copyId + '/image-access/disable' ;
     	   this.updateImageAccessFlags(selectedCopy, imageAccessType, selectedSnapshot, selectedBookmark, false);
     	}
     	
     	
-    	//console.log(url);
-    	   	
-	    $http.put(url)
-	    	.success(function(data,status,headers,config){	        
-	    })
+    	
+    	if(snapshotParams != null){
+    		 $http.put(url, snapshotParams).
+    		 success(function(data,status,headers,config){	        
+    		 });
+    	}
+    	else {
+    		$http.put(url, snapshotParams).
+	   		 success(function(data,status,headers,config){	        
+	   		 });
+    	}
+    			   
     	
     }
     

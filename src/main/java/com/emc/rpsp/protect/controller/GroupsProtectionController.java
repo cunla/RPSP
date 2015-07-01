@@ -1,40 +1,41 @@
 package com.emc.rpsp.protect.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.emc.rpsp.protect.service.ProtectService;
+import com.emc.rpsp.protect.service.GroupsProtectionService;
 
 @Controller
-public class ProtectController {
+public class GroupsProtectionController {
 
 	@Autowired
-	private ProtectService protectService;
+	private GroupsProtectionService groupsProtectionService;
 
-	@RequestMapping(value = "/protect", params = { "vmId", "groupId" }, 
-			method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/groups/{groupId}/vms", 
+			method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<HttpStatus> addVmToCG(
-			@RequestParam("vmId") String vmId,
-			@RequestParam("groupId") Long groupId) {
-		protectService.addVmToCG(vmId,  groupId);
+			@PathVariable("groupId") Long groupId, @RequestBody Map<String, String> vm) {
+		groupsProtectionService.addVmToCG(vm.get("id"),  groupId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/unprotect", params = { "vmId", "groupId" }, 
+	@RequestMapping(value = "/groups/{groupId}/vms/{vmId}",  
 			method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<HttpStatus> removeVmsFromCG(
-			@RequestParam("vmId") String vmId,
-			@RequestParam("groupId") Long groupId) {
-		protectService.removeVmsFromCG(vmId,  groupId);
+			@PathVariable("vmId") String vmId, @PathVariable("groupId") Long groupId) {
+		groupsProtectionService.removeVmsFromCG(vmId,  groupId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

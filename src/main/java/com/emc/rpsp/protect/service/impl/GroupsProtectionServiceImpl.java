@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 
 import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.fal.Client;
-import com.emc.rpsp.protect.service.ProtectService;
+import com.emc.rpsp.protect.service.GroupsProtectionService;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.service.UserService;
 
 @Service 
-public class ProtectServiceImpl implements ProtectService {
+public class GroupsProtectionServiceImpl implements GroupsProtectionService {
 	
 	@Autowired 
 	private UserService userService = null;
