@@ -150,7 +150,7 @@ app.service('vmStructureService', ['$http', function ($http) {
 	        url = '/rpsp/groups/' + sgId + '/vms';
 	        var vmData = {};
 	        vmData.id = vmId;
-	        $http.post(url,vmData)
+	       $http.post(url,vmData)
 	    	.success(function(data,status,headers,config){	        
 	    	})
     	}
