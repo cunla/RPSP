@@ -18,7 +18,7 @@ app.controller('homeController', ['$scope', '$http', 'userService', function($sc
 }])
 
 
-app.controller('vmStructureController', ['$scope', '$http', '$modal', 'vmStructureService', function ($scope, $http, $modal, vmStructureService) {	
+app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translate', '$filter', 'vmStructureService', function ($scope, $http, $modal, $translate, $filter, vmStructureService) {	
 	
 	$scope.vmStructureData = {};
 	$scope.vmGsAndCgFlatData = {};
@@ -119,6 +119,18 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', 'vmStructu
     		res = false;
     	}
     	return res;
+    };
+    
+    
+   $scope.getImageAccessIndicator = function(status){
+	  
+	   if(status != null || status !== undefined){
+		   var $translate = $filter('translate');
+		   var enabled = $translate('HOME.DR_TEST_ENABLED_MSG');
+		   var disabled = $translate('HOME.DR_TEST_DISABLED_MSG');
+		   return (status == 'Enabled' ? enabled : disabled);
+	   }
+	   return status;
     };
     
         

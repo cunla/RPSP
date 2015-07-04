@@ -3,9 +3,34 @@
 		"WELCOME_MSG": "Welcome",
 		"LOGOUT_MSG": "Logout",
 		"RECOVER_POINT_FOR_VM_MSG": "RecoverPoint for Virtual Machines",
-		"DISASTER_RECOVERY_MSG": "Disaster Recovery Services in the Cloud",
-		"HOMEPAGE_TITLE_MSG": "RPSP Homepage",
-		"UNDER_CONSTRUCTION_MSG": "under construction"
+		"DISASTER_RECOVERY_MSG": "Disaster Recovery Services in the Cloud",		
+		
+		"PROTECTED_VMS_MSG": "Protected VMs:",
+		"TOTAL_VMS_MSG": "Total VMs:",
+		"ERRORS_MSG": "Errors:",
+		"WARNINGS_MSG": "Warnings:",
+		"NEW_MESSAGES_MSG": "New Messages:",
+		
+		"DR_TEST_MSG": "DR Test",
+		"FAILOVER_MSG": "Failover",
+		"RESTORE_PRODUCTION_MSG": "Restore Production",
+		"ENABLE_DISABLE_MSG": "Enable/Disable",
+		"ADD_BOOKMARK_MSG": "Add Bookmark",
+		"SHOW_HISTORY_MSG": "Show History",
+		"SERVICE_REQUEST_MSG": "Service Request",
+		
+		"PRODUCTION_MSG" : "Production",
+		"REPLICA_MSG" : "Replica(s)",
+		"STATE_MSG" : "State",
+		"REPLICATION_MSG" : "Replication",
+		"SIZE_MSG" : "Size(GB)",
+		"DR_TEST_MSG" : "DR Test",
+		"UNPROTECTED_VMS_MSG" : "Unprotected VMs",
+		
+		"DR_TEST_ENABLED_MSG" : "Enabled",
+		"DR_TEST_DISABLED_MSG" : "Disabled",
+		
+		"POWERED_BY_RECOVERPOINT_FOR_VMS": "Powered by RecoverPoint for VMs"		
 		},
 "LOGIN":{
 		 "RECOVER_POINT_FOR_VM_MSG": "RecoverPoint for Virtual Machines",
