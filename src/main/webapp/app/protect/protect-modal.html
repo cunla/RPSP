@@ -12,7 +12,7 @@
 		</thead>
 		<tbody>
 			<tr>						
-				<td margin-top>
+				<td>
 				    <div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 radio">
 								Target Copies:	
@@ -21,13 +21,9 @@
 				</td>			
 				<td>
 				        <div class="row">
-							<div class="col-xs-5 col-sm-5 col-md-5 margin-top">
-								<select ng-model="selectedCopy" 
-	                                          ng-options="copy.name for copy in vmGsAndCgFlatData[protectedSelectedIndex].
-	                                                      replicaClusters[0].groupCopySettings" 
-			                                              		class="form-control">
-							
-								</select>
+							<div class="col-xs-5 col-sm-5 col-md-5 radio">
+								{{vmGsAndCgFlatData[protectedSelectedIndex].
+	                                          replicaClusters[0].groupCopySettings[0].name}}
 							</div>	
 							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
 							</div>	
