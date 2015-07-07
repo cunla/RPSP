@@ -206,7 +206,8 @@ public class Client {
 
     }
     
-    public void addVmToCG(String vmId, Long groupId, Account account){
+    @SuppressWarnings("unused")
+	public void addVmToCG(String vmId, Long groupId, Account account){
     	
     	ConsistencyGroupCopySettingsSet consistencyGroupCopySettingsSet = connector.getAllGroupCopies(groupId);   	
     	List<ConsistencyGroupCopySettings> consistencyGroupCopySettingsList = consistencyGroupCopySettingsSet.getInnerSet();
@@ -273,8 +274,23 @@ public class Client {
     	innerSet.add(replicationSetParam);
     	VmReplicationSetParamSet vmReplicationSetParamSet = new VmReplicationSetParamSet(innerSet);   	    	
 
-    	Response response = connector.addVmToCG(groupId, vmReplicationSetParamSet);
-    	System.out.println(response);
+		Response response = connector.addVmToCG(groupId, vmReplicationSetParamSet);
+    }
+    
+    @SuppressWarnings("unused")
+	public void createGroupBookmark(Long groupId, String bookmarkName, String consistencyType){
+    	CreateBookmarkParams createBookmarkParams = new CreateBookmarkParams();
+    	createBookmarkParams.getGroups().add(new ConsistencyGroupUID(groupId));
+    	createBookmarkParams.setBookmarkName(bookmarkName);    	
+    	
+    	if(consistencyType.equals(GeneralFalConsts.APPLICATION_CONSISTENCY_TYPE)){
+    		createBookmarkParams.setConsistencyType(SnapshotConsistencyType.APPLICATION_CONSISTENT);
+    	}
+    	else{
+    		createBookmarkParams.setConsistencyType(SnapshotConsistencyType.UNKNOWN);   		
+    	}
+    	createBookmarkParams.setConsolidationPolicy(BookmarkConsolidationPolicy.ALWAYS_CONSOLIDATE);
+    	Response response = connector.createGroupBookmark(createBookmarkParams);
     }
     
     

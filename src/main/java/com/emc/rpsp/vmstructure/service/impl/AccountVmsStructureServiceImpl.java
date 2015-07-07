@@ -299,6 +299,7 @@ public class AccountVmsStructureServiceImpl implements
 				.getInnerSet();
 
 		for (ConsistencyGroupState currGroupState : groupsStates) {
+			
 			List<ConsistencyGroupLinkState> linksStates = currGroupState
 					.getLinksState();
 			for (ConsistencyGroupLinkState consistencyGroupLinkState : linksStates) {

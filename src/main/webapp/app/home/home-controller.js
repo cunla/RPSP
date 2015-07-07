@@ -95,6 +95,17 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	};
 	
 	
+	$scope.openBookmarksModal = function(){
+		var modalInstance = $modal.open({
+             templateUrl: 'app/bookmarks/bookmarks-modal.html',
+             controller: 'bookmarksController',
+             windowClass: 'bookmarks-modal'
+         });
+		
+		modalInstance.result.then(function(){{}});
+	};
+	
+	
     
     $scope.protectedSelectedIndex = -1;
     $scope.unprotectedSelectedIndex = -1;

@@ -1,0 +1,124 @@
+<div class="modal-header modal-header-primary">
+    <a class="close" ng-click="cancel()">x</a>
+	<h3 class="modal-title">
+		<div class="centered-text">{{'IMAGE-ACCESS.DR_TEST_MSG' | translate}} <b>{{vmGsAndCgFlatData[protectedSelectedIndex].name}}</b></div>
+	</h3>
+</div>
+<div class="modal-body">
+
+	<br/>
+	<table class="table table-condensed table-striped">
+		<thead>
+		</thead>
+		<tbody>
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								{{'IMAGE-ACCESS.SELECT_COPY_MSG' | translate}}	
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-5 col-sm-5 col-md-5 margin-top">
+								<select ng-model="selectedCopy" 
+	                                          ng-options="copy.name for copy in vmGsAndCgFlatData[protectedSelectedIndex].
+	                                                      replicaClusters[0].groupCopySettings" 
+	                                               ng-disabled="selectedCopy.imageAccess == 'Enabled'"
+			                                              class="form-control">
+			                                                          <!-- <option value="" ng-if="false"></option> -->
+							
+								</select>
+							</div>	
+							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+			<tr>				
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								{{'IMAGE-ACCESS.SELECT_IMAGE_MSG' | translate}}	
+						</div>
+					</div>										
+				</td>				
+				<td>	
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+							<label>
+								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess == 'Enabled'" value="latest">
+							{{'IMAGE-ACCESS.LATEST_IMAGE_MSG' | translate}}
+								</input>
+							</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5 col-sm-5 col-md-5 radio" >
+							<label>
+								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess == 'Enabled'" value="snapshot">
+							{{'IMAGE-ACCESS.FROM_SNAPSHOT_LIST_MSG' | translate}}
+								</input>
+							</label>
+						</div>
+						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+							<select ng-model="selectedSnapshot" 
+	                                    ng-options="snapshot.closingTimestamp for snapshot in selectedCopy.snapshots" 
+	                                          ng-disabled="selectedCopy.imageAccess == 'Enabled'" 
+	                                                 class="form-control">												
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5 col-sm-5 col-md-5 radio">
+							<label>
+								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess == 'Enabled' || selectedCopy.bookmarks.length == 0" value="bookmark">
+							{{'IMAGE-ACCESS.SPECIFIC_BOOKMARK_MSG' | translate}}
+								</input>
+							</label>
+						</div>
+						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+								<select ng-model="selectedBookmark" 								         
+	                                        ng-options="bookmark.name for bookmark in selectedCopy.bookmarks"
+	                                             ng-disabled="selectedCopy.imageAccess == 'Enabled' || selectedCopy.bookmarks.length == 0" 
+	                                                 class="form-control">											
+								</select>
+						</div>
+					</div>
+					
+					
+					<div class="row">
+						<div class="col-xs-5 col-sm-5 col-md-5 radio">
+						</div>
+						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+								<select ng-model="selectedBookmark" 								         
+	                                        ng-options="bookmark.closingTimestamp for bookmark in selectedCopy.bookmarks"
+	                                             ng-disabled="selectedCopy.imageAccess == 'Enabled' || selectedCopy.bookmarks.length == 0" 
+	                                                 class="form-control">											
+								</select>
+						</div>
+					</div>
+					
+					
+					
+				</td>
+			</tr>
+			<tr>					
+				<td>
+						{{'IMAGE-ACCESS.TEST_NETWORK_MSG' | translate}}
+				</td>				
+				<td>
+						{{'IMAGE-ACCESS.TENANT_TESTING_MSG' | translate}}
+				</td>
+			</tr>
+		</tbody>					    
+	</table>
+</div>
+<div class="modal-footer centered-text div-grey">
+	<button type="button" class="btn btn-primary" ng-click="imageAccess()">
+	         {{selectedCopy.imageAccess == 'Disabled' ? 'Enable':'Disable'}}
+	</button>
+</div>
+
