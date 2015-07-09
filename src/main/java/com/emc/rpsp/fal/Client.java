@@ -1,6 +1,56 @@
 package com.emc.rpsp.fal;
 
-import com.emc.fapi.jaxws.*;
+import java.io.EOFException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+import com.emc.fapi.jaxws.BookmarkConsolidationPolicy;
+import com.emc.fapi.jaxws.ClusterInfo;
+import com.emc.fapi.jaxws.ClusterUID;
+import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
+import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
+import com.emc.fapi.jaxws.ConsistencyGroupCopySettings;
+import com.emc.fapi.jaxws.ConsistencyGroupCopySettingsSet;
+import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
+import com.emc.fapi.jaxws.ConsistencyGroupSetSubset;
+import com.emc.fapi.jaxws.ConsistencyGroupSetUID;
+import com.emc.fapi.jaxws.ConsistencyGroupSettings;
+import com.emc.fapi.jaxws.ConsistencyGroupSnapshots;
+import com.emc.fapi.jaxws.ConsistencyGroupStateSet;
+import com.emc.fapi.jaxws.ConsistencyGroupUID;
+import com.emc.fapi.jaxws.ConsistencyGroupVolumesStateSet;
+import com.emc.fapi.jaxws.CreateBookmarkForGroupSetSubSetParams;
+import com.emc.fapi.jaxws.CreateBookmarkParams;
+import com.emc.fapi.jaxws.CreateTargetVMManualResourcePlacementParam;
+import com.emc.fapi.jaxws.CreateVMParam;
+import com.emc.fapi.jaxws.DatastoreUID;
+import com.emc.fapi.jaxws.EnableImageAccessParams;
+import com.emc.fapi.jaxws.EnableLatestImageAccessParams;
+import com.emc.fapi.jaxws.EsxUID;
+import com.emc.fapi.jaxws.FullRecoverPointSettings;
+import com.emc.fapi.jaxws.GlobalCopyUID;
+import com.emc.fapi.jaxws.ImageAccessMode;
+import com.emc.fapi.jaxws.ImageAccessScenario;
+import com.emc.fapi.jaxws.RecoverPointClustersInformation;
+import com.emc.fapi.jaxws.RecoverPointTimeStamp;
+import com.emc.fapi.jaxws.ReplicatedVMParams;
+import com.emc.fapi.jaxws.Snapshot;
+import com.emc.fapi.jaxws.SnapshotConsistencyType;
+import com.emc.fapi.jaxws.SnapshotUID;
+import com.emc.fapi.jaxws.SourceVmParam;
+import com.emc.fapi.jaxws.VirtualCenterUID;
+import com.emc.fapi.jaxws.VmReplicationSetParam;
+import com.emc.fapi.jaxws.VmReplicationSetParamSet;
+import com.emc.fapi.jaxws.VmReplicationSetSettings;
+import com.emc.fapi.jaxws.VmReplicationSettings;
+import com.emc.fapi.jaxws.VmState;
+import com.emc.fapi.jaxws.VmUID;
+import com.emc.fapi.jaxws.VmUIDSet;
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
 import com.emc.rpsp.accounts.domain.Account;
@@ -8,17 +58,6 @@ import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
-
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.http.Body;
-import retrofit.http.Path;
-
-import java.io.EOFException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by morand3 on 1/14/2015.
@@ -277,23 +316,7 @@ public class Client {
 		Response response = connector.addVmToCG(groupId, vmReplicationSetParamSet);
     }
     
-    @SuppressWarnings("unused")
-	public void createGroupBookmark(Long groupId, String bookmarkName, String consistencyType){
-    	CreateBookmarkParams createBookmarkParams = new CreateBookmarkParams();
-    	createBookmarkParams.getGroups().add(new ConsistencyGroupUID(groupId));
-    	createBookmarkParams.setBookmarkName(bookmarkName);    	
-    	
-    	if(consistencyType.equals(GeneralFalConsts.APPLICATION_CONSISTENCY_TYPE)){
-    		createBookmarkParams.setConsistencyType(SnapshotConsistencyType.APPLICATION_CONSISTENT);
-    	}
-    	else{
-    		createBookmarkParams.setConsistencyType(SnapshotConsistencyType.UNKNOWN);   		
-    	}
-    	createBookmarkParams.setConsolidationPolicy(BookmarkConsolidationPolicy.ALWAYS_CONSOLIDATE);
-    	Response response = connector.createGroupBookmark(createBookmarkParams);
-    }
-    
-    
+   
     
     public void removeVmsFromCG(String vmId, Long groupId, Account account){
     	
@@ -313,6 +336,47 @@ public class Client {
     	VmUIDSet vmUIDSet = new VmUIDSet(innerSet);
     	connector.removeVmsFromCG(groupId, vmUIDSet);
     }
+    
+    
+    @SuppressWarnings("unused")
+   	public void createGroupBookmark(Long groupId, String bookmarkName, String consistencyType){
+       	CreateBookmarkParams createBookmarkParams = new CreateBookmarkParams();
+       	createBookmarkParams.getGroups().add(new ConsistencyGroupUID(groupId));
+       	createBookmarkParams.setBookmarkName(bookmarkName);    	
+       	createBookmarkParams.setConsistencyType(SnapshotConsistencyType.APPLICATION_CONSISTENT);
+       /*	if(consistencyType.equals(GeneralFalConsts.APPLICATION_CONSISTENCY_TYPE)){
+       		createBookmarkParams.setConsistencyType(SnapshotConsistencyType.APPLICATION_CONSISTENT);
+       	}
+       	else{
+       		createBookmarkParams.setConsistencyType(SnapshotConsistencyType.UNKNOWN);   		
+       	}*/
+       	createBookmarkParams.setConsolidationPolicy(BookmarkConsolidationPolicy.NEVER_CONSOLIDATE);
+       	Response response = connector.createGroupBookmark(createBookmarkParams);
+       }
+       
+       
+   	@SuppressWarnings("unused")
+   	public void createGroupSetBookmark(Long groupSetId, String bookmarkName, String consistencyType){
+   		CreateBookmarkForGroupSetSubSetParams createBookmarkForGroupSetSubSetParams = 
+   				                                         new CreateBookmarkForGroupSetSubSetParams();
+   		ConsistencyGroupSetSubset consistencyGroupSetSubset = new ConsistencyGroupSetSubset();
+   		consistencyGroupSetSubset.setGroupSetUID(new ConsistencyGroupSetUID(groupSetId));
+   		createBookmarkForGroupSetSubSetParams.setGroupSetSubset(consistencyGroupSetSubset);
+   		createBookmarkForGroupSetSubSetParams.getGroupSetSubset().setGroupSetUID(new ConsistencyGroupSetUID(groupSetId));
+   		createBookmarkForGroupSetSubSetParams.setBookmarkName(bookmarkName);
+       	createBookmarkForGroupSetSubSetParams.setConsistencyType(SnapshotConsistencyType.APPLICATION_CONSISTENT);   		
+   		/*if(consistencyType.equals(GeneralFalConsts.APPLICATION_CONSISTENCY_TYPE)){
+   			createBookmarkForGroupSetSubSetParams.setConsistencyType(SnapshotConsistencyType.APPLICATION_CONSISTENT);
+       	}
+       	else{
+       		createBookmarkForGroupSetSubSetParams.setConsistencyType(SnapshotConsistencyType.UNKNOWN);   		
+       	}*/
+   		createBookmarkForGroupSetSubSetParams.setConsolidationPolicy(BookmarkConsolidationPolicy.NEVER_CONSOLIDATE);
+   		Response response = connector.createGroupSetBookmark(createBookmarkForGroupSetSubSetParams);
+   		
+   	}
+       
+       
     
     
 

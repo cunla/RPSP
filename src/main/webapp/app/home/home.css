@@ -32,6 +32,12 @@ table.table tr.selected td {
   max-width: 42vw;
 }
 
+.bookmarks-modal .modal-dialog {
+  max-width: 38vw;
+}
+
+
+
 /* .modal-dialog {
     max-width: 42vw;
 }

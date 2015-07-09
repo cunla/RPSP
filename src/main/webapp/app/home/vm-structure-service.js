@@ -273,6 +273,27 @@ app.service('vmStructureService', ['$http', function ($http) {
             }
         }
     };
+
+    
+    this.createBookmark = function(cgId, type, bookmarkName, consistencyType){
+    	var url = {};
+    	if(type == 'gs'){    		
+    		url = '/rpsp/group-sets/' + cgId + '/bookmarks';
+    	}
+    	else{
+    		url = '/rpsp/groups/' + cgId + '/bookmarks';
+    	}
+    	
+    	var bookmarkParams = {};   	
+    	bookmarkParams.name = bookmarkName;
+    	bookmarkParams.consistencyType = consistencyType;
+    	
+
+		 $http.post(url, bookmarkParams).
+		 success(function(data,status,headers,config){	        
+		 });    	   			   
+    	
+    };
     
             
     

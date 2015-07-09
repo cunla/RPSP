@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.emc.rpsp.bookmarks.service.GroupBookmarksService;
+import com.emc.rpsp.bookmarks.service.GroupSetBookmarksService;
 
 @Controller
-public class GroupBookmarksController {
+public class GroupSetBookmarksController {
 
 	@Autowired
-	private GroupBookmarksService groupBookmarksService;
+	private GroupSetBookmarksService groupSetBookmarksService;
 
-	@RequestMapping(value = "/groups/{groupId}/bookmarks", method = RequestMethod.POST, 
+	@RequestMapping(value = "/group-sets/{groupSetId}/bookmarks", method = RequestMethod.POST, 
 										consumes = MediaType.APPLICATION_JSON_VALUE, 
 												produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<HttpStatus> createBookmark(@PathVariable("groupId") Long groupId , 
+	public ResponseEntity<HttpStatus> createBookmark(@PathVariable("groupSetId") Long groupSetId , 
 			                                                @RequestBody Map<String, String> params) {
-		groupBookmarksService.createGroupBookmark(groupId, params.get("name"), params.get("consistencyType"));
+		groupSetBookmarksService.createGroupSetBookmark(groupSetId, params.get("name"), params.get("consistencyType"));
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
