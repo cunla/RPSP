@@ -1,7 +1,8 @@
 <div class="modal-header modal-header-primary protect-modal">
     <a class="close" ng-click="cancel()">x</a>
 	<h3 class="modal-title">
-		<div class="centered-text">Remove VM: <b>{{vmName}}</b> from Consistency Group: <b>{{cgName}}</b></div>
+		<div class="centered-text">{{'PROTECT-UNPROTECT.REMOVE_VM_MSG' | translate}} <b>{{vmName}}</b> 
+		                 {{'PROTECT-UNPROTECT.FROM_CONSIST_GROUP_MSG' | translate}} <b>{{cgName}}</b></div>
 	</h3>
 </div>
 <div class="modal-body">
@@ -15,7 +16,7 @@
 				<td margin-top>
 				    <div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								Target Copies:	
+								{{'PROTECT-UNPROTECT.TARGET_COPIES_MSG' | translate}}
 						</div>
 					</div>										
 				</td>			
@@ -34,25 +35,25 @@
 				<td margin-top>
 				    <div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								Replica VM:	
+								{{'PROTECT-UNPROTECT.REPLICA_VM_MSG' | translate}}	
 						</div>
 					</div>										
 				</td>				
 				<td>	
 					<div class="row">
 						<div class="col-xs-5 col-sm-5 col-md-5 radio">
-							 Server Class
+							 {{'PROTECT-UNPROTECT.SERVER_CLASS_MSG' | translate}}
 						</div>
 						<div class="col-xs-7 col-sm-7 col-md-7 margin-top-10">
-							Premium
+							{{'PROTECT-UNPROTECT.PREMIUM_MSG' | translate}}
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-xs-5 col-sm-5 col-md-5 margin-top-lg">
-						     Storage Class
+						     {{'PROTECT-UNPROTECT.STORAGE_CLASS_MSG' | translate}}
 						</div>
 						<div class="col-xs-7 col-sm-7 col-md-7 margin-top-lg margin-bottom-10">
-								Premium
+								{{'PROTECT-UNPROTECT.PREMIUM_MSG' | translate}}
 						</div>
 					</div>
 				</td>
@@ -60,13 +61,13 @@
 			<tr>					
 				<td>
 					<div class="margin-top-lg">
-							Boot Order:
+							{{'PROTECT-UNPROTECT.BOOT_ORDER_MSG' | translate}}
 					</div>
 				</td>				
 				<td>
 					<div class="row">
 						<div class="col-xs-6 col-sm-6 col-md-6 margin-top margin-top-lg">
-						     VM Priority in CG
+						     {{'PROTECT-UNPROTECT.VM_PRIORITY_IN_CG_MSG' | translate}}
 						</div>
 						<div class="col-xs-3 col-sm-3 col-md-3 margin-top-lg">
 								1
@@ -77,7 +78,7 @@
 					<div class="row">
 						<div class="col-xs-5 col-sm-5 col-md-5 margin-top-10">
 						     <label class="checkbox-inline">
-							  	<input type="checkbox" id="criticalVmId" ng-disabled="true"> Critical VM
+							  	<input type="checkbox" id="criticalVmId" ng-disabled="true"> {{'PROTECT-UNPROTECT.CRITICAL_VM_MSG' | translate}}
 							</label>
 						</div>
 					</div>
@@ -88,7 +89,7 @@
 	
 	<div class="centered-text">
 	     <label class="checkbox-inline">
-		  	<input type="checkbox" id="unprotectCheckboxId" ng-model="unprotectCheckbox"> <b>Proceed to unprotect ?</b>
+		  	<input type="checkbox" id="unprotectCheckboxId" ng-model="unprotectCheckbox"> <b>{{'PROTECT-UNPROTECT.PROCEED_TO_UNPROTECT_MSG' | translate}}</b>
 		</label>
 	</div>
 			
@@ -98,6 +99,6 @@
 
 <div class="modal-footer centered-text div-grey">
 	<button type="button" class="btn btn-primary" ng-disabled="!unprotectCheckbox" ng-click="moveVm()">
-	         Unprotect VM
+	         {{'PROTECT-UNPROTECT.UNPROTECT_VM_MSG' | translate}}
 	</button>
 </div>

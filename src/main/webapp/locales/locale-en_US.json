@@ -1,58 +1,75 @@
 {
-"HOME":{
-		"WELCOME_MSG": "Welcome",
-		"LOGOUT_MSG": "Logout",
-		"RECOVER_POINT_FOR_VM_MSG": "RecoverPoint for Virtual Machines",
-		"DISASTER_RECOVERY_MSG": "Disaster Recovery Services in the Cloud",		
-		
-		"PROTECTED_VMS_MSG": "Protected VMs:",
-		"TOTAL_VMS_MSG": "Total VMs:",
-		"ERRORS_MSG": "Errors:",
-		"WARNINGS_MSG": "Warnings:",
-		"NEW_MESSAGES_MSG": "New Messages:",
-		
-		"DR_TEST_MSG": "DR Test",
-		"FAILOVER_MSG": "Failover",
-		"RESTORE_PRODUCTION_MSG": "Restore Production",
-		"ENABLE_DISABLE_MSG": "Enable/Disable",
-		"ADD_BOOKMARK_MSG": "Add Bookmark",
-		"SHOW_HISTORY_MSG": "Show History",
-		"SERVICE_REQUEST_MSG": "Service Request",
-		
-		"PRODUCTION_MSG" : "Production",
-		"REPLICA_MSG" : "Replica(s)",
-		"STATE_MSG" : "State",
-		"REPLICATION_MSG" : "Replication",
-		"SIZE_MSG" : "Size(GB)",
-		"DR_TEST_MSG" : "DR Test",
-		"UNPROTECTED_VMS_MSG" : "Unprotected VMs",
-		
-		"DR_TEST_ENABLED_MSG" : "Enabled",
-		"DR_TEST_DISABLED_MSG" : "Disabled",
-		
-		"POWERED_BY_RECOVERPOINT_FOR_VMS": "Powered by RecoverPoint for VMs"		
-		},
-"LOGIN":{
-		 "RECOVER_POINT_FOR_VM_MSG": "RecoverPoint for Virtual Machines",
-		 "DISASTER_RECOVERY_MSG": "Disaster Recovery Services in the Cloud",
-		 "ACCOUNT_MSG": "Account",
-		 "USERNAME_MSG": "Username",
-		 "PASSWORD_MSG": "Password",
-		 "SIGN_IN_MSG": "Sign in"
-		},
-"IMAGE-ACCESS":{
-		 "DR_TEST_MSG": "DR Test:",
-		 "SELECT_COPY_MSG": "Select Copy:",
-		 "SELECT_IMAGE_MSG": "Select Image",
-		 "LATEST_IMAGE_MSG": "Latest Image",
-		 "FROM_SNAPSHOT_LIST_MSG": "From Snapshot List",
-		 "SPECIFIC_BOOKMARK_MSG": "Specific Bookmark",
-		 "TEST_NETWORK_MSG": "Test Network:",
-		 "TENANT_TESTING_MSG": "Tenant Testing",
-		 "ENABLED_MSG": "Enabled",
-		 "DISABLED_MSG": "Disabled"
-		}
+    "LOGIN": {
+        "RECOVER_POINT_FOR_VM_MSG": "RecoverPoint for Virtual Machines",
+        "DISASTER_RECOVERY_MSG": "Disaster Recovery Services in the Cloud",
+        "ACCOUNT_MSG": "Account",
+        "USERNAME_MSG": "Username",
+        "PASSWORD_MSG": "Password",
+        "SIGN_IN_MSG": "Sign in"
+    },
+    "HOME": {
+        "WELCOME_MSG": "Welcome",
+        "LOGOUT_MSG": "Logout",
+        "RECOVER_POINT_FOR_VM_MSG": "RecoverPoint for Virtual Machines",
+        "DISASTER_RECOVERY_MSG": "Disaster Recovery Services in the Cloud",
+        "PROTECTED_VMS_MSG": "Protected VMs:",
+        "TOTAL_VMS_MSG": "Total VMs:",
+        "ERRORS_MSG": "Errors:",
+        "WARNINGS_MSG": "Warnings:",
+        "NEW_MESSAGES_MSG": "New Messages:",
+        "DR_TEST_MSG": "DR Test",
+        "FAILOVER_MSG": "Failover",
+        "RESTORE_PRODUCTION_MSG": "Restore Production",
+        "ENABLE_DISABLE_MSG": "Enable/Disable",
+        "ADD_BOOKMARK_MSG": "Add Bookmark",
+        "SHOW_HISTORY_MSG": "Show History",
+        "SERVICE_REQUEST_MSG": "Service Request",
+        "PRODUCTION_MSG": "Production",
+        "REPLICA_MSG": "Replica(s)",
+        "STATE_MSG": "State",
+        "REPLICATION_MSG": "Replication",
+        "SIZE_MSG": "Size(GB)",
+        "UNPROTECTED_VMS_MSG": "Unprotected VMs",
+        "DR_TEST_ENABLED_MSG": "Enabled",
+        "DR_TEST_DISABLED_MSG": "Disabled",
+        "POWERED_BY_RECOVERPOINT_FOR_VMS": "Powered by RecoverPoint for VMs"
+    },
+    "IMAGE-ACCESS": {
+        "DR_TEST_MSG": "DR Test:",
+        "SELECT_COPY_MSG": "Select Copy:",
+        "SELECT_IMAGE_MSG": "Select Image",
+        "LATEST_IMAGE_MSG": "Latest Image",
+        "FROM_SNAPSHOT_LIST_MSG": "From Snapshot List",
+        "SPECIFIC_BOOKMARK_MSG": "Specific Bookmark",
+        "TEST_NETWORK_MSG": "Test Network:",
+        "TENANT_TESTING_MSG": "Tenant Testing",
+        "ENABLED_MSG": "Enabled",
+        "DISABLED_MSG": "Disabled"
+    },
+    "PROTECT-UNPROTECT": {
+        "ADD_VM_MSG": "Add VM:",
+        "REMOVE_VM_MSG": "Remove VM:",
+        "TO_CONSIST_GROUP_MSG": "to Consistency Group:",
+        "FROM_CONSIST_GROUP_MSG": "from Consistency Group:",
+        "TARGET_COPIES_MSG": "Target Copies:",
+        "REPLICA_VM_MSG": "Replica VM:",
+        "SERVER_CLASS_MSG": "Server Class",
+        "STORAGE_CLASS_MSG": "Storage Class",
+        "PREMIUM_MSG": "Premium",
+        "STANDARD_MSG": "Standard",
+        "BOOT_ORDER_MSG": "Boot Order:",
+        "VM_PRIORITY_IN_CG_MSG": "VM Priority in CG",
+        "CRITICAL_VM_MSG": "Critical VM",
+        "PROTECT_VM_MSG": "Protect VM",
+        "PROCEED_TO_UNPROTECT_MSG": "Proceed to unprotect",
+        "UNPROTECT_VM_MSG": "Unprotect VM"
+    },
+    "BOOKMARK": {
+        "CREATE_BOOKMARK_MSG": "Create Bookamr for",
+        "BOOKAMARK_NAME_MSG": "Bookmark Name:",
+        "CONSISTENCY_TYPE_MSG": "Consistency Type",
+        "CRASH_CONSISTENT_MSG": "Crash-Consistent",
+        "APPLICATION_CONSISTENT_MSG": "Application-Consistent",
+        "CREATE_MSG": "Create"
+    }
 }
-
-
-

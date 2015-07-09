@@ -1,7 +1,7 @@
 <div class="modal-header modal-header-primary protect-modal">
     <a class="close" ng-click="cancel()">x</a>
 	<h3 class="modal-title">
-		<div class="centered-text">Add VM: <b>{{vmName}}</b> to Consistency Group: <b>{{cgName}}</b></div>
+		<div class="centered-text">{{'PROTECT-UNPROTECT.ADD_VM_MSG' | translate}} <b>{{vmName}}</b> {{'PROTECT-UNPROTECT.TO_CONSIST_GROUP_MSG' | translate}} <b>{{cgName}}</b></div>
 	</h3>
 </div>
 <div class="modal-body">
@@ -15,7 +15,7 @@
 				<td>
 				    <div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								Target Copies:	
+								{{'PROTECT-UNPROTECT.TARGET_COPIES_MSG' | translate}}	
 						</div>
 					</div>										
 				</td>			
@@ -35,7 +35,7 @@
 				<td margin-top>
 				    <div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								Replica VM:	
+								{{'PROTECT-UNPROTECT.REPLICA_VM_MSG' | translate}}	
 						</div>
 					</div>										
 				</td>				
@@ -46,19 +46,19 @@
 						</div>
 						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
 							<select class="form-control">
-								<option>Premium</option>
-								<option>Standard</option>
+								<option>{{'PROTECT-UNPROTECT.PREMIUM_MSG' | translate}}</option>
+								<option>{{'PROTECT-UNPROTECT.STANDARD_MSG' | translate}}</option>
 							</select>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-xs-5 col-sm-5 col-md-5 radio">
-							 	Storage Class
+							 	{{'PROTECT-UNPROTECT.STORAGE_CLASS_MSG' | translate}}
 						</div>
 						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
 								<select class="form-control">
-									<option>Premium</option>
-									<option>Standard</option>
+									<option>{{'PROTECT-UNPROTECT.PREMIUM_MSG' | translate}}</option>
+									<option>{{'PROTECT-UNPROTECT.STANDARD_MSG' | translate}}</option>
 								</select>
 						</div>
 					</div>
@@ -67,13 +67,13 @@
 			<tr>					
 				<td>
 					<div class="margin-top-lg">
-							Boot Order:
+							{{'PROTECT-UNPROTECT.BOOT_ORDER_MSG' | translate}}
 					</div>
 				</td>				
 				<td>
 					<div class="row">
 						<div class="col-xs-5 col-sm-5 col-md-5 margin-top-lg">
-						     VM Priority in CG
+						     {{'PROTECT-UNPROTECT.VM_PRIORITY_IN_CG_MSG' | translate}}
 						</div>
 						<div class="col-xs-3 col-sm-3 col-md-3 margin-top">
 								<select class="form-control">
@@ -87,7 +87,7 @@
 					<div class="row">
 						<div class="col-xs-5 col-sm-5 col-md-5">
 						     <label class="checkbox-inline">
-							  	<input type="checkbox" id="inlineCheckbox1" value="option1"> Critical VM
+							  	<input type="checkbox" id="inlineCheckbox1" value="option1"> {{'PROTECT-UNPROTECT.CRITICAL_VM_MSG' | translate}}
 							</label>
 						</div>
 					</div>
@@ -98,7 +98,7 @@
 </div>
 <div class="modal-footer centered-text div-grey">
 	<button type="button" class="btn btn-primary" ng-click="moveVm()">
-	         Protect VM
+	         {{'PROTECT-UNPROTECT.PROTECT_VM_MSG' | translate}}
 	</button>
 </div>
 
