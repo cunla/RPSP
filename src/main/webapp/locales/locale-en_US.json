@@ -61,11 +61,11 @@
         "VM_PRIORITY_IN_CG_MSG": "VM Priority in CG",
         "CRITICAL_VM_MSG": "Critical VM",
         "PROTECT_VM_MSG": "Protect VM",
-        "PROCEED_TO_UNPROTECT_MSG": "Proceed to unprotect",
+        "PROCEED_TO_UNPROTECT_MSG": "Proceed to unprotect ?",
         "UNPROTECT_VM_MSG": "Unprotect VM"
     },
     "BOOKMARK": {
-        "CREATE_BOOKMARK_MSG": "Create Bookamr for",
+        "CREATE_BOOKMARK_MSG": "Create Bookmark for",
         "BOOKAMARK_NAME_MSG": "Bookmark Name:",
         "CONSISTENCY_TYPE_MSG": "Consistency Type",
         "CRASH_CONSISTENT_MSG": "Crash-Consistent",
