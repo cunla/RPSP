@@ -4,7 +4,10 @@ public enum TransferState {
 
     INITIALIZING("Initializing"),
     ACTIVE("Active"),
+    STAND_BY("Stand by"),
+    READY_TO_REPLICATE("Ready"),
     PAUSED("Paused"),
+    PAUSED_BY_SYSTEM("Paused by system"),
     ERROR("Error"),
     UNKNOWN("Unknown");
 

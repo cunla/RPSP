@@ -423,9 +423,21 @@ public class AccountVmsStructureServiceImpl implements
 					statesMap.put(consistencyGroupCopyUID,
 							TransferState.ACTIVE.value());
 					break;
+				case STAND_BY:
+					statesMap.put(consistencyGroupCopyUID,
+							TransferState.STAND_BY.value());
+					break;
+				case READY_TO_REPLICATE:
+					statesMap.put(consistencyGroupCopyUID,
+							TransferState.READY_TO_REPLICATE.value());
+					break;
 				case PAUSED:
 					statesMap.put(consistencyGroupCopyUID,
 							TransferState.PAUSED.value());
+					break;
+				case PAUSED_BY_SYSTEM:
+					statesMap.put(consistencyGroupCopyUID,
+							TransferState.PAUSED_BY_SYSTEM.value());
 					break;
 				case ERROR:
 					statesMap.put(consistencyGroupCopyUID,

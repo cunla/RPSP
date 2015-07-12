@@ -240,7 +240,7 @@
         	<groupId>net.wimpi</groupId>
         	<artifactId>telnetd-x</artifactId>
         	<version>2.1.1</version>
-        </dependency>
+        </dependency>        
     </dependencies>
 
     <!-- test commit #2 -->
@@ -266,16 +266,15 @@
     </build>
     <repositories>
         <repository>
-            <id>spring-snapshots</id>
-            <url>http://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
             <id>spring-milestones</id>
             <url>http://repo.spring.io/milestone</url>
         </repository>
+        <repository>
+	        <id>remote-repos</id>
+	        <name>artifacts-il-releases</name>
+	        <url>http://artifacts-il:8081/artifactory/remote-repos</url>
+    	</repository>
+        
     </repositories>
     <pluginRepositories>
         <pluginRepository>
