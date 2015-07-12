@@ -2,14 +2,18 @@ package com.emc.rpsp.vmstructure.service.impl;
 
 import com.emc.fapi.jaxws.*;
 import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.accounts.service.AccountService;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.rpsystems.SystemSettings;
+import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.users.service.UserService;
 import com.emc.rpsp.vms.domain.VmOwnership;
+import com.emc.rpsp.vms.service.VmOwnershipService;
 import com.emc.rpsp.vmstructure.constants.ImageAccess;
 import com.emc.rpsp.vmstructure.constants.TransferState;
 import com.emc.rpsp.vmstructure.domain.*;
 import com.emc.rpsp.vmstructure.service.AccountVmsStructureService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +29,36 @@ public class AccountVmsStructureServiceImpl implements
 
 	@Autowired
 	private UserService userService = null;
-
+	
+	@Autowired
+	private AccountService accountService = null;
+	
+	@Autowired
+	private VmOwnershipService vmOwnershipService = null;
+	
+	
 	@Override
 	public AccountVmsStructure getAccountVmsStrucure() {
 
+		AccountVmsStructure accountVmsStructure = null;
+		User user = userService.findCurrentUser().getUser();
+		if(isNotImpersonatedAdmin(user)){
+			List<Account> accounts = accountService.findAll();
+			accountVmsStructure = getAllAccountsData(accounts);
+			updateVmNamesWithAccountInfo(accountVmsStructure);
+		}
+		else{
+			Account account = user.getAccount();
+			accountVmsStructure = getAccountData(account);
+		}
+		
+		return accountVmsStructure;
+	}
+
+	
+	
+	private AccountVmsStructure getAccountData(Account account){
 		AccountVmsStructure accountVmsStructure = new AccountVmsStructure();
-		Account account = userService.findCurrentUser().getUser().getAccount();
 
 		if (account != null) {
 			accountVmsStructure.setId(account.getId().toString());
@@ -48,6 +76,82 @@ public class AccountVmsStructureServiceImpl implements
 		}
 		return accountVmsStructure;
 	}
+	
+	
+	private AccountVmsStructure getAllAccountsData(List<Account> accounts){
+		AccountVmsStructure accountVmsStructure = new AccountVmsStructure();
+		if (accounts != null) {
+			
+			for(Account account : accounts){
+				List<SystemSettings> systems = account.getSystemSettings();
+				for (SystemSettings currSystem : systems) {
+					Client client = new Client(currSystem);
+					AccountVmsStructure currAccountVmsStructure = getAccountVmsStrucure(
+							client, account, currSystem);
+					accountVmsStructure.getUnprotectedVms().addAll(
+							currAccountVmsStructure.getUnprotectedVms());
+					accountVmsStructure.getProtectedVms().addAll(
+							currAccountVmsStructure.getProtectedVms());
+				}
+			}
+		}
+		return accountVmsStructure;
+	}
+	
+	
+	private boolean isNotImpersonatedAdmin(User user){
+		boolean res = false;
+		if(user.getPermission().equals("ADMIN") && user.getAccount() == null){
+			res = true;
+		}
+		return res;
+	}
+	
+	
+	private void updateVmNamesWithAccountInfo(AccountVmsStructure accountVmsStructure){
+		List<VmDefinition> unprotectedVms = accountVmsStructure.getUnprotectedVms();
+		updateVmNamesSubsetWithAccountInfo(unprotectedVms);
+		
+		List<VmContainer> protectedVms = accountVmsStructure.getProtectedVms();
+		for(VmContainer currVmContainer : protectedVms){
+			if(currVmContainer instanceof ConsistencyGroup){
+				ConsistencyGroup consistencyGroup = (ConsistencyGroup)currVmContainer;
+				List<VmDefinition> cgVms = consistencyGroup.getVms();
+				updateVmNamesSubsetWithAccountInfo(cgVms);
+			}
+			else{
+				GroupSet groupSet = (GroupSet)currVmContainer;
+				List<VmContainer> cgList = groupSet.getConsistencyGroups();
+				for(VmContainer vmContainer : cgList){
+					ConsistencyGroup consistencyGroup = (ConsistencyGroup)vmContainer;
+					List<VmDefinition> cgVms = consistencyGroup.getVms();
+					updateVmNamesSubsetWithAccountInfo(cgVms);
+				}
+			}
+		}
+		
+	}
+	
+	
+	private void updateVmNamesSubsetWithAccountInfo(List<VmDefinition> vmsList){
+		Map<String, Account> vmToAccountMap = getVmToAccountMap();
+		for(VmDefinition currVmDef : vmsList){
+			currVmDef.setName(currVmDef.getName() + " " + "[" + vmToAccountMap.get(currVmDef.getId()).getLabel() + "]");
+		}
+		return;
+	}
+	
+	
+	private Map<String, Account> getVmToAccountMap(){
+		List<VmOwnership> vmOwnerships = vmOwnershipService.findAll();
+		Map<String, Account> vmToAccountMap = new HashMap<String, Account>();
+		for(VmOwnership vmOwnership : vmOwnerships){
+			vmToAccountMap.put(vmOwnership.getVmId(), vmOwnership.getAccount());
+		}
+		return vmToAccountMap;
+	}
+	
+	
 
 	private AccountVmsStructure getAccountVmsStrucure(Client client,
 			Account account, SystemSettings currSystem) {
