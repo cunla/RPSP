@@ -249,7 +249,7 @@ app.service('vmStructureService', ['$http', function ($http) {
     	}
     	
     	if(isEnableAccess == true){
-    		serviceDataSelectedCopy.imageAccess = 'Enabled';
+    		serviceDataSelectedCopy.imageAccess = 'Enabling';
     		if(currSnapshot != null){
     			currSnapshot.imageAccessEnabled = true;
     		}

@@ -29,35 +29,31 @@ public class AccountVmsStructureServiceImpl implements
 
 	@Autowired
 	private UserService userService = null;
-	
+
 	@Autowired
 	private AccountService accountService = null;
-	
+
 	@Autowired
 	private VmOwnershipService vmOwnershipService = null;
-	
-	
+
 	@Override
 	public AccountVmsStructure getAccountVmsStrucure() {
 
 		AccountVmsStructure accountVmsStructure = null;
 		User user = userService.findCurrentUser().getUser();
-		if(isNotImpersonatedAdmin(user)){
+		if (isNotImpersonatedAdmin(user)) {
 			List<Account> accounts = accountService.findAll();
 			accountVmsStructure = getAllAccountsData(accounts);
 			updateVmNamesWithAccountInfo(accountVmsStructure);
-		}
-		else{
+		} else {
 			Account account = user.getAccount();
 			accountVmsStructure = getAccountData(account);
 		}
-		
+
 		return accountVmsStructure;
 	}
 
-	
-	
-	private AccountVmsStructure getAccountData(Account account){
+	private AccountVmsStructure getAccountData(Account account) {
 		AccountVmsStructure accountVmsStructure = new AccountVmsStructure();
 
 		if (account != null) {
@@ -76,13 +72,12 @@ public class AccountVmsStructureServiceImpl implements
 		}
 		return accountVmsStructure;
 	}
-	
-	
-	private AccountVmsStructure getAllAccountsData(List<Account> accounts){
+
+	private AccountVmsStructure getAllAccountsData(List<Account> accounts) {
 		AccountVmsStructure accountVmsStructure = new AccountVmsStructure();
 		if (accounts != null) {
-			
-			for(Account account : accounts){
+
+			for (Account account : accounts) {
 				List<SystemSettings> systems = account.getSystemSettings();
 				for (SystemSettings currSystem : systems) {
 					Client client = new Client(currSystem);
@@ -97,61 +92,57 @@ public class AccountVmsStructureServiceImpl implements
 		}
 		return accountVmsStructure;
 	}
-	
-	
-	private boolean isNotImpersonatedAdmin(User user){
+
+	private boolean isNotImpersonatedAdmin(User user) {
 		boolean res = false;
-		if(user.getPermission().equals("ADMIN") && user.getAccount() == null){
+		if (user.getPermission().equals("ADMIN") && user.getAccount() == null) {
 			res = true;
 		}
 		return res;
 	}
-	
-	
-	private void updateVmNamesWithAccountInfo(AccountVmsStructure accountVmsStructure){
-		List<VmDefinition> unprotectedVms = accountVmsStructure.getUnprotectedVms();
+
+	private void updateVmNamesWithAccountInfo(
+			AccountVmsStructure accountVmsStructure) {
+		List<VmDefinition> unprotectedVms = accountVmsStructure
+				.getUnprotectedVms();
 		updateVmNamesSubsetWithAccountInfo(unprotectedVms);
-		
+
 		List<VmContainer> protectedVms = accountVmsStructure.getProtectedVms();
-		for(VmContainer currVmContainer : protectedVms){
-			if(currVmContainer instanceof ConsistencyGroup){
-				ConsistencyGroup consistencyGroup = (ConsistencyGroup)currVmContainer;
+		for (VmContainer currVmContainer : protectedVms) {
+			if (currVmContainer instanceof ConsistencyGroup) {
+				ConsistencyGroup consistencyGroup = (ConsistencyGroup) currVmContainer;
 				List<VmDefinition> cgVms = consistencyGroup.getVms();
 				updateVmNamesSubsetWithAccountInfo(cgVms);
-			}
-			else{
-				GroupSet groupSet = (GroupSet)currVmContainer;
+			} else {
+				GroupSet groupSet = (GroupSet) currVmContainer;
 				List<VmContainer> cgList = groupSet.getConsistencyGroups();
-				for(VmContainer vmContainer : cgList){
-					ConsistencyGroup consistencyGroup = (ConsistencyGroup)vmContainer;
+				for (VmContainer vmContainer : cgList) {
+					ConsistencyGroup consistencyGroup = (ConsistencyGroup) vmContainer;
 					List<VmDefinition> cgVms = consistencyGroup.getVms();
 					updateVmNamesSubsetWithAccountInfo(cgVms);
 				}
 			}
 		}
-		
+
 	}
-	
-	
-	private void updateVmNamesSubsetWithAccountInfo(List<VmDefinition> vmsList){
+
+	private void updateVmNamesSubsetWithAccountInfo(List<VmDefinition> vmsList) {
 		Map<String, Account> vmToAccountMap = getVmToAccountMap();
-		for(VmDefinition currVmDef : vmsList){
-			currVmDef.setName(currVmDef.getName() + " " + "[" + vmToAccountMap.get(currVmDef.getId()).getLabel() + "]");
+		for (VmDefinition currVmDef : vmsList) {
+			currVmDef.setName(currVmDef.getName() + " " + "["
+					+ vmToAccountMap.get(currVmDef.getId()).getLabel() + "]");
 		}
 		return;
 	}
-	
-	
-	private Map<String, Account> getVmToAccountMap(){
+
+	private Map<String, Account> getVmToAccountMap() {
 		List<VmOwnership> vmOwnerships = vmOwnershipService.findAll();
 		Map<String, Account> vmToAccountMap = new HashMap<String, Account>();
-		for(VmOwnership vmOwnership : vmOwnerships){
+		for (VmOwnership vmOwnership : vmOwnerships) {
 			vmToAccountMap.put(vmOwnership.getVmId(), vmOwnership.getAccount());
 		}
 		return vmToAccountMap;
 	}
-	
-	
 
 	private AccountVmsStructure getAccountVmsStrucure(Client client,
 			Account account, SystemSettings currSystem) {
@@ -171,7 +162,11 @@ public class AccountVmsStructureServiceImpl implements
 				.getGroupsSetsSettings();
 		Map<String, GroupSet> groupIdToGroupSetMap = getGroupIdToGroupSetMap(groupSetsSettings);
 
-		Map<ConsistencyGroupCopyUID, String> transferStatesMap = getGroupCopiesTransferStates(client);
+		ConsistencyGroupStateSet consistencyGroupStateSet = client
+				.getConsistencyGroupStateSet();
+
+		Map<ConsistencyGroupCopyUID, String> transferStatesMap = getGroupCopiesTransferStates(consistencyGroupStateSet);
+		Map<ConsistencyGroupCopyUID, ConsistencyGroupCopyState> copiesStatesMap = getGroupCopiesStates(consistencyGroupStateSet);
 		Map<String, Long> volumesMaxSizesMap = getGroupVolumesMaxSizes(client);
 
 		List<ConsistencyGroupSettings> groupSettingsList = rpSettings
@@ -246,7 +241,7 @@ public class AccountVmsStructureServiceImpl implements
 						}
 						GroupCopySettings groupCopySettings = getGroupCopySettings(
 								copyId, groupSettings, transferStatesMap,
-								copySnapshotsMap);
+								copySnapshotsMap, copiesStatesMap);
 						// add the copy in case it wasn't added in context of
 						// another vm
 						if (!replicaCluster.isExistingCopy(groupCopySettings)) {
@@ -337,7 +332,8 @@ public class AccountVmsStructureServiceImpl implements
 			ConsistencyGroupCopyUID copyId,
 			ConsistencyGroupSettings consistencyGroupSettings,
 			Map<ConsistencyGroupCopyUID, String> transferStatesMap,
-			Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copySnapshotsMap) {
+			Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copySnapshotsMap,
+			Map<ConsistencyGroupCopyUID, ConsistencyGroupCopyState> copiesStatesMap) {
 
 		GroupCopySettings groupCopySettings = null;
 		List<ConsistencyGroupCopySettings> allCopiesSettings = consistencyGroupSettings
@@ -352,26 +348,36 @@ public class AccountVmsStructureServiceImpl implements
 				groupCopySettings.setClusterId(new Long(currGroupCopySettings
 						.getCopyUID().getGlobalCopyUID().getClusterUID()
 						.getId()).toString());
+				
+				List<CopySnapshot> allSnapshots = copySnapshotsMap
+						.get(currGroupCopySettings.getCopyUID());
+				
 				if (currGroupCopySettings.getImageAccessInformation() != null
 						&& currGroupCopySettings.getImageAccessInformation()
 								.isImageAccessEnabled()) {
-					groupCopySettings.setImageAccess(ImageAccess.ENABLED
+					
+					ConsistencyGroupCopyState consistencyGroupCopyState = copiesStatesMap.get(copyId);
+					//setting more detailed status for enabled image access
+					if(consistencyGroupCopyState.getStorageAccessState().
+							        equals(StorageAccessState.ENABLING_LOGGED_ACCESS)){
+						groupCopySettings.setImageAccess(ImageAccess.ENABLING
+								.value());
+					}
+					else{
+						groupCopySettings.setImageAccess(ImageAccess.ENABLED
 							.value());
+					}
 					imageAccessTimeStamp = currGroupCopySettings
 							.getImageAccessInformation().getImageInformation()
 							.getTimeStamp().getTimeInMicroSeconds();
+					setSnapshotImageAccess(allSnapshots, imageAccessTimeStamp);
 				} else {
 					groupCopySettings.setImageAccess(ImageAccess.DISABLED
 							.value());
 				}
 				groupCopySettings.setReplication(transferStatesMap
 						.get(currGroupCopySettings.getCopyUID()));
-				List<CopySnapshot> allSnapshots = copySnapshotsMap
-						.get(currGroupCopySettings.getCopyUID());
-				if (groupCopySettings.getImageAccess().equals(
-						ImageAccess.ENABLED.value())) {
-					setSnapshotImageAccess(allSnapshots, imageAccessTimeStamp);
-				}
+				
 				groupCopySettings.setSnapshots(getSnapshotsByType(allSnapshots,
 						false));
 				groupCopySettings.setBookmarks(getSnapshotsByType(allSnapshots,
@@ -395,15 +401,13 @@ public class AccountVmsStructureServiceImpl implements
 	}
 
 	private Map<ConsistencyGroupCopyUID, String> getGroupCopiesTransferStates(
-			Client client) {
+			ConsistencyGroupStateSet consistencyGroupStateSet) {
 		Map<ConsistencyGroupCopyUID, String> statesMap = new HashMap<ConsistencyGroupCopyUID, String>();
-		ConsistencyGroupStateSet consistencyGroupStateSet = client
-				.getConsistencyGroupStateSet();
 		List<ConsistencyGroupState> groupsStates = consistencyGroupStateSet
 				.getInnerSet();
 
 		for (ConsistencyGroupState currGroupState : groupsStates) {
-			
+
 			List<ConsistencyGroupLinkState> linksStates = currGroupState
 					.getLinksState();
 			for (ConsistencyGroupLinkState consistencyGroupLinkState : linksStates) {
@@ -458,6 +462,28 @@ public class AccountVmsStructureServiceImpl implements
 		return statesMap;
 
 	}
+
+	private Map<ConsistencyGroupCopyUID, ConsistencyGroupCopyState> getGroupCopiesStates(
+			ConsistencyGroupStateSet consistencyGroupStateSet) {
+		Map<ConsistencyGroupCopyUID, ConsistencyGroupCopyState> statesMap = 
+				             new HashMap<ConsistencyGroupCopyUID, ConsistencyGroupCopyState>();
+		List<ConsistencyGroupState> groupsStates = consistencyGroupStateSet
+				.getInnerSet();
+
+		for (ConsistencyGroupState currGroupState : groupsStates) {			
+			List<ConsistencyGroupCopyState> groupCopiesStates = currGroupState.getGroupCopiesState();			
+			for(ConsistencyGroupCopyState currConsistencyGroupCopyState : groupCopiesStates){
+				ConsistencyGroupCopyUID consistencyGroupCopyUID = currConsistencyGroupCopyState.getCopyUID();
+				statesMap.put(consistencyGroupCopyUID, currConsistencyGroupCopyState);
+			}
+
+		}	
+
+		return statesMap;
+
+	}
+
+	
 
 	private Map<String, Long> getGroupVolumesMaxSizes(Client client) {
 		Map<String, Long> volumesMaxSizes = new HashMap<String, Long>();

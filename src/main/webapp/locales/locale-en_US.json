@@ -31,6 +31,7 @@
         "SIZE_MSG": "Size(GB)",
         "UNPROTECTED_VMS_MSG": "Unprotected VMs",
         "DR_TEST_ENABLED_MSG": "Enabled",
+        "DR_TEST_ENABLING_MSG": "Enabling",
         "DR_TEST_DISABLED_MSG": "Disabled",
         "POWERED_BY_RECOVERPOINT_FOR_VMS": "Powered by RecoverPoint for VMs"
     },
@@ -43,8 +44,8 @@
         "SPECIFIC_BOOKMARK_MSG": "Specific Bookmark",
         "TEST_NETWORK_MSG": "Test Network:",
         "TENANT_TESTING_MSG": "Tenant Testing",
-        "ENABLED_MSG": "Enabled",
-        "DISABLED_MSG": "Disabled"
+        "ENABLE_MSG": "Enable",
+        "DISABLE_MSG": "Disable"
     },
     "PROTECT-UNPROTECT": {
         "ADD_VM_MSG": "Add VM:",

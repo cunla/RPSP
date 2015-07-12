@@ -134,14 +134,21 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     
     
    $scope.getImageAccessIndicator = function(status){
-	  
-	   if(status != null || status !== undefined){
+	   var res = status;
+	   if(status != null && status !== undefined){
 		   var $translate = $filter('translate');
 		   var enabled = $translate('HOME.DR_TEST_ENABLED_MSG');
+		   var enabling = $translate('HOME.DR_TEST_ENABLING_MSG');		   
 		   var disabled = $translate('HOME.DR_TEST_DISABLED_MSG');
-		   return (status == 'Enabled' ? enabled : disabled);
+		   res = disabled;
+		   if(status == 'Enabled'){
+			   res = enabled;
+		   }
+		   else if(status == 'Enabling'){
+			   res = enabling;
+		   }
 	   }
-	   return status;
+	   return res;
     };
     
         

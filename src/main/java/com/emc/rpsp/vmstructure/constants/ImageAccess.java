@@ -3,7 +3,9 @@ package com.emc.rpsp.vmstructure.constants;
 public enum ImageAccess {
 
     ENABLED("Enabled"),
+    ENABLING("Enabling"),
     DISABLED("Disabled");
+    
 
     private final String stateVal;
 
