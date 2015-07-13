@@ -33,7 +33,17 @@
         "DR_TEST_ENABLED_MSG": "Enabled",
         "DR_TEST_ENABLING_MSG": "Enabling",
         "DR_TEST_DISABLED_MSG": "Disabled",
-        "POWERED_BY_RECOVERPOINT_FOR_VMS": "Powered by RecoverPoint for VMs"
+        "POWERED_BY_RECOVERPOINT_FOR_VMS": "Powered by RecoverPoint for VMs",
+        "TRANSFER_INIT_MSG": "Initializing",
+        "TRANSFER_ACTIVE_MSG": "Active",
+        "TRANSFER_STAND_BY_MSG": "Stand by",
+        "TRANSFER_READY_MSG": "Ready",
+        "TRANSFER_PAUSED_MSG": "Paused",
+        "TRANSFER_PAUSED_BY_SYSTEM_MSG": "Paused by system",
+        "TRANSFER_ERROR_MSG": "Error",
+        "TRANSFER_UNKNOWN_MSG": "Unknown",
+        "STATE_ENABLED_MSG": "Enabled",
+        "STATE_DISABLED_MSG": "Disabled"
     },
     "IMAGE-ACCESS": {
         "DR_TEST_MSG": "DR Test:",

@@ -136,21 +136,74 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
    $scope.getImageAccessIndicator = function(status){
 	   var res = status;
 	   if(status != null && status !== undefined){
-		   var $translate = $filter('translate');
-		   var enabled = $translate('HOME.DR_TEST_ENABLED_MSG');
-		   var enabling = $translate('HOME.DR_TEST_ENABLING_MSG');		   
-		   var disabled = $translate('HOME.DR_TEST_DISABLED_MSG');
-		   res = disabled;
+		   
+		   var $translate = $filter('translate');		
+		   
 		   if(status == 'Enabled'){
-			   res = enabled;
+			   res = $translate('HOME.DR_TEST_ENABLED_MSG');
 		   }
 		   else if(status == 'Enabling'){
-			   res = enabling;
+			   res = $translate('HOME.DR_TEST_ENABLING_MSG');
+		   }
+		   else{
+			   res = $translate('HOME.DR_TEST_DISABLED_MSG');
 		   }
 	   }
 	   return res;
     };
     
+    
+    
+    $scope.getReplicationStateIndicator = function(status){
+ 	   var res = status;
+ 	   if(status != null && status !== undefined){
+ 		   
+ 		   var $translate = $filter('translate');
+ 		   
+ 		   if(status == 'Initializing'){
+ 			   res = $translate('HOME.TRANSFER_INIT_MSG');
+ 		   }
+ 		   else if(status == 'Active'){
+ 			   res = $translate('HOME.TRANSFER_ACTIVE_MSG');
+ 		   }
+ 		   else if(status == 'Stand by'){
+			   res = $translate('HOME.TRANSFER_STAND_BY_MSG');
+		   }
+ 		   else if(status == 'Ready'){
+			   res = $translate('HOME.TRANSFER_READY_MSG');
+		   }
+ 		   else if(status == 'Paused'){
+			   res = $translate('HOME.TRANSFER_PAUSED_MSG');
+		   }
+ 		   else if(status == 'Paused by system'){
+			   res = $translate('HOME.TRANSFER_PAUSED_BY_SYSTEM_MSG');
+		   }
+ 		   else if(status == 'Error'){
+			   res = $translate('HOME.TRANSFER_ERROR_MSG');
+		   }
+		   else {
+			   res = $translate('HOME.TRANSFER_UNKNOWN_MSG');
+		   }
+ 	   }
+ 	   return res;
+     };
+     
+     
+     $scope.getState = function(status){
+  	   var res = status;
+  	   if(status != null && status !== undefined){
+  		   
+  		   var $translate = $filter('translate');		
+  		   
+  		   if(status == 'Enabled'){
+  			   res = $translate('HOME.STATE_ENABLED_MSG');
+  		   }
+  		   else{
+  			   res = $translate('HOME.STATE_DISABLED_MSG');
+  		   }
+  	   }
+  	   return res;
+      };
         
     
 }]);
