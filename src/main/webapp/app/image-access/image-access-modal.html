@@ -71,7 +71,7 @@
 							</select>
 						</div>
 					</div>
-					<div class="row">
+					<div class="row" tooltip="{{selectedBookmark.consistencyType}}" tooltip-placement="right">
 						<div class="col-xs-5 col-sm-5 col-md-5 radio">
 							<label>
 								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess == 'Enabled' || selectedCopy.bookmarks.length == 0" value="bookmark">

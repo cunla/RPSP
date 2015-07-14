@@ -7,6 +7,7 @@ public class CopySnapshot {
     private Long originalClosingTimeStamp;
     private String name;
     private boolean isImageAccessEnabled;
+    private String consistencyType;
 
     public CopySnapshot() {
         super();
@@ -57,5 +58,15 @@ public class CopySnapshot {
     public void setImageAccessEnabled(boolean isImageAccessEnabled) {
         this.isImageAccessEnabled = isImageAccessEnabled;
     }
+
+	public String getConsistencyType() {
+		return consistencyType;
+	}
+
+	public void setConsistencyType(String consistencyType) {
+		this.consistencyType = consistencyType;
+	}
+    
+    
 
 }

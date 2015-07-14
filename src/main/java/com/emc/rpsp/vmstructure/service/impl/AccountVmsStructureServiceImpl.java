@@ -9,6 +9,7 @@ import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.users.service.UserService;
 import com.emc.rpsp.vms.domain.VmOwnership;
 import com.emc.rpsp.vms.service.VmOwnershipService;
+import com.emc.rpsp.vmstructure.constants.ConsistencyType;
 import com.emc.rpsp.vmstructure.constants.ImageAccess;
 import com.emc.rpsp.vmstructure.constants.TransferState;
 import com.emc.rpsp.vmstructure.domain.*;
@@ -540,6 +541,9 @@ public class AccountVmsStructureServiceImpl implements
 						snapshot.setName(currSnapshot.getRelevantEvent()
 								.getDetails());
 					}
+					ConsistencyType consistencyType = getConsistencyType(currSnapshot.getConsistencyType());
+					snapshot.setConsistencyType(consistencyType.value());
+			
 					snapshotsList.add(snapshot);
 				}
 				currSnapshotCounter++;
@@ -548,6 +552,23 @@ public class AccountVmsStructureServiceImpl implements
 		}
 		return copyUIDToSnapshotsMap;
 
+	}
+	
+	private ConsistencyType getConsistencyType(SnapshotConsistencyType snapshotConsistencyType){
+		ConsistencyType res = null;
+		switch (snapshotConsistencyType) {
+		case APPLICATION_CONSISTENT:
+			res = ConsistencyType.APPLICATION_CONSISTENT;
+			break;
+		/*case CONSISTENCY_UNKNOWN:
+		case UNKNOWN:
+			res = ConsistencyType.UNKNOWN;
+			break;*/
+		default:
+			res = ConsistencyType.CRASH_CONSISTENT;
+			break;
+		}
+		return res;
 	}
 
 	private List<CopySnapshot> getSnapshotsByType(List<CopySnapshot> snapshots,
