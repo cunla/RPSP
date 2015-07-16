@@ -21,7 +21,7 @@
 				</td>			
 				<td>
 				        <div class="row">
-							<div class="col-xs-5 col-sm-5 col-md-5 margin-top">
+							<div class="col-xs-4 col-sm-4 col-md-4 margin-top">
 								<select ng-model="selectedCopy" 
 	                                          ng-options="copy.name for copy in vmGsAndCgFlatData[protectedSelectedIndex].
 	                                                      replicaClusters[0].groupCopySettings" 
@@ -31,7 +31,7 @@
 							
 								</select>
 							</div>	
-							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+							<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
 							</div>	
 						</div>
 
@@ -56,14 +56,14 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-5 col-sm-5 col-md-5 radio" >
+						<div class="col-xs-4 col-sm-4 col-md-4 radio" >
 							<label>
 								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess == 'Enabled'" value="snapshot">
 							{{'IMAGE-ACCESS.FROM_SNAPSHOT_LIST_MSG' | translate}}
 								</input>
 							</label>
 						</div>
-						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+						<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
 							<select ng-model="selectedSnapshot" 
 	                                    ng-options="snapshot.closingTimestamp for snapshot in selectedCopy.snapshots" 
 	                                          ng-disabled="selectedCopy.imageAccess == 'Enabled'" 
@@ -71,17 +71,17 @@
 							</select>
 						</div>
 					</div>
-					<div class="row" tooltip="{{selectedBookmark.consistencyType}}" tooltip-placement="right">
-						<div class="col-xs-5 col-sm-5 col-md-5 radio">
+					<div class="row">
+						<div class="col-xs-4 col-sm-4 col-md-4 radio">
 							<label>
 								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess == 'Enabled' || selectedCopy.bookmarks.length == 0" value="bookmark">
 							{{'IMAGE-ACCESS.SPECIFIC_BOOKMARK_MSG' | translate}}
 								</input>
 							</label>
 						</div>
-						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+						<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
 								<select ng-model="selectedBookmark" 								         
-	                                        ng-options="bookmark.name for bookmark in selectedCopy.bookmarks"
+	                                        ng-options="bookmark.name + ' (' + bookmark.consistencyType + ')' for bookmark in selectedCopy.bookmarks"
 	                                             ng-disabled="selectedCopy.imageAccess == 'Enabled' || selectedCopy.bookmarks.length == 0" 
 	                                                 class="form-control">											
 								</select>
@@ -90,9 +90,9 @@
 					
 					
 					<div class="row">
-						<div class="col-xs-5 col-sm-5 col-md-5 radio">
+						<div class="col-xs-4 col-sm-4 col-md-4 radio">
 						</div>
-						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+						<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
 								<select ng-model="selectedBookmark" 								         
 	                                        ng-options="bookmark.closingTimestamp for bookmark in selectedCopy.bookmarks"
 	                                             ng-disabled="selectedCopy.imageAccess == 'Enabled' || selectedCopy.bookmarks.length == 0" 

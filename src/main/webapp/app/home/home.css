@@ -29,7 +29,8 @@ table.table tr.selected td {
 }
 
 .image-access-modal .modal-dialog {
-  max-width: 42vw;
+  width: 50vw; 	
+  max-width: 50vw;
 }
 
 .bookmarks-modal .modal-dialog {
