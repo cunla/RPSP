@@ -25,7 +25,7 @@
 								<select ng-model="selectedCopy" 
 	                                          ng-options="copy.name for copy in vmGsAndCgFlatData[protectedSelectedIndex].
 	                                                      replicaClusters[0].groupCopySettings" 
-	                                               ng-disabled="selectedCopy.imageAccess == 'Enabled'"
+	                                               ng-disabled="selectedCopy.imageAccess != 'Disabled'"
 			                                              class="form-control">
 			                                                          <!-- <option value="" ng-if="false"></option> -->
 							
@@ -49,7 +49,7 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 radio">
 							<label>
-								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess == 'Enabled'" value="latest">
+								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess != 'Disabled'" value="latest">
 							{{'IMAGE-ACCESS.LATEST_IMAGE_MSG' | translate}}
 								</input>
 							</label>
@@ -58,7 +58,7 @@
 					<div class="row">
 						<div class="col-xs-4 col-sm-4 col-md-4 radio" >
 							<label>
-								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess == 'Enabled'" value="snapshot">
+								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess != 'Disabled'" value="snapshot">
 							{{'IMAGE-ACCESS.FROM_SNAPSHOT_LIST_MSG' | translate}}
 								</input>
 							</label>
@@ -66,7 +66,7 @@
 						<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
 							<select ng-model="selectedSnapshot" 
 	                                    ng-options="snapshot.closingTimestamp for snapshot in selectedCopy.snapshots" 
-	                                          ng-disabled="selectedCopy.imageAccess == 'Enabled'" 
+	                                          ng-disabled="selectedCopy.imageAccess != 'Disabled'" 
 	                                                 class="form-control">												
 							</select>
 						</div>
@@ -74,7 +74,7 @@
 					<div class="row">
 						<div class="col-xs-4 col-sm-4 col-md-4 radio">
 							<label>
-								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess == 'Enabled' || selectedCopy.bookmarks.length == 0" value="bookmark">
+								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess != 'Disabled' || selectedCopy.bookmarks.length == 0" value="bookmark">
 							{{'IMAGE-ACCESS.SPECIFIC_BOOKMARK_MSG' | translate}}
 								</input>
 							</label>
@@ -82,7 +82,7 @@
 						<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
 								<select ng-model="selectedBookmark" 								         
 	                                        ng-options="bookmark.name + ' (' + bookmark.consistencyType + ')' for bookmark in selectedCopy.bookmarks"
-	                                             ng-disabled="selectedCopy.imageAccess == 'Enabled' || selectedCopy.bookmarks.length == 0" 
+	                                             ng-disabled="selectedCopy.imageAccess != 'Disabled' || selectedCopy.bookmarks.length == 0" 
 	                                                 class="form-control">											
 								</select>
 						</div>
@@ -95,7 +95,7 @@
 						<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
 								<select ng-model="selectedBookmark" 								         
 	                                        ng-options="bookmark.closingTimestamp for bookmark in selectedCopy.bookmarks"
-	                                             ng-disabled="selectedCopy.imageAccess == 'Enabled' || selectedCopy.bookmarks.length == 0" 
+	                                             ng-disabled="selectedCopy.imageAccess != 'Disabled' || selectedCopy.bookmarks.length == 0" 
 	                                                 class="form-control">											
 								</select>
 						</div>
