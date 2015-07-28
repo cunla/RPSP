@@ -9,48 +9,52 @@ import java.util.Map;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import com.emc.fapi.jaxws.BookmarkConsolidationPolicy;
-import com.emc.fapi.jaxws.ClusterInfo;
-import com.emc.fapi.jaxws.ClusterUID;
-import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
-import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
-import com.emc.fapi.jaxws.ConsistencyGroupCopySettings;
-import com.emc.fapi.jaxws.ConsistencyGroupCopySettingsSet;
-import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
-import com.emc.fapi.jaxws.ConsistencyGroupSetSubset;
-import com.emc.fapi.jaxws.ConsistencyGroupSetUID;
-import com.emc.fapi.jaxws.ConsistencyGroupSettings;
-import com.emc.fapi.jaxws.ConsistencyGroupSnapshots;
-import com.emc.fapi.jaxws.ConsistencyGroupStateSet;
-import com.emc.fapi.jaxws.ConsistencyGroupUID;
-import com.emc.fapi.jaxws.ConsistencyGroupVolumesStateSet;
-import com.emc.fapi.jaxws.CreateBookmarkForGroupSetSubSetParams;
-import com.emc.fapi.jaxws.CreateBookmarkParams;
-import com.emc.fapi.jaxws.CreateTargetVMManualResourcePlacementParam;
-import com.emc.fapi.jaxws.CreateVMParam;
-import com.emc.fapi.jaxws.DatastoreUID;
-import com.emc.fapi.jaxws.EnableImageAccessParams;
-import com.emc.fapi.jaxws.EnableLatestImageAccessParams;
-import com.emc.fapi.jaxws.EsxUID;
-import com.emc.fapi.jaxws.FullRecoverPointSettings;
-import com.emc.fapi.jaxws.GlobalCopyUID;
-import com.emc.fapi.jaxws.ImageAccessMode;
-import com.emc.fapi.jaxws.ImageAccessScenario;
-import com.emc.fapi.jaxws.RecoverPointClustersInformation;
-import com.emc.fapi.jaxws.RecoverPointTimeStamp;
-import com.emc.fapi.jaxws.ReplicatedVMParams;
-import com.emc.fapi.jaxws.Snapshot;
-import com.emc.fapi.jaxws.SnapshotConsistencyType;
-import com.emc.fapi.jaxws.SnapshotUID;
-import com.emc.fapi.jaxws.SourceVmParam;
-import com.emc.fapi.jaxws.VirtualCenterUID;
-import com.emc.fapi.jaxws.VmReplicationSetParam;
-import com.emc.fapi.jaxws.VmReplicationSetParamSet;
-import com.emc.fapi.jaxws.VmReplicationSetSettings;
-import com.emc.fapi.jaxws.VmReplicationSettings;
-import com.emc.fapi.jaxws.VmState;
-import com.emc.fapi.jaxws.VmUID;
-import com.emc.fapi.jaxws.VmUIDSet;
+import com.emc.fapi.jaxws.v4_3.BookmarkConsolidationPolicy;
+import com.emc.fapi.jaxws.v4_3.ClusterInfo;
+import com.emc.fapi.jaxws.v4_3.ClusterUID;
+import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresState;
+import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettings;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettingsSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyUID;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetSubset;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetUID;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSettings;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSnapshots;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStateSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupUID;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupVolumesStateSet;
+import com.emc.fapi.jaxws.v4_3.CreateBookmarkForGroupSetSubSetParams;
+import com.emc.fapi.jaxws.v4_3.CreateBookmarkParams;
+import com.emc.fapi.jaxws.v4_3.CreateTargetVMManualResourcePlacementParam;
+import com.emc.fapi.jaxws.v4_3.CreateVMParam;
+import com.emc.fapi.jaxws.v4_3.DatastoreUID;
+import com.emc.fapi.jaxws.v4_3.DiskProvisionPolicy;
+import com.emc.fapi.jaxws.v4_3.EnableImageAccessParams;
+import com.emc.fapi.jaxws.v4_3.EnableLatestImageAccessParams;
+import com.emc.fapi.jaxws.v4_3.EsxUID;
+import com.emc.fapi.jaxws.v4_3.FullRecoverPointSettings;
+import com.emc.fapi.jaxws.v4_3.GlobalCopyUID;
+import com.emc.fapi.jaxws.v4_3.HardwareChangesPolicy;
+import com.emc.fapi.jaxws.v4_3.ImageAccessMode;
+import com.emc.fapi.jaxws.v4_3.ImageAccessScenario;
+import com.emc.fapi.jaxws.v4_3.RecoverPointClustersInformation;
+import com.emc.fapi.jaxws.v4_3.RecoverPointTimeStamp;
+import com.emc.fapi.jaxws.v4_3.ReplicatedVMParams;
+import com.emc.fapi.jaxws.v4_3.Snapshot;
+import com.emc.fapi.jaxws.v4_3.SnapshotConsistencyType;
+import com.emc.fapi.jaxws.v4_3.SnapshotUID;
+import com.emc.fapi.jaxws.v4_3.SourceVmParam;
+import com.emc.fapi.jaxws.v4_3.VMReplicationSetParam;
+import com.emc.fapi.jaxws.v4_3.VirtualCenterUID;
+import com.emc.fapi.jaxws.v4_3.VirtualDisksReplicationPolicy;
+import com.emc.fapi.jaxws.v4_3.VirtualHardwareReplicationPolicy;
+import com.emc.fapi.jaxws.v4_3.VmReplicationSetParamSet;
+import com.emc.fapi.jaxws.v4_3.VmReplicationSetSettings;
+import com.emc.fapi.jaxws.v4_3.VmReplicationSettings;
+import com.emc.fapi.jaxws.v4_3.VmState;
+import com.emc.fapi.jaxws.v4_3.VmUID;
+import com.emc.fapi.jaxws.v4_3.VmUIDSet;
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
 import com.emc.rpsp.accounts.domain.Account;
@@ -306,10 +310,17 @@ public class Client {
     		}
     	}
   	
-    
-    	VmReplicationSetParam replicationSetParam = new VmReplicationSetParam(replicatedVmParams);
+    	VirtualHardwareReplicationPolicy virtualHardwareReplicationPolicy = new VirtualHardwareReplicationPolicy();
+    	virtualHardwareReplicationPolicy.setProvisionPolicy(DiskProvisionPolicy.SAME_AS_SOURCE);
+    	virtualHardwareReplicationPolicy.setHwChangesPolicy(HardwareChangesPolicy.DONT_REPLICATE_HW_CHANGES);
     	
-    	List<VmReplicationSetParam> innerSet = new LinkedList<VmReplicationSetParam>(); 
+    	VirtualDisksReplicationPolicy virtualDisksReplicationPolicy = new VirtualDisksReplicationPolicy();
+    	virtualDisksReplicationPolicy.setAutoReplicateNewVirtualDisks(false);
+    	
+    	
+    	VMReplicationSetParam replicationSetParam = new VMReplicationSetParam(replicatedVmParams, virtualHardwareReplicationPolicy, virtualDisksReplicationPolicy);
+    	
+    	List<VMReplicationSetParam> innerSet = new LinkedList<VMReplicationSetParam>(); 
     	innerSet.add(replicationSetParam);
     	VmReplicationSetParamSet vmReplicationSetParamSet = new VmReplicationSetParamSet(innerSet);   	    	
 

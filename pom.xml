@@ -63,7 +63,7 @@
         <dependency>
             <groupId>com.emc</groupId>
             <artifactId>fapi-client</artifactId>
-            <version>4.1</version>
+            <version>4.3</version>
             <!--<scope>system</scope>-->
             <!--<systemPath>${project.basedir}/fapi_client_4_1-1.0.jar</systemPath>-->
         </dependency>

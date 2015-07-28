@@ -2,10 +2,10 @@
     {
         "user": "admin",
         "password": "admin",
-        "ip": "10.64.125.51",
+        "ip": "10.64.125.211",
         "clusterFriendlyNames": {
-            "dc01-cl01-attempt2": "New York",
-            "dc02-cl02-attempt2": "London"
+            "dc01-cl01": "New York",
+            "dc01-cl02": "London"
         },
         "accounts": [
             {
@@ -13,49 +13,30 @@
                 "label": "Springfield bank",
                 "vms": [
                     {
-                        "vmId": "5027fa0d-83bb-26ff-fdc8-8f7bd0190d38",
+                        "vmId": "5012b211-b58c-11bd-5b95-53b746e05a03",
                         "vmName": "vm-1"
                     },
                     {
-                        "vmId": "50277042-0f04-d963-5a5d-062598ecd88a",
+                        "vmId": "5012092c-4a34-25c9-9019-d3a0f55144bd",
                         "vmName": "vm-2"
                     },
                     {
-                        "vmId": "50277bd9-884b-5683-46ca-ee474254209a",
+                        "vmId": "5012d706-df9f-bd71-8b36-397eb6cebf0d",
                         "vmName": "vm-3"
                     },
                     {
-                        "vmId": "5027b406-b9ff-8baf-3d3d-669e79a98a8b",
+                        "vmId": "50123f6f-4bce-ec35-1aa9-f72b25ff9b3a",
                         "vmName": "vm-4"
                     },
                     {
-                        "vmId": "50275904-cc9f-7f4c-d129-edf945706472",
+                        "vmId": "50124c98-7aa8-05d0-342d-4989ddfe2334",
                         "vmName": "vm-5"
                     },
                     {
-                        "vmId": "5027b79c-d421-f5df-aa48-1b9cfbbdedfd",
+                        "vmId": "50123461-38ad-bdec-4415-408c69ecd130",
                         "vmName": "vm-6"
-                    },
-                    {
-                        "vmId": "5027f5a6-c5df-27ed-9ec5-d7304eb84f6b",
-                        "vmName": "vm-11"
-                    },
-                    {
-                        "vmId": "5027e376-68d3-23ba-b1f8-838dff5d8aac",
-                        "vmName": "vm-12"
-                    },
-                    {
-                        "vmId": "50274826-eb99-c64a-360c-cc6568293148",
-                        "vmName": "vm-13"
-                    },
-                    {
-                        "vmId": "50274c33-f460-9857-257b-8e6a605bbefc",
-                        "vmName": "vm-win7-b"
-                    },
-                    {
-                        "vmId": "5027da96-5d05-da0e-4c05-33cd0e7d72a6",
-                        "vmName": "vm-16"
                     }
+                    
                 ],
                 "users": [
                     {
@@ -67,55 +48,17 @@
                 ],
                 "accountConfigs": [
                     {
-                        "clusterId": "4743654726107497773",
-                        "vcId": "D10EFCEB-6F69-44D4-AE67-09A573241EA1",
-                        "esxId": "42103de0-2eda-985e-bb28-4a99617cd940",
+                        "clusterId": "7634253077374474074",
+                        "vcId": "A755A7CD-19EC-4625-8416-D2958E0A8100",
+                        "esxId": "4210a558-f2fc-b59d-4074-1880b67746c5",
+                        "datastoreId": "datastore-62",
+                        "testNetworkId": "testNetworkId"
+                    },
+                    {
+                        "clusterId": "7353023466098084120",
+                        "vcId": "A0163C86-13DA-4B24-858C-1D2F99498B12",
+                        "esxId": "42101fbb-6470-68cb-a73a-8e09b72a2c2a",
                         "datastoreId": "datastore-46",
-                        "testNetworkId": "testNetworkId"
-                    },
-                    {
-                        "clusterId": "8136211321005052104",
-                        "vcId": "D0939A9B-0846-4699-AAD3-2EBE04421FCE",
-                        "esxId": "4210b625-9ed7-9a37-9c50-76caee8efa96",
-                        "datastoreId": "datastore-47",
-                        "testNetworkId": "testNetworkId"
-                    }
-                ]
-            },
-            {
-                "name": "28653",
-                "label": "Central bank",
-                "vms": [
-                    {
-                        "vmId": "50273442-c641-f88d-ab91-36bc87050e46",
-                        "vmName": "vm-7"
-                    },
-                    {
-                        "vmId": "50275ba3-84ac-bab6-de03-27c85a5817e1",
-                        "vmName": "vm-8"
-                    }
-                ],
-                "users": [
-                    {
-                        "login": "james.brown@28653",
-                        "firstName": "James",
-                        "lastName": "Brown",
-                        "password": "23456"
-                    }
-                ],
-                "accountConfigs": [
-                    {
-                        "clusterId": "4743654726107497773",
-                        "vcId": "D10EFCEB-6F69-44D4-AE67-09A573241EA1",
-                        "esxId": "42103de0-2eda-985e-bb28-4a99617cd940",
-                        "datastoreId": "datastore-46",
-                        "testNetworkId": "testNetworkId"
-                    },
-                    {
-                        "clusterId": "8136211321005052104",
-                        "vcId": "D0939A9B-0846-4699-AAD3-2EBE04421FCE",
-                        "esxId": "4210b625-9ed7-9a37-9c50-76caee8efa96",
-                        "datastoreId": "datastore-47",
                         "testNetworkId": "testNetworkId"
                     }
                 ]

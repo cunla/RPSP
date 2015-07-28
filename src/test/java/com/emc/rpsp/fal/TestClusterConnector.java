@@ -8,16 +8,16 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import com.emc.fapi.jaxws.ClusterInfo;
-import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresState;
-import com.emc.fapi.jaxws.ClusterVirtualInfrastructuresStateSet;
-import com.emc.fapi.jaxws.ConsistencyGroupCopyUID;
-import com.emc.fapi.jaxws.ConsistencyGroupSettings;
-import com.emc.fapi.jaxws.FullRecoverPointSettings;
-import com.emc.fapi.jaxws.RecoverPointClustersInformation;
-import com.emc.fapi.jaxws.VmReplicationSetSettings;
-import com.emc.fapi.jaxws.VmReplicationSettings;
-import com.emc.fapi.jaxws.VmState;
+import com.emc.fapi.jaxws.v4_3.ClusterInfo;
+import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresState;
+import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyUID;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSettings;
+import com.emc.fapi.jaxws.v4_3.FullRecoverPointSettings;
+import com.emc.fapi.jaxws.v4_3.RecoverPointClustersInformation;
+import com.emc.fapi.jaxws.v4_3.VmReplicationSetSettings;
+import com.emc.fapi.jaxws.v4_3.VmReplicationSettings;
+import com.emc.fapi.jaxws.v4_3.VmState;
 import com.emc.rpsp.rpsystems.SystemSettings;
 
 /**

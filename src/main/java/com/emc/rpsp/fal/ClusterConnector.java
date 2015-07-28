@@ -1,10 +1,33 @@
 package com.emc.rpsp.fal;
 
-import com.emc.fapi.jaxws.*;
-
 import retrofit.client.Response;
-import retrofit.http.*;
+import retrofit.http.Body;
+import retrofit.http.GET;
+import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Path;
+import retrofit.http.Query;
+
+import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresState;
+import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettingsSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSnapshots;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStateSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupUIDSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupVolumesStateSet;
+import com.emc.fapi.jaxws.v4_3.CreateBookmarkForGroupSetSubSetParams;
+import com.emc.fapi.jaxws.v4_3.CreateBookmarkParams;
+import com.emc.fapi.jaxws.v4_3.DisableImageAccessResponse;
+import com.emc.fapi.jaxws.v4_3.EnableImageAccessParams;
+import com.emc.fapi.jaxws.v4_3.EnableImageAccessResponse;
+import com.emc.fapi.jaxws.v4_3.EnableLatestImageAccessParams;
+import com.emc.fapi.jaxws.v4_3.EnableLatestImageAccessResponse;
+import com.emc.fapi.jaxws.v4_3.FullRecoverPointSettings;
+import com.emc.fapi.jaxws.v4_3.RecoverPointClustersInformation;
+import com.emc.fapi.jaxws.v4_3.RecoverPointTimeStamp;
+import com.emc.fapi.jaxws.v4_3.RecoverPointVersion;
+import com.emc.fapi.jaxws.v4_3.VmReplicationSetParamSet;
+import com.emc.fapi.jaxws.v4_3.VmUIDSet;
 
 /**
  * Created by morand3 on 1/13/2015.

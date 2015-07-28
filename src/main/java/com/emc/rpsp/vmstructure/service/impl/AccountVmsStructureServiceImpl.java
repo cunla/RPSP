@@ -1,6 +1,42 @@
 package com.emc.rpsp.vmstructure.service.impl;
 
-import com.emc.fapi.jaxws.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettings;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySnapshots;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyState;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyUID;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkState;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetSettings;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSettings;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSnapshots;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupState;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStateSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupUID;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupVolumesState;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupVolumesStateSet;
+import com.emc.fapi.jaxws.v4_3.FullRecoverPointSettings;
+import com.emc.fapi.jaxws.v4_3.GlobalCopyUID;
+import com.emc.fapi.jaxws.v4_3.PipeState;
+import com.emc.fapi.jaxws.v4_3.RecoverPointTimeStamp;
+import com.emc.fapi.jaxws.v4_3.ReplicationSetVolumesState;
+import com.emc.fapi.jaxws.v4_3.Snapshot;
+import com.emc.fapi.jaxws.v4_3.SnapshotConsistencyType;
+import com.emc.fapi.jaxws.v4_3.SnapshotUID;
+import com.emc.fapi.jaxws.v4_3.StorageAccessState;
+import com.emc.fapi.jaxws.v4_3.VmReplicationSetSettings;
+import com.emc.fapi.jaxws.v4_3.VmReplicationSettings;
 import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.accounts.service.AccountService;
 import com.emc.rpsp.fal.Client;
@@ -12,17 +48,15 @@ import com.emc.rpsp.vms.service.VmOwnershipService;
 import com.emc.rpsp.vmstructure.constants.ConsistencyType;
 import com.emc.rpsp.vmstructure.constants.ImageAccess;
 import com.emc.rpsp.vmstructure.constants.TransferState;
-import com.emc.rpsp.vmstructure.domain.*;
+import com.emc.rpsp.vmstructure.domain.AccountVmsStructure;
+import com.emc.rpsp.vmstructure.domain.ClusterDefinition;
+import com.emc.rpsp.vmstructure.domain.ConsistencyGroup;
+import com.emc.rpsp.vmstructure.domain.CopySnapshot;
+import com.emc.rpsp.vmstructure.domain.GroupCopySettings;
+import com.emc.rpsp.vmstructure.domain.GroupSet;
+import com.emc.rpsp.vmstructure.domain.VmContainer;
+import com.emc.rpsp.vmstructure.domain.VmDefinition;
 import com.emc.rpsp.vmstructure.service.AccountVmsStructureService;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 @Service
 public class AccountVmsStructureServiceImpl implements
@@ -415,7 +449,7 @@ public class AccountVmsStructureServiceImpl implements
 				ConsistencyGroupUID consistencyGroupUID = consistencyGroupLinkState
 						.getGroupLinkUID().getGroupUID();
 				GlobalCopyUID globalCopyUID = consistencyGroupLinkState
-						.getGroupLinkUID().getSecondCopy();
+						.getGroupLinkUID().getFirstCopy();
 				ConsistencyGroupCopyUID consistencyGroupCopyUID = new ConsistencyGroupCopyUID(
 						consistencyGroupUID, globalCopyUID);
 				PipeState pipeState = consistencyGroupLinkState.getPipeState();
@@ -537,7 +571,9 @@ public class AccountVmsStructureServiceImpl implements
 					snapshot.setClosingTimestamp(dateStr);
 					snapshot.setOriginalClosingTimeStamp(timestamp
 							.getTimeInMicroSeconds());
-					if (currSnapshot.getRelevantEvent() != null) {
+					if (currSnapshot.getRelevantEvent() != null &&
+							!StringUtils.contains(currSnapshot.getRelevantEvent()
+									.getDetails(), "GUID")) {
 						snapshot.setName(currSnapshot.getRelevantEvent()
 								.getDetails());
 					}
