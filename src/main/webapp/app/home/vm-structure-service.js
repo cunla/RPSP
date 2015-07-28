@@ -226,7 +226,7 @@ app.service('vmStructureService', ['$http', function ($http) {
     		 });
     	}
     	else {
-    		$http.put(url, snapshotParams).
+    		$http.put(url).
 	   		 success(function(data,status,headers,config){	        
 	   		 });
     	}
@@ -289,11 +289,29 @@ app.service('vmStructureService', ['$http', function ($http) {
     	bookmarkParams.consistencyType = consistencyType;
     	
 
-		 $http.post(url, bookmarkParams).
-		 success(function(data,status,headers,config){	        
-		 });    	   			   
+		$http.post(url, bookmarkParams).
+			 then(this.getVmStructureData());   	   			   
     	
     };
+    
+    
+    
+    
+/*    $scope.getVmStructureData = function(){
+		vmStructureService.getVmStructureData().then(function(allData) {
+	      $scope.vmStructureData = allData.vmStructureData;
+	      $scope.vmGsAndCgFlatData = allData.vmGsAndCgFlatData;
+	      $scope.totalVms = allData.totalVms;
+	      $scope.protectedVms = allData.protectedVms;
+	   })
+	   .finally(function (res) {
+		  $scope.loading = false;			  
+	   })
+    };*/
+    
+    
+    
+    
     
             
     
