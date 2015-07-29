@@ -190,8 +190,8 @@ public class AccountVmsStructureServiceImpl implements
 
 		Map<String, VmOwnership> vmsMap = getVmsMap(account);
 		Map<Long, String> clusterNames = client.getClusterNames();
-		Map<Long, Map<String, String>> vmNamesAllClusters = client
-				.getVmNamesAllClusters();
+		/*Map<Long, Map<String, String>> vmNamesAllClusters = client
+				.getVmNamesAllClusters();*/
 
 		List<ConsistencyGroupSetSettings> groupSetsSettings = rpSettings
 				.getGroupsSetsSettings();
@@ -244,21 +244,21 @@ public class AccountVmsStructureServiceImpl implements
 						clusterName = currSystem.getNameToClusterMap()
 								.get(clusterName).getFriendlyName();
 					}
-					String vmName = vmNamesAllClusters.get(clusterId).get(vmId);
+					//String vmName = vmNamesAllClusters.get(clusterId).get(vmId);
 					List<ConsistencyGroupCopyUID> production = groupSettings
 							.getProductionCopiesUID();
 					// this vm belongs to production
 					if (production.contains(copyId)) {
 						// process vm only if it belongs to account
-						if (vmsMap.get(vmId) != null) {
-							// remove from unprotected candidates
-							vmsMap.remove(vmId);
-							VmDefinition currVm = new VmDefinition(vmId, vmName);
+						if (vmsMap.get(vmId) != null) {							
+							VmDefinition currVm = new VmDefinition(vmId, vmsMap.get(vmId).getVmName());
 							vmsList.add(currVm);
 							productionCluster = new ClusterDefinition(
 									clusterId.toString(), clusterName);
 							consistencyGroup
 									.setProductionCluster(productionCluster);
+							// remove from unprotected candidates
+							vmsMap.remove(vmId);
 						}
 					}
 					// this vm belongs to replica
