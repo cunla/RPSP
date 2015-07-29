@@ -312,10 +312,10 @@ public class Client {
   	
     	VirtualHardwareReplicationPolicy virtualHardwareReplicationPolicy = new VirtualHardwareReplicationPolicy();
     	virtualHardwareReplicationPolicy.setProvisionPolicy(DiskProvisionPolicy.SAME_AS_SOURCE);
-    	virtualHardwareReplicationPolicy.setHwChangesPolicy(HardwareChangesPolicy.DONT_REPLICATE_HW_CHANGES);
+    	virtualHardwareReplicationPolicy.setHwChangesPolicy(HardwareChangesPolicy.REPLICATE_HW_CHANGES);
     	
     	VirtualDisksReplicationPolicy virtualDisksReplicationPolicy = new VirtualDisksReplicationPolicy();
-    	virtualDisksReplicationPolicy.setAutoReplicateNewVirtualDisks(false);
+    	virtualDisksReplicationPolicy.setAutoReplicateNewVirtualDisks(true);
     	
     	
     	VMReplicationSetParam replicationSetParam = new VMReplicationSetParam(replicatedVmParams, virtualHardwareReplicationPolicy, virtualDisksReplicationPolicy);
