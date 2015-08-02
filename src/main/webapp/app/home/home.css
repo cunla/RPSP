@@ -57,3 +57,23 @@ table.table tr.selected td {
    background-size:contain;
    background-image:url("../../assets/images/loader-standard.gif");
 }
+
+
+html, body {
+    height: 90%; 
+    min-height: 90%;
+}
+ 
+div.full-height{
+    height: 94%;
+    min-height: 94%;
+}
+
+
+
+ 
+
+ 
+ 
+ 
+
