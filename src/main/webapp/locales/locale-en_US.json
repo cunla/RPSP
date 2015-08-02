@@ -32,7 +32,7 @@
         "UNPROTECTED_VMS_MSG": "Unprotected VMs",
         "DR_TEST_ENABLED_MSG": "Enabled",
         "DR_TEST_ENABLING_MSG": "Enabling",
-        "DR_TEST_DISABLED_MSG": "Disabled",
+        "DR_TEST_DISABLED_MSG": "",
         "POWERED_BY_RECOVERPOINT_FOR_VMS": "Powered by RecoverPoint for VMs",
         "TRANSFER_INIT_MSG": "Initializing",
         "TRANSFER_ACTIVE_MSG": "Active",
