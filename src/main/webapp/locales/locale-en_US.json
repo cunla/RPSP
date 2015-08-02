@@ -20,7 +20,7 @@
         "DR_TEST_MSG": "DR Test",
         "FAILOVER_MSG": "Failover",
         "RESTORE_PRODUCTION_MSG": "Restore Production",
-        "ENABLE_DISABLE_MSG": "Enable/Disable",
+        "EDIT_MSG": "Edit",
         "ADD_BOOKMARK_MSG": "Add Bookmark",
         "SHOW_HISTORY_MSG": "Show History",
         "SERVICE_REQUEST_MSG": "Service Request",
