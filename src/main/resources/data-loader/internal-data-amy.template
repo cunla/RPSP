@@ -1,0 +1,68 @@
+[
+    {
+        "user": "admin",
+        "password": "admin",
+        "ip": "10.64.125.211",
+        "clusterFriendlyNames": {
+            "dc01-cl01": "New York",
+            "dc01-cl02": "London"
+        },
+        "accounts": [
+            {
+                "name": "28652",
+                "label": "Springfield bank",
+                "vms": [
+                    {
+                        "vmId": "50126717-89a8-e80a-9744-759d890e38c3",
+                        "vmName": "Activity Tracing VM"
+                    },
+                    {
+                        "vmId": "50125840-5ca9-9b34-8660-ff40cc1f31f1",
+                        "vmName": "Almog SW VM"
+                    },
+                    {
+                        "vmId": "50127f95-f6e3-0103-97b1-b6f716ad971d",
+                        "vmName": "Legacy accounts VM"
+                    },
+                    {
+                        "vmId": "5012b795-7dc3-12ab-660b-9dd0959991f0",
+                        "vmName": "SB Internet Access VM"
+                    },
+                    {
+                        "vmId": "50120be3-7f76-c6cd-6f40-462a8e12823c",
+                        "vmName": "Priority ERP VM"
+                    },
+                    {
+                        "vmId": "5012f7dc-ce69-bdef-5979-e5951ea1e8b6",
+                        "vmName": "SB Reporting services VM"
+                    }
+                    
+                ],
+                "users": [
+                    {
+                        "login": "john.smith@28652",
+                        "firstName": "John",
+                        "lastName": "Smith",
+                        "password": "12345"
+                    }
+                ],
+                "accountConfigs": [
+                    {
+                        "clusterId": "7634253077374474074",
+                        "vcId": "A755A7CD-19EC-4625-8416-D2958E0A8100",
+                        "esxId": "4210a558-f2fc-b59d-4074-1880b67746c5",
+                        "datastoreId": "datastore-62",
+                        "testNetworkId": "testNetworkId"
+                    },
+                    {
+                        "clusterId": "7353023466098084120",
+                        "vcId": "A0163C86-13DA-4B24-858C-1D2F99498B12",
+                        "esxId": "42101fbb-6470-68cb-a73a-8e09b72a2c2a",
+                        "datastoreId": "datastore-46",
+                        "testNetworkId": "testNetworkId"
+                    }
+                ]
+            }
+        ]
+    }
+]

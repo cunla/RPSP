@@ -22,6 +22,7 @@ import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetUID;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSettings;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSnapshots;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStateSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStatisticsSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupUID;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupVolumesStateSet;
 import com.emc.fapi.jaxws.v4_3.CreateBookmarkForGroupSetSubSetParams;
@@ -385,6 +386,11 @@ public class Client {
    		createBookmarkForGroupSetSubSetParams.setConsolidationPolicy(BookmarkConsolidationPolicy.NEVER_CONSOLIDATE);
    		Response response = connector.createGroupSetBookmark(createBookmarkForGroupSetSubSetParams);
    		
+   	}
+   	
+   	public ConsistencyGroupStatisticsSet getGroupStatistics(){
+   		ConsistencyGroupStatisticsSet consistencyGroupStatisticsSet = connector.getGroupStatistics();
+   		return consistencyGroupStatisticsSet;
    	}
        
        

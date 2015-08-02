@@ -140,7 +140,7 @@
 								<td>{{row.productionCluster.name}}</td>
 								<td>{{row.replicaClusters[0].name}}</td>						
 								<td>{{row.type == 'cg' ? getState('Enabled') : null}}</td>
-								<td>{{getReplicationStateIndicator(row.replicaClusters[0].groupCopySettings[0].replication)}}</td>
+								<td>{{getReplicationStateIndicator(row.replicaClusters[0].groupCopySettings[0].replication, row.replicaClusters[0].groupCopySettings[0].initCompletionPortion)}}</td>
 								<td>{{row.maxVolumeSize}}</td>
 								<td>{{getImageAccessIndicator(row.replicaClusters[0].groupCopySettings[0].imageAccess)}}</td>
 								<!-- <td>{{row.replicaClusters[0].groupCopySettings[0].imageAccess == 'Enabled' ? ('HOME.DR_TEST_ENABLED_MSG' | translate) : ('HOME.DR_TEST_DISABLED_MSG' | translate)}}</td> -->

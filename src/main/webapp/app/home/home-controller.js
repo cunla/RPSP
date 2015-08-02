@@ -154,7 +154,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     
     
     
-    $scope.getReplicationStateIndicator = function(status){
+    $scope.getReplicationStateIndicator = function(status, initCompletionPortion){
  	   var res = status;
  	   if(status != null && status !== undefined){
  		   
@@ -162,6 +162,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
  		   
  		   if(status == 'Initializing'){
  			   res = $translate('HOME.TRANSFER_INIT_MSG');
+ 			   res += (' (' + initCompletionPortion + '%' + ')');
  		   }
  		   else if(status == 'Active'){
  			   res = $translate('HOME.TRANSFER_ACTIVE_MSG');

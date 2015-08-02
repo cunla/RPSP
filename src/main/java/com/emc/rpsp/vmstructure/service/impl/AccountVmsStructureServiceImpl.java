@@ -18,11 +18,15 @@ import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySnapshots;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyState;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyUID;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkState;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkStatistics;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkUID;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetSettings;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSettings;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSnapshots;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupState;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStateSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStatistics;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStatisticsSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupUID;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupVolumesState;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupVolumesStateSet;
@@ -203,6 +207,7 @@ public class AccountVmsStructureServiceImpl implements
 		Map<ConsistencyGroupCopyUID, String> transferStatesMap = getGroupCopiesTransferStates(consistencyGroupStateSet);
 		Map<ConsistencyGroupCopyUID, ConsistencyGroupCopyState> copiesStatesMap = getGroupCopiesStates(consistencyGroupStateSet);
 		Map<String, Long> volumesMaxSizesMap = getGroupVolumesMaxSizes(client);
+		Map<ConsistencyGroupCopyUID, String> initCompletionPortionsMap = getInitCompletionPortion(client);
 
 		List<ConsistencyGroupSettings> groupSettingsList = rpSettings
 				.getGroupsSettings();
@@ -229,11 +234,11 @@ public class AccountVmsStructureServiceImpl implements
 			consistencyGroup.setVms(vmsList);
 
 			for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {
-
 				List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
 						.getReplicatedVMs();
 
 				for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
+					
 					String vmId = vmReplication.getVmUID().getUuid();
 					ConsistencyGroupCopyUID copyId = vmReplication
 							.getGroupCopyUID();
@@ -276,7 +281,7 @@ public class AccountVmsStructureServiceImpl implements
 						}
 						GroupCopySettings groupCopySettings = getGroupCopySettings(
 								copyId, groupSettings, transferStatesMap,
-								copySnapshotsMap, copiesStatesMap);
+								copySnapshotsMap, copiesStatesMap, initCompletionPortionsMap);
 						// add the copy in case it wasn't added in context of
 						// another vm
 						if (!replicaCluster.isExistingCopy(groupCopySettings)) {
@@ -368,7 +373,8 @@ public class AccountVmsStructureServiceImpl implements
 			ConsistencyGroupSettings consistencyGroupSettings,
 			Map<ConsistencyGroupCopyUID, String> transferStatesMap,
 			Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copySnapshotsMap,
-			Map<ConsistencyGroupCopyUID, ConsistencyGroupCopyState> copiesStatesMap) {
+			Map<ConsistencyGroupCopyUID, ConsistencyGroupCopyState> copiesStatesMap,
+			Map<ConsistencyGroupCopyUID, String> initCompletionPortionsMap) {
 
 		GroupCopySettings groupCopySettings = null;
 		List<ConsistencyGroupCopySettings> allCopiesSettings = consistencyGroupSettings
@@ -412,6 +418,9 @@ public class AccountVmsStructureServiceImpl implements
 				}
 				groupCopySettings.setReplication(transferStatesMap
 						.get(currGroupCopySettings.getCopyUID()));
+				groupCopySettings.setInitCompletionPortion(initCompletionPortionsMap.
+						  get(currGroupCopySettings.getCopyUID()));
+				
 				
 				groupCopySettings.setSnapshots(getSnapshotsByType(allSnapshots,
 						false));
@@ -624,6 +633,25 @@ public class AccountVmsStructureServiceImpl implements
 			}
 		}
 		return res;
+	}
+	
+	private Map<ConsistencyGroupCopyUID, String> getInitCompletionPortion(Client client){
+		ConsistencyGroupStatisticsSet consistencyGroupStatisticsSet = client.getGroupStatistics();
+		Map<ConsistencyGroupCopyUID, String> completionPortionsMap = new HashMap<ConsistencyGroupCopyUID, String>();
+		List<ConsistencyGroupStatistics> groupsStatistics = consistencyGroupStatisticsSet.getInnerSet();
+		for(ConsistencyGroupStatistics currGroupStatistics : groupsStatistics){
+			List<ConsistencyGroupLinkStatistics> linkStatistics = currGroupStatistics.getConsistencyGroupLinkStatistics();
+			for(ConsistencyGroupLinkStatistics currLinkStatistics : linkStatistics){
+				ConsistencyGroupLinkUID linkUID = currLinkStatistics.getLinkUID();
+				ConsistencyGroupCopyUID consistencyGroupCopyUID = new ConsistencyGroupCopyUID();
+				consistencyGroupCopyUID.setGroupUID(linkUID.getGroupUID());
+				consistencyGroupCopyUID.setGlobalCopyUID(linkUID.getFirstCopy());
+				Double initCompletionValue = new Double(currLinkStatistics.getInitStatistics().getInitCompletionPortion()*100);
+				String initCompletionValueStr = new Integer(initCompletionValue.intValue()).toString();
+				completionPortionsMap.put(consistencyGroupCopyUID, initCompletionValueStr);
+			}
+		}
+		return completionPortionsMap;
 	}
 
 }

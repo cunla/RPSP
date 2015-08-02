@@ -10,6 +10,7 @@ public class GroupCopySettings {
     private String clusterId;
     private String imageAccess;
     private String replication;
+    private String initCompletionPortion;
     private List<CopySnapshot> snapshots = new LinkedList<CopySnapshot>();
     private List<CopySnapshot> bookmarks = new LinkedList<CopySnapshot>();
 
@@ -72,5 +73,15 @@ public class GroupCopySettings {
     public void setBookmarks(List<CopySnapshot> bookmarks) {
         this.bookmarks = bookmarks;
     }
+
+	public String getInitCompletionPortion() {
+		return initCompletionPortion;
+	}
+
+	public void setInitCompletionPortion(String initCompletionPortion) {
+		this.initCompletionPortion = initCompletionPortion;
+	}
+    
+    
 
 }

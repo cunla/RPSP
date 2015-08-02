@@ -13,6 +13,7 @@ import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettingsSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSnapshots;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStateSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStatisticsSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupUIDSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupVolumesStateSet;
 import com.emc.fapi.jaxws.v4_3.CreateBookmarkForGroupSetSubSetParams;
@@ -106,5 +107,10 @@ public interface ClusterConnector {
 	@POST(BASE_URL + "group_sets/subsets/snapshots")
 	public Response createGroupSetBookmark(
 			@Body CreateBookmarkForGroupSetSubSetParams createBookmarkForGroupSetSubSetParams);
+	
+	
+	@GET(BASE_URL + "groups/statistics")
+	public ConsistencyGroupStatisticsSet getGroupStatistics();
+
 
 }

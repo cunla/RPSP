@@ -151,8 +151,8 @@ app.service('vmStructureService', ['$http', function ($http) {
 	        var vmData = {};
 	        vmData.id = vmId;
 	       $http.post(url,vmData)
-	    	.success(function(data,status,headers,config){	        
-	    	})
+    	   .success(function(data,status,headers,config){	        
+    	   })
     	}
     	//this is unprotect
     	else{
@@ -175,8 +175,8 @@ app.service('vmStructureService', ['$http', function ($http) {
         	}
     		url = url = '/rpsp/groups/' + sgId + '/vms/' + vmId;
     		$http.delete(url)
-        	.success(function(data,status,headers,config){	        
-        	});
+    	    .success(function(data,status,headers,config){	        
+    	    });
     	}
     	
     	console.log(url);
