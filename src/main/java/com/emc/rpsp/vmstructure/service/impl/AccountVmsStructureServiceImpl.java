@@ -257,6 +257,8 @@ public class AccountVmsStructureServiceImpl implements
 						// process vm only if it belongs to account
 						if (vmsMap.get(vmId) != null) {							
 							VmDefinition currVm = new VmDefinition(vmId, vmsMap.get(vmId).getVmName());
+							currVm.setCritical(vmReplicationSet.getVmReplicationSetPolicy().isCritical());
+							currVm.setSequenceNumber(vmReplicationSet.getVmReplicationSetPolicy().getPowerUpSequenceNumber());
 							vmsList.add(currVm);
 							productionCluster = new ClusterDefinition(
 									clusterId.toString(), clusterName);

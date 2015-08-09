@@ -4,6 +4,8 @@ public class VmDefinition {
 
     private String id;
     private String name;
+    private boolean isCritical;
+    private int sequenceNumber;
 
     public VmDefinition(String id, String name) {
         super();
@@ -26,5 +28,23 @@ public class VmDefinition {
     public void setName(String name) {
         this.name = name;
     }
+
+	public boolean isCritical() {
+		return isCritical;
+	}
+
+	public void setCritical(boolean isCritical) {
+		this.isCritical = isCritical;
+	}
+
+	public int getSequenceNumber() {
+		return sequenceNumber;
+	}
+
+	public void setSequenceNumber(int sequenceNumber) {
+		this.sequenceNumber = sequenceNumber;
+	}
+    
+    
 
 }

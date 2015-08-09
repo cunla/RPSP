@@ -10,6 +10,8 @@ app.controller('unprotectController', ['$scope', '$http', '$modal', '$modalInsta
 	$scope.cgId = {};
 	$scope.vmName = {};
 	$scope.cgName = {};
+	$scope.vmIsCritical = {};
+	$scope.vmSequenceNumber = {};
 
 	
 	
@@ -68,7 +70,9 @@ app.controller('unprotectController', ['$scope', '$http', '$modal', '$modalInsta
 		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
 		$scope.vmId = modalParams.vmId;
 		var vmInfo = $scope.locateVmInfo($scope.vmId, $scope.vmGsAndCgFlatData);
-		$scope.vmName = vmInfo.name;		
+		$scope.vmName = vmInfo.name;	
+		$scope.isCriticalVm = vmInfo.critical;
+		$scope.selectedSequenceNumber = vmInfo.sequenceNumber + 1;
 		var cgInfo = $scope.locateParentCgInfo($scope.vmId, $scope.vmGsAndCgFlatData);
 		$scope.cgId = cgInfo.id;
 		$scope.cgName = cgInfo.name;
@@ -82,7 +86,7 @@ app.controller('unprotectController', ['$scope', '$http', '$modal', '$modalInsta
 	
 	
 	$scope.moveVm = function(){
-	    vmStructureService.moveVm($scope.vmId, $scope.cgId, 'unprotect');
+	    vmStructureService.moveVm($scope.vmId, $scope.cgId, $scope.selectedSequenceNumber, $scope.isCriticalVm, 'unprotect');
 	    $modalInstance.dismiss('cancel');
 	}
 

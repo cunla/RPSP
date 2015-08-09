@@ -59,6 +59,8 @@ app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstanc
 		$scope.cgName = cgInfo.name;
 		$scope.protectedSelectedIndex = $scope.locateCgIndex($scope.cgId, $scope.vmGsAndCgFlatData);	
 		$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
+		$scope.selectedSequenceNumber = 3;
+		$scope.isCriticalVm = true;
 	};
 	
 	   
@@ -67,7 +69,7 @@ app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstanc
 	
 	
 	$scope.moveVm = function(){
-	    vmStructureService.moveVm($scope.vmId, $scope.cgId, 'protect');
+	    vmStructureService.moveVm($scope.vmId, $scope.cgId, $scope.selectedSequenceNumber - 1, $scope.isCriticalVm,'protect');
 	    $modalInstance.dismiss('cancel');
 	}
 

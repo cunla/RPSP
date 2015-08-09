@@ -25,8 +25,16 @@ public class GroupsProtectionController {
 			method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<HttpStatus> addVmToCG(
-			@PathVariable("groupId") Long groupId, @RequestBody Map<String, String> vm) {
-		groupsProtectionService.addVmToCG(vm.get("id"),  groupId);
+			@PathVariable("groupId") Long groupId, @RequestBody Map<String, Object> params) {
+		boolean isCritical = true;
+		int sequenceNumber = 3;
+		if(params.get("isCritical") != null){
+			isCritical = Boolean.parseBoolean(params.get("isCritical").toString());
+		}
+		if(params.get("sequenceNumber") != null){
+			sequenceNumber = Integer.parseInt(params.get("sequenceNumber").toString());
+		}
+		groupsProtectionService.addVmToCG(params.get("id").toString(), groupId, isCritical, sequenceNumber);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

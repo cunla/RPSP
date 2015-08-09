@@ -70,7 +70,7 @@
 						     {{'PROTECT-UNPROTECT.VM_PRIORITY_IN_CG_MSG' | translate}}
 						</div>
 						<div class="col-xs-3 col-sm-3 col-md-3 margin-top-lg">
-								1
+								{{selectedSequenceNumber}}
 						</div>
 						<div class="col-xs-3 col-sm-3 col-md-3">
 						</div>
@@ -78,7 +78,7 @@
 					<div class="row">
 						<div class="col-xs-5 col-sm-5 col-md-5 margin-top-10">
 						     <label class="checkbox-inline">
-							  	<input type="checkbox" id="criticalVmId" ng-disabled="true"> {{'PROTECT-UNPROTECT.CRITICAL_VM_MSG' | translate}}
+							  	<input type="checkbox" id="criticalVmId" ng-model="isCriticalVm" ng-disabled="true"> {{'PROTECT-UNPROTECT.CRITICAL_VM_MSG' | translate}}
 							</label>
 						</div>
 					</div>

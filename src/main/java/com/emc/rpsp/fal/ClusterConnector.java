@@ -27,6 +27,7 @@ import com.emc.fapi.jaxws.v4_3.FullRecoverPointSettings;
 import com.emc.fapi.jaxws.v4_3.RecoverPointClustersInformation;
 import com.emc.fapi.jaxws.v4_3.RecoverPointTimeStamp;
 import com.emc.fapi.jaxws.v4_3.RecoverPointVersion;
+import com.emc.fapi.jaxws.v4_3.VmPowerUpSequenceParamSet;
 import com.emc.fapi.jaxws.v4_3.VmReplicationSetParamSet;
 import com.emc.fapi.jaxws.v4_3.VmUIDSet;
 
@@ -111,6 +112,12 @@ public interface ClusterConnector {
 	
 	@GET(BASE_URL + "groups/statistics")
 	public ConsistencyGroupStatisticsSet getGroupStatistics();
+	
+	
+	@PUT(BASE_URL + "groups/{groupId}/virtual_machines/powerup_sequence")
+	public Response changeVmsPowerUpSequence(@Path("groupId") long groupId, @Body VmPowerUpSequenceParamSet vmPowerUpSequenceParamSet);
+	
+	
 
 
 }

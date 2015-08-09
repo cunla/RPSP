@@ -16,12 +16,13 @@ public class GroupsProtectionServiceImpl implements GroupsProtectionService {
 	private UserService userService = null;
 
 	@Override
-	public void addVmToCG(String vmId, Long groupId) {
+	public void addVmToCG(String vmId, Long groupId, boolean isCritical, int sequenceNumber) {
 		Account account = userService.findCurrentUser().getUser().getAccount();
         if (account != null) {
             SystemSettings system = account.getSystemSettings().get(0);
             Client client = new Client(system);
             client.addVmToCG(vmId, groupId, account);
+            client.changeVmsPowerUpSequence(vmId, groupId, isCritical, sequenceNumber);
         }
 	}
 

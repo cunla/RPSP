@@ -3,7 +3,10 @@ package com.emc.rpsp.config;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
 import liquibase.integration.spring.SpringLiquibase;
+
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
@@ -17,6 +20,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+
 import java.util.Arrays;
 
 @Configuration @EnableJpaRepositories({ "com.emc.rpsp.repository", "com.emc.rpsp.mgmt",
@@ -50,14 +54,22 @@ import java.util.Arrays;
         }
         HikariConfig config = new HikariConfig();
         config.setDataSourceClassName(propertyResolver.getProperty("dataSourceClassName"));
-        if (propertyResolver.getProperty("url") == null || ""
-        .equals(propertyResolver.getProperty("url"))) {
-            config
-            .addDataSourceProperty("databaseName", propertyResolver.getProperty("databaseName"));
-            config.addDataSourceProperty("serverName", propertyResolver.getProperty("serverName"));
-        } else {
-            config.addDataSourceProperty("url", propertyResolver.getProperty("url"));
+        
+        if(!org.apache.commons.lang3.StringUtils.isEmpty(env.getProperty("url"))){
+        	config.addDataSourceProperty("url", env.getProperty("url"));
         }
+        else{
+	        if (propertyResolver.getProperty("url") == null || ""
+	        .equals(propertyResolver.getProperty("url"))) {
+	            config
+	            .addDataSourceProperty("databaseName", propertyResolver.getProperty("databaseName"));
+	            config.addDataSourceProperty("serverName", propertyResolver.getProperty("serverName"));
+	        } else {
+	            config.addDataSourceProperty("url", propertyResolver.getProperty("url"));
+	        }
+        }
+        
+        
         config.addDataSourceProperty("user", propertyResolver.getProperty("username"));
         config.addDataSourceProperty("password", propertyResolver.getProperty("password"));
 

@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.http.Body;
 
 import com.emc.fapi.jaxws.v4_3.BookmarkConsolidationPolicy;
 import com.emc.fapi.jaxws.v4_3.ClusterInfo;
@@ -50,6 +52,8 @@ import com.emc.fapi.jaxws.v4_3.VMReplicationSetParam;
 import com.emc.fapi.jaxws.v4_3.VirtualCenterUID;
 import com.emc.fapi.jaxws.v4_3.VirtualDisksReplicationPolicy;
 import com.emc.fapi.jaxws.v4_3.VirtualHardwareReplicationPolicy;
+import com.emc.fapi.jaxws.v4_3.VmPowerUpSequenceParam;
+import com.emc.fapi.jaxws.v4_3.VmPowerUpSequenceParamSet;
 import com.emc.fapi.jaxws.v4_3.VmReplicationSetParamSet;
 import com.emc.fapi.jaxws.v4_3.VmReplicationSetSettings;
 import com.emc.fapi.jaxws.v4_3.VmReplicationSettings;
@@ -328,6 +332,20 @@ public class Client {
 		Response response = connector.addVmToCG(groupId, vmReplicationSetParamSet);
     }
     
+    
+    @SuppressWarnings("static-access")
+	public void changeVmsPowerUpSequence(String vmId, Long groupId, boolean isCritical, int sequenceNumber) {   	
+    	VmReplicationSetSettings vmReplicationSetSettings = getVmReplicationSettingsWithRetryOption(vmId, 3);    	
+    	if(vmReplicationSetSettings != null){
+	    	VmPowerUpSequenceParamSet vmPowerUpSequenceParamSet = new VmPowerUpSequenceParamSet();
+	    	VmPowerUpSequenceParam vmPowerUpSequenceParam = new VmPowerUpSequenceParam();
+	    	vmPowerUpSequenceParam.setVmReplicationSetUID(vmReplicationSetSettings.getVmReplicationSetUID());
+	    	vmPowerUpSequenceParam.setIsCritical(isCritical);
+	    	vmPowerUpSequenceParam.setPowerUpSequenceNumber(sequenceNumber);
+	    	vmPowerUpSequenceParamSet.getInnerSet().add(vmPowerUpSequenceParam);
+	    	connector.changeVmsPowerUpSequence(groupId, vmPowerUpSequenceParamSet);
+    	}
+    }
    
     
     public void removeVmsFromCG(String vmId, Long groupId, Account account){
@@ -392,11 +410,28 @@ public class Client {
    		ConsistencyGroupStatisticsSet consistencyGroupStatisticsSet = connector.getGroupStatistics();
    		return consistencyGroupStatisticsSet;
    	}
-       
-       
-    
-    
-
+   	
+   	
+    private VmReplicationSetSettings getVmReplicationSettingsWithRetryOption(String vmId, int retryAttempts){
+    	Map<String, VmReplicationSetSettings> vmToReplicationSetMap = getVmToReplicationSetSettingsMap();
+    	VmReplicationSetSettings vmReplicationSetSettings = vmToReplicationSetMap.get(vmId);
+    	if(vmReplicationSetSettings == null){
+    		for(int i=0; i<retryAttempts; i++){
+	    		try {
+					Thread.currentThread().sleep(TimeUnit.SECONDS.toMillis(5));
+				} catch (InterruptedException e) {
+				}
+	    		vmToReplicationSetMap = getVmToReplicationSetSettingsMap();
+	    		if(vmToReplicationSetMap != null){
+	    			vmReplicationSetSettings = vmToReplicationSetMap.get(vmId);
+	    			break;
+	    		}
+    		}
+    	}
+    	return vmReplicationSetSettings;
+    }
+   	
+   	
     private Map<String, String> getVmState(FullRecoverPointSettings rpSettings) {
         Map<String, String> res = new HashMap<>();
         Map<Long, List<ConsistencyGroupCopyUID>> productionCopies = getProductionCopies(rpSettings);
@@ -429,6 +464,35 @@ public class Client {
                         }
                         res.put(vmId, state);
                     }
+                }
+            }
+        }
+        return res;
+    }
+       
+       
+    
+    
+
+    private Map<String, VmReplicationSetSettings> getVmToReplicationSetSettingsMap() {
+    	FullRecoverPointSettings rpSettings = getFullRecoverPointSettings();
+        Map<String, VmReplicationSetSettings> res = new HashMap<>();
+
+        List<ConsistencyGroupSettings> groupSettingsList = rpSettings.getGroupsSettings();
+        for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
+
+            List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
+            .getVmReplicationSetsSettings();
+
+            for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {
+
+                List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
+                .getReplicatedVMs();
+
+                for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
+                    String vmId = vmReplication.getVmUID().getUuid();
+                    res.put(vmId, vmReplicationSet);
+
                 }
             }
         }
