@@ -138,6 +138,8 @@ app.service('vmStructureService', ['$http', function ($http) {
 	            	var allCgAndGs = vmGsAndCgFlatData;
 	            	for (var j = 0; j < allCgAndGs.length; j++) {
 	            		if(allCgAndGs[j].id == sgId){
+	            			currVm.critical = isCritical;
+	            			currVm.sequenceNumber = sequenceNumber;
 	            			allCgAndGs[j].vms.push(currVm);
 	            		}
 	            	}
