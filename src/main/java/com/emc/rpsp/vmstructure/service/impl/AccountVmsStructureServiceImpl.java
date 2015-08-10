@@ -605,14 +605,14 @@ public class AccountVmsStructureServiceImpl implements
 		ConsistencyType res = null;
 		switch (snapshotConsistencyType) {
 		case APPLICATION_CONSISTENT:
-			res = ConsistencyType.APPLICATION_CONSISTENT;
+			res = ConsistencyType.APPLICATION_CONSISTENT_SHORTCUT;
 			break;
 		/*case CONSISTENCY_UNKNOWN:
 		case UNKNOWN:
 			res = ConsistencyType.UNKNOWN;
 			break;*/
 		default:
-			res = ConsistencyType.CRASH_CONSISTENT;
+			res = ConsistencyType.CRASH_CONSISTENT_SHORTCUT;
 			break;
 		}
 		return res;

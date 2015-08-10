@@ -34,6 +34,10 @@ import java.util.Arrays;
     private RelaxedPropertyResolver propertyResolver;
 
     private Environment env;
+    
+    private final String DB_URL = "DB_URL";
+    private final String DB_USER = "DB_USER";
+    private final String DB_PASSWORD = "DB_PASSWORD";
 
     @Override public void setEnvironment(Environment env) {
         this.env = env;
@@ -55,8 +59,16 @@ import java.util.Arrays;
         HikariConfig config = new HikariConfig();
         config.setDataSourceClassName(propertyResolver.getProperty("dataSourceClassName"));
         
-        if(!org.apache.commons.lang3.StringUtils.isEmpty(env.getProperty("url"))){
-        	config.addDataSourceProperty("url", env.getProperty("url"));
+        if(org.apache.commons.lang3.StringUtils.isNoneEmpty(env.getProperty(DB_URL))){
+        	config.addDataSourceProperty("url", env.getProperty(DB_URL));
+        	
+        	if(org.apache.commons.lang3.StringUtils.isNoneEmpty(env.getProperty(DB_USER))){
+            	config.addDataSourceProperty("user", env.getProperty(DB_USER));
+            }
+        	
+        	if(org.apache.commons.lang3.StringUtils.isNoneEmpty(env.getProperty(DB_PASSWORD))){
+            	config.addDataSourceProperty("password", env.getProperty(DB_PASSWORD));
+            }
         }
         else{
 	        if (propertyResolver.getProperty("url") == null || ""
@@ -67,11 +79,11 @@ import java.util.Arrays;
 	        } else {
 	            config.addDataSourceProperty("url", propertyResolver.getProperty("url"));
 	        }
+	        config.addDataSourceProperty("user", propertyResolver.getProperty("username"));
+	        config.addDataSourceProperty("password", propertyResolver.getProperty("password"));
         }
+    
         
-        
-        config.addDataSourceProperty("user", propertyResolver.getProperty("username"));
-        config.addDataSourceProperty("password", propertyResolver.getProperty("password"));
 
         return new HikariDataSource(config);
     }

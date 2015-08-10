@@ -80,9 +80,17 @@
 							</label>
 						</div>
 						<!-- <div class="col-xs-8 col-sm-8 col-md-8 margin-top" tooltip="{{selectedBookmark.closingTimestamp}}" tooltip-placement="right"> -->
+						<!-- <div class="col-xs-8 col-sm-8 col-md-8 margin-top">
+								<select ng-model="selectedBookmark" 								         
+	                                        ng-options="bookmark.name + ' (' + bookmark.consistencyType + ')' + ' - ' + bookmark.closingTimestamp for bookmark in selectedCopy.bookmarks"
+	                                             ng-disabled="selectedCopy.imageAccess != 'Disabled' || selectedCopy.bookmarks.length == 0" 
+	                                                 class="form-control">											
+								</select>
+						</div> -->
+						<!-- <div class="col-xs-8 col-sm-8 col-md-8 margin-top" tooltip="{{selectedBookmark.closingTimestamp}}" tooltip-placement="right"> -->
 						<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
 								<select ng-model="selectedBookmark" 								         
-	                                        ng-options="bookmark.name + ' (' + bookmark.consistencyType + ')' for bookmark in selectedCopy.bookmarks"
+	                                        ng-options="bookmark.name + ' (AC)' + ' - ' + bookmark.closingTimestamp for bookmark in selectedCopy.bookmarks"
 	                                             ng-disabled="selectedCopy.imageAccess != 'Disabled' || selectedCopy.bookmarks.length == 0" 
 	                                                 class="form-control">											
 								</select>
@@ -90,7 +98,7 @@
 					</div>
 					
 					
-					<div class="row">
+					<!-- <div class="row">
 						<div class="col-xs-4 col-sm-4 col-md-4 radio">
 						</div>
 						<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
@@ -100,7 +108,7 @@
 	                                                 class="form-control">											
 								</select>
 						</div>
-					</div>
+					</div> -->
 					
 					
 					
