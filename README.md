@@ -33,11 +33,15 @@ All operations are done through RP4VM REST API.
 ####Installation instructions:
  1. Download the RPSP code from GIT
  2. Deploy fapi-client to your local repository using
-    mvn install:install-file -Dfile=fapi_client_4_3.jar -DgroupId=com.emc -DartifactId=fapi-client -Dversion=4.3 -Dpackaging=jar
- 2. Compile and package RPSP using maven, using command:  `mvn package` 
-    Note: Since RPSP uses spring-boot and H2 embedded database, it does not have any prerequisite software installed.
- 3. Run Application class from the WAR file using the command `java -jar rpsp.war`
- 4. You can also deploy the WAR on your own web-container (tomcat/etc.)
+    mvn install:install-file -Dfile=fapi-client-4.3.jar -DgroupId=com.emc -DartifactId=fapi-client -Dversion=4.3 -Dpackaging=jar
+ 3. Set database assosiation:
+    RPSP comes out of the box using H2 embedded file system database so it does not require any settings changed.
+    However, if you like to work with other database, you can change the configuration under resources/config/application.yml
+    You can see example of MySQL connection under resource/config/application-dev.yml
+        
+ 3. Compile and package RPSP using maven, using command:  `mvn package` 
+ 4. Run Application class from the WAR file using the command `java -jar rpsp.war`
+ 5. You can also deploy the WAR on your own web-container (tomcat/etc.)
 
 ####INSTALLATION AS WINDOWS SERVICE
 It is recommended to configure RPSP to run as a Windows Service as explained in this guide: https://nssm.cc/usage
