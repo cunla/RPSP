@@ -13,28 +13,28 @@
                 "label": "Springfield bank",
                 "vms": [
                     {
-                        "vmId": "50126717-89a8-e80a-9744-759d890e38c3",
-                        "vmName": "Activity Tracing VM"
+                        "vmId": "5012b211-b58c-11bd-5b95-53b746e05a03",
+                        "vmName": "vm-1"
                     },
                     {
-                        "vmId": "50125840-5ca9-9b34-8660-ff40cc1f31f1",
-                        "vmName": "Almog SW VM"
+                        "vmId": "5012092c-4a34-25c9-9019-d3a0f55144bd",
+                        "vmName": "vm-2"
                     },
                     {
-                        "vmId": "50127f95-f6e3-0103-97b1-b6f716ad971d",
-                        "vmName": "Legacy accounts VM"
+                        "vmId": "5012d706-df9f-bd71-8b36-397eb6cebf0d",
+                        "vmName": "vm-3"
                     },
                     {
-                        "vmId": "5012b795-7dc3-12ab-660b-9dd0959991f0",
-                        "vmName": "SB Internet Access VM"
+                        "vmId": "50123f6f-4bce-ec35-1aa9-f72b25ff9b3a",
+                        "vmName": "vm-4"
                     },
                     {
-                        "vmId": "50120be3-7f76-c6cd-6f40-462a8e12823c",
-                        "vmName": "Priority ERP VM"
+                        "vmId": "50124c98-7aa8-05d0-342d-4989ddfe2334",
+                        "vmName": "vm-5"
                     },
                     {
-                        "vmId": "5012f7dc-ce69-bdef-5979-e5951ea1e8b6",
-                        "vmName": "SB Reporting services VM"
+                        "vmId": "50123461-38ad-bdec-4415-408c69ecd130",
+                        "vmName": "vm-6"
                     }
                     
                 ],

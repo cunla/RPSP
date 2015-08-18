@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
     @Autowired private AccountService accountService;
 
-    @Override public UserDetails loadUserByUsername(String userName)
+    @Override public CurrentUser loadUserByUsername(String userName)
     throws UsernameNotFoundException {
 
         com.emc.rpsp.users.domain.User user = null;
