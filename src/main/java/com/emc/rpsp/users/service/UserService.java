@@ -1,15 +1,15 @@
 package com.emc.rpsp.users.service;
 
-import com.emc.rpsp.login.domain.CurrentUser;
-import com.emc.rpsp.users.domain.User;
-
 import java.util.List;
+
+import com.emc.rpsp.infra.common.auth.domain.AbstractCurrentUser;
+import com.emc.rpsp.users.domain.User;
 
 public interface UserService {
 
     public List<User> findUsers();
 
-    public CurrentUser findCurrentUser();
+    public AbstractCurrentUser findCurrentUser();
 
     public User findUser(Long id);
 

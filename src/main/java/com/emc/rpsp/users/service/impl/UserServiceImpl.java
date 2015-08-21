@@ -1,11 +1,11 @@
 package com.emc.rpsp.users.service.impl;
 
-import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.accounts.repository.AccountRepository;
-import com.emc.rpsp.login.domain.CurrentUser;
-import com.emc.rpsp.users.domain.User;
-import com.emc.rpsp.users.repository.UserRepository;
-import com.emc.rpsp.users.service.UserService;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +14,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
+import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.accounts.repository.AccountRepository;
+import com.emc.rpsp.infra.common.auth.domain.AbstractCurrentUser;
+import com.emc.rpsp.users.domain.User;
+import com.emc.rpsp.users.repository.UserRepository;
+import com.emc.rpsp.users.service.UserService;
 
 @Service public class UserServiceImpl implements UserService {
 
@@ -50,9 +52,9 @@ import java.util.List;
         return users;
     }
 
-    @Override public CurrentUser findCurrentUser() {
+    @Override public AbstractCurrentUser findCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        CurrentUser currentUser = (CurrentUser) auth.getPrincipal();
+        AbstractCurrentUser currentUser = (AbstractCurrentUser) auth.getPrincipal();
         return currentUser;
     }
 

@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -255,7 +256,7 @@ public class Client {
     }
     
     @SuppressWarnings("unused")
-	public void addVmToCG(String vmId, Long groupId, Account account){
+	public void addVmToCG(String vmId, Long groupId, List<AccountConfig> accountConfig){
     	
     	ConsistencyGroupCopySettingsSet consistencyGroupCopySettingsSet = connector.getAllGroupCopies(groupId);   	
     	List<ConsistencyGroupCopySettings> consistencyGroupCopySettingsList = consistencyGroupCopySettingsSet.getInnerSet();
@@ -270,7 +271,7 @@ public class Client {
     	
     	
     	List<ReplicatedVMParams> replicatedVmParams = new LinkedList<ReplicatedVMParams>();
-    	Map<Long, AccountConfig> accountConfigsMap = account.getAccountConfigsMap();
+    	Map<Long, AccountConfig> accountConfigsMap = getAccountConfigsMap(accountConfig);
     	
     	for(ConsistencyGroupCopySettings currConsistencyGroupCopySettings : consistencyGroupCopySettingsList){
     		if(currConsistencyGroupCopySettings.getRoleInfo().getSourceCopyUID() != null){
@@ -348,7 +349,7 @@ public class Client {
     }
    
     
-    public void removeVmsFromCG(String vmId, Long groupId, Account account){
+    public void removeVmsFromCG(String vmId, Long groupId, List<AccountConfig> accountConfig){
     	
     	ConsistencyGroupCopySettingsSet consistencyGroupCopySettingsSet = connector.getAllGroupCopies(groupId);   	
     	List<ConsistencyGroupCopySettings> consistencyGroupCopySettingsList = consistencyGroupCopySettingsSet.getInnerSet();
@@ -358,7 +359,7 @@ public class Client {
     			productionClusterId = currConsistencyGroupCopySettings.getCopyUID().getGlobalCopyUID().getClusterUID().getId();
     		}
     	}
-    	String productionVcId = account.getAccountConfigsMap().get(productionClusterId).getVcId();
+    	String productionVcId = getAccountConfigsMap(accountConfig).get(productionClusterId).getVcId();
     	VirtualCenterUID productionVirtualCenterUID = new VirtualCenterUID(productionVcId);
     	VmUID vmUID = new VmUID(vmId, productionVirtualCenterUID);
     	List<VmUID> innerSet = new LinkedList<VmUID>();
@@ -521,5 +522,14 @@ public class Client {
         }
         return res;
     }
+    
+    
+    private Map<Long, AccountConfig> getAccountConfigsMap(List<AccountConfig> accountConfigs) {
+		Map<Long, AccountConfig> accountConfigsMap = accountConfigs
+				.stream()
+				.collect(
+						Collectors.toMap(AccountConfig::getClusterId, (p) -> p));
+		return accountConfigsMap;
+	}
 
 }

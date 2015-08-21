@@ -1,10 +1,7 @@
 package com.emc.rpsp.users.controller;
 
-import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.accounts.service.AccountService;
-import com.emc.rpsp.login.domain.CurrentUser;
-import com.emc.rpsp.users.domain.User;
-import com.emc.rpsp.users.service.UserService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,9 +9,18 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.accounts.service.AccountService;
+import com.emc.rpsp.infra.common.auth.domain.AbstractCurrentUser;
+import com.emc.rpsp.users.domain.User;
+import com.emc.rpsp.users.service.UserService;
 
 @Controller public class UserController {
 
@@ -43,7 +49,7 @@ import java.util.List;
 
     @RequestMapping(value = "/users/current-user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody public ResponseEntity<User> findCurrentUser() {
-        CurrentUser currentUser = userService.findCurrentUser();
+    	AbstractCurrentUser currentUser = userService.findCurrentUser();
         return new ResponseEntity<>(currentUser.getUser(), HttpStatus.OK);
     }
 

@@ -1,0 +1,30 @@
+package com.emc.rpsp.infra.sqlplugin.systems.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.infra.common.systems.service.SystemsDataService;
+import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import com.emc.rpsp.rpsystems.SystemSettings;
+
+@Service
+public class SystemsDataServiceSqlImpl implements SystemsDataService {
+	
+	@Autowired
+	private SystemConnectionInfoRepository systemConnectionInfoRepository;
+
+	@Override
+	public List<SystemSettings> findAll() {
+		List<SystemSettings> systemsSettings = systemConnectionInfoRepository.findAll();
+		return systemsSettings;
+	}
+
+	@Override
+	public List<SystemSettings> findByAccount(Account account) {
+		return account.getSystemSettings();
+	}
+
+}

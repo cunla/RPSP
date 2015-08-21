@@ -16,54 +16,65 @@ import com.emc.rpsp.accounts.service.AccountService;
 import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 
-@Service public class AccountServiceImpl implements AccountService {
+@Service
+public class AccountServiceImpl implements AccountService {
 
-    @Autowired private AccountRepository accountRepository;
-    
-    @Autowired private AccountConfigsRepository accountConfigRepository;
+	@Autowired
+	private AccountRepository accountRepository;
 
-    @Autowired private SystemConnectionInfoRepository systemConnectionInfoRepository;
+	@Autowired
+	private AccountConfigsRepository accountConfigRepository;
 
-    @PersistenceContext private EntityManager entityManager;
+	@Autowired
+	private SystemConnectionInfoRepository systemConnectionInfoRepository;
 
-    @Override public List<Account> findAll() {
-        List<Account> accounts = accountRepository.findAll();
-        return accounts;
-    }
+	@PersistenceContext
+	private EntityManager entityManager;
 
-    @Override public Account findById(Long id) {
-        Account account = accountRepository.findOne(id);
-        return account;
-    }
+	@Override
+	public List<Account> findAll() {
+		List<Account> accounts = accountRepository.findAll();
+		return accounts;
+	}
 
-    @Override public Account findByName(String name) {
-        Account account = accountRepository.findOneByName(name);
-        return account;
-    }
+	@Override
+	public Account findById(Long id) {
+		Account account = accountRepository.findOne(id);
+		return account;
+	}
 
-    @Override @Transactional public Account create(Account account, Long systemId) {
-        entityManager.persist(account);
-        entityManager.flush();
-        SystemSettings systemSettings = systemConnectionInfoRepository.findOne(systemId);
-        account.addSystem(systemSettings);
-        Account newAccount = entityManager.merge(account);
-        entityManager.flush();
-        return newAccount;
-    }
+	@Override
+	public Account findByName(String name) {
+		Account account = accountRepository.findOneByName(name);
+		return account;
+	}
 
-    @Override public Account update(Account account) {
-        Account existingAccount = accountRepository.findOne(account.getId());
-        existingAccount.setName(account.getName());
-        existingAccount.setLabel(account.getLabel());
-        Account updatedAccount = accountRepository.save(existingAccount);
-        return updatedAccount;
-    }
+	@Override
+	@Transactional
+	public Account create(Account account, Long systemId) {
+		entityManager.persist(account);
+		entityManager.flush();
+		SystemSettings systemSettings = systemConnectionInfoRepository
+				.findOne(systemId);
+		account.addSystem(systemSettings);
+		Account newAccount = entityManager.merge(account);
+		entityManager.flush();
+		return newAccount;
+	}
 
-    @Override public void delete(Long id) {
-        accountRepository.delete(id);
+	@Override
+	public Account update(Account account) {
+		Account existingAccount = accountRepository.findOne(account.getId());
+		existingAccount.setName(account.getName());
+		existingAccount.setLabel(account.getLabel());
+		Account updatedAccount = accountRepository.save(existingAccount);
+		return updatedAccount;
+	}
 
-    }
+	@Override
+	public void delete(Long id) {
+		accountRepository.delete(id);
 
-	
+	}
 
 }

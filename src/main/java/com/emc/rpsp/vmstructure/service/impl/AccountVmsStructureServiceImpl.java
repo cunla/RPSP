@@ -43,10 +43,9 @@ import com.emc.fapi.jaxws.v4_3.VmReplicationSetSettings;
 import com.emc.fapi.jaxws.v4_3.VmReplicationSettings;
 import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.accounts.service.AccountService;
+import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.rpsystems.SystemSettings;
-import com.emc.rpsp.users.domain.User;
-import com.emc.rpsp.users.service.UserService;
 import com.emc.rpsp.vms.domain.VmOwnership;
 import com.emc.rpsp.vms.service.VmOwnershipService;
 import com.emc.rpsp.vmstructure.constants.ConsistencyType;
@@ -63,29 +62,26 @@ import com.emc.rpsp.vmstructure.domain.VmDefinition;
 import com.emc.rpsp.vmstructure.service.AccountVmsStructureService;
 
 @Service
-public class AccountVmsStructureServiceImpl implements
+public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 		AccountVmsStructureService {
 
-	@Autowired
-	private UserService userService = null;
 
-	@Autowired
+	/*@Autowired
 	private AccountService accountService = null;
 
 	@Autowired
-	private VmOwnershipService vmOwnershipService = null;
+	private VmOwnershipService vmOwnershipService = null;*/
 
 	@Override
 	public AccountVmsStructure getAccountVmsStrucure() {
 
 		AccountVmsStructure accountVmsStructure = null;
-		User user = userService.findCurrentUser().getUser();
-		if (isNotImpersonatedAdmin(user)) {
-			List<Account> accounts = accountService.findAll();
+		if (isNotImpersonatedAdmin()) {
+			List<Account> accounts = findAllAccounts();
 			accountVmsStructure = getAllAccountsData(accounts);
 			updateVmNamesWithAccountInfo(accountVmsStructure);
 		} else {
-			Account account = user.getAccount();
+			Account account = getCurrentUser().getAccount();
 			accountVmsStructure = getAccountData(account);
 		}
 
@@ -98,7 +94,7 @@ public class AccountVmsStructureServiceImpl implements
 		if (account != null) {
 			accountVmsStructure.setId(account.getId().toString());
 			accountVmsStructure.setName(account.getName());
-			List<SystemSettings> systems = account.getSystemSettings();
+			List<SystemSettings> systems = findSystemsByAccount(account);
 			for (SystemSettings currSystem : systems) {
 				Client client = new Client(currSystem);
 				AccountVmsStructure currAccountVmsStructure = getAccountVmsStrucure(
@@ -117,7 +113,7 @@ public class AccountVmsStructureServiceImpl implements
 		if (accounts != null) {
 
 			for (Account account : accounts) {
-				List<SystemSettings> systems = account.getSystemSettings();
+				List<SystemSettings> systems = findSystemsByAccount(account);
 				for (SystemSettings currSystem : systems) {
 					Client client = new Client(currSystem);
 					AccountVmsStructure currAccountVmsStructure = getAccountVmsStrucure(
@@ -132,9 +128,9 @@ public class AccountVmsStructureServiceImpl implements
 		return accountVmsStructure;
 	}
 
-	private boolean isNotImpersonatedAdmin(User user) {
+	private boolean isNotImpersonatedAdmin() {
 		boolean res = false;
-		if (user.getPermission().equals("ADMIN") && user.getAccount() == null) {
+		if (getCurrentUser().getUser().getPermission().equals("ADMIN") && getCurrentUser().getAccount() == null) {
 			res = true;
 		}
 		return res;
@@ -175,7 +171,7 @@ public class AccountVmsStructureServiceImpl implements
 	}
 
 	private Map<String, Account> getVmToAccountMap() {
-		List<VmOwnership> vmOwnerships = vmOwnershipService.findAll();
+		List<VmOwnership> vmOwnerships = findAllVms();
 		Map<String, Account> vmToAccountMap = new HashMap<String, Account>();
 		for (VmOwnership vmOwnership : vmOwnerships) {
 			vmToAccountMap.put(vmOwnership.getVmId(), vmOwnership.getAccount());
@@ -316,7 +312,7 @@ public class AccountVmsStructureServiceImpl implements
 	}
 
 	private Map<String, VmOwnership> getVmsMap(Account account) {
-		List<VmOwnership> vms = account.getVms();
+		List<VmOwnership> vms = findVmsByAccount(account);
 		Map<String, VmOwnership> vmsMap = vms.stream().collect(
 				Collectors.toMap(VmOwnership::getVmId, (p) -> p));
 		return vmsMap;
