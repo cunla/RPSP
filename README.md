@@ -36,8 +36,9 @@ All operations are done through RP4VM REST API.
     mvn install:install-file -Dfile=fapi-client-4.3.jar -DgroupId=com.emc -DartifactId=fapi-client -Dversion=4.3 -Dpackaging=jar
  3. Set database assosiation:
     RPSP comes out of the box using H2 embedded file system database so it does not require any settings changed.
-    However, if you like to work with other database, you can change the configuration under resources/config/application.yml
-    You can see example of MySQL connection under resource/config/application-dev.yml
+    However, if you like to work with other database, you can change the configuration under src/main/resources/config/application.yml
+    You can see example of MySQL connection under src/main/resources/config/application-dev.yml.
+    Notice the drivers that are bundled are for mysql and H2 - add to pom.xml drivers if needed.
         
  3. Compile and package RPSP using maven, using command:  `mvn package` 
  4. Run Application class from the WAR file using the command `java -jar rpsp.war`
@@ -45,6 +46,21 @@ All operations are done through RP4VM REST API.
 
 ####INSTALLATION AS WINDOWS SERVICE
 It is recommended to configure RPSP to run as a Windows Service as explained in this guide: https://nssm.cc/usage
+
+###Getting started
+After running the app make sure that accessing the port brings a login screen.
+The initial account/user/password to work with are: system/admin/123.
+
+In order to add your first RP system and its relevant data, a support REST API was created
+`GET rpsp/data-loader/internal-data/template`
+There is a template for an array of RP system configurations.
+Each RP system as its clusters and its accounts.
+Each account has a list of all its virtual machines registered as their vSphere ID
+* You can get the vmId from vSphere client or from fapi full system settings using `https://{RPSYSTEM IP}:7225/fapi/rest/4_3/settings`
+Other than that, each account should have a list of users to do operations,
+and a configuration for default protection ESX and datastore.
+
+
 
 ##USER OPERATIONS
 To access RPSP either AngularJS client or the REST API can be used
@@ -115,7 +131,7 @@ The following methods are supported in the RPSP RESP API, with base being http:/
 	   }
 	 
 	 
-	 - `POST /groups-sets/{group-set-id}/bookmarks` - Creates a bookmark for the specific 	group set. Name of the bookamrk and its consistency type are passed in HTTP body.
+	- `POST /groups-sets/{group-set-id}/bookmarks` - Creates a bookmark for the specific 	group set. Name of the bookamrk and its consistency type are passed in HTTP body.
     
 	   {
 			"name": "Bookmark_B",
@@ -133,11 +149,7 @@ The following methods are supported in the RPSP RESP API, with base being http:/
 		"sequenceNumber": 3
 	   }
    
-   
-   
    - `DELETE /groups/{groupId}/vms/{vm-id}` - Removes VM that is identified by {vm-id} from group that is 	identified by {groupId}.
-
-   
     
 
 
