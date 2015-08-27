@@ -143,28 +143,21 @@ The following methods are supported in the RPSP RESP API, with base being http:/
         Body example: `username=user@account&password=xxxx`
     - `POST /logout-action` Logout
     - `GET /account-vms` - Full VMs hierarchy data restricted by logged in user and his related account info  (protected\unprotected\cg etc)
-   
-    
     - `PUT /groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/enable-latest` 	- Enable image access to latest image
-    
     - `PUT /groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/enable` -  	Enable image access to specific bookmark or specific snapshot that is identified by the 	following properties in HTTP body:
     
 	   `{
 			"snapshotId": 86726505317,
 			"timestamp": 1439908537855236
 	   }`
-
-
+	   
     - `PUT /groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/disable` - 	Disables the image image access to specific copy
-    
-    
     - `POST /groups/{groupId}/bookmarks` - Creates a bookmark for the specific group. Name of 	the bookamrk and its consistency type are passed in HTTP body.
     
 	   `{
 			"name": "Bookmark_A",
 			"consistencyType": "app-consistency"
 	   }`
-	 
 	 
 	- `POST /groups-sets/{group-set-id}/bookmarks` - Creates a bookmark for the specific 	group set. Name of the bookamrk and its consistency type are passed in HTTP body.
     
@@ -173,11 +166,9 @@ The following methods are supported in the RPSP RESP API, with base being http:/
 			"consistencyType":"crash-consistency"
 	   }`
    
-   
 	- `POST /groups/{groupId}/vms` - Adds VM to the specific consistency group that is 	identified by {groupId}.
 	The following values are passed in the HTTP body - the id of the VM, its order in the 	boot sequence (sequenceNumber) and if it is critical or not. 
 
-    
 	   `{
 		"id": "5005e38f-efe0-5e16-f1bc-eac6ba19f503",
 		"isCritical": true,
@@ -186,8 +177,6 @@ The following methods are supported in the RPSP RESP API, with base being http:/
    
    - `DELETE /groups/{groupId}/vms/{vm-id}` - Removes VM that is identified by {vm-id} from group that is 	identified by {groupId}.
     
-
-
 ###CONTRIBUTION INSTRUCTIONS
 Create a fork of the project into your own repository. 
 Make all your necessary changes and create a pull request with a description on what was added or removed and details explaining the changes in lines of code. If approved, project owners will merge it.
