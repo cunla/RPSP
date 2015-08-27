@@ -113,6 +113,10 @@ The following methods are supported in the RPSP RESP API, with base being http:/
      - `GET /users?accountId =”your-account-id”` Get users related to specific account 
      - `GET /users/{id}` Get specific user 
      - `POST /users?accountId =”your-account-id”` Create user under specific account 
+        `{
+            "vmId": "50050edd-9ab2-c72b-f82f-9a0ef42e9774",
+            "vmName": "SB Reporting services VM"
+         }`
      - `POST /users/{id}` Update specific user 
      - `DELETE /users/{id}` Delete specific user 
 
