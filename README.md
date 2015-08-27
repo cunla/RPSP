@@ -83,13 +83,16 @@ The following methods are supported in the RPSP RESP API, with base being http:/
      - `GET /rest/systems/{id}` Get specific RP4VM system
      - `GET /rest/testSystem/{id}` Test connectivity to system with specific ID
      - `POST /rest/addSystem` Add RP4VM system with JSON structure
+         
            `{
      			"ip": "10.10.10.10",
      			"user": "admin",
      			"password": "password"
      	   }`
+     	   
         The return value is all the systems with connectivity status and list of clusters found in the RP4VM system.        
      - `PUT /rest/updateClusterForSystem/{id}` Update cluster settings under specific system (id)
+        
         `{
             "country":"Country Cluster reside in, for logical purposes",
             "clusterId":"The cluster to update",
