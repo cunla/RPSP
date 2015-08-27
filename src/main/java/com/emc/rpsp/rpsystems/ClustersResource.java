@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -22,6 +23,7 @@ import javax.transaction.Transactional;
 
     @PersistenceContext private EntityManager em;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/rest/updateClusterForSystem/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ResponseEntity<ClusterSettings> updateClusterForSystem(@PathVariable("id") Long id,

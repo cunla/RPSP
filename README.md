@@ -78,7 +78,7 @@ RPSP UI provides the following functionality:
 ###RPSP REST API
 The following methods are supported in the RPSP RESP API, with base being http://*hostname*:*port*/rpsp
 
-1. RP systems API
+1. RP systems API *(admin permissions only)*
      - `GET /rest/systems` Get list of all RP4VM systems installed
      - `GET /rest/systems/{id}` Get specific RP4VM system
      - `GET /rest/testSystem/{id}` Test connectivity to system with specific ID
