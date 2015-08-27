@@ -107,6 +107,15 @@ The following methods are supported in the RPSP RESP API, with base being http:/
 	 - `POST /accounts?systemId=”your-system-id”` Create account under specific system 
 	 - `POST /accounts/{id}` Update specific account 
 	 - `DELETE /accounts/{id}` Delete specific account 
+	 - `POST /account-configs?accountId =”your-account-id”` Add account config to account
+       
+       `{
+                               "clusterId": "32265119157574180",
+                               "vcId": "0864BD09-AF20-47BA-976C-8AE3F05C5689",
+                               "esxId": "4210af6f-4274-3e81-ecbf-65dbaedead42",
+                               "datastoreId": "datastore-63",
+                               "testNetworkId": "testNetworkId"
+       }`
 	
 3.  Users API *(admin permissions only)*
      - `GET /users` Get all users 
