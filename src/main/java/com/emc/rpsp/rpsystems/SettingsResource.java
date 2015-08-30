@@ -1,6 +1,7 @@
 package com.emc.rpsp.rpsystems;
 
 import com.emc.rpsp.RpspException;
+import com.emc.rpsp.config.auditing.Billable;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 import org.apache.commons.httpclient.protocol.InetAddressUtils;
@@ -25,6 +26,7 @@ import java.util.Optional;
 
     @Inject private SystemConnectionInfoRepository systemConnectionInfoRepository;
 
+    @Billable
     @RequestMapping(value = "/rest/systems", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SystemSettings>> findSystems() {
         List<SystemSettings> systemsSettings = systemConnectionInfoRepository.findAll();
