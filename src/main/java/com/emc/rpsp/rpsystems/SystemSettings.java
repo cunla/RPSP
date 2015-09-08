@@ -23,6 +23,7 @@ public class SystemSettings {
     private static final String ENCRYPT_KEY1 = "Bar12345Bar12345";
     private static final String ENCRYPT_KEY2 = "ThisIsASecretKey";
     @Id @GeneratedValue(strategy = GenerationType.AUTO) private Long id;
+
     @JsonProperty("ip") @Column private String systemIp;
     @Column private String user;
     @Column

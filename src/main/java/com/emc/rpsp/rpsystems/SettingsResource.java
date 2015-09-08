@@ -1,6 +1,7 @@
 package com.emc.rpsp.rpsystems;
 
 import com.emc.rpsp.RpspException;
+import com.emc.rpsp.config.auditing.Billable;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 import org.apache.commons.httpclient.protocol.InetAddressUtils;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -24,12 +26,14 @@ import java.util.Optional;
 
     @Inject private SystemConnectionInfoRepository systemConnectionInfoRepository;
 
+    @Billable
     @RequestMapping(value = "/rest/systems", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SystemSettings>> findSystems() {
         List<SystemSettings> systemsSettings = systemConnectionInfoRepository.findAll();
         return new ResponseEntity<>(systemsSettings, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/rest/systems/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SystemSettings> findSystem(@PathVariable("id") Long id) {
         log.debug("Testing systemSettings with id {}", id);
@@ -37,6 +41,7 @@ import java.util.Optional;
         return new ResponseEntity<>(systemSettings, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/rest/testSystem/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SystemSettings>> testSystem(@PathVariable("id") Long id) {
         log.debug("Testing systemSettings with id {}", id);
@@ -49,6 +54,7 @@ import java.util.Optional;
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/rest/addSystem", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SystemSettings>> addNewSystem(
     @RequestBody SystemSettings systemSettings) {
