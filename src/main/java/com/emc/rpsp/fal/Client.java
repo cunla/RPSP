@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.http.Body;
+import retrofit.http.PUT;
+import retrofit.http.Path;
 
 import com.emc.fapi.jaxws.v4_3.BookmarkConsolidationPolicy;
 import com.emc.fapi.jaxws.v4_3.ClusterInfo;
@@ -20,12 +22,16 @@ import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettings;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettingsSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyUID;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkPolicy;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkSettings;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkUID;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetSubset;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetUID;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSettings;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSnapshots;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStatisticsSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupTopologyParams;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupUID;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupVolumesStateSet;
 import com.emc.fapi.jaxws.v4_3.CreateBookmarkForGroupSetSubSetParams;
@@ -411,6 +417,50 @@ public class Client {
    		ConsistencyGroupStatisticsSet consistencyGroupStatisticsSet = connector.getGroupStatistics();
    		return consistencyGroupStatisticsSet;
    	}
+   	
+   	
+   	public void failOver(Long clusterId, Long groupId, int copyId) {
+   		
+   		ConsistencyGroupCopySettingsSet consistencyGroupCopySettingsSet = connector.getAllGroupCopies(groupId); 
+   		ConsistencyGroupLinkPolicy localDefaultLinkPolicy = connector.getDefaultLocalGroupLinkPolicy();
+   		ConsistencyGroupLinkPolicy remoteDefaultLinkPolicy = connector.getDefaultRemoteGroupLinkPolicy();
+   		GlobalCopyUID globalCopyUIDParam = new GlobalCopyUID(new ClusterUID(clusterId), copyId);
+   		
+   		List<ConsistencyGroupCopySettings> consistencyGroupCopySettingsList = consistencyGroupCopySettingsSet.getInnerSet();
+   		ConsistencyGroupTopologyParams consistencyGroupTopologyParams = new ConsistencyGroupTopologyParams();
+    	for(ConsistencyGroupCopySettings currConsistencyGroupCopySettings : consistencyGroupCopySettingsList){
+    		GlobalCopyUID currGlobalCopy = currConsistencyGroupCopySettings.getCopyUID().getGlobalCopyUID();
+    		//it is not the the failover target copy
+    		if(!currGlobalCopy.equals(globalCopyUIDParam) 
+    				//it is not the current(!) production copy for which the link is created automatically
+    				&& currConsistencyGroupCopySettings.getRoleInfo().getSourceCopyUID() != null){
+    			ConsistencyGroupLinkSettings consistencyGroupLinkSettings = new ConsistencyGroupLinkSettings();
+    			ConsistencyGroupLinkUID consistencyGroupLinkUID = new ConsistencyGroupLinkUID();
+    			consistencyGroupLinkUID.setGroupUID(new ConsistencyGroupUID(groupId));
+    			consistencyGroupLinkUID.setFirstCopy(globalCopyUIDParam);
+    			consistencyGroupLinkUID.setSecondCopy(currGlobalCopy);
+    			consistencyGroupLinkSettings.setGroupLinkUID(consistencyGroupLinkUID);
+    			//local link for new production
+    			if(currGlobalCopy.getClusterUID().equals(globalCopyUIDParam.getClusterUID())){
+    				consistencyGroupLinkSettings.setLinkPolicy(localDefaultLinkPolicy);
+    			}
+    			else{
+    				consistencyGroupLinkSettings.setLinkPolicy(remoteDefaultLinkPolicy);
+    			}
+    			consistencyGroupTopologyParams.getLinksToAdd().add(consistencyGroupLinkSettings);
+    		}
+    	}
+    	
+   		if(consistencyGroupTopologyParams.getLinksToAdd() !=null && !consistencyGroupTopologyParams.getLinksToAdd().isEmpty()){
+	   		connector.failOver(clusterId, groupId, copyId, false); 		
+	   		connector.setConsistencyGroupTopology(clusterId, groupId, copyId, consistencyGroupTopologyParams);
+   		}
+   		else{
+   			connector.failOver(clusterId, groupId, copyId, true);
+   		}
+   		
+    }
+   	
    	
    	
     private VmReplicationSetSettings getVmReplicationSettingsWithRetryOption(String vmId, int retryAttempts){

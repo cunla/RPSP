@@ -17,7 +17,9 @@
     	<script src="app/image-access/image-access-controller.js"></script>
     	<script src="app/protect/protect-controller.js"></script>  
     	<script src="app/unprotect/unprotect-controller.js"></script>
-    	<script src="app/bookmarks/bookmarks-controller.js"></script> 
+    	<script src="app/bookmarks/bookmarks-controller.js"></script>
+    	<script src="app/failover/failover-controller.js"></script> 
+    	<script src="app/failover/failover-alert-controller.js"></script>
     	<script src="app/home/dnd-directives.js"></script>      	 	
     	<script src="app/locale/locale-service.js"></script>
     	
@@ -87,7 +89,7 @@
 			
  		<div class="col-xs-12 col-sm-12 col-md-12 container top-border div-solid-grey">
 			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}" ng-click="openImageAccessModal()">{{'HOME.DR_TEST_MSG' | translate}}</button>
-			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}">{{'HOME.FAILOVER_MSG' | translate}}</button>
+			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}" ng-click="openFailoverModal()">{{'HOME.FAILOVER_MSG' | translate}}</button>
 			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}">{{'HOME.RESTORE_PRODUCTION_MSG' | translate}}</button>
 			  <white-space>     </white-space>
 			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}">{{'HOME.EDIT_MSG' | translate}}</button>

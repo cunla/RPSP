@@ -18,7 +18,7 @@ app.controller('homeController', ['$scope', '$http', 'userService', function($sc
 }])
 
 
-app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translate', '$filter', 'vmStructureService', function ($scope, $http, $modal, $translate, $filter, vmStructureService) {	
+app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translate', '$filter', '$timeout', 'vmStructureService', function ($scope, $http, $modal, $translate, $filter, $timeout, vmStructureService) {	
 	
 	$scope.vmStructureData = {};
 	$scope.vmGsAndCgFlatData = {};
@@ -104,6 +104,29 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 		
 		modalInstance.result.then(function(){{}});
 	};
+	
+	
+	$scope.openFailoverModal = function(){
+		var modalInstance = $modal.open({
+             templateUrl: 'app/failover/failover-modal.html',
+             controller: 'failoverController',
+             windowClass: 'image-access-modal'
+         });
+		
+		modalInstance.result.then(function(result){
+			/*$timeout($scope.refreshMainScreen, 3000);*/ 
+			
+		});
+	};
+	
+	
+	$scope.refreshMainScreen = function(){
+		vmStructureService.getVmStructureData();
+		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
+    	$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
+    	$scope.totalVms = vmStructureService.getCachedTotalVms();
+    	$scope.protectedVms = vmStructureService.getCachedProtectedVms();
+    };
 	
 	
     

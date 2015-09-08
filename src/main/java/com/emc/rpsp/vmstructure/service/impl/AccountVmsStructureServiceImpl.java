@@ -190,8 +190,8 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 
 		Map<String, VmOwnership> vmsMap = getVmsMap(account);
 		Map<Long, String> clusterNames = client.getClusterNames();
-		/*Map<Long, Map<String, String>> vmNamesAllClusters = client
-				.getVmNamesAllClusters();*/
+		Map<Long, Map<String, String>> vmNamesAllClusters = client
+				.getVmNamesAllClusters();
 
 		List<ConsistencyGroupSetSettings> groupSetsSettings = rpSettings
 				.getGroupsSetsSettings();
@@ -245,14 +245,17 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 						clusterName = currSystem.getNameToClusterMap()
 								.get(clusterName).getFriendlyName();
 					}
-					//String vmName = vmNamesAllClusters.get(clusterId).get(vmId);
+					String vmName = vmNamesAllClusters.get(clusterId).get(vmId);
 					List<ConsistencyGroupCopyUID> production = groupSettings
 							.getProductionCopiesUID();
 					// this vm belongs to production
 					if (production.contains(copyId)) {
 						// process vm only if it belongs to account
-						if (vmsMap.get(vmId) != null) {							
-							VmDefinition currVm = new VmDefinition(vmId, vmsMap.get(vmId).getVmName());
+						if (vmsMap.get(vmId) != null) {		
+							if(StringUtils.isEmpty(vmName)){
+								vmName = vmsMap.get(vmId).getVmName();
+							}
+							VmDefinition currVm = new VmDefinition(vmId, vmName);
 							currVm.setCritical(vmReplicationSet.getVmReplicationSetPolicy().isCritical());
 							currVm.setSequenceNumber(vmReplicationSet.getVmReplicationSetPolicy().getPowerUpSequenceNumber());
 							vmsList.add(currVm);
@@ -414,8 +417,11 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 					groupCopySettings.setImageAccess(ImageAccess.DISABLED
 							.value());
 				}
-				groupCopySettings.setReplication(transferStatesMap
-						.get(currGroupCopySettings.getCopyUID()));
+				String replication = transferStatesMap.get(currGroupCopySettings.getCopyUID());
+				if(StringUtils.isEmpty(replication)){
+					replication = PipeState.UNKNOWN.value();
+				}
+				groupCopySettings.setReplication(replication);
 				groupCopySettings.setInitCompletionPortion(initCompletionPortionsMap.
 						  get(currGroupCopySettings.getCopyUID()));
 				
@@ -449,16 +455,27 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 				.getInnerSet();
 
 		for (ConsistencyGroupState currGroupState : groupsStates) {
+			
+			List<ConsistencyGroupCopyUID> productionCopies = currGroupState.getSourceCopiesUIDs();
 
 			List<ConsistencyGroupLinkState> linksStates = currGroupState
 					.getLinksState();
 			for (ConsistencyGroupLinkState consistencyGroupLinkState : linksStates) {
 				ConsistencyGroupUID consistencyGroupUID = consistencyGroupLinkState
 						.getGroupLinkUID().getGroupUID();
-				GlobalCopyUID globalCopyUID = consistencyGroupLinkState
-						.getGroupLinkUID().getFirstCopy();
+				GlobalCopyUID firstCopyUID = consistencyGroupLinkState
+						.getGroupLinkUID().getFirstCopy();				
+				GlobalCopyUID secondCopyUID = consistencyGroupLinkState
+						.getGroupLinkUID().getSecondCopy();
+				
 				ConsistencyGroupCopyUID consistencyGroupCopyUID = new ConsistencyGroupCopyUID(
-						consistencyGroupUID, globalCopyUID);
+						consistencyGroupUID, firstCopyUID);
+				
+				if(productionCopies.contains(consistencyGroupCopyUID)){
+					consistencyGroupCopyUID = new ConsistencyGroupCopyUID(
+							consistencyGroupUID, secondCopyUID);
+				}
+				
 				PipeState pipeState = consistencyGroupLinkState.getPipeState();
 				switch (pipeState) {
 				case INITIALIZING:

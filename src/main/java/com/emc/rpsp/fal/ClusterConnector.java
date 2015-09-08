@@ -11,9 +11,11 @@ import retrofit.http.Query;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettingsSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkPolicy;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSnapshots;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStatisticsSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupTopologyParams;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupUIDSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupVolumesStateSet;
 import com.emc.fapi.jaxws.v4_3.CreateBookmarkForGroupSetSubSetParams;
@@ -116,6 +118,30 @@ public interface ClusterConnector {
 	
 	@PUT(BASE_URL + "groups/{groupId}/virtual_machines/powerup_sequence")
 	public Response changeVmsPowerUpSequence(@Path("groupId") long groupId, @Body VmPowerUpSequenceParamSet vmPowerUpSequenceParamSet);
+	
+	
+	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/failover")
+	public Response failOver(@Path("clusterId") long clusterId, @Path("groupId") long groupId,
+			@Path("copyId") int copyId, @Query("startTransfer") boolean startTransfer);
+	
+	
+	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/set_production_copy?startTransfer=true")
+	public Response setProductionCopy(@Path("clusterId") long clusterId, @Path("groupId") long groupId,
+			@Path("copyId") int copyId);
+	
+	
+	@GET(BASE_URL + "settings/defaults/group_link_policy/local")
+	public ConsistencyGroupLinkPolicy getDefaultLocalGroupLinkPolicy();
+	
+	
+	@GET(BASE_URL + "settings/defaults/group_link_policy/remote")
+	public ConsistencyGroupLinkPolicy getDefaultRemoteGroupLinkPolicy();
+	
+	
+	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/topology?startTransfer=true")
+	public ConsistencyGroupLinkPolicy setConsistencyGroupTopology(@Path("clusterId") long clusterId, @Path("groupId") long groupId,
+			@Path("copyId") int copyId, @Body ConsistencyGroupTopologyParams consistencyGroupTopologyParams);
+	
 	
 	
 
