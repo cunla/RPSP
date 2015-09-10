@@ -37,12 +37,28 @@
                         "vmName": "SB Reporting services VM"
                     },
                     {
+                        "vmId": "50053a4b-d2f8-6973-5624-b7df6d1411d0",
+                        "vmName": "vm-5"
+                    },
+                    {
+                        "vmId": "8c981180-829c-64a0-2aef-23d0b4bc12c5",
+                        "vmName": "vm-5.copy.1"
+                    },
+                    {
+                        "vmId": "2df79e28-0ab0-54d0-97f1-cbcf26b4208d",
+                        "vmName": "vm-1.copy"
+                    },
+                    {
                         "vmId": "50051318-4539-1b42-2569-f54a3dcce167",
-                        "vmName": "vm-1"
+                        "vmName": ".vm-1.recoverpoint"
                     },
                     {
                         "vmId": "50050e27-b48c-7af2-a830-61838fc8e019",
                         "vmName": "vm-2"
+                    },
+                    {
+                        "vmId": "effd71ab-2b83-88f2-7804-573879a0439e",
+                        "vmName": ".vm-2.copy.recoverpoint"
                     }
                     
                 ],

@@ -229,69 +229,76 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 			List<VmDefinition> vmsList = new LinkedList<VmDefinition>();
 			consistencyGroup.setVms(vmsList);
 
-			for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {
-				List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
-						.getReplicatedVMs();
-
-				for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
-					
-					String vmId = vmReplication.getVmUID().getUuid();
-					ConsistencyGroupCopyUID copyId = vmReplication
-							.getGroupCopyUID();
-					Long clusterId = copyId.getGlobalCopyUID().getClusterUID()
-							.getId();
-					String clusterName = clusterNames.get(clusterId);
-					if (currSystem.getNameToClusterMap().get(clusterName) != null) {
-						clusterName = currSystem.getNameToClusterMap()
-								.get(clusterName).getFriendlyName();
-					}
-					String vmName = vmNamesAllClusters.get(clusterId).get(vmId);
-					List<ConsistencyGroupCopyUID> production = groupSettings
-							.getProductionCopiesUID();
-					// this vm belongs to production
-					if (production.contains(copyId)) {
-						// process vm only if it belongs to account
-						if (vmsMap.get(vmId) != null) {		
-							if(StringUtils.isEmpty(vmName)){
-								vmName = vmsMap.get(vmId).getVmName();
+			for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {				
+				
+				String originalProductionVm = locateViewRelatedVm(vmReplicationSet, vmsMap);
+				
+				if(originalProductionVm != null){
+				
+					List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
+							.getReplicatedVMs();
+	
+					for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
+						
+						String vmId = vmReplication.getVmUID().getUuid();
+						ConsistencyGroupCopyUID copyId = vmReplication
+								.getGroupCopyUID();
+						Long clusterId = copyId.getGlobalCopyUID().getClusterUID()
+								.getId();
+						String clusterName = clusterNames.get(clusterId);
+						if (currSystem.getNameToClusterMap().get(clusterName) != null) {
+							clusterName = currSystem.getNameToClusterMap()
+									.get(clusterName).getFriendlyName();
+						}
+						String vmName = vmNamesAllClusters.get(clusterId).get(vmId);
+						List<ConsistencyGroupCopyUID> production = groupSettings
+								.getProductionCopiesUID();
+						// this vm belongs to production
+						if (production.contains(copyId)) {
+							// process vm only if it belongs to account
+							//if (vmsMap.get(vmId) != null) {		
+								if(StringUtils.isEmpty(vmName)){
+									vmName = vmsMap.get(vmId).getVmName();
+								}
+								VmDefinition currVm = new VmDefinition(vmId, vmName);
+								currVm.setCritical(vmReplicationSet.getVmReplicationSetPolicy().isCritical());
+								currVm.setSequenceNumber(vmReplicationSet.getVmReplicationSetPolicy().getPowerUpSequenceNumber());
+								vmsList.add(currVm);
+								productionCluster = new ClusterDefinition(
+										clusterId.toString(), clusterName);
+								consistencyGroup
+										.setProductionCluster(productionCluster);
+								// remove from unprotected candidates
+								vmsMap.remove(originalProductionVm);
+							//}
+						}
+						// this vm belongs to replica
+						else {
+							ClusterDefinition replicaCluster = null;
+							if (handledCustersMap.get(clusterId.toString()) != null) {
+								replicaCluster = handledCustersMap.get(clusterId
+										.toString());
+							} else {
+								replicaCluster = new ClusterDefinition(
+										clusterId.toString(), clusterName);
+								handledCustersMap.put(clusterId.toString(),
+										replicaCluster);
+								replicaClusters.add(replicaCluster);
 							}
-							VmDefinition currVm = new VmDefinition(vmId, vmName);
-							currVm.setCritical(vmReplicationSet.getVmReplicationSetPolicy().isCritical());
-							currVm.setSequenceNumber(vmReplicationSet.getVmReplicationSetPolicy().getPowerUpSequenceNumber());
-							vmsList.add(currVm);
-							productionCluster = new ClusterDefinition(
-									clusterId.toString(), clusterName);
-							consistencyGroup
-									.setProductionCluster(productionCluster);
-							// remove from unprotected candidates
-							vmsMap.remove(vmId);
+							GroupCopySettings groupCopySettings = getGroupCopySettings(
+									copyId, groupSettings, transferStatesMap,
+									copySnapshotsMap, copiesStatesMap, initCompletionPortionsMap);
+							// add the copy in case it wasn't added in context of
+							// another vm
+							if (!replicaCluster.isExistingCopy(groupCopySettings)) {
+								replicaCluster.addGroupCopy(groupCopySettings);
+							}
+	
 						}
+	
 					}
-					// this vm belongs to replica
-					else {
-						ClusterDefinition replicaCluster = null;
-						if (handledCustersMap.get(clusterId.toString()) != null) {
-							replicaCluster = handledCustersMap.get(clusterId
-									.toString());
-						} else {
-							replicaCluster = new ClusterDefinition(
-									clusterId.toString(), clusterName);
-							handledCustersMap.put(clusterId.toString(),
-									replicaCluster);
-							replicaClusters.add(replicaCluster);
-						}
-						GroupCopySettings groupCopySettings = getGroupCopySettings(
-								copyId, groupSettings, transferStatesMap,
-								copySnapshotsMap, copiesStatesMap, initCompletionPortionsMap);
-						// add the copy in case it wasn't added in context of
-						// another vm
-						if (!replicaCluster.isExistingCopy(groupCopySettings)) {
-							replicaCluster.addGroupCopy(groupCopySettings);
-						}
-
-					}
-
-				}
+					
+			}
 
 			}
 
@@ -667,6 +674,22 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 			}
 		}
 		return completionPortionsMap;
+	}
+	
+	
+	private String locateViewRelatedVm(VmReplicationSetSettings vmReplicationSet, Map<String, VmOwnership> vmsMap){
+		String res = null;		
+		List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
+				.getReplicatedVMs();
+
+		for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {			
+			String vmId = vmReplication.getVmUID().getUuid();
+			if(vmsMap.get(vmId) != null){
+				res = vmId;
+				break;
+			}
+		}		
+		return res;
 	}
 
 }
