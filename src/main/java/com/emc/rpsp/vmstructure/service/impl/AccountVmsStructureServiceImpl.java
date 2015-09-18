@@ -66,11 +66,6 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 		AccountVmsStructureService {
 
 
-	/*@Autowired
-	private AccountService accountService = null;
-
-	@Autowired
-	private VmOwnershipService vmOwnershipService = null;*/
 
 	@Override
 	public AccountVmsStructure getAccountVmsStrucure() {
