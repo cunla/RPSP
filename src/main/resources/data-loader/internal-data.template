@@ -2,10 +2,10 @@
     {
         "user": "admin",
         "password": "admin",
-        "ip": "10.64.125.221",
+        "ip": "10.64.125.51",
         "clusterFriendlyNames": {
-            "RPcluster01": "New York",
-            "RPCluster03": "London"
+            "dc01-cl01-attempt2": "New York",
+            "dc02-cl02-attempt2": "London"
         },
         "accounts": [
             {
@@ -13,36 +13,28 @@
                 "label": "Springfield bank",
                 "vms": [
                     {
-                        "vmId": "50051720-7b01-0252-6095-28594a6c8e0a",
+                        "vmId": "5027a28d-766b-4655-ef7a-ba5de4ec31ac",
                         "vmName": "Activity Tracing VM"
                     },
                     {
-                        "vmId": "50054c5e-c6a0-f6fc-eadb-d9941f3c85d7",
+                        "vmId": "5027e8d3-db84-dc19-742d-475a25449d08",
                         "vmName": "Almog SW VM"
                     },
                     {
-                        "vmId": "5005e38f-efe0-5e16-f1bc-eac6ba19f503",
+                        "vmId": "50279297-c28d-c40f-e32d-95420a8bb48c",
                         "vmName": "Legacy accounts VM"
                     },
                     {
-                        "vmId": "5005ef8b-730d-d1f9-329d-4bcf3b6c4157",
+                        "vmId": "50279a15-4aaa-313c-b14f-b10ba7d439c4",
                         "vmName": "SB Internet Access VM"
                     },
                     {
-                        "vmId": "50052fe9-a2f4-4325-9bf8-5c66c5f05467",
+                        "vmId": "50274795-4119-3996-da06-4863d68867ed",
                         "vmName": "Priority ERP VM"
                     },
                     {
-                        "vmId": "50050edd-9ab2-c72b-f82f-9a0ef42e9774",
+                        "vmId": "50277a42-e58f-13ae-fdc8-56b2a484f786",
                         "vmName": "SB Reporting services VM"
-                    },
-                    {
-                        "vmId": "50051318-4539-1b42-2569-f54a3dcce167",
-                        "vmName": "vm-1"
-                    },
-                    {
-                        "vmId": "50050e27-b48c-7af2-a830-61838fc8e019",
-                        "vmName": "vm-2"
                     }
                     
                 ],
@@ -56,17 +48,17 @@
                 ],
                 "accountConfigs": [
                     {
-                        "clusterId": "56896342079691554",
-                        "vcId": "0864BD09-AF20-47BA-976C-8AE3F05C5689",
-                        "esxId": "421068dd-9304-41a0-0c22-b40fa291bb27",
-                        "datastoreId": "datastore-62",
+                        "clusterId": "2874344872902112950",
+                        "vcId": "D10EFCEB-6F69-44D4-AE67-09A573241EA1",
+                        "esxId": "42103de0-2eda-985e-bb28-4a99617cd940",
+                        "datastoreId": "datastore-46",
                         "testNetworkId": "testNetworkId"
                     },
                     {
-                        "clusterId": "32265119157574180",
-                        "vcId": "0864BD09-AF20-47BA-976C-8AE3F05C5689",
-                        "esxId": "4210af6f-4274-3e81-ecbf-65dbaedead42",
-                        "datastoreId": "datastore-63",
+                        "clusterId": "1948638374096422771",
+                        "vcId": "D0939A9B-0846-4699-AAD3-2EBE04421FCE",
+                        "esxId": "4210b625-9ed7-9a37-9c50-76caee8efa96",
+                        "datastoreId": "datastore-47",
                         "testNetworkId": "testNetworkId"
                     }
                 ]
