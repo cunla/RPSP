@@ -463,6 +463,12 @@ public class Client {
    	
    	
    	
+   	public void recoverProduction(Long clusterId, Long groupId, int copyId) {
+   		connector.recoverProduction(clusterId, groupId, copyId, true);
+   	}
+   	
+   	
+   	
     private VmReplicationSetSettings getVmReplicationSettingsWithRetryOption(String vmId, int retryAttempts){
     	Map<String, VmReplicationSetSettings> vmToReplicationSetMap = getVmToReplicationSetSettingsMap();
     	VmReplicationSetSettings vmReplicationSetSettings = vmToReplicationSetMap.get(vmId);
@@ -581,5 +587,9 @@ public class Client {
 						Collectors.toMap(AccountConfig::getClusterId, (p) -> p));
 		return accountConfigsMap;
 	}
+    
+    
+    
+    
 
 }

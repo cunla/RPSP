@@ -143,6 +143,11 @@ public interface ClusterConnector {
 			@Path("copyId") int copyId, @Body ConsistencyGroupTopologyParams consistencyGroupTopologyParams);
 	
 	
+	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/recover_production")
+	public Response recoverProduction(@Path("clusterId") long clusterId, @Path("groupId") long groupId,
+			@Path("copyId") int copyId, @Query("startTransfer") boolean startTransfer);
+	
+	
 	
 
 
