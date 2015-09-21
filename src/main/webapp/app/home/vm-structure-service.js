@@ -204,17 +204,19 @@ app.service('vmStructureService', ['$http', function ($http) {
     
     
     
-    /*this.activateFailover = function(selectedCopy){
+    this.recoverProduction = function(selectedCopy){
     	var currCg = vmGsAndCgFlatData[protectedSelectedIndex];
     	var cgId = currCg.id;
     	var replicaClusterId = selectedCopy.clusterId;
     	var copyId = selectedCopy.id;
-    	var url = '/rpsp/groups/' + cgId + '/clusters/' + replicaClusterId + '/copies/' + copyId + '/failover';
+    	var url = '/rpsp/groups/' + cgId + '/clusters/' + replicaClusterId + '/copies/' + copyId + '/recover-production';
     	
-    	 $http.put(url).
-		 success(function(data,status,headers,config){	        
-		 });   			       	
-    }*/
+    	return $http.put(url).then(function(response){
+		    	var status = response.status;
+		        return status;
+		 });  			       	
+    }
+    
     
     
     this.imageAccess = function(selectedCopy, imageAccessType, selectedSnapshot, selectedBookmark){

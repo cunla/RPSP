@@ -120,6 +120,19 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	};
 	
 	
+	$scope.openRecoverModal = function(){
+		var modalInstance = $modal.open({
+             templateUrl: 'app/recover/recover-modal.html',
+             controller: 'recoverController',
+             windowClass: 'image-access-modal'
+         });
+		
+		modalInstance.result.then(function(result){			
+		});
+	};
+	
+	
+	
 	$scope.refreshMainScreen = function(){
 		vmStructureService.getVmStructureData();
 		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
