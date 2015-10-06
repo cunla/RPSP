@@ -26,6 +26,9 @@ public class AccountConfig implements Serializable {
     
     @Column(name = "cluster_id") 
     private Long clusterId;
+    
+    @Column(name = "is_prod_cluster")
+	private Boolean isProductionCluster;
 
     @Size(min = 0, max = 100) 
     @Column(name = "test_network_id", length = 100) 
@@ -40,8 +43,16 @@ public class AccountConfig implements Serializable {
     private String esxId;
     
     @Size(min = 0, max = 100) 
+    @Column(name = "esx_cluster_id", length = 100) 
+    private String esxClusterId;
+    
+    @Size(min = 0, max = 100) 
     @Column(name = "datastore_id", length = 100) 
     private String datastoreId;
+    
+    @Size(min = 0, max = 100) 
+    @Column(name = "dataCenterId", length = 100) 
+    private String dataCenterId;
     
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER) 
@@ -75,7 +86,16 @@ public class AccountConfig implements Serializable {
 	public void setClusterId(Long clusterId) {
 		this.clusterId = clusterId;
 	}
+	
 
+	public Boolean getIsProductionCluster() {
+		return isProductionCluster;
+	}
+
+	
+	public void setIsProductionCluster(Boolean isProductionCluster) {
+		this.isProductionCluster = isProductionCluster;
+	}
 
 	public String getTestNetworkId() {
 		return testNetworkId;
@@ -114,8 +134,24 @@ public class AccountConfig implements Serializable {
 
 	public void setDatastoreId(String datastoreId) {
 		this.datastoreId = datastoreId;
+	}	
+
+
+	public String getEsxClusterId() {
+		return esxClusterId;
 	}
 
+	public void setEsxClusterId(String esxClusterId) {
+		this.esxClusterId = esxClusterId;
+	}
+
+	public String getDataCenterId() {
+		return dataCenterId;
+	}
+
+	public void setDataCenterId(String dataCenterId) {
+		this.dataCenterId = dataCenterId;
+	}
 
 	public Account getAccount() {
 		return account;

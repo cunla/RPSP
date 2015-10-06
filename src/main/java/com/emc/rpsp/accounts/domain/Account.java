@@ -33,6 +33,9 @@ public class Account implements Serializable {
 	@Size(min = 0, max = 100)
 	@Column(name = "label", length = 100)
 	private String label;
+	
+	@Column(name = "is_drttc")
+	private Boolean isDrttc;
 
 	@JsonIgnore
 	@Column
@@ -84,6 +87,14 @@ public class Account implements Serializable {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}	
+
+	public Boolean getIsDrttc() {
+		return isDrttc;
+	}
+
+	public void setIsDrttc(Boolean isDrttc) {
+		this.isDrttc = isDrttc;
 	}
 
 	public List<VmOwnership> getVms() {

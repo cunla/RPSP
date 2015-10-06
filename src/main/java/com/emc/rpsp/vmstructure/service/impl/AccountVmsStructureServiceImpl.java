@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfraConfiguration;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettings;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySnapshots;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyState;
@@ -39,9 +40,12 @@ import com.emc.fapi.jaxws.v4_3.Snapshot;
 import com.emc.fapi.jaxws.v4_3.SnapshotConsistencyType;
 import com.emc.fapi.jaxws.v4_3.SnapshotUID;
 import com.emc.fapi.jaxws.v4_3.StorageAccessState;
+import com.emc.fapi.jaxws.v4_3.VMEntitiesInformation;
+import com.emc.fapi.jaxws.v4_3.VmEntitiesInformationSet;
 import com.emc.fapi.jaxws.v4_3.VmReplicationSetSettings;
 import com.emc.fapi.jaxws.v4_3.VmReplicationSettings;
 import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.accounts.service.AccountService;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.fal.Client;
@@ -228,7 +232,7 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 				
 				String originalProductionVm = locateViewRelatedVm(vmReplicationSet, vmsMap);
 				
-				if(originalProductionVm != null){
+				if(originalProductionVm != null || account.getIsDrttc()){
 				
 					List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
 							.getReplicatedVMs();
@@ -253,7 +257,12 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 							// process vm only if it belongs to account
 							//if (vmsMap.get(vmId) != null) {		
 								if(StringUtils.isEmpty(vmName)){
-									vmName = vmsMap.get(vmId).getVmName();
+									if(vmsMap.get(vmId) != null){
+										vmName = vmsMap.get(vmId).getVmName();
+									}
+									else{
+										vmName = "Unknown";
+									}
 								}
 								VmDefinition currVm = new VmDefinition(vmId, vmName);
 								currVm.setCritical(vmReplicationSet.getVmReplicationSetPolicy().isCritical());
@@ -311,10 +320,63 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 		List<VmContainer> groupSets = getNotEmptyUniqueGroupSets(groupIdToGroupSetMap);
 		accountVmsStructure.getProtectedVms().addAll(groupSets);
 		accountVmsStructure.getProtectedVms().addAll(protectedVms);
-		List<VmDefinition> unprotectedVms = getVmDefinitionsList(vmsMap);
+		List<VmDefinition> unprotectedVms = null;
+		if(!account.getIsDrttc()){
+			unprotectedVms = getVmDefinitionsList(vmsMap);
+		}
+		else{
+			unprotectedVms = getUnprotectedVmsForDrttc(account, client);
+		}
 		accountVmsStructure.setUnprotectedVms(unprotectedVms);
 		return accountVmsStructure;
 	}
+	
+	
+	List<VmDefinition> getUnprotectedVmsForDrttc(Account account, Client client){
+		List<VmDefinition> unprotectedVms = new LinkedList<VmDefinition>();
+		List<AccountConfig> accountconfigs = account.getAccountConfigs();
+		for(AccountConfig currAccountConfig : accountconfigs){
+			if(currAccountConfig.getIsProductionCluster()){
+				
+				VmEntitiesInformationSet vmEntitiesInformationSet = client.
+						getAvailableVMsForReplication(currAccountConfig.getClusterId(), 
+														currAccountConfig.getVcId(), 
+														currAccountConfig.getDataCenterId(), 
+														currAccountConfig.getEsxClusterId());
+				
+				for(VMEntitiesInformation vmEntitiesInformation : vmEntitiesInformationSet.getInnerSet()){
+					VmDefinition vmDefinition = new VmDefinition(vmEntitiesInformation.getVmUID().getUuid(), vmEntitiesInformation.getName());
+					unprotectedVms.add(vmDefinition);					
+				}
+				
+				break;
+			}
+		}
+		return unprotectedVms;
+	}
+	
+	
+/*	List<VmDefinition> getUnprotectedVmsForDrttc(Account account, Client client){
+		List<VmDefinition> unprotectedVms = new LinkedList<VmDefinition>();
+		List<AccountConfig> accountconfigs = account.getAccountConfigs();
+		for(AccountConfig currAccountConfig : accountconfigs){
+			if(currAccountConfig.getIsProductionCluster()){
+				ClusterVirtualInfraConfiguration virtualInfraConfig = client.getClusterVirtualInfraConfiguration(currAccountConfig.getClusterId());
+				VmEntitiesInformationSet vmEntitiesInformationSet = client.getAvailableVMsForReplication(virtualInfraConfig.getClusterUID().getId(), 
+						virtualInfraConfig.getVirtualCentersConfiguration().get(0).getVirtualCenterUID().getUuid(), 
+						virtualInfraConfig.getVirtualCentersConfiguration().get(0).getDatacentersConfiguration().get(0).getDatacenterUID().getUuid(), 
+						virtualInfraConfig.getVirtualCentersConfiguration().get(0).getDatacentersConfiguration().get(0).getEsxClustersConfiguration().get(0).getEsxClusterUID().getUuid());
+				
+				for(VMEntitiesInformation vmEntitiesInformation : vmEntitiesInformationSet.getInnerSet()){
+					VmDefinition vmDefinition = new VmDefinition(vmEntitiesInformation.getVmUID().getUuid(), vmEntitiesInformation.getName());
+					unprotectedVms.add(vmDefinition);					
+				}
+				
+				break;
+			}
+		}
+		return unprotectedVms;
+	}*/
 
 	private Map<String, VmOwnership> getVmsMap(Account account) {
 		List<VmOwnership> vms = findVmsByAccount(account);

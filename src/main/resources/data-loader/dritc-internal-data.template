@@ -2,7 +2,7 @@
     {
         "user": "admin",
         "password": "admin",
-        "ip": "10.64.125.56",
+        "ip": "10.64.125.51",
         "clusterFriendlyNames": {
             "dc01-cl01-attempt2": "New York",
             "dc02-cl02-attempt2": "London"
@@ -11,7 +11,39 @@
             {
                 "name": "28652",
                 "label": "Springfield bank",
-                "isDrttc": true,
+                "isDrttc": false,
+                "vms": [
+                    {
+                        "vmId": "5027a28d-766b-4655-ef7a-ba5de4ec31ac",
+                        "vmName": "Activity Tracing VM"
+                    },
+                    {
+                        "vmId": "5027e8d3-db84-dc19-742d-475a25449d08",
+                        "vmName": "Almog SW VM"
+                    },
+                    {
+                        "vmId": "50279297-c28d-c40f-e32d-95420a8bb48c",
+                        "vmName": "Legacy accounts VM"
+                    },
+                    {
+                        "vmId": "50279a15-4aaa-313c-b14f-b10ba7d439c4",
+                        "vmName": "SB Internet Access VM"
+                    },
+                    {
+                        "vmId": "50274795-4119-3996-da06-4863d68867ed",
+                        "vmName": "Priority ERP VM"
+                    },
+                    {
+                        "vmId": "50277a42-e58f-13ae-fdc8-56b2a484f786",
+                        "vmName": "SB Reporting services VM"
+                    },
+                    {
+                        "vmId": "5027dae6-b27e-a3d5-6dd8-9dd58ebff3dc",
+                        "vmName": "vm-1"
+                    }
+                    
+                    
+                ],
                 "users": [
                     {
                         "login": "john.smith@28652",
@@ -25,9 +57,7 @@
                         "clusterId": "2874344872902112950",
                         "vcId": "D10EFCEB-6F69-44D4-AE67-09A573241EA1",
                         "esxId": "42103de0-2eda-985e-bb28-4a99617cd940",
-                        "esxClusterId": "D10EFCEB-6F69-44D4-AE67-09A573241EA1:c35",
                         "datastoreId": "datastore-46",
-                        "datacenterId": "datacenter-21",
                         "testNetworkId": "testNetworkId",
                         "isProdCluster": true
                     },

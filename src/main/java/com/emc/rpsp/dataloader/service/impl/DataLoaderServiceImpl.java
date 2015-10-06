@@ -70,16 +70,19 @@ import java.util.Map;
                 settings.addAccount(account);
                 account.setName(currAccount.get("name").toString());
                 account.setLabel(currAccount.get("label").toString());
+                account.setIsDrttc(Boolean.parseBoolean(currAccount.get("isDrttc").toString()));
                 account.addSystem(settings);
 
                 //vms data
                 List<Map<String, Object>> vms = (List<Map<String, Object>>) currAccount.get("vms");
-                for (Map<String, Object> currVm : vms) {
-                    VmOwnership vmOwnership = new VmOwnership();
-                    account.addVm(vmOwnership);
-                    vmOwnership.setVmId(currVm.get("vmId").toString());
-                    vmOwnership.setVmName(currVm.get("vmName").toString());
-                    vmOwnership.setAccount(account);
+                if(vms != null){
+	                for (Map<String, Object> currVm : vms) {
+	                    VmOwnership vmOwnership = new VmOwnership();
+	                    account.addVm(vmOwnership);
+	                    vmOwnership.setVmId(currVm.get("vmId").toString());
+	                    vmOwnership.setVmName(currVm.get("vmName").toString());
+	                    vmOwnership.setAccount(account);
+	                }
                 }
 
                 //users data
@@ -106,10 +109,18 @@ import java.util.Map;
                 	account.addAccountConfig(accountConfig);
                 	accountConfig.setClusterId(Long.parseLong(currAccountConfig.get("clusterId").toString()));
                 	accountConfig.setDatastoreId(currAccountConfig.get("datastoreId").toString());
+                	if(currAccountConfig.get("datacenterId") != null){
+                		accountConfig.setDataCenterId(currAccountConfig.get("datacenterId").toString());
+                	}
                 	accountConfig.setEsxId(currAccountConfig.get("esxId").toString());
+                	if(currAccountConfig.get("esxClusterId") != null){
+                		accountConfig.setEsxClusterId(currAccountConfig.get("esxClusterId").toString());
+                	}
                 	accountConfig.setVcId(currAccountConfig.get("vcId").toString());
                 	accountConfig.setTestNetworkId(currAccountConfig.get("testNetworkId").toString());
+                	accountConfig.setIsProductionCluster(Boolean.parseBoolean(currAccountConfig.get("isProdCluster").toString()));
                 	accountConfig.setAccount(account);
+                	
                 }
 
             }

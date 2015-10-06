@@ -8,6 +8,7 @@ import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfraConfiguration;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettingsSet;
@@ -29,6 +30,7 @@ import com.emc.fapi.jaxws.v4_3.FullRecoverPointSettings;
 import com.emc.fapi.jaxws.v4_3.RecoverPointClustersInformation;
 import com.emc.fapi.jaxws.v4_3.RecoverPointTimeStamp;
 import com.emc.fapi.jaxws.v4_3.RecoverPointVersion;
+import com.emc.fapi.jaxws.v4_3.VmEntitiesInformationSet;
 import com.emc.fapi.jaxws.v4_3.VmPowerUpSequenceParamSet;
 import com.emc.fapi.jaxws.v4_3.VmReplicationSetParamSet;
 import com.emc.fapi.jaxws.v4_3.VmUIDSet;
@@ -146,6 +148,18 @@ public interface ClusterConnector {
 	@PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/recover_production")
 	public Response recoverProduction(@Path("clusterId") long clusterId, @Path("groupId") long groupId,
 			@Path("copyId") int copyId, @Query("startTransfer") boolean startTransfer);
+	
+	
+	@GET(BASE_URL + "clusters/{clusterId}/virtual_infra_configuration")
+	public ClusterVirtualInfraConfiguration getClusterVirtualInfraConfiguration(@Path("clusterId") long clusterId);
+	
+		
+	@GET(BASE_URL + "clusters/{clusterId}/vcenter_servers/{vcUID}/{dcUID}/{esxClusterUID}/available_vms_for_replication")
+	public VmEntitiesInformationSet getAvailableVMsForReplication(@Path("clusterId") long clusterId, 
+			                                                        @Path("vcUID") String vcUID, 
+			                                                          @Path("dcUID") String dcUID, 
+			                                                            @Path("esxClusterUID") String esxClusterUID);
+		
 	
 	
 	

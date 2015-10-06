@@ -17,6 +17,7 @@ import retrofit.http.Path;
 import com.emc.fapi.jaxws.v4_3.BookmarkConsolidationPolicy;
 import com.emc.fapi.jaxws.v4_3.ClusterInfo;
 import com.emc.fapi.jaxws.v4_3.ClusterUID;
+import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfraConfiguration;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettings;
@@ -59,6 +60,7 @@ import com.emc.fapi.jaxws.v4_3.VMReplicationSetParam;
 import com.emc.fapi.jaxws.v4_3.VirtualCenterUID;
 import com.emc.fapi.jaxws.v4_3.VirtualDisksReplicationPolicy;
 import com.emc.fapi.jaxws.v4_3.VirtualHardwareReplicationPolicy;
+import com.emc.fapi.jaxws.v4_3.VmEntitiesInformationSet;
 import com.emc.fapi.jaxws.v4_3.VmPowerUpSequenceParam;
 import com.emc.fapi.jaxws.v4_3.VmPowerUpSequenceParamSet;
 import com.emc.fapi.jaxws.v4_3.VmReplicationSetParamSet;
@@ -467,6 +469,16 @@ public class Client {
    		connector.recoverProduction(clusterId, groupId, copyId, true);
    	}
    	
+   	
+   	public ClusterVirtualInfraConfiguration getClusterVirtualInfraConfiguration(Long clusterId){
+   		ClusterVirtualInfraConfiguration clusterVirtualInfraConfiguration = connector.getClusterVirtualInfraConfiguration(clusterId);
+   		return clusterVirtualInfraConfiguration;
+   	}
+   	
+ 	public VmEntitiesInformationSet getAvailableVMsForReplication(Long clusterId, String vcUID, String dcUID, String esxClusterUID){
+ 		VmEntitiesInformationSet vmEntitiesInformationSet = connector.getAvailableVMsForReplication(clusterId, vcUID, dcUID, esxClusterUID);
+   		return vmEntitiesInformationSet;
+   	}
    	
    	
     private VmReplicationSetSettings getVmReplicationSettingsWithRetryOption(String vmId, int retryAttempts){
