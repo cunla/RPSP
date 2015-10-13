@@ -41,6 +41,7 @@ import com.emc.fapi.jaxws.v4_3.CreateTargetVMManualResourcePlacementParam;
 import com.emc.fapi.jaxws.v4_3.CreateVMParam;
 import com.emc.fapi.jaxws.v4_3.DatastoreUID;
 import com.emc.fapi.jaxws.v4_3.DiskProvisionPolicy;
+import com.emc.fapi.jaxws.v4_3.EnableImageAccessForGroupSetsSubsetParams;
 import com.emc.fapi.jaxws.v4_3.EnableImageAccessParams;
 import com.emc.fapi.jaxws.v4_3.EnableLatestImageAccessParams;
 import com.emc.fapi.jaxws.v4_3.EsxUID;
@@ -48,6 +49,7 @@ import com.emc.fapi.jaxws.v4_3.FullRecoverPointSettings;
 import com.emc.fapi.jaxws.v4_3.GlobalCopyUID;
 import com.emc.fapi.jaxws.v4_3.HardwareChangesPolicy;
 import com.emc.fapi.jaxws.v4_3.ImageAccessMode;
+import com.emc.fapi.jaxws.v4_3.ImageAccessParameters;
 import com.emc.fapi.jaxws.v4_3.ImageAccessScenario;
 import com.emc.fapi.jaxws.v4_3.RecoverPointClustersInformation;
 import com.emc.fapi.jaxws.v4_3.RecoverPointTimeStamp;
@@ -480,6 +482,39 @@ public class Client {
    		return vmEntitiesInformationSet;
    	}
    	
+ 	
+	@SuppressWarnings("unused")
+	public void enableImageAccessForGroupSetSubset(Long clusterId, Long groupSetId, 
+			CopySnapshot copySnapshot){
+		EnableImageAccessForGroupSetsSubsetParams params = new EnableImageAccessForGroupSetsSubsetParams();
+		
+		ConsistencyGroupSetSubset groupSetSubset = new ConsistencyGroupSetSubset();
+		groupSetSubset.setGroupSetUID(new ConsistencyGroupSetUID(groupSetId));
+		params.setGroupSetSubset(groupSetSubset);
+		
+		params.setScenario(ImageAccessScenario.TEST_REPLICA);
+		
+		ImageAccessParameters imageAccessParams = new ImageAccessParameters();
+		imageAccessParams.setMode(ImageAccessMode.LOGGED_ACCESS);
+		imageAccessParams.setTimeStamp(new RecoverPointTimeStamp(
+                            copySnapshot.getOriginalClosingTimeStamp()));
+		params.setParams(imageAccessParams);
+		
+		
+		Response response = connector.enableImageAccessForGroupSetSubset(clusterId, params);
+	}
+	
+	
+	@SuppressWarnings("unused")
+	public void disableImageAccessForGroupSetSubset(Long clusterId, Long groupSetId){
+		
+		ConsistencyGroupSetSubset groupSetSubset = new ConsistencyGroupSetSubset();
+		groupSetSubset.setGroupSetUID(new ConsistencyGroupSetUID(groupSetId));	
+		Response response = connector.disableImageAccessForGroupSetSubset(clusterId, groupSetSubset, true);
+	}
+	
+	
+	
    	
     private VmReplicationSetSettings getVmReplicationSettingsWithRetryOption(String vmId, int retryAttempts){
     	Map<String, VmReplicationSetSettings> vmToReplicationSetMap = getVmToReplicationSetSettingsMap();

@@ -13,6 +13,7 @@ import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettingsSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkPolicy;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetSubset;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSnapshots;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStatisticsSet;
@@ -22,6 +23,7 @@ import com.emc.fapi.jaxws.v4_3.ConsistencyGroupVolumesStateSet;
 import com.emc.fapi.jaxws.v4_3.CreateBookmarkForGroupSetSubSetParams;
 import com.emc.fapi.jaxws.v4_3.CreateBookmarkParams;
 import com.emc.fapi.jaxws.v4_3.DisableImageAccessResponse;
+import com.emc.fapi.jaxws.v4_3.EnableImageAccessForGroupSetsSubsetParams;
 import com.emc.fapi.jaxws.v4_3.EnableImageAccessParams;
 import com.emc.fapi.jaxws.v4_3.EnableImageAccessResponse;
 import com.emc.fapi.jaxws.v4_3.EnableLatestImageAccessParams;
@@ -158,7 +160,19 @@ public interface ClusterConnector {
 	public VmEntitiesInformationSet getAvailableVMsForReplication(@Path("clusterId") long clusterId, 
 			                                                        @Path("vcUID") String vcUID, 
 			                                                          @Path("dcUID") String dcUID, 
-			                                                            @Path("esxClusterUID") String esxClusterUID);
+			                                                            @Path("esxClusterUID") String esxClusterUID);	
+	
+	
+	@PUT(BASE_URL
+			+ "group_sets/subsets/clusters/{clusterId}/image_access/enable")
+	public Response enableImageAccessForGroupSetSubset(
+			@Path("clusterId") long clusterId, @Body EnableImageAccessForGroupSetsSubsetParams params);
+	
+	
+	@PUT(BASE_URL
+			+ "group_sets/subsets/clusters/{clusterId}/image_access/disable")
+	public Response disableImageAccessForGroupSetSubset(
+			@Path("clusterId") long clusterId, @Body ConsistencyGroupSetSubset params, @Query("startTransfer") boolean startTransfer);
 		
 	
 	
