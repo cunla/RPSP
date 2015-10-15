@@ -446,7 +446,7 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 				.getGroupCopiesSettings();
 		for (ConsistencyGroupCopySettings currGroupCopySettings : allCopiesSettings) {
 			if (currGroupCopySettings.getCopyUID().equals(copyId)) {
-				Long imageAccessTimeStamp = 0L;
+				RecoverPointTimeStamp imageAccessTimeStamp = null;
 				groupCopySettings = new GroupCopySettings();
 				groupCopySettings.setId(new Integer(copyId.getGlobalCopyUID()
 						.getCopyUID()).toString());
@@ -475,7 +475,7 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 					}
 					imageAccessTimeStamp = currGroupCopySettings
 							.getImageAccessInformation().getImageInformation()
-							.getTimeStamp().getTimeInMicroSeconds();
+							.getTimeStamp();
 					setSnapshotImageAccess(allSnapshots, imageAccessTimeStamp);
 				} else {
 					groupCopySettings.setImageAccess(ImageAccess.DISABLED
@@ -501,11 +501,17 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 	}
 
 	private void setSnapshotImageAccess(List<CopySnapshot> allSnapshots,
-			Long imageAccessTimeStamp) {
+			RecoverPointTimeStamp imageAccessTimeStamp) {
 		if (allSnapshots != null) {
 			for (CopySnapshot currCopySnapshot : allSnapshots) {
-				if (currCopySnapshot.getOriginalClosingTimeStamp().equals(
+				//for Group Set those will be different
+				/*if (currCopySnapshot.getOriginalClosingTimeStamp().equals(
 						imageAccessTimeStamp)) {
+					currCopySnapshot.setImageAccessEnabled(true);
+				}*/
+				
+				if (currCopySnapshot.getClosingTimestamp().equals(
+						getTimestampStr(imageAccessTimeStamp))) {
 					currCopySnapshot.setImageAccessEnabled(true);
 				}
 			}
@@ -649,10 +655,8 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 										.getDetails()))) {
 					RecoverPointTimeStamp timestamp = currSnapshot
 							.getClosingTimeStamp();
-					SimpleDateFormat dateFormat = new SimpleDateFormat(
-							"MM/dd/yyyy hh:mm:ss a");
-					String dateStr = dateFormat.format(new Date(timestamp
-							.getTimeInMicroSeconds() / 1000));
+
+					String dateStr = getTimestampStr(timestamp);
 					SnapshotUID snapshotUID = currSnapshot.getSnapshotUID();
 					CopySnapshot snapshot = new CopySnapshot();
 					snapshot.setId(snapshotUID.getId());
@@ -747,6 +751,14 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 			}
 		}		
 		return res;
+	}
+	
+	private String getTimestampStr(RecoverPointTimeStamp timestamp){
+		SimpleDateFormat dateFormat = new SimpleDateFormat(
+				"MM/dd/yyyy hh:mm:ss a");
+		String dateStr = dateFormat.format(new Date(timestamp
+				.getTimeInMicroSeconds() / 1000));
+		return dateStr;
 	}
 
 }

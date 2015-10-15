@@ -43,11 +43,31 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	
 	
 	$scope.openImageAccessModal = function(){
-		var modalInstance = $modal.open({
-             templateUrl: 'app/image-access/image-access-modal.html',
-             controller: 'imageAccessController',
-             windowClass: 'image-access-modal'
-         });
+		
+		var isGroupSet = false;
+		if($scope.protectedSelectedIndex != -1){
+    		var entityType = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type;
+    		if(entityType == 'gs'){
+    			isGroupSet = true;
+			}
+    	}
+		
+		var modalInstance = {};
+		
+		if(isGroupSet == true){
+			modalInstance = $modal.open({
+	             templateUrl: 'app/image-access/group-set-image-access-modal.html',
+	             controller: 'groupSetImageAccessController',
+	             windowClass: 'image-access-modal'
+	         });
+		}
+		else{
+			modalInstance = $modal.open({
+	             templateUrl: 'app/image-access/image-access-modal.html',
+	             controller: 'imageAccessController',
+	             windowClass: 'image-access-modal'
+	         });
+		}
 		
 		modalInstance.result.then(function(){{}});
 	};

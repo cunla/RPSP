@@ -218,6 +218,35 @@ app.service('vmStructureService', ['$http', function ($http) {
     }
     
     
+    this.groupSetImageAccess = function(selectedCluster, selectedBookmark){
+    	var currGs = vmGsAndCgFlatData[protectedSelectedIndex];
+    	var gsId = currGs.id;
+    	var replicaClusterId = selectedCluster.id;
+    	var url;
+    	var snapshotParams = null;
+    	
+    	if(selectedCluster.groupCopySettings[0].imageAccess == 'Disabled'){
+    	   url = '/rpsp/group-sets/' + gsId + '/clusters/' + replicaClusterId + '/image-access/enable'; 
+    	   snapshotParams = {};
+		   snapshotParams.snapshotId = selectedBookmark.id;
+		   snapshotParams.timestamp = selectedBookmark.originalClosingTimeStamp;
+		   this.updateGroupSetImageAccessFlags(selectedBookmark, true);
+    	}
+    	else{
+    		url = '/rpsp/group-sets/' + gsId + '/clusters/' + replicaClusterId + '/image-access/disable';  
+    		this.updateGroupSetImageAccessFlags(selectedBookmark, false);
+    	}
+    	
+    	
+    	
+    	
+    	$http.put(url, snapshotParams).
+		 success(function(data,status,headers,config){	        
+		});
+ 	
+    }
+    
+    
     
     this.imageAccess = function(selectedCopy, imageAccessType, selectedSnapshot, selectedBookmark){
     	var currCg = vmGsAndCgFlatData[protectedSelectedIndex];
@@ -270,8 +299,27 @@ app.service('vmStructureService', ['$http', function ($http) {
     
     
     
+    this.updateGroupSetImageAccessFlags = function(selectedBookmark, isEnableAccess){
+    	var cgList = vmGsAndCgFlatData[protectedSelectedIndex].consistencyGroups;
+    	
+    	for(i=0; i < cgList.length; i++){
+    		var currCg = cgList[i];
+    		var selectedCopy = currCg.replicaClusters[0].groupCopySettings[0];
+    		var imageAccessType = 'bookmark';
+    		this.updateImageAccessFlags(selectedCopy, imageAccessType, null, selectedBookmark, isEnableAccess);
+    	}
+    };
+    
+    
+    
     this.updateImageAccessFlags = function(selectedCopy, imageAccessType, selectedSnapshot, selectedBookmark, isEnableAccess){
-    	var serviceDataSelectedCopy = vmGsAndCgFlatData[protectedSelectedIndex].replicaClusters[0].groupCopySettings[selectedCopy.id];
+    	var serviceDataSelectedCopy = {};
+    	if(vmGsAndCgFlatData[protectedSelectedIndex].type == 'gs'){
+    		serviceDataSelectedCopy = selectedCopy;
+    	}
+    	else{
+    		serviceDataSelectedCopy = vmGsAndCgFlatData[protectedSelectedIndex].replicaClusters[0].groupCopySettings[selectedCopy.id];
+    	}
     	
     	var currSnapshot = null;
     	
@@ -302,7 +350,10 @@ app.service('vmStructureService', ['$http', function ($http) {
 		
         for (var i = 0; i < length; i++) {
             var currSnapshot = snapshots[i];
-            if(currSnapshot.id == snapshotToSearch.id){
+           /* if(currSnapshot.id == snapshotToSearch.id){
+            	return currSnapshot;
+            }*/
+            if(currSnapshot.closingTimestamp == snapshotToSearch.closingTimestamp){
             	return currSnapshot;
             }
         }

@@ -48,6 +48,7 @@
     "IMAGE-ACCESS": {
         "DR_TEST_MSG": "DR Test:",
         "SELECT_COPY_MSG": "Select Copy:",
+        "SELECT_CLUSTER_MSG": "Select Cluster:",
         "SELECT_IMAGE_MSG": "Select Image",
         "LATEST_IMAGE_MSG": "Latest Image",
         "FROM_SNAPSHOT_LIST_MSG": "From Snapshot List",
