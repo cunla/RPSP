@@ -13,6 +13,7 @@ import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.PUT;
 import retrofit.http.Path;
+import retrofit.http.Query;
 
 import com.emc.fapi.jaxws.v4_3.BookmarkConsolidationPolicy;
 import com.emc.fapi.jaxws.v4_3.ClusterInfo;
@@ -511,6 +512,15 @@ public class Client {
 		ConsistencyGroupSetSubset groupSetSubset = new ConsistencyGroupSetSubset();
 		groupSetSubset.setGroupSetUID(new ConsistencyGroupSetUID(groupSetId));	
 		Response response = connector.disableImageAccessForGroupSetSubset(clusterId, groupSetSubset, true);
+	}
+	
+	
+	@SuppressWarnings("unused")
+	public void failoverGroupSetSubset(Long clusterId, Long groupSetId){
+		
+		ConsistencyGroupSetSubset groupSetSubset = new ConsistencyGroupSetSubset();
+		groupSetSubset.setGroupSetUID(new ConsistencyGroupSetUID(groupSetId));	
+		Response response = connector.failoverGroupSetSubset(clusterId, groupSetSubset, true);
 	}
 	
 	

@@ -173,6 +173,13 @@ public interface ClusterConnector {
 			+ "group_sets/subsets/clusters/{clusterId}/image_access/disable")
 	public Response disableImageAccessForGroupSetSubset(
 			@Path("clusterId") long clusterId, @Body ConsistencyGroupSetSubset params, @Query("startTransfer") boolean startTransfer);
+	
+	
+	
+	@PUT(BASE_URL
+			+ "group_sets/subsets/clusters/{clusterId}/failover")
+	public Response failoverGroupSetSubset(
+			@Path("clusterId") long clusterId, @Body ConsistencyGroupSetSubset params, @Query("startTransfer") boolean startTransfer);
 		
 	
 	
