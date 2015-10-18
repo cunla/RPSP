@@ -127,14 +127,41 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	
 	
 	$scope.openFailoverModal = function(){
-		var modalInstance = $modal.open({
+		
+		
+		var isGroupSet = false;
+		if($scope.protectedSelectedIndex != -1){
+    		var entityType = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type;
+    		if(entityType == 'gs'){
+    			isGroupSet = true;
+			}
+    	}
+		
+		var modalInstance = {};
+		
+		if(isGroupSet == true){
+			modalInstance = $modal.open({
+	             templateUrl: 'app/failover/group-set-failover-modal.html',
+	             controller: 'groupSetFailoverController',
+	             windowClass: 'image-access-modal'
+	         });
+		}
+		else{
+			modalInstance = $modal.open({
+	             templateUrl: 'app/failover/failover-modal.html',
+	             controller: 'failoverController',
+	             windowClass: 'image-access-modal'
+	         });
+		}
+
+		
+		/*var modalInstance = $modal.open({
              templateUrl: 'app/failover/failover-modal.html',
              controller: 'failoverController',
              windowClass: 'image-access-modal'
-         });
+         });*/
 		
-		modalInstance.result.then(function(result){
-			/*$timeout($scope.refreshMainScreen, 3000);*/ 
+		modalInstance.result.then(function(result){ 
 			
 		});
 	};
