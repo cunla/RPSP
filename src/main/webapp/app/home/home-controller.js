@@ -155,12 +155,6 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 		}
 
 		
-		/*var modalInstance = $modal.open({
-             templateUrl: 'app/failover/failover-modal.html',
-             controller: 'failoverController',
-             windowClass: 'image-access-modal'
-         });*/
-		
 		modalInstance.result.then(function(result){ 
 			
 		});
@@ -168,11 +162,31 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	
 	
 	$scope.openRecoverModal = function(){
-		var modalInstance = $modal.open({
-             templateUrl: 'app/recover/recover-modal.html',
-             controller: 'recoverController',
-             windowClass: 'image-access-modal'
-         });
+		
+		var isGroupSet = false;
+		if($scope.protectedSelectedIndex != -1){
+    		var entityType = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type;
+    		if(entityType == 'gs'){
+    			isGroupSet = true;
+			}
+    	}
+		
+		var modalInstance = {};
+		
+		if(isGroupSet == true){
+			modalInstance = $modal.open({
+	             templateUrl: 'app/recover/group-set-recover-modal.html',
+	             controller: 'groupSetRecoverController',
+	             windowClass: 'image-access-modal'
+	         });
+		}
+		else{
+			modalInstance = $modal.open({
+	             templateUrl: 'app/recover/recover-modal.html',
+	             controller: 'recoverController',
+	             windowClass: 'image-access-modal'
+	         });
+		}
 		
 		modalInstance.result.then(function(result){			
 		});

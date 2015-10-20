@@ -217,6 +217,18 @@ app.service('vmStructureService', ['$http', function ($http) {
     }
     
     
+    this.groupSetRecoverProduction = function(selectedCluster){
+    	var currGs = vmGsAndCgFlatData[protectedSelectedIndex];
+    	var gsId = currGs.id;
+    	var replicaClusterId = selectedCluster.id;
+    	var url = '/rpsp/group-sets/' + gsId + '/clusters/' + replicaClusterId + '/recover-production';
+    	  	
+    	return $http.put(url).then(function(response){
+	    	var status = response.status;
+	        return status;
+    	});  			    
+ 	
+    }
     
     this.recoverProduction = function(selectedCopy){
     	var currCg = vmGsAndCgFlatData[protectedSelectedIndex];
