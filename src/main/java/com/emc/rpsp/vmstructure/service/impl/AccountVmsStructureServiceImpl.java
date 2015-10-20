@@ -732,6 +732,11 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 				Double initCompletionValue = new Double(currLinkStatistics.getInitStatistics().getInitCompletionPortion()*100);
 				String initCompletionValueStr = new Integer(initCompletionValue.intValue()).toString();
 				completionPortionsMap.put(consistencyGroupCopyUID, initCompletionValueStr);
+				
+				consistencyGroupCopyUID = new ConsistencyGroupCopyUID();
+				consistencyGroupCopyUID.setGroupUID(linkUID.getGroupUID());
+				consistencyGroupCopyUID.setGlobalCopyUID(linkUID.getSecondCopy());
+				completionPortionsMap.put(consistencyGroupCopyUID, initCompletionValueStr);
 			}
 		}
 		return completionPortionsMap;
