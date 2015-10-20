@@ -27,6 +27,7 @@ import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyUID;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkPolicy;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkSettings;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkUID;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetSettings;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetSubset;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetUID;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSettings;
@@ -515,14 +516,44 @@ public class Client {
 	}
 	
 	
-	@SuppressWarnings("unused")
+	/*	@SuppressWarnings("unused")
 	public void failoverGroupSetSubset(Long clusterId, Long groupSetId){
 		
 		ConsistencyGroupSetSubset groupSetSubset = new ConsistencyGroupSetSubset();
 		groupSetSubset.setGroupSetUID(new ConsistencyGroupSetUID(groupSetId));	
 		Response response = connector.failoverGroupSetSubset(clusterId, groupSetSubset, true);
+	}*/
+
+	
+	@SuppressWarnings("unused")
+	public void failoverGroupSetSubset(Long clusterId, Long groupSetId){
+		ConsistencyGroupSetSettings consistencyGroupSetSettings = connector.getGroupSetSettings(groupSetId);
+		List<ConsistencyGroupUID> groupsUIDs = consistencyGroupSetSettings.getGroupsUIDs();
+		for(ConsistencyGroupUID consistencyGroupUID : groupsUIDs){
+			failOver(clusterId, consistencyGroupUID.getId(), 0);
+		}
+	}	
+
+	
+	/*@SuppressWarnings("unused")
+	public void recoverProductionForGroupSetSubset(Long clusterId, Long groupSetId){
+		
+		ConsistencyGroupSetSubset groupSetSubset = new ConsistencyGroupSetSubset();
+		groupSetSubset.setGroupSetUID(new ConsistencyGroupSetUID(groupSetId));	
+		Response response = connector.recoverProductionForGroupSetSubset(clusterId, groupSetSubset, true);
+	}*/
+	
+	
+	public void recoverProductionForGroupSetSubset(Long clusterId, Long groupSetId){		
+		ConsistencyGroupSetSettings consistencyGroupSetSettings = connector.getGroupSetSettings(groupSetId);
+		List<ConsistencyGroupUID> groupsUIDs = consistencyGroupSetSettings.getGroupsUIDs();
+		for(ConsistencyGroupUID consistencyGroupUID : groupsUIDs){
+			recoverProduction(clusterId, consistencyGroupUID.getId(), 0);
+		}
 	}
 	
+	
+
 	
 	
    	

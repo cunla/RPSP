@@ -13,6 +13,7 @@ import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettingsSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkPolicy;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetSettings;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetSubset;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSnapshots;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStateSet;
@@ -180,7 +181,18 @@ public interface ClusterConnector {
 			+ "group_sets/subsets/clusters/{clusterId}/failover")
 	public Response failoverGroupSetSubset(
 			@Path("clusterId") long clusterId, @Body ConsistencyGroupSetSubset params, @Query("startTransfer") boolean startTransfer);
+	
+	
+	
+	@PUT(BASE_URL
+			+ "group_sets/subsets/clusters/{clusterId}/recover_production")
+	public Response recoverProductionForGroupSetSubset(
+			@Path("clusterId") long clusterId, @Body ConsistencyGroupSetSubset params, @Query("startTransfer") boolean startTransfer);
 		
+	
+	@GET(BASE_URL + "group_sets/{groupSetId}")
+	public ConsistencyGroupSetSettings getGroupSetSettings(@Path("groupSetId") long groupSetId);
+	
 	
 	
 	
