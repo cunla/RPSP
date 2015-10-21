@@ -21,7 +21,7 @@
         "FAILOVER_MSG": "Failover",
         "RESTORE_PRODUCTION_MSG": "Restore Production",
         "EDIT_MSG": "Edit",
-        "ADD_BOOKMARK_MSG": "Add Bookmark",
+        "ADD_BOOKMARK_MSG": "Create Bookmark",
         "SHOW_HISTORY_MSG": "Show History",
         "SERVICE_REQUEST_MSG": "Service Request",
         "PRODUCTION_MSG": "Production",
@@ -49,14 +49,14 @@
         "DR_TEST_MSG": "DR Test:",
         "SELECT_COPY_MSG": "Select Copy:",
         "SELECT_CLUSTER_MSG": "Select Cluster:",
-        "SELECT_IMAGE_MSG": "Select Image",
-        "LATEST_IMAGE_MSG": "Latest Image",
-        "FROM_SNAPSHOT_LIST_MSG": "From Snapshot List",
+        "SELECT_IMAGE_MSG": "Select Point-in-time",
+        "LATEST_IMAGE_MSG": "Latest",
+        "FROM_SNAPSHOT_LIST_MSG": "Specific Time",
         "SPECIFIC_BOOKMARK_MSG": "Specific Bookmark",
         "TEST_NETWORK_MSG": "Test Network:",
         "TENANT_TESTING_MSG": "Tenant Testing",
-        "ENABLE_MSG": "Enable",
-        "DISABLE_MSG": "Disable"
+        "ENABLE_MSG": "Start DR Test",
+        "DISABLE_MSG": "Stop DR Test"
     },
     "PROTECT-UNPROTECT": {
         "ADD_VM_MSG": "Add VM:",
