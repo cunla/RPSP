@@ -15,15 +15,19 @@ import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+import com.emc.fapi.jaxws.v4_3.ArrayResourcePoolType;
+import com.emc.fapi.jaxws.v4_3.ArrayUID;
 import com.emc.fapi.jaxws.v4_3.BookmarkConsolidationPolicy;
 import com.emc.fapi.jaxws.v4_3.ClusterInfo;
 import com.emc.fapi.jaxws.v4_3.ClusterUID;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfraConfiguration;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyParam;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettings;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettingsSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyUID;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyVolumeCreationParams;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkPolicy;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkSettings;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkUID;
@@ -47,15 +51,20 @@ import com.emc.fapi.jaxws.v4_3.EnableImageAccessForGroupSetsSubsetParams;
 import com.emc.fapi.jaxws.v4_3.EnableImageAccessParams;
 import com.emc.fapi.jaxws.v4_3.EnableLatestImageAccessParams;
 import com.emc.fapi.jaxws.v4_3.EsxUID;
+import com.emc.fapi.jaxws.v4_3.FullConsistencyGroupLinkPolicy;
 import com.emc.fapi.jaxws.v4_3.FullRecoverPointSettings;
 import com.emc.fapi.jaxws.v4_3.GlobalCopyUID;
 import com.emc.fapi.jaxws.v4_3.HardwareChangesPolicy;
 import com.emc.fapi.jaxws.v4_3.ImageAccessMode;
 import com.emc.fapi.jaxws.v4_3.ImageAccessParameters;
 import com.emc.fapi.jaxws.v4_3.ImageAccessScenario;
+import com.emc.fapi.jaxws.v4_3.Quantity;
+import com.emc.fapi.jaxws.v4_3.QuantityType;
 import com.emc.fapi.jaxws.v4_3.RecoverPointClustersInformation;
 import com.emc.fapi.jaxws.v4_3.RecoverPointTimeStamp;
+import com.emc.fapi.jaxws.v4_3.ReplicateVmsParam;
 import com.emc.fapi.jaxws.v4_3.ReplicatedVMParams;
+import com.emc.fapi.jaxws.v4_3.ResourcePoolUID;
 import com.emc.fapi.jaxws.v4_3.Snapshot;
 import com.emc.fapi.jaxws.v4_3.SnapshotConsistencyType;
 import com.emc.fapi.jaxws.v4_3.SnapshotUID;
@@ -73,6 +82,8 @@ import com.emc.fapi.jaxws.v4_3.VmReplicationSettings;
 import com.emc.fapi.jaxws.v4_3.VmState;
 import com.emc.fapi.jaxws.v4_3.VmUID;
 import com.emc.fapi.jaxws.v4_3.VmUIDSet;
+import com.emc.fapi.jaxws.v4_3.VolumeCreationParams;
+import com.emc.fapi.jaxws.v4_3.VolumeSize;
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
 import com.emc.rpsp.accounts.domain.Account;
@@ -553,8 +564,141 @@ public class Client {
 	}
 	
 	
-
+	@SuppressWarnings("unused")
+	public void createConsistencyGroup(String cgName, List<String> vmIds, List<AccountConfig> accountConfigList){
+		Map<Long, AccountConfig> accountConfigsMap = getAccountConfigsMap(accountConfigList);
+		ReplicateVmsParam replicateVmsParam = new ReplicateVmsParam();
+		
+		//CG name
+		replicateVmsParam.setCgName(cgName);
+		replicateVmsParam.setStartTransfer(true);
+		
+		//production copy ID
+		AccountConfig productionConfig = null;
+		//List<AccountConfig> replicasConfig = new LinkedList<AccountConfig>();
+		for(AccountConfig accountConfig : accountConfigList){
+			if(accountConfig.getIsProductionCluster()){
+				productionConfig = accountConfig;
+			}
+		}
+		
+		GlobalCopyUID productionCopy = new GlobalCopyUID();
+		productionCopy.setCopyUID(0);
+		Long productionClusterId = productionConfig.getClusterId();
+		productionCopy.setClusterUID(new ClusterUID(productionClusterId));
+		replicateVmsParam.setProductionCopy(productionCopy);
+		
+		//replication sets
+		List<VMReplicationSetParam> vmReplicationSets = replicateVmsParam.getVmReplicationSets();		
+		
+		for(String vmId : vmIds){
+			List<ReplicatedVMParams> replicatedVmParams = new LinkedList<ReplicatedVMParams>();
+			
+			//create source vm parameter
+	    	ReplicatedVMParams sourceReplicatedVMParam = new ReplicatedVMParams();   
+	    	
+	    	SourceVmParam sourceVmParam = new SourceVmParam();
+	    	VmUID vmUID = new VmUID();
+	    	vmUID.setUuid(vmId);
+	    	String prodVcId = accountConfigsMap.get(productionClusterId).getVcId();
+	    	VirtualCenterUID virtualCenterUID = new VirtualCenterUID(prodVcId);   	
+	    	vmUID.setVirtualCenterUID(virtualCenterUID);    	
+	    	sourceVmParam.setVmUID(vmUID);
+	    	sourceVmParam.setClusterUID(new ClusterUID(productionClusterId));
+	    	
+	    	sourceReplicatedVMParam.setVmParam(sourceVmParam);
+	    	sourceReplicatedVMParam.setCopyUID(productionCopy);
+	    	
+	    	//replicatedVmParams.add(sourceReplicatedVMParam);
+	    	
+	    	//add source and targets
+	    	for(AccountConfig accountConfig : accountConfigList){
+				if(!accountConfig.getIsProductionCluster()){
+					//add source vm parameter
+					replicatedVmParams.add(sourceReplicatedVMParam);
+					//add target vm parameter
+			    	ReplicatedVMParams targetReplicatedVMParam = new ReplicatedVMParams();
+			    	CreateVMParam createVMParam = new CreateVMParam();
+			    	GlobalCopyUID targetGlobalCopyUID = new GlobalCopyUID(new ClusterUID(accountConfig.getClusterId()), 0);
+			    	String replicaVcId = accountConfigsMap.get(targetGlobalCopyUID.getClusterUID().getId()).getVcId();
+			    	String replicaDataStoreId = accountConfigsMap.get(targetGlobalCopyUID.getClusterUID().getId()).getDatastoreId();
+			    	String replicaEsxId = accountConfigsMap.get(targetGlobalCopyUID.getClusterUID().getId()).getEsxId();
+			    	createVMParam.setTargetVirtualCenterUID(new VirtualCenterUID(replicaVcId));
+			    	createVMParam.setTargetDatastoreUID(new DatastoreUID(replicaDataStoreId));    	    	
+			    	createVMParam.setTargetResourcePlacementParam(new CreateTargetVMManualResourcePlacementParam(new EsxUID(replicaEsxId)));    	    	
+			    	
+			    	
+			    	targetReplicatedVMParam.setVmParam(createVMParam);
+			    	targetReplicatedVMParam.setCopyUID(targetGlobalCopyUID);
+			    	
+			    	replicatedVmParams.add(targetReplicatedVMParam);
+				}
+			}
+	    	
+	    	VirtualHardwareReplicationPolicy virtualHardwareReplicationPolicy = new VirtualHardwareReplicationPolicy();
+	    	virtualHardwareReplicationPolicy.setProvisionPolicy(DiskProvisionPolicy.SAME_AS_SOURCE);
+	    	virtualHardwareReplicationPolicy.setHwChangesPolicy(HardwareChangesPolicy.REPLICATE_HW_CHANGES);
+	    	
+	    	VirtualDisksReplicationPolicy virtualDisksReplicationPolicy = new VirtualDisksReplicationPolicy();
+	    	virtualDisksReplicationPolicy.setAutoReplicateNewVirtualDisks(true);
+	    	
+	    	//create and add new replication set
+	    	VMReplicationSetParam replicationSetParam = new VMReplicationSetParam(replicatedVmParams, virtualHardwareReplicationPolicy, virtualDisksReplicationPolicy);
+	    	vmReplicationSets.add(replicationSetParam);
+	    	
+		}
+		
+		//create copies
+		List<ConsistencyGroupCopyParam> copiesList = replicateVmsParam.getCopies();
+		for(AccountConfig accountConfig : accountConfigList){
+			GlobalCopyUID copyUID = new GlobalCopyUID(new ClusterUID(accountConfig.getClusterId()), 0);
+			ConsistencyGroupCopyParam consistencyGroupCopyParam = new ConsistencyGroupCopyParam();
+			consistencyGroupCopyParam.setCopyUID(copyUID);
+			consistencyGroupCopyParam.setCopyName("copy-" + accountConfig.getClusterId());
+			
+			ConsistencyGroupCopyVolumeCreationParams consistencyGroupCopyVolumeCreationParams = new ConsistencyGroupCopyVolumeCreationParams();
+			VolumeCreationParams volumeCreationParams = new VolumeCreationParams();
+			if(accountConfig.getClusterId() == 1948638374096422771L){
+				volumeCreationParams.setVolumeSize(new VolumeSize(10*1000*1000*1000));
+				volumeCreationParams.setPoolUid(new ResourcePoolUID(25761727271460198L, "datastore-47", new ArrayUID(244355130858105830L, new ClusterUID(accountConfig.getClusterId()))));
+				volumeCreationParams.setResourcePoolType(ArrayResourcePoolType.VC_DATASTORE);
+				volumeCreationParams.setArrayUid(new ArrayUID(244355130858105830L, new ClusterUID(accountConfig.getClusterId())));
+			}
+			else{
+				volumeCreationParams.setVolumeSize(new VolumeSize(10*1000*1000*1000));
+				volumeCreationParams.setPoolUid(new ResourcePoolUID(5371132172867647L, "datastore-46", new ArrayUID(271667398027662287L, new ClusterUID(accountConfig.getClusterId()))));
+				volumeCreationParams.setResourcePoolType(ArrayResourcePoolType.VC_DATASTORE);
+				volumeCreationParams.setArrayUid(new ArrayUID(271667398027662287L, new ClusterUID(accountConfig.getClusterId())));
+			}
+			consistencyGroupCopyVolumeCreationParams.getVolumeParams().add(volumeCreationParams);
+			consistencyGroupCopyParam.setVolumeCreationParams(consistencyGroupCopyVolumeCreationParams);
+			copiesList.add(consistencyGroupCopyParam);
+			
+			
+		}
+		
+		//create links
+		List<FullConsistencyGroupLinkPolicy> linkPoliciesList = replicateVmsParam.getLinks();
+		ConsistencyGroupLinkPolicy remoteDefaultLinkPolicy = connector.getDefaultRemoteGroupLinkPolicy();
+		remoteDefaultLinkPolicy.getProtectionPolicy().getRpoPolicy().setMaximumAllowedLag(new Quantity(25, QuantityType.MINUTES));
+		for(AccountConfig accountConfig : accountConfigList){
+			if(!accountConfig.getIsProductionCluster()){				
+				ConsistencyGroupLinkUID linkUID = new ConsistencyGroupLinkUID();
+				linkUID.setGroupUID(new ConsistencyGroupUID(0));
+				linkUID.setFirstCopy(productionCopy);
+				GlobalCopyUID copyUID = new GlobalCopyUID(new ClusterUID(accountConfig.getClusterId()), 0);
+				linkUID.setSecondCopy(copyUID);
+				FullConsistencyGroupLinkPolicy fullConsistencyGroupLinkPolicy = new FullConsistencyGroupLinkPolicy();
+				fullConsistencyGroupLinkPolicy.setLinkPolicy(remoteDefaultLinkPolicy);
+				fullConsistencyGroupLinkPolicy.setLinkUID(linkUID);
+				linkPoliciesList.add(fullConsistencyGroupLinkPolicy);
+			}
+		}
 	
+		
+		ConsistencyGroupUID consistencyGroupUID = connector.replicateVms(replicateVmsParam, true);
+		return;
+	}
 	
    	
     private VmReplicationSetSettings getVmReplicationSettingsWithRetryOption(String vmId, int retryAttempts){

@@ -15,6 +15,16 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 	
 
 	@Override
+	public void createConsistencyGroup(String cgName, List<String> vmIds) {
+		Client client = getClient();
+    	if(client != null){
+    		Account account = getCurrentUser().getAccount();
+    		List<AccountConfig> accountConfigs = findAccountConfigsByAccount(account);
+    		client.createConsistencyGroup(cgName, vmIds, accountConfigs);
+    	}		
+	}
+	
+	@Override
 	public void addVmToCG(String vmId, Long groupId, boolean isCritical, int sequenceNumber) {
 		Client client = getClient();
     	if(client != null){
@@ -36,6 +46,8 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 		
 		
 	}
+
+	
 
     
 

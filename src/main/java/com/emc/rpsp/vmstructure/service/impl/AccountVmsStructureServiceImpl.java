@@ -10,10 +10,8 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfraConfiguration;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettings;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySnapshots;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopyState;
@@ -46,12 +44,11 @@ import com.emc.fapi.jaxws.v4_3.VmReplicationSetSettings;
 import com.emc.fapi.jaxws.v4_3.VmReplicationSettings;
 import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.accounts.domain.AccountConfig;
-import com.emc.rpsp.accounts.service.AccountService;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.fal.Client;
+import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vms.domain.VmOwnership;
-import com.emc.rpsp.vms.service.VmOwnershipService;
 import com.emc.rpsp.vmstructure.constants.ConsistencyType;
 import com.emc.rpsp.vmstructure.constants.ImageAccess;
 import com.emc.rpsp.vmstructure.constants.TransferState;
@@ -61,6 +58,7 @@ import com.emc.rpsp.vmstructure.domain.ConsistencyGroup;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 import com.emc.rpsp.vmstructure.domain.GroupCopySettings;
 import com.emc.rpsp.vmstructure.domain.GroupSet;
+import com.emc.rpsp.vmstructure.domain.SystemInfo;
 import com.emc.rpsp.vmstructure.domain.VmContainer;
 import com.emc.rpsp.vmstructure.domain.VmDefinition;
 import com.emc.rpsp.vmstructure.service.AccountVmsStructureService;
@@ -102,6 +100,7 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 						currAccountVmsStructure.getUnprotectedVms());
 				accountVmsStructure.getProtectedVms().addAll(
 						currAccountVmsStructure.getProtectedVms());
+				accountVmsStructure.setSystemInfo(currAccountVmsStructure.getSystemInfo());
 			}
 		}
 		return accountVmsStructure;
@@ -121,6 +120,7 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 							currAccountVmsStructure.getUnprotectedVms());
 					accountVmsStructure.getProtectedVms().addAll(
 							currAccountVmsStructure.getProtectedVms());
+					accountVmsStructure.setSystemInfo(currAccountVmsStructure.getSystemInfo());
 				}
 			}
 		}
@@ -182,6 +182,9 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 			Account account, SystemSettings currSystem) {
 
 		AccountVmsStructure accountVmsStructure = new AccountVmsStructure();
+		SystemInfo systemInfo = getSystemInfo(account, currSystem);
+		accountVmsStructure.setSystemInfo(systemInfo);
+		
 		List<VmContainer> protectedVms = new LinkedList<VmContainer>();
 
 		FullRecoverPointSettings rpSettings = client
@@ -329,6 +332,27 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl implements
 		}
 		accountVmsStructure.setUnprotectedVms(unprotectedVms);
 		return accountVmsStructure;
+	}
+	
+	
+	private SystemInfo getSystemInfo(Account account, SystemSettings currSystem) {
+	List<AccountConfig> accountConfigs = findAccountConfigsByAccount(account);		
+		Map<Long, AccountConfig> accountConfigsMap = accountConfigs
+				.stream()
+				.collect(
+						Collectors.toMap(AccountConfig::getClusterId, (p) -> p));
+		List<ClusterSettings> clusters = findClustersBySystem(currSystem);
+		SystemInfo systemInfo = new SystemInfo();
+		for(ClusterSettings clusterSettings : clusters){
+			ClusterDefinition currCluster = new ClusterDefinition(clusterSettings.getClusterId().toString(), clusterSettings.getFriendlyName());
+			if(accountConfigsMap.get(clusterSettings.getClusterId()).getIsProductionCluster()){
+				systemInfo.setProductionCluster(currCluster);
+			}
+			else{
+				systemInfo.addReplicaCluster(currCluster);
+			}
+		}
+		return systemInfo;
 	}
 	
 	

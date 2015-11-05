@@ -19,6 +19,7 @@ import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSnapshots;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStatisticsSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupTopologyParams;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupUID;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupUIDSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupVolumesStateSet;
 import com.emc.fapi.jaxws.v4_3.CreateBookmarkForGroupSetSubSetParams;
@@ -33,6 +34,7 @@ import com.emc.fapi.jaxws.v4_3.FullRecoverPointSettings;
 import com.emc.fapi.jaxws.v4_3.RecoverPointClustersInformation;
 import com.emc.fapi.jaxws.v4_3.RecoverPointTimeStamp;
 import com.emc.fapi.jaxws.v4_3.RecoverPointVersion;
+import com.emc.fapi.jaxws.v4_3.ReplicateVmsParam;
 import com.emc.fapi.jaxws.v4_3.VmEntitiesInformationSet;
 import com.emc.fapi.jaxws.v4_3.VmPowerUpSequenceParamSet;
 import com.emc.fapi.jaxws.v4_3.VmReplicationSetParamSet;
@@ -192,6 +194,12 @@ public interface ClusterConnector {
 	
 	@GET(BASE_URL + "group_sets/{groupSetId}")
 	public ConsistencyGroupSetSettings getGroupSetSettings(@Path("groupSetId") long groupSetId);
+	
+	
+	
+	@POST(BASE_URL
+			+ "groups/virtual_machines/replicate")
+	public ConsistencyGroupUID replicateVms(@Body ReplicateVmsParam params, @Query("startTransfer") boolean startTransfer);
 	
 	
 	
