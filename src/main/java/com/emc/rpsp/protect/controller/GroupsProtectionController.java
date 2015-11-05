@@ -30,10 +30,11 @@ public class GroupsProtectionController {
 	public ResponseEntity<HttpStatus> createConsistencyGroup(
 								@RequestBody Map<String, Object> params) {		
 		String groupName = params.get("groupName").toString();
+		boolean startReplication = Boolean.parseBoolean(params.get("enableReplication").toString());
 		List<Object> vmIdsObj = (List<Object>) params.get("vms");
 		List<String> vmIds = new LinkedList<String>();
 		vmIdsObj.forEach((obj) -> vmIds.add(String.valueOf(obj)));
-		groupsProtectionService.createConsistencyGroup(groupName, vmIds);
+		groupsProtectionService.createConsistencyGroup(groupName, vmIds, startReplication);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

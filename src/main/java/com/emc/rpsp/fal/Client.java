@@ -565,13 +565,13 @@ public class Client {
 	
 	
 	@SuppressWarnings("unused")
-	public void createConsistencyGroup(String cgName, List<String> vmIds, List<AccountConfig> accountConfigList){
+	public void createConsistencyGroup(String cgName, List<String> vmIds, List<AccountConfig> accountConfigList, boolean startReplication){
 		Map<Long, AccountConfig> accountConfigsMap = getAccountConfigsMap(accountConfigList);
 		ReplicateVmsParam replicateVmsParam = new ReplicateVmsParam();
 		
 		//CG name
 		replicateVmsParam.setCgName(cgName);
-		replicateVmsParam.setStartTransfer(true);
+		replicateVmsParam.setStartTransfer(startReplication);
 		
 		//production copy ID
 		AccountConfig productionConfig = null;
