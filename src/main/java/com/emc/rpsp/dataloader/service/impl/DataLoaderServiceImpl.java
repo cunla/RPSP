@@ -109,6 +109,14 @@ import java.util.Map;
                 	account.addAccountConfig(accountConfig);
                 	accountConfig.setClusterId(Long.parseLong(currAccountConfig.get("clusterId").toString()));
                 	accountConfig.setDatastoreId(currAccountConfig.get("datastoreId").toString());
+                	
+                	if(currAccountConfig.get("arrayId") != null){
+                		accountConfig.setArrayId(Long.parseLong(currAccountConfig.get("arrayId").toString()));
+                	}
+                	if(currAccountConfig.get("resourcePoolId") != null){
+                		accountConfig.setResourcePoolId(Long.parseLong(currAccountConfig.get("resourcePoolId").toString()));
+                	}
+                	
                 	if(currAccountConfig.get("datacenterId") != null){
                 		accountConfig.setDataCenterId(currAccountConfig.get("datacenterId").toString());
                 	}
