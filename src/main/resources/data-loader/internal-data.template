@@ -27,6 +27,8 @@
                         "esxId": "42103de0-2eda-985e-bb28-4a99617cd940",
                         "esxClusterId": "D10EFCEB-6F69-44D4-AE67-09A573241EA1:c35",
                         "datastoreId": "datastore-46",
+                        "arrayId": "271667398027662287",
+                        "resourcePoolId":  "5371132172867647",
                         "datacenterId": "datacenter-21",
                         "testNetworkId": "testNetworkId",
                         "isProdCluster": true
@@ -36,6 +38,8 @@
                         "vcId": "D0939A9B-0846-4699-AAD3-2EBE04421FCE",
                         "esxId": "4210b625-9ed7-9a37-9c50-76caee8efa96",
                         "datastoreId": "datastore-47",
+                        "arrayId": "244355130858105830",
+                        "resourcePoolId":  "25761727271460198",
                         "testNetworkId": "testNetworkId",
                         "isProdCluster": false
                     }
