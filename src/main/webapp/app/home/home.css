@@ -33,6 +33,11 @@ table.table tr.selected td {
   max-width: 53vw;
 }
 
+.create-cg-modal .modal-dialog {
+  width: 45vw; 	
+  max-width: 45vw;
+}
+
 
 .alert-modal .modal-dialog {
   width: 33vw; 	

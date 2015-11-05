@@ -1,0 +1,155 @@
+<div class="modal-header modal-header-primary">
+    <a class="close" ng-click="cancel()">x</a>
+	<h3 class="modal-title">
+		<div class="centered-text">Create Consistency Group</b></div>
+	</h3>
+</div>
+<div class="modal-body">
+
+	<br/>
+	<table class="table table-condensed table-striped">
+		<thead>
+		</thead>
+		<tbody>
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Group Name:	
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
+								<input ng-model="selectedName"
+			                                              class="form-control" type="text"/>
+							
+							</div>	
+							<div class="col-xs-4 col-sm-4 col-md-4 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+			
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Protect from:	<label for="inputdefault">{{vmStructureData.systemInfo.productionCluster.name}}</label>
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+				        	<div class="col-xs-1 col-sm-1 col-md-1 margin-top-x-lg radio">To:</div>
+							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+								 <select ng-model="selectedCluster" 
+	                                          ng-options="cluster.name for cluster in vmStructureData.systemInfo.replicaClusters" 
+			                                              class="form-control">
+			                                                          <option value="" ng-if="false"></option>
+							
+								</select>
+							</div>	
+							<div class="col-xs-4 col-sm-4 col-md-4 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Select VMs:	
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-9 col-sm-9 col-md-9 margin-top">
+								<multiselect ng-model="selection" options="options" id-prop="id" display-prop="name"></multiselect>
+							</div>	
+							<div class="col-xs-3 col-sm-3 col-md-3 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Replication Policy:	
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-5 col-sm-5 col-md-5 margin-top">
+								<select ng-model="selectedRpo" 	                                
+			                                              class="form-control">
+			                                                         <option>15 min</option>
+    																 <option>30 min</option>
+							
+								</select>
+							</div>	
+							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+			<tr>				
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Replica Resources:	
+						</div>
+					</div>										
+				</td>				
+				<td>	
+					<div class="row">
+						<div class="col-xs-5 col-sm-5 col-md-5 radio">
+							 	Server Class
+						</div>
+						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+							<select class="form-control">
+								<option>{{'PROTECT-UNPROTECT.PREMIUM_MSG' | translate}}</option>
+								<option>{{'PROTECT-UNPROTECT.STANDARD_MSG' | translate}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5 col-sm-5 col-md-5 radio">
+							 	{{'PROTECT-UNPROTECT.STORAGE_CLASS_MSG' | translate}}
+						</div>
+						<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+								<select class="form-control">
+									<option>{{'PROTECT-UNPROTECT.PREMIUM_MSG' | translate}}</option>
+									<option>{{'PROTECT-UNPROTECT.STANDARD_MSG' | translate}}</option>
+								</select>
+						</div>
+					</div>
+				</td>
+			</tr><tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Enable Replication:	<label><input type="checkbox"/></label>
+						</div>
+					</div>										
+				</td>			
+				<td></td>
+			</tr>
+			
+			
+		</tbody>					    
+	</table>
+</div>
+<div class="modal-footer centered-text div-grey">
+	<button type="button" class="btn btn-primary" ng-click="imageAccess()">
+	         Create
+	</button>
+</div>

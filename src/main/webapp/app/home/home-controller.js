@@ -1,4 +1,4 @@
-var app = angular.module('home',  ['pascalprecht.translate', 'locale', 'ui.bootstrap']);
+var app = angular.module('home',  ['pascalprecht.translate', 'locale', 'ui.bootstrap', 'btorfs.multiselect']);
 
 
 app.controller('homeController', ['$scope', '$http', 'userService', function($scope, $http, userService) {   
@@ -192,6 +192,16 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 		});
 	};
 	
+	
+	$scope.openCreateCgModal = function(){
+		var modalInstance = $modal.open({
+             templateUrl: 'app/protect/protect-create-cg-modal.html',
+             controller: 'protectCreateCgController',
+             windowClass: 'create-cg-modal'
+         });
+		
+		modalInstance.result.then(function(){{}});
+	};
 	
 	
 	$scope.refreshMainScreen = function(){
