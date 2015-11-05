@@ -13,6 +13,7 @@ import com.emc.rpsp.infra.common.accounts.service.AccountsDataService;
 import com.emc.rpsp.infra.common.auth.domain.AbstractCurrentUser;
 import com.emc.rpsp.infra.common.systems.service.SystemsDataService;
 import com.emc.rpsp.infra.common.vms.service.VmsDataService;
+import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.service.UserService;
 import com.emc.rpsp.vms.domain.VmOwnership;
@@ -71,6 +72,10 @@ public class BaseServiceImpl implements BaseService{
 	@Override
 	public List<SystemSettings> findSystemsByAccount(Account account) {
 		return systemsDataService.findByAccount(account);
+	}
+	
+	public List<ClusterSettings> findClustersBySystem(SystemSettings systemSettings){
+		return systemsDataService.findClustersBySystem(systemSettings);
 	}
 
 	@Override

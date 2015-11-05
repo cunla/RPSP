@@ -7,6 +7,7 @@ public class AccountVmsStructure {
 
     private String id;
     private String name;
+    private SystemInfo systemInfo;
     private List<VmDefinition> unprotectedVms;
     private List<VmContainer> protectedVms;
 
@@ -56,5 +57,15 @@ public class AccountVmsStructure {
     public void setProtectedVms(List<VmContainer> protectedVms) {
         this.protectedVms = protectedVms;
     }
+
+	public SystemInfo getSystemInfo() {
+		return systemInfo;
+	}
+
+	public void setSystemInfo(SystemInfo systemInfo) {
+		this.systemInfo = systemInfo;
+	}
+    
+    
 
 }

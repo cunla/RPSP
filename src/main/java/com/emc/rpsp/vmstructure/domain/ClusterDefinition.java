@@ -8,8 +8,14 @@ public class ClusterDefinition {
     private String id;
     private String name;
     private List<GroupCopySettings> groupCopySettings = new LinkedList<GroupCopySettings>();
+    
+    
 
-    public ClusterDefinition(String id, String name) {
+    public ClusterDefinition() {
+		super();
+	}
+
+	public ClusterDefinition(String id, String name) {
         super();
         this.id = id;
         this.name = name;
