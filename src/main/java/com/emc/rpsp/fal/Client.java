@@ -581,6 +581,7 @@ public class Client {
 				productionConfig = accountConfig;
 			}
 		}
+
 		
 		GlobalCopyUID productionCopy = new GlobalCopyUID();
 		productionCopy.setCopyUID(0);
@@ -658,7 +659,14 @@ public class Client {
 			
 			ConsistencyGroupCopyVolumeCreationParams consistencyGroupCopyVolumeCreationParams = new ConsistencyGroupCopyVolumeCreationParams();
 			VolumeCreationParams volumeCreationParams = new VolumeCreationParams();
-			if(accountConfig.getClusterId() == 1948638374096422771L){
+			
+			volumeCreationParams.setVolumeSize(new VolumeSize(10*1000*1000*1000));
+			volumeCreationParams.setPoolUid(new ResourcePoolUID(accountConfig.getResourcePoolId(), accountConfig.getDatastoreId(), new ArrayUID(accountConfig.getArrayId(), new ClusterUID(accountConfig.getClusterId()))));
+			volumeCreationParams.setResourcePoolType(ArrayResourcePoolType.VC_DATASTORE);
+			volumeCreationParams.setArrayUid(new ArrayUID(accountConfig.getArrayId(), new ClusterUID(accountConfig.getClusterId())));
+			
+			
+			/*if(accountConfig.getClusterId() == 1948638374096422771L){
 				volumeCreationParams.setVolumeSize(new VolumeSize(10*1000*1000*1000));
 				volumeCreationParams.setPoolUid(new ResourcePoolUID(25761727271460198L, "datastore-47", new ArrayUID(244355130858105830L, new ClusterUID(accountConfig.getClusterId()))));
 				volumeCreationParams.setResourcePoolType(ArrayResourcePoolType.VC_DATASTORE);
@@ -669,7 +677,10 @@ public class Client {
 				volumeCreationParams.setPoolUid(new ResourcePoolUID(5371132172867647L, "datastore-46", new ArrayUID(271667398027662287L, new ClusterUID(accountConfig.getClusterId()))));
 				volumeCreationParams.setResourcePoolType(ArrayResourcePoolType.VC_DATASTORE);
 				volumeCreationParams.setArrayUid(new ArrayUID(271667398027662287L, new ClusterUID(accountConfig.getClusterId())));
-			}
+			}*/
+			
+			
+			
 			consistencyGroupCopyVolumeCreationParams.getVolumeParams().add(volumeCreationParams);
 			consistencyGroupCopyParam.setVolumeCreationParams(consistencyGroupCopyVolumeCreationParams);
 			copiesList.add(consistencyGroupCopyParam);
