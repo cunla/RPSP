@@ -4,7 +4,7 @@ server:
 
 spring:
     profiles:
-        active: dev
+        active: test
 
     datasource:
         dataSourceClassName: org.h2.jdbcx.JdbcDataSource
