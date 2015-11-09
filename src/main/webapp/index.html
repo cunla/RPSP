@@ -3,59 +3,30 @@
 
 	<head>
 		<title>RPSP</title>
-    
-    	<script src="assets/js/angularjs/1.3.14/angular.min.js"></script>
-    	<script src="assets/js/jquery/1.11.3/jquery-1.11.3.min.js"></script>	
-    	<script src="assets/js/bootstrap/3.3.2/bootstrap.min.js"></script>
-    	<script src="assets/js/angular-translate/2.6.1/angular-translate.min.js"></script> 
-  		<script src="assets/js/angular-translate/2.6.1/angular-translate-loader-static-files.min.js"></script>
-  		<script src="assets/js/angular-ui/0.13.0/ui-bootstrap-tpls-0.13.0.js"></script>
-  		<script src="assets/js/multi-select/1.1.3/angular-bootstrap-multiselect.min.js"></script>
-  		
-    	
-    	<script src="app/home/home-controller.js"></script>
-    	<script src="app/home/user-service.js"></script>
-    	<script src="app/home/vm-structure-service.js"></script>
-    	<script src="app/image-access/image-access-controller.js"></script>
-    	<script src="app/image-access/group-set-image-access-controller.js"></script>
-    	<script src="app/protect/protect-controller.js"></script>  
-    	<script src="app/protect/protect-create-cg-controller.js"></script>
-    	<script src="app/unprotect/unprotect-controller.js"></script>
-    	<script src="app/bookmarks/bookmarks-controller.js"></script>
-    	<script src="app/failover/failover-controller.js"></script> 
-    	<script src="app/failover/group-set-failover-controller.js"></script>
-    	<script src="app/failover/failover-alert-controller.js"></script>
-    	<script src="app/recover/recover-controller.js"></script>
-    	<script src="app/recover/group-set-recover-controller.js"></script>
-    	<script src="app/home/dnd-directives.js"></script>      	 	
-    	<script src="app/locale/locale-service.js"></script>
-    	
-    	
-    	<link rel="stylesheet" href="assets/css/bootstrap/3.3.2/bootstrap.min.css" />
-		<link rel="stylesheet" href="assets/css/font-awesome/4.2.0/font-awesome.css" />
-    	
-    	<link rel="stylesheet" href="app/home/home.css">
-		<link rel="stylesheet" href="assets/css/navbar.css">
-		<link rel="stylesheet" href="assets/css/styles.css">
-		<link rel="stylesheet" href="assets/css/layout.css">
-		<link rel="stylesheet" href="custom/css/custom.css">
-		<link rel="stylesheet" href="app/unprotect/unprotect.css">
+        <link rel="stylesheet" href="assets/css/bootstrap/3.3.2/bootstrap.min.css" />
+        <link rel="stylesheet" href="assets/css/font-awesome/4.2.0/font-awesome.css" />
 
+        <link rel="stylesheet" href="app/home/home.css">
+        <link rel="stylesheet" href="assets/css/navbar.css">
+        <link rel="stylesheet" href="assets/css/styles.css">
+        <link rel="stylesheet" href="assets/css/layout.css">
+        <link rel="stylesheet" href="custom/css/custom.css">
+        <link rel="stylesheet" href="app/unprotect/unprotect.css">
 	</head>
-	
+
 
 	<body ng-controller="vmStructureController">
-	
-	
-	
+
+
+
 	<div class="div-grey">
-	
+
 		<nav class="navbar navbar-default">
 		    <div class="container" ng-controller="homeController">
 		        <div class="navbar-header">
 		            <a class="navbar-brand" href="/rpsp">{{'HOME.DISASTER_RECOVERY_MSG' | translate}}</a>
 		        </div>
-		
+
 		        <ul class="nav navbar-nav navbar-right">
 		        	<li><div class="logo-image"></div></li>
 		            <!-- <li><a> {{ 'HOME.WELCOME_MSG' | translate }}, {{currentUser.login}}</a></li> -->
@@ -64,36 +35,36 @@
 		        </ul>
 		    </div>
 		</nav>
-		
+
 		<div class="container-fluid padding-bottom">
-		    <div class="row">		     
+		    <div class="row">
 		     <div class="col-xs-2 col-sm-2 col-md-2">
-		     	<div class="msg-alert-info all-borders"> 	
+		     	<div class="msg-alert-info all-borders">
 			        <div class="centered-text">{{'HOME.PROTECTED_VMS_MSG' | translate}} {{protectedVms}}</div>
 			        <div class="centered-text">{{'HOME.TOTAL_VMS_MSG' | translate}} {{totalVms}}</div>
-		        </div>    
+		        </div>
 		     </div>
 		     <div class="col-xs-2 col-sm-2 col-md-2">
-		     	<div class="msg-alert-error all-borders">	
+		     	<div class="msg-alert-error all-borders">
 			     	<div class="centered-text">{{'HOME.ERRORS_MSG' | translate}} 1</div>
 			        <div class="centered-text">{{'HOME.WARNINGS_MSG' | translate}} 3</div>
-		        </div>	        	        
+		        </div>
 		     </div>
 		     <div class="col-xs-2 col-sm-2 col-md-2">
-		     	<div class="msg-alert-info all-borders">	
+		     	<div class="msg-alert-info all-borders">
 			     	<div class="centered-text">{{'HOME.NEW_MESSAGES_MSG' | translate}} 2</div>
 			     	<div class="centered-text"><white-space>     </white-space></div>
-		        </div>	        	        
+		        </div>
 		     </div>
 		     <div class="col-xs-6 col-sm-6 col-md-6">
-		     </div>	
-		    </div>	
+		     </div>
+		    </div>
 		   </div>
-			
-			
+
+
 		</div>
-		
-			
+
+
  		<div class="col-xs-12 col-sm-12 col-md-12 container top-border div-solid-grey">
 			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}" ng-click="openImageAccessModal()">{{'HOME.DR_TEST_MSG' | translate}}</button>
 			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}" ng-click="openFailoverModal()">{{'HOME.FAILOVER_MSG' | translate}}</button>
@@ -104,17 +75,17 @@
 			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}">{{'HOME.SHOW_HISTORY_MSG' | translate}}</button>
 			  <button type="button" class="btn btn-primary margin-top" ng-class="{'disabled' : !isActionApplicable()}">{{'HOME.SERVICE_REQUEST_MSG' | translate}}</button>
 			  <button type="button" class="btn btn-primary margin-top" ng-click="openCreateCgModal()">Create Consistency Group</button>
-		</div>		
-			
+		</div>
+
 		<br></br>
-		
-		
-		
+
+
+
 		<div class="panel panel-default full-height">
 		  <div class="spinner-gif" ng-show="loading"></div>
 		  <div class="panel-body full-height">
 		    <div class="row full-height">
-		     <div class="col-xs-9 col-sm-9 col-md-9 right-border">      
+		     <div class="col-xs-9 col-sm-9 col-md-9 right-border">
 					<table class="table table-condensed table-striped">
 					    <thead>
 					      <tr>
@@ -128,7 +99,7 @@
 					      </tr>
 					    </thead>
 					   <tbody>
-					     	<tr ng-repeat="row in vmGsAndCgFlatData" droppable="true" index="{{$index}}" cgid="{{row.id}}" prod-cluster-id="{{row.productionCluster.id}}" replica-cluster-id="{{row.replicaClusters[0].id}}" ng-click="toggleSelect($index, true)" ng-class="{'selected' : (protectedSelectedIndex == $index )}">					
+					     	<tr ng-repeat="row in vmGsAndCgFlatData" droppable="true" index="{{$index}}" cgid="{{row.id}}" prod-cluster-id="{{row.productionCluster.id}}" replica-cluster-id="{{row.replicaClusters[0].id}}" ng-click="toggleSelect($index, true)" ng-class="{'selected' : (protectedSelectedIndex == $index )}">
 								<td>
 								    <cg-offset ng-if="row.parent != null">
 								   		<white-space>     </white-space>
@@ -145,10 +116,10 @@
 					        		<div ng-if="row.id == 'new-section'"><white-space>     </white-space></div>
 					        		<div ng-if="row.id == 'new-section'"><white-space>     </white-space></div>
 					        		<div ng-if="row.id == 'new-section'"><white-space>     </white-space></div>
-				        		</td>			
-				        			
+				        		</td>
+
 								<td>{{row.productionCluster.name}}</td>
-								<td>{{row.replicaClusters[0].name}}</td>						
+								<td>{{row.replicaClusters[0].name}}</td>
 								<td>{{row.type == 'cg' ? getState('Enabled') : null}}</td>
 								<td>{{getReplicationStateIndicator(row.replicaClusters[0].groupCopySettings[0].replication, row.replicaClusters[0].groupCopySettings[0].initCompletionPortion)}}</td>
 								<td>{{row.maxVolumeSize}}</td>
@@ -156,10 +127,10 @@
 								<!-- <td>{{row.replicaClusters[0].groupCopySettings[0].imageAccess == 'Enabled' ? ('HOME.DR_TEST_ENABLED_MSG' | translate) : ('HOME.DR_TEST_DISABLED_MSG' | translate)}}</td> -->
 							</tr>
 					    </tbody>
-					    
+
 					</table>
-				</div>	
-				<div class="col-xs-3 col-sm-3 col-md-3 full-height" droppable="true">      
+				</div>
+				<div class="col-xs-3 col-sm-3 col-md-3 full-height" droppable="true">
 					<table  class="table table-condensed table-striped">
 					    <thead>
 					      <tr>
@@ -167,20 +138,48 @@
 					      </tr>
 					    </thead>
 					    <tbody>
-					     	<tr ng-repeat="row in vmStructureData.unprotectedVms track by row.id" draggable="true" index="{{$index}}" vmid="{{row.id}}" ng-click="toggleSelect($index, false)" ng-class="{'selected' : unprotectedSelectedIndex == $index}">									
+					     	<tr ng-repeat="row in vmStructureData.unprotectedVms track by row.id" draggable="true" index="{{$index}}" vmid="{{row.id}}" ng-click="toggleSelect($index, false)" ng-class="{'selected' : unprotectedSelectedIndex == $index}">
 								<td class="centered-text">{{row.name}}</td>
 							</tr>
 					    </tbody>
 					</table>
-				</div>	
-  		 </div>	
-		
+				</div>
+  		 </div>
+
 		  </div>
-		</div>	
+		</div>
 		<div class="navbar navbar-default navbar-fixed-bottom">
 	     <div class="container">
-	     	<p class="navbar-text pull-left" id="corp-footer">{{'HOME.POWERED_BY_RECOVERPOINT_FOR_VMS' | translate}}</p>     
+	     	<p class="navbar-text pull-left" id="corp-footer">{{'HOME.POWERED_BY_RECOVERPOINT_FOR_VMS' | translate}}</p>
 	   	 </div>
    	</div>
-	</body>
+
+
+    <script src="assets/js/angularjs/1.3.14/angular.min.js"></script>
+    <script src="assets/js/jquery/1.11.3/jquery-1.11.3.min.js"></script>
+    <script src="assets/js/bootstrap/3.3.2/bootstrap.min.js"></script>
+    <script src="assets/js/angular-translate/2.6.1/angular-translate.min.js"></script>
+    <script src="assets/js/angular-translate/2.6.1/angular-translate-loader-static-files.min.js"></script>
+    <script src="assets/js/angular-ui/0.13.0/ui-bootstrap-tpls-0.13.0.js"></script>
+    <script src="assets/js/multi-select/1.1.3/angular-bootstrap-multiselect.min.js"></script>
+
+
+    <script src="app/home/home-controller.js"></script>
+    <script src="app/home/user-service.js"></script>
+    <script src="app/home/vm-structure-service.js"></script>
+    <script src="app/image-access/image-access-controller.js"></script>
+    <script src="app/image-access/group-set-image-access-controller.js"></script>
+    <script src="app/protect/protect-controller.js"></script>
+    <script src="app/protect/protect-create-cg-controller.js"></script>
+    <script src="app/unprotect/unprotect-controller.js"></script>
+    <script src="app/bookmarks/bookmarks-controller.js"></script>
+    <script src="app/failover/failover-controller.js"></script>
+    <script src="app/failover/group-set-failover-controller.js"></script>
+    <script src="app/failover/failover-alert-controller.js"></script>
+    <script src="app/recover/recover-controller.js"></script>
+    <script src="app/recover/group-set-recover-controller.js"></script>
+    <script src="app/home/dnd-directives.js"></script>
+    <script src="app/locale/locale-service.js"></script>
+
+    </body>
 </html>
