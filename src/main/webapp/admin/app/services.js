@@ -32,7 +32,7 @@ app.service('userService',['$http', function($http) {
 
      this.getAdminData=function(){
       return $http.get('admin-data.txt').then(function(res){
-        return res;
+        return res.data;
       });
      }
 
