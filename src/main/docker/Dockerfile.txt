@@ -1,0 +1,6 @@
+FROM dockerfile/java:oracle-java8
+
+ADD rpsp.war /opt/rpsp/
+EXPOSE 8080
+WORKDIR /opt/rpsp/
+CMD ["java", "-Xms512m", "-Xmx1g", "-jar", "rpsp.war"]
