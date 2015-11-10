@@ -24,6 +24,22 @@ Database holds information about
 All operations are done through RP4VM REST API.
 
 ###INSTALLATION
+
+####Deploying as a docker
+It is possible to build a docker from this project. After building the project, in the `target/` directory
+To build the docker which is based on the java8 docker, run the command `docker build -t rpsp target/` (use `sudo` if you are on a linux environment)
+
+After that you can run the docker using:
+`sudo docker run --name rpsp -e DB_URL=jdbc:mysql://127.0.0.1:3306/rpsp -e DB_USER=rpsp -e DB_PASSWORD=rpsp -p 9999:8080 -d rpsp`
+
+Alternatively you can simply run RPSP from dockerhub using
+`sudo docker run --name rpsp -e DB_URL=jdbc:mysql://127.0.0.1:3306/rpsp -e DB_USER=rpsp -e DB_PASSWORD=rpsp -p 9999:8080 -d shpboris/rpsp`
+
+Notice you need to define the environment variables to connect to the database RPSP will be using.
+`DB_URL` - The jdbc URL
+`DB_USER` - User to connect to database
+`DB_PASSWORD` - User password to connect to database
+
 ####Installation prerequisites:
  1. Java ver 1.8 and above
  2. 100 MB of available disk space
@@ -44,7 +60,7 @@ All operations are done through RP4VM REST API.
  4. Run Application class from the WAR file using the command `java -jar rpsp.war`
  5. You can also deploy the WAR on your own web-container (tomcat/etc.)
 
-####INSTALLATION AS WINDOWS SERVICE
+####Installation as a windows service
 It is recommended to configure RPSP to run as a Windows Service as explained in this guide: https://nssm.cc/usage
 
 ###Getting started
@@ -55,7 +71,13 @@ In order to add your first RP system and its relevant data, a support REST API w
 `GET rpsp/data-loader/internal-data/template`
 There is a template for an array of RP system configurations.
 Each RP system as its clusters and its accounts.
-Each account has a list of all its virtual machines registered as their vSphere ID
+Each account has a list of all its virtual machines registered as their vSphere ID when using DR **in** the cloud template.
+When a RP system is set as DR **to** the cloud the available virtual machines for replication are found using the RP4VM REST API.
+The clusters' ids can be found using:
+`https://{RPSYSTEM IP}:7225/fapi/rest/4_1/system/virtual_infrastructures/state`
+The
+vCenter ID, ESXi ID, etc. can be found using:
+`https://{RPSYSTEM IP}:7225/fapi/rest/4_3/clusters/1948638374096422771/virtual_infra_configuration`
 * You can get the vmId from vSphere client or from fapi full system settings using `https://{RPSYSTEM IP}:7225/fapi/rest/4_3/settings`
 Other than that, each account should have a list of users to do operations,
 and a configuration for default protection ESX and datastore.
@@ -123,9 +145,9 @@ The following methods are supported in the RPSP RESP API, with base being http:/
      - `GET /users/{id}` Get specific user 
      - `POST /users?accountId =”your-account-id”` Create user under specific account 
         `{
-            "vmId": "50050edd-9ab2-c72b-f82f-9a0ef42e9774",
+            "vmId": "50050edd-9ab2-c72b-f82f-9a0ef42e9774",
             "vmName": "SB Reporting services VM"
-         }`
+         }`
      - `POST /users/{id}` Update specific user 
      - `DELETE /users/{id}` Delete specific user 
 
