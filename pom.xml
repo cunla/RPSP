@@ -100,15 +100,15 @@
             <version>1.4.1</version>
         </dependency>
         <dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.4</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
-		</dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
 
 
         <dependency>
@@ -232,19 +232,19 @@
             <version>${javax.inject.version}</version>
         </dependency>
         <dependency>
-        	<groupId>org.neo4j</groupId>
-        	<artifactId>neo4j-cypher-compiler-2.1</artifactId>
-        	<version>2.1.5</version>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-cypher-compiler-2.1</artifactId>
+            <version>2.1.5</version>
         </dependency>
         <dependency>
-        	<groupId>net.wimpi</groupId>
-        	<artifactId>telnetd-x</artifactId>
-        	<version>2.1.1</version>
+            <groupId>net.wimpi</groupId>
+            <artifactId>telnetd-x</artifactId>
+            <version>2.1.1</version>
         </dependency>
         <dependency>
-        	<groupId>commons-lang</groupId>
-        	<artifactId>commons-lang</artifactId>
-        	<version>2.4</version>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.4</version>
         </dependency>
     </dependencies>
 
@@ -279,7 +279,7 @@
                             <outputDirectory>${basedir}/target/</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>src/main/docker</directory>
+                                    <directory>docker</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
@@ -287,24 +287,24 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>com.coderplus.maven.plugins</groupId>
-                <artifactId>copy-rename-maven-plugin</artifactId>
-                <version>1.0</version>
-                <executions>
-                    <execution>
-                        <id>rename-file</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>rename</goal>
-                        </goals>
-                        <configuration>
-                            <sourceFile>${basedir}/target/Dockerfile.txt</sourceFile>
-                            <destinationFile>${basedir}/target/Dockerfile</destinationFile>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+            <!--<groupId>com.coderplus.maven.plugins</groupId>-->
+            <!--<artifactId>copy-rename-maven-plugin</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>rename-file</id>-->
+            <!--<phase>validate</phase>-->
+            <!--<goals>-->
+            <!--<goal>rename</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<sourceFile>${basedir}/target/Dockerfile</sourceFile>-->
+            <!--<destinationFile>${basedir}/target/Dockerfile</destinationFile>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
 
     </build>
@@ -314,10 +314,10 @@
             <url>http://repo.spring.io/milestone</url>
         </repository>
         <repository>
-	        <id>remote-repos</id>
-	        <name>artifacts-il-releases</name>
-	        <url>http://artifacts-il:8081/artifactory/remote-repos</url>
-    	</repository>
+            <id>remote-repos</id>
+            <name>artifacts-il-releases</name>
+            <url>http://artifacts-il:8081/artifactory/remote-repos</url>
+        </repository>
 
     </repositories>
     <pluginRepositories>

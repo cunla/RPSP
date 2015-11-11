@@ -1,4 +1,4 @@
-FROM dockerfile/java:oracle-java8
+FROM java:8
 
 ADD rpsp.war /opt/rpsp/
 EXPOSE 8080
