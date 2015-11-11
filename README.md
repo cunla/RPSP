@@ -73,10 +73,11 @@ There is a template for an array of RP system configurations.
 Each RP system as its clusters and its accounts.
 Each account has a list of all its virtual machines registered as their vSphere ID when using DR **in** the cloud template.
 When a RP system is set as DR **to** the cloud the available virtual machines for replication are found using the RP4VM REST API.
+
 The clusters' ids can be found using:
 `https://{RPSYSTEM IP}:7225/fapi/rest/4_1/system/virtual_infrastructures/state`
-The
-vCenter ID, ESXi ID, etc. can be found using:
+
+The vCenter ID, ESXi ID, etc. can be found using:
 `https://{RPSYSTEM IP}:7225/fapi/rest/4_3/clusters/1948638374096422771/virtual_infra_configuration`
 * You can get the vmId from vSphere client or from fapi full system settings using `https://{RPSYSTEM IP}:7225/fapi/rest/4_3/settings`
 Other than that, each account should have a list of users to do operations,

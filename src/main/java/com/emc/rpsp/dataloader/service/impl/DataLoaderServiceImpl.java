@@ -13,7 +13,6 @@ import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.users.service.UserService;
 import com.emc.rpsp.vms.domain.VmOwnership;
 import com.emc.rpsp.vms.service.VmOwnershipService;
-
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,14 +74,14 @@ import java.util.Map;
 
                 //vms data
                 List<Map<String, Object>> vms = (List<Map<String, Object>>) currAccount.get("vms");
-                if(vms != null){
-	                for (Map<String, Object> currVm : vms) {
-	                    VmOwnership vmOwnership = new VmOwnership();
-	                    account.addVm(vmOwnership);
-	                    vmOwnership.setVmId(currVm.get("vmId").toString());
-	                    vmOwnership.setVmName(currVm.get("vmName").toString());
-	                    vmOwnership.setAccount(account);
-	                }
+                if (vms != null) {
+                    for (Map<String, Object> currVm : vms) {
+                        VmOwnership vmOwnership = new VmOwnership();
+                        account.addVm(vmOwnership);
+                        vmOwnership.setVmId(currVm.get("vmId").toString());
+                        vmOwnership.setVmName(currVm.get("vmName").toString());
+                        vmOwnership.setAccount(account);
+                    }
                 }
 
                 //users data
@@ -100,35 +99,42 @@ import java.util.Map;
                     user.setLastName(currUser.get("lastName").toString());
                     user.setAccount(account);
                 }
-                
+
                 //account configurations data
                 List<Map<String, Object>> accountConfigs = (List<Map<String, Object>>) currAccount
                 .get("accountConfigs");
                 for (Map<String, Object> currAccountConfig : accountConfigs) {
-                	AccountConfig accountConfig = new AccountConfig();
-                	account.addAccountConfig(accountConfig);
-                	accountConfig.setClusterId(Long.parseLong(currAccountConfig.get("clusterId").toString()));
-                	accountConfig.setDatastoreId(currAccountConfig.get("datastoreId").toString());
-                	
-                	if(currAccountConfig.get("arrayId") != null){
-                		accountConfig.setArrayId(Long.parseLong(currAccountConfig.get("arrayId").toString()));
-                	}
-                	if(currAccountConfig.get("resourcePoolId") != null){
-                		accountConfig.setResourcePoolId(Long.parseLong(currAccountConfig.get("resourcePoolId").toString()));
-                	}
-                	
-                	if(currAccountConfig.get("datacenterId") != null){
-                		accountConfig.setDataCenterId(currAccountConfig.get("datacenterId").toString());
-                	}
-                	accountConfig.setEsxId(currAccountConfig.get("esxId").toString());
-                	if(currAccountConfig.get("esxClusterId") != null){
-                		accountConfig.setEsxClusterId(currAccountConfig.get("esxClusterId").toString());
-                	}
-                	accountConfig.setVcId(currAccountConfig.get("vcId").toString());
-                	accountConfig.setTestNetworkId(currAccountConfig.get("testNetworkId").toString());
-                	accountConfig.setIsProductionCluster(Boolean.parseBoolean(currAccountConfig.get("isProdCluster").toString()));
-                	accountConfig.setAccount(account);
-                	
+                    AccountConfig accountConfig = new AccountConfig();
+                    account.addAccountConfig(accountConfig);
+                    accountConfig
+                    .setClusterId(Long.parseLong(currAccountConfig.get("clusterId").toString()));
+                    accountConfig.setDatastoreId(currAccountConfig.get("datastoreId").toString());
+
+                    if (currAccountConfig.get("arrayId") != null) {
+                        accountConfig
+                        .setArrayId(Long.parseLong(currAccountConfig.get("arrayId").toString()));
+                    }
+                    if (currAccountConfig.get("resourcePoolId") != null) {
+                        accountConfig.setResourcePoolId(
+                        Long.parseLong(currAccountConfig.get("resourcePoolId").toString()));
+                    }
+
+                    if (currAccountConfig.get("datacenterId") != null) {
+                        accountConfig
+                        .setDataCenterId(currAccountConfig.get("datacenterId").toString());
+                    }
+                    accountConfig.setEsxId(currAccountConfig.get("esxId").toString());
+                    if (currAccountConfig.get("esxClusterId") != null) {
+                        accountConfig
+                        .setEsxClusterId(currAccountConfig.get("esxClusterId").toString());
+                    }
+                    accountConfig.setVcId(currAccountConfig.get("vcId").toString());
+                    accountConfig
+                    .setTestNetworkId(currAccountConfig.get("testNetworkId").toString());
+                    accountConfig.setIsProductionCluster(
+                    Boolean.parseBoolean(currAccountConfig.get("isProdCluster").toString()));
+                    accountConfig.setAccount(account);
+
                 }
 
             }
@@ -162,7 +168,10 @@ import java.util.Map;
         for (Map.Entry<Long, String> entry : clusters.entrySet()) {
             ClusterSettings cluster = new ClusterSettings(entry.getKey(), entry.getValue(),
             systemSettings);
-            cluster.setFriendlyName(clusterFriendlyNames.get(entry.getValue()).toString());
+            Object clusterFriendlyName = clusterFriendlyNames.get(entry.getValue());
+            if (null != clusterFriendlyName) {
+                cluster.setFriendlyName(clusterFriendlyName.toString());
+            }
             systemSettings.addCluster(cluster);
         }
     }
