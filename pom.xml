@@ -313,11 +313,11 @@
             <id>spring-milestones</id>
             <url>http://repo.spring.io/milestone</url>
         </repository>
-        <repository>
-            <id>remote-repos</id>
-            <name>artifacts-il-releases</name>
-            <url>http://artifacts-il:8081/artifactory/remote-repos</url>
-        </repository>
+        <!--<repository>-->
+            <!--<id>remote-repos</id>-->
+            <!--<name>artifacts-il-releases</name>-->
+            <!--<url>http://artifacts-il:8081/artifactory/remote-repos</url>-->
+        <!--</repository>-->
 
     </repositories>
     <pluginRepositories>
