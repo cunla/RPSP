@@ -26,8 +26,8 @@ All operations are done through RP4VM REST API.
 ###INSTALLATION
 
 ####Deploying as a docker
-It is possible to build a docker from this project. After building the project, in the `target/` directory
-To build the docker which is based on the java8 docker, run the command `docker build -t rpsp target/` (use `sudo` if you are on a linux environment)
+It is possible to build a docker from this project. After building the project, in the project root directory
+To build the docker which is based on the java8 docker, run the command `docker build -t rpsp .` (use `sudo` if you are on a linux environment)
 
 After that you can run the docker using:
 `sudo docker run --name rpsp -e DB_URL=jdbc:mysql://127.0.0.1:3306/rpsp -e DB_USER=rpsp -e DB_PASSWORD=rpsp -p 9999:8080 -d rpsp`
