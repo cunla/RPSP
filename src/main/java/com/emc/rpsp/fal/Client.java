@@ -608,7 +608,7 @@ public class Client {
             ConsistencyGroupCopyVolumeCreationParams consistencyGroupCopyVolumeCreationParams = new ConsistencyGroupCopyVolumeCreationParams();
             VolumeCreationParams volumeCreationParams = new VolumeCreationParams();
 
-            volumeCreationParams.setVolumeSize(new VolumeSize(10 * 1000 * 1000 * 1000));
+            volumeCreationParams.setVolumeSize(new VolumeSize(10l*1024l*1024l*1024l));
             volumeCreationParams.setPoolUid(
             new ResourcePoolUID(accountConfig.getResourcePoolId(), accountConfig.getDatastoreId(),
             new ArrayUID(accountConfig.getArrayId(),

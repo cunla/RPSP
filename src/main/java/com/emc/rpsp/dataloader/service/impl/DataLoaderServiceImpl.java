@@ -168,11 +168,13 @@ import java.util.Map;
         for (Map.Entry<Long, String> entry : clusters.entrySet()) {
             ClusterSettings cluster = new ClusterSettings(entry.getKey(), entry.getValue(),
             systemSettings);
+  
             Object clusterFriendlyName = clusterFriendlyNames.get(entry.getValue());
             if (null != clusterFriendlyName) {
                 cluster.setFriendlyName(clusterFriendlyName.toString());
+                systemSettings.addCluster(cluster);
             }
-            systemSettings.addCluster(cluster);
+            
         }
     }
 
