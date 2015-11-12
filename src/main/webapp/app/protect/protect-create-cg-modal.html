@@ -22,7 +22,7 @@
 				<td>
 				        <div class="row">
 							<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
-								<input ng-model="selectedName"
+								<input ng-model="cgName"
 			                                              class="form-control" type="text"/>
 							
 							</div>	
@@ -37,7 +37,7 @@
 				<td margin-top>
 				    <div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								Protect from:	<label for="inputdefault">{{vmStructureData.systemInfo.productionCluster.name}}</label>
+								Protect from:	<label for="inputdefault">{{productionCluster.name}}</label>
 						</div>
 					</div>										
 				</td>			
@@ -45,7 +45,7 @@
 				        <div class="row">
 				        	<div class="col-xs-1 col-sm-1 col-md-1 margin-top-x-lg radio">To:</div>
 							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
-								 <select ng-model="selectedCluster" 
+								 <select ng-model="selectedReplicaCluster" 
 	                                          ng-options="cluster.name for cluster in vmStructureData.systemInfo.replicaClusters" 
 			                                              class="form-control">
 			                                                          <option value="" ng-if="false"></option>
@@ -69,7 +69,7 @@
 				<td>
 				        <div class="row">
 							<div class="col-xs-9 col-sm-9 col-md-9 margin-top">
-								<multiselect ng-model="selection" options="options" id-prop="id" display-prop="name"></multiselect>
+								<multiselect ng-model="selectedVms" options="unprotectedVms" id-prop="id" display-prop="name"></multiselect>
 							</div>	
 							<div class="col-xs-3 col-sm-3 col-md-3 margin-top">
 							</div>	
@@ -137,7 +137,7 @@
 				<td margin-top>
 				    <div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								Enable Replication:	<label><input type="checkbox"/></label>
+								Enable Replication:	<label><input type="checkbox" ng-model="enableReplication"/></label>
 						</div>
 					</div>										
 				</td>			
@@ -149,7 +149,7 @@
 	</table>
 </div>
 <div class="modal-footer centered-text div-grey">
-	<button type="button" class="btn btn-primary" ng-click="imageAccess()">
+	<button type="button" class="btn btn-primary" ng-click="createCg()">
 	         Create
 	</button>
 </div>

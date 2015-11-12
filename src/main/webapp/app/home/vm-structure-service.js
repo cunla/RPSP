@@ -403,8 +403,28 @@ app.service('vmStructureService', ['$http', function ($http) {
 		$http.post(url, bookmarkParams).
 			 then(this.getVmStructureData());   	   			   
     	
-    };   
+    };  
     
+    
+    
+    this.createCg = function(cgName, productionClusterId, replicaClusterId, selectedVms, enableReplication){
+    	var url = '/rpsp/groups';
+    	
+    	var cgParams = {};   	
+    	cgParams.groupName = cgName;
+    	var vmIds = new Array();
+    	for(i = 0; i <  selectedVms.length; i++){
+    		vmIds.push(selectedVms[i].id);
+    	}
+    	cgParams.vms = vmIds;
+    	cgParams.enableReplication = enableReplication;
+
+
+		$http.post(url, cgParams).
+			 then(this.getVmStructureData());   	   			   
+    	
+    };  
+
     
             
     
