@@ -2,10 +2,10 @@
     {
         "user": "admin",
         "password": "admin",
-        "ip": "10.64.125.56",
+        "ip": "10.64.125.39",
         "clusterFriendlyNames": {
-            "dc01-cl01-attempt2": "New York",
-            "dc02-cl02-attempt2": "London"
+            "bdg-devA1rpCLS01": "New York",
+            "bdg-devA3rpCLS01": "London"
         },
         "accounts": [
             {
@@ -22,24 +22,26 @@
                 ],
                 "accountConfigs": [
                     {
-                        "clusterId": "2874344872902112950",
-                        "vcId": "D10EFCEB-6F69-44D4-AE67-09A573241EA1",
-                        "esxId": "42103de0-2eda-985e-bb28-4a99617cd940",
-                        "esxClusterId": "D10EFCEB-6F69-44D4-AE67-09A573241EA1:c35",
-                        "datastoreId": "datastore-46",
-                        "arrayId": "271667398027662287",
-                        "resourcePoolId":  "5371132172867647",
-                        "datacenterId": "datacenter-21",
+                        "clusterId": "5331003157847575533",
+                        "vcId": "C5AF5339-0AF0-40FA-BB56-5BCBB55E5590",
+                        "esxId": "421c3aa2-c757-407a-3877-c1f5b83bab28",
+                        "esxClusterId": "C5AF5339-0AF0-40FA-BB56-5BCBB55E5590:c7",
+                        "datastoreId": "datastore-26",
+                        "arrayId": "260281984659218584",
+                        "resourcePoolId":  "68883791956094610",
+                        "datacenterId": "datacenter-2",
                         "testNetworkId": "testNetworkId",
                         "isProdCluster": true
                     },
                     {
-                        "clusterId": "1948638374096422771",
-                        "vcId": "D0939A9B-0846-4699-AAD3-2EBE04421FCE",
-                        "esxId": "4210b625-9ed7-9a37-9c50-76caee8efa96",
-                        "datastoreId": "datastore-47",
-                        "arrayId": "244355130858105830",
-                        "resourcePoolId":  "25761727271460198",
+                        "clusterId": "4421635743948481019",
+                        "vcId": "DECF29E0-8992-4DAB-949C-CE32A443235F",
+                        "esxId": "421c1cbd-8616-caea-ee24-97885e0e34a9",
+                        "esxClusterId": "DECF29E0-8992-4DAB-949C-CE32A443235F:c7",
+                        "datastoreId": "datastore-27",
+                        "arrayId": "244099146398403853",
+                        "resourcePoolId":  "68645547608596293",
+                        "datacenterId": "datacenter-2",
                         "testNetworkId": "testNetworkId",
                         "isProdCluster": false
                     }
