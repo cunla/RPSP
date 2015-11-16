@@ -54,6 +54,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.failureHandler((request, response, authentication) -> {
 					response.setStatus(HttpStatus.UNAUTHORIZED.value());
 				})
+        .defaultSuccessUrl("/")
 
 				.permitAll().and().httpBasic();
 

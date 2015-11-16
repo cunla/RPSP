@@ -2,6 +2,7 @@ package com.emc.rpsp.imageaccess.controller;
 
 import java.util.Map;
 
+import com.emc.rpsp.config.auditing.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,21 +19,22 @@ import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
 @Controller public class GroupCopiesImageAccessController {
 
-    @Autowired 
+    @Autowired
     private GroupCopiesImageAccessService imageAccessService;
 
-    @RequestMapping(value = "/groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/enable-latest", 
+    @RequestMapping(value = "/groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/enable-latest",
     		method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Audited
     @ResponseBody public ResponseEntity<HttpStatus> enableLatestImageAccess(
     @PathVariable("clusterId") Long clusterId, @PathVariable("groupId") Long groupId,
     @PathVariable("copyId") Integer copyId) {
         imageAccessService.enableLatestImageAccess(clusterId, groupId, copyId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    	
-    
 
-    @RequestMapping(value = "/groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/enable", method = RequestMethod.PUT, 
+
+
+    @RequestMapping(value = "/groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/enable", method = RequestMethod.PUT,
     		produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody public ResponseEntity<HttpStatus> enableSnapshotImageAccess(
     @PathVariable("clusterId") Long clusterId, @PathVariable("groupId") Long groupId,
@@ -43,8 +45,8 @@ import com.emc.rpsp.vmstructure.domain.CopySnapshot;
         imageAccessService.enableSnapshotImageAccess(clusterId, groupId, copyId, copySnapshot);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
-    
+
+
 
     @RequestMapping(value = "/groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/disable", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

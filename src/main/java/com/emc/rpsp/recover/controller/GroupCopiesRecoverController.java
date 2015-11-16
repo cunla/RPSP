@@ -1,5 +1,6 @@
 package com.emc.rpsp.recover.controller;
 
+import com.emc.rpsp.config.auditing.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +20,7 @@ public class GroupCopiesRecoverController {
 	private GroupCopiesRecoverService recoverService;
 
 	@RequestMapping(value = "/groups/{groupId}/clusters/{clusterId}/copies/{copyId}/recover-production", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Audited
 	@ResponseBody
 	public ResponseEntity<HttpStatus> failover(
 			@PathVariable("clusterId") Long clusterId,
