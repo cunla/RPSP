@@ -16,7 +16,7 @@ import java.util.Arrays;
 @Aspect public class AuditAspect {
     private final Logger log = LoggerFactory.getLogger(AuditAspect.class);
 
-    @Pointcut("@annotation(com.emc.rpsp.config.auditing.Billable)")
+    @Pointcut("@annotation(com.emc.rpsp.config.auditing.Audited)")
     public void loggingPointcut() {}
 
     @Around("loggingPointcut()") public Object logAround(ProceedingJoinPoint joinPoint)
