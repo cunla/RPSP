@@ -10,7 +10,7 @@ app.controller('protectCreateCgController', ['$scope', '$http', '$modal', '$moda
 	$scope.selectedVms = {};
 	$scope.cgName = '';
 	$scope.replicationPolicy = {};
-	$scope.enableReplication = false;
+	$scope.enableReplication = true;
 	
 	
 	

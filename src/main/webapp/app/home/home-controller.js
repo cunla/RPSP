@@ -222,7 +222,13 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     	vmStructureService.toggleSelect(ind, isProtected);
     	$scope.protectedSelectedIndex = vmStructureService.getProtectedSelectedIndex();
     	$scope.unprotectedSelectedIndex = vmStructureService.getUnprotectedSelectedIndex();
+    	
+    	if($scope.protectedSelectedIndex != -1 && $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].id == 'new-section'){
+    		$scope.openCreateCgModal()
+    	}
     };
+    
+ 
     
     
     $scope.isActionApplicable = function(){
