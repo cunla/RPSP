@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
@@ -31,7 +32,7 @@ import com.emc.rpsp.rpsystems.SystemSettings;
 @IntegrationTest
 @Transactional
 public class TestClusterRepository {
-	@Inject
+	@Autowired
 	private SystemConnectionInfoRepository clustersRepository;
 
 	private MockMvc restUserMockMvc;
