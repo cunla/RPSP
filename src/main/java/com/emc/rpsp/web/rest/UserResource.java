@@ -6,6 +6,7 @@ import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.users.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ import java.util.Optional;
 
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
 
-    @Inject private UserRepository userRepository;
+    @Autowired private UserRepository userRepository;
 
     // /**
     // * GET /rest/users/:login -> get the "login" user.

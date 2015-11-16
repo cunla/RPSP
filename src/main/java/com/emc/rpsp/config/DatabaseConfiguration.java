@@ -1,11 +1,8 @@
 package com.emc.rpsp.config;
 
-import java.util.Arrays;
-
-import javax.sql.DataSource;
-
-import liquibase.integration.spring.SpringLiquibase;
-
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
@@ -18,9 +15,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import javax.sql.DataSource;
+import java.util.Arrays;
 
 @Configuration @EnableJpaRepositories({ "com.emc.rpsp.repository", "com.emc.rpsp.mgmt",
 "com.emc.rpsp.accounts.repository", "com.emc.rpsp.vms.repository",
@@ -33,7 +29,7 @@ import com.zaxxer.hikari.HikariDataSource;
     private RelaxedPropertyResolver propertyResolver;
 
     private Environment env;
-    
+
     private final String DB_URL = "DB_URL";
     private final String DB_USER = "DB_USER";
     private final String DB_PASSWORD = "DB_PASSWORD";
@@ -57,14 +53,14 @@ import com.zaxxer.hikari.HikariDataSource;
         }
         HikariConfig config = new HikariConfig();
         config.setDataSourceClassName(propertyResolver.getProperty("dataSourceClassName"));
-        
+
         if(org.apache.commons.lang3.StringUtils.isNoneEmpty(env.getProperty(DB_URL))){
         	config.addDataSourceProperty("url", env.getProperty(DB_URL));
-        	
+
         	if(org.apache.commons.lang3.StringUtils.isNoneEmpty(env.getProperty(DB_USER))){
             	config.addDataSourceProperty("user", env.getProperty(DB_USER));
             }
-        	
+
         	if(org.apache.commons.lang3.StringUtils.isNoneEmpty(env.getProperty(DB_PASSWORD))){
             	config.addDataSourceProperty("password", env.getProperty(DB_PASSWORD));
             }
@@ -81,24 +77,24 @@ import com.zaxxer.hikari.HikariDataSource;
 	        config.addDataSourceProperty("user", propertyResolver.getProperty("username"));
 	        config.addDataSourceProperty("password", propertyResolver.getProperty("password"));
         }
-    
-        
+
+
 
         return new HikariDataSource(config);
     }
-
-    @Bean public SpringLiquibase liquibase(DataSource dataSource) {
-        SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setDataSource(dataSource);
-        liquibase.setChangeLog("classpath:config/liquibase/master.xml");
-        liquibase.setContexts("development, production");
-        if (env.acceptsProfiles(Constants.SPRING_PROFILE_FAST)) {
-            liquibase.setShouldRun(false);
-        } else {
-            log.debug("Configuring Liquibase");
-        }
-        return liquibase;
-    }
+//
+    //    @Bean public SpringLiquibase liquibase(DataSource dataSource) {
+    //        SpringLiquibase liquibase = new SpringLiquibase();
+    //        liquibase.setDataSource(dataSource);
+    //        liquibase.setChangeLog("classpath:config/liquibase/master.xml");
+    //        liquibase.setContexts("development, production");
+    //        if (env.acceptsProfiles(Constants.SPRING_PROFILE_FAST)) {
+    //            liquibase.setShouldRun(false);
+    //        } else {
+    //            log.debug("Configuring Liquibase");
+    //        }
+    //        return liquibase;
+    //    }
 
     @Bean public Hibernate4Module hibernate4Module() {
         return new Hibernate4Module();

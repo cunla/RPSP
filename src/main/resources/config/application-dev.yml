@@ -15,9 +15,18 @@ spring:
         password: rpsp
         useServerPrepStmts: true
 
+    auditing:
+        dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+        url: jdbc:mysql://localhost:3306/RPSPAudit
+        databaseName:
+        serverName:
+        username: rpsp
+        password: rpsp
+        useServerPrepStmts: true
+
     jpa:
         database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-        database: H2
+        database: MYSQL
         openInView: false
         show_sql: true
         generate-ddl: true
@@ -45,7 +54,7 @@ metrics:
         enabled: false
         host: localhost
         port: 2003
-        prefix: curt
+        prefix: rpsp
 
 #cache:
 #    timeToLiveSeconds: 3600

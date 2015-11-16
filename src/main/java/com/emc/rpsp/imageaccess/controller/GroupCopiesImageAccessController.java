@@ -2,7 +2,7 @@ package com.emc.rpsp.imageaccess.controller;
 
 import java.util.Map;
 
-import com.emc.rpsp.config.auditing.Audited;
+import com.emc.rpsp.config.auditing.RpspAudited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +24,7 @@ import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
     @RequestMapping(value = "/groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/enable-latest",
     		method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Audited
+    @RpspAudited
     @ResponseBody public ResponseEntity<HttpStatus> enableLatestImageAccess(
     @PathVariable("clusterId") Long clusterId, @PathVariable("groupId") Long groupId,
     @PathVariable("copyId") Integer copyId) {

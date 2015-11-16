@@ -8,5 +8,6 @@ import java.lang.annotation.Target;
 /**
  * Created by morand3 on 8/30/2015.
  */
-@Target(value = ElementType.METHOD) @Retention(RetentionPolicy.SOURCE) public @interface Audited {
+@Target(value = ElementType.METHOD) @Retention(RetentionPolicy.RUNTIME)
+public @interface RpspAudited {
 }

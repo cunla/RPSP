@@ -1,6 +1,6 @@
 package com.emc.rpsp.failover.controller;
 
-import com.emc.rpsp.config.auditing.Audited;
+import com.emc.rpsp.config.auditing.RpspAudited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +21,7 @@ public class GroupCopiesFailoverController {
 
 	@RequestMapping(value = "/groups/{groupId}/clusters/{clusterId}/copies/{copyId}/failover", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-    @Audited
+    @RpspAudited
 	public ResponseEntity<HttpStatus> failover(
 			@PathVariable("clusterId") Long clusterId,
 			@PathVariable("groupId") Long groupId,
