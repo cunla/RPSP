@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.emc.rpsp.config.auditing.Audited;
+import com.emc.rpsp.config.auditing.RpspAudited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +27,7 @@ public class GroupsProtectionController {
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/groups", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Audited
+    @RpspAudited
 	@ResponseBody
 	public ResponseEntity<HttpStatus> createConsistencyGroup(
 								@RequestBody Map<String, Object> params) {
@@ -41,7 +41,7 @@ public class GroupsProtectionController {
 	}
 
 	@RequestMapping(value = "/groups/{groupId}/vms", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Audited
+    @RpspAudited
 	@ResponseBody
 	public ResponseEntity<HttpStatus> addVmToCG(
 			@PathVariable("groupId") Long groupId,

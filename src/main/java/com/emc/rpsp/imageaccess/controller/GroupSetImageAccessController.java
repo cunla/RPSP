@@ -2,7 +2,7 @@ package com.emc.rpsp.imageaccess.controller;
 
 import java.util.Map;
 
-import com.emc.rpsp.config.auditing.Audited;
+import com.emc.rpsp.config.auditing.RpspAudited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
     @RequestMapping(value = "/group-sets/{groupSetId}/clusters/{clusterId}/image-access/enable", method = RequestMethod.PUT,
     		produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Audited
+    @RpspAudited
     @ResponseBody public ResponseEntity<HttpStatus> enableSnapshotImageAccess(
     @PathVariable("clusterId") Long clusterId, @PathVariable("groupSetId") Long groupSetId,
     @RequestBody Map<String, Long> params) {
@@ -39,7 +39,7 @@ import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
 
     @RequestMapping(value = "/group-sets/{groupSetId}/clusters/{clusterId}/image-access/disable", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Audited
+    @RpspAudited
     @ResponseBody
     public ResponseEntity<HttpStatus> disableImageAccess(@PathVariable("clusterId") Long clusterId,
     		@PathVariable("groupSetId") Long groupSetId) {

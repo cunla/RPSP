@@ -4,7 +4,10 @@ import com.emc.rpsp.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -15,7 +18,9 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Arrays;
 
-@SpringBootApplication @EnableAsync @EnableScheduling public class Application {
+@SpringBootApplication @EnableAsync @EnableScheduling
+@EnableAutoConfiguration()
+public class Application {
 
     private final Logger log = LoggerFactory.getLogger(Application.class);
 

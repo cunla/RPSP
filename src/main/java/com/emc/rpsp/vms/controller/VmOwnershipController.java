@@ -2,7 +2,7 @@ package com.emc.rpsp.vms.controller;
 
 import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.accounts.service.AccountService;
-import com.emc.rpsp.config.auditing.Audited;
+import com.emc.rpsp.config.auditing.RpspAudited;
 import com.emc.rpsp.vms.domain.VmOwnership;
 import com.emc.rpsp.vms.service.VmOwnershipService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ import java.util.List;
         return new ResponseEntity<>(vmownership, HttpStatus.OK);
     }
 
-    @Audited
+    @RpspAudited
     @PreAuthorize("hasAuthority('ADMIN')") @RequestMapping(value = "/vmownership", params = {
     "accountId" }, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VmOwnership> createVm(@RequestBody VmOwnership vmOwnership,
@@ -68,7 +68,7 @@ import java.util.List;
         return new ResponseEntity<>(createdVmOwnership, httpHeaders, HttpStatus.CREATED);
     }
 
-    @Audited
+    @RpspAudited
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/vmownership/{id}", method = RequestMethod.DELETE) @ResponseBody
     public ResponseEntity<HttpStatus> deleteVm(@PathVariable("id") Long id) {

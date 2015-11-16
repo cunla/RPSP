@@ -3,7 +3,6 @@ package com.emc.rpsp.config.auditing;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +15,12 @@ import java.util.Arrays;
 @Aspect public class AuditAspect {
     private final Logger log = LoggerFactory.getLogger(AuditAspect.class);
 
-    @Pointcut("@annotation(com.emc.rpsp.config.auditing.Audited)")
-    public void loggingPointcut() {}
+    //    @Pointcut("")
+    //    public void loggingPointcut() {
+    //    }
 
-    @Around("loggingPointcut()") public Object logAround(ProceedingJoinPoint joinPoint)
-    throws Throwable {
+    @Around("@annotation(com.emc.rpsp.config.auditing.RpspAudited)")
+    public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         if (log.isDebugEnabled()) {
             log.debug("Enter: {}.{}() with argument[s] = {}",
             joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(),
