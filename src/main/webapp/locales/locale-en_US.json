@@ -84,5 +84,8 @@
         "CRASH_CONSISTENT_MSG": "Crash-Consistent",
         "APPLICATION_CONSISTENT_MSG": "Application-Consistent",
         "CREATE_MSG": "Create"
+    },
+    "AUDIT":{
+        "TITLE":"Audit log"
     }
 }
