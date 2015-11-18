@@ -87,7 +87,7 @@ and a configuration for default protection ESX and datastore.
 ##USER OPERATIONS
 To access RPSP either AngularJS client or the REST API can be used
 ##RPSP UI – AngularJS Client
-The QURT Web client can be accessed in: http://hostname:8080/rpsp (8080 is the default port) 
+The RPSP Web client can be accessed in: http://hostname:8080/rpsp (8080 is the default port) 
 
 RPSP UI provides the following functionality:
  1. RPSP Configuration – Define RP systems to collect data from
