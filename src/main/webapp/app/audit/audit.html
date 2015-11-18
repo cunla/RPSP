@@ -2,22 +2,24 @@
     <a class="close" ng-click="cancel()">x</a>
 
     <h3 class="modal-title">
-        <div class="centered-text">{{'AUDIT.TITLE' | translate}}</b></div>
+        <div class="centered-text">{{'AUDIT.TITLE' | translate}}</div>
+
     </h3>
 </div>
 <div class="modal-body">
     <div class="navbar">
         <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><i class="fa fa-refresh fa-lg"></i></a></li>
             <li><a href="#"><i class="fa fa-floppy-o fa-lg"></i></a></li>
         </ul>
         <div class="navbar-form navbar-left">
             <div class="input-group">
-                  <span class="input-group-addon">
+                  <span class="input-group-addon" ng-click="getAuditLog(1,searchFilter)">
                         <i class="fa fa-search"></i>
                   </span>
                 <input type="text" class="form-control" ng-model="searchFilter"
                        placeholder="Search for...">
-                <span class="input-group-addon">
+                <span class="input-group-addon" ng-click="clearSearchFilter()">
                    <i class="fa fa-close"></i>
                   </span>
             </div>
@@ -55,7 +57,9 @@
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li ng-repeat="page in pages" class="{{page==audit.currentPage ?'active':''}}"><a href="#">{{page}}</a></li>
+                <li ng-repeat="page in pages" class="{{page==audit.currentPage ?'active':''}}">
+                    <a href="#" ng-click="getAuditLog(page)">{{page}}</a>
+                </li>
 
                 <li ng-show="showNextPages" ng-click="nextPages()">
                     <a href="#" aria-label="Next">

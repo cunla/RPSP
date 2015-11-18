@@ -3,19 +3,21 @@ var app = angular.module('home');
 
 app.controller('auditController', ['$scope', '$modal', '$modalInstance','auditService', function ($scope, $modal, $modalInstance, auditService) {
     $scope.pages = [];
-    auditService.getAuditLog().then(function(res){
-        $scope.audit = res;
-        var page = $scope.audit.currentPage -2;
-        $scope.showPreviousPages=(page>1);
-        $scope.pages = [];
-        while($scope.pages.length<5 && page<=$scope.audit.totalPages){
-            if(page>0){
-                $scope.pages.push(page);
+    $scope.getAuditLog = function(p,search){
+        auditService.getAuditLog(p,search).then(function(res){
+            $scope.audit = res;
+            var page = $scope.audit.currentPage -2;
+            $scope.showPreviousPages=(page>1);
+            $scope.pages = [];
+            while($scope.pages.length<5 && page<=$scope.audit.totalPages){
+                if(page>0){
+                    $scope.pages.push(page);
+                }
+                ++page;
             }
-            ++page;
-        }
-        $scope.showNextPages=(page<=$scope.audit.totalPages);
-    })
+            $scope.showNextPages=(page<=$scope.audit.totalPages);
+        })
+    }
 
     $scope.previousPages=function(){
         var x = $scope.pages[0];
@@ -57,6 +59,11 @@ app.controller('auditController', ['$scope', '$modal', '$modalInstance','auditSe
     $scope.cancel = function(){
 		$modalInstance.dismiss('cancel');
 	};
+	$scope.clearSearchFilter=function(){
+	    $scope.searchFilter="";
+	    $scope.getAuditLog(1);
+	}
 
+    $scope.getAuditLog(1);
 
 }]);
