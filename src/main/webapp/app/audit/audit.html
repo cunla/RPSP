@@ -8,14 +8,15 @@
 <div class="modal-body">
     <div class="navbar">
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><i class="fa fa-floppy-o"></i></a></li>
+            <li><a href="#"><i class="fa fa-floppy-o fa-lg"></i></a></li>
         </ul>
         <div class="navbar-form navbar-left">
             <div class="input-group">
                   <span class="input-group-addon">
                         <i class="fa fa-search"></i>
                   </span>
-            <input type="text" class="form-control" ng-model="searchFilter" placeholder="Search for...">
+                <input type="text" class="form-control" ng-model="searchFilter"
+                       placeholder="Search for...">
                 <span class="input-group-addon">
                    <i class="fa fa-close"></i>
                   </span>
@@ -37,7 +38,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="item in auditlog | filter: searchFilter" ts-repeat>
+            <tr ng-repeat="item in audit.log | filter: searchFilter" ts-repeat>
                 <td align="center">{{item.date | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td align="center">{{item.account}}/{{item.user}}</td>
                 <td align="center">{{item.action}}</td>
@@ -48,18 +49,15 @@
             </tbody>
         </table>
         <nav>
-            <ul class="pagination pagination-sm">
-                <li>
-                    <a href="#" aria-label="Previous">
+            <ul class="pagination pagination-sm" >
+                <li ng-show="showPreviousPages">
+                    <a href="#" aria-label="Previous" ng-click="previousPages()">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li>
+                <li ng-repeat="page in pages" class="{{page==audit.currentPage ?'active':''}}"><a href="#">{{page}}</a></li>
+
+                <li ng-show="showNextPages" ng-click="nextPages()">
                     <a href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
