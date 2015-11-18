@@ -1,4 +1,4 @@
-var app = angular.module('home',  ['pascalprecht.translate', 'locale', 'ui.bootstrap', 'btorfs.multiselect']);
+var app = angular.module('home',  ['pascalprecht.translate', 'locale', 'ui.bootstrap', 'btorfs.multiselect','tableSort']);
 
 
 app.controller('homeController', ['$scope', '$http', 'userService', function($scope, $http, userService) {
