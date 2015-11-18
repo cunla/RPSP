@@ -127,8 +127,6 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 
 
 	$scope.openFailoverModal = function(){
-
-
 		var isGroupSet = false;
 		if($scope.protectedSelectedIndex != -1){
     		var entityType = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type;

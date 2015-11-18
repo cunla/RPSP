@@ -86,6 +86,12 @@
         "CREATE_MSG": "Create"
     },
     "AUDIT":{
-        "TITLE":"Audit log"
+        "TITLE":"Audit log",
+        "DATETIME":"Date&Time",
+        "ACCOUNT_AND_USER":"Account/User",
+        "ACTION":"Action",
+        "ENTITY":"Entity",
+        "STATUS":"Status",
+        "DETAILS":"Details"
     }
 }
