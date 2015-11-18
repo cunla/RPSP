@@ -1,31 +1,31 @@
 var app = angular.module('home',  ['pascalprecht.translate', 'locale', 'ui.bootstrap', 'btorfs.multiselect']);
 
 
-app.controller('homeController', ['$scope', '$http', 'userService', function($scope, $http, userService) {   
-	
+app.controller('homeController', ['$scope', '$http', 'userService', function($scope, $http, userService) {
+
 	  $scope.currentUser = {};
 	  $scope.welcomeData = {};
-	  
-	  $scope.getCurrentUser = function(){		  
+
+	  $scope.getCurrentUser = function(){
 		  userService.getUserData().then(function(allData) {
 		      $scope.currentUser = allData.currentUser;
 		      $scope.welcomeData = allData.welcomeData;
 		   });
-		   
+
 	   };
-	   
+
 	   $scope.getCurrentUser();
 }])
 
 
-app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translate', '$filter', '$timeout', 'vmStructureService', function ($scope, $http, $modal, $translate, $filter, $timeout, vmStructureService) {	
-	
+app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translate', '$filter', '$timeout', 'vmStructureService', function ($scope, $http, $modal, $translate, $filter, $timeout, vmStructureService) {
+
 	$scope.vmStructureData = {};
 	$scope.vmGsAndCgFlatData = {};
 	$scope.totalVms = {};
 	$scope.protectedVms = {};
 	$scope.loading = true;
-	
+
 	$scope.getVmStructureData = function(){
 			vmStructureService.getVmStructureData().then(function(allData) {
 		      $scope.vmStructureData = allData.vmStructureData;
@@ -34,16 +34,16 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 		      $scope.protectedVms = allData.protectedVms;
 		   })
 		   .finally(function (res) {
-			  $scope.loading = false;			  
+			  $scope.loading = false;
 		   })
 	};
-	   
+
 	$scope.getVmStructureData();
-	
-	
-	
+
+
+
 	$scope.openImageAccessModal = function(){
-		
+
 		var isGroupSet = false;
 		if($scope.protectedSelectedIndex != -1){
     		var entityType = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type;
@@ -51,9 +51,9 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     			isGroupSet = true;
 			}
     	}
-		
+
 		var modalInstance = {};
-		
+
 		if(isGroupSet == true){
 			modalInstance = $modal.open({
 	             templateUrl: 'app/image-access/group-set-image-access-modal.html',
@@ -68,17 +68,17 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	             windowClass: 'image-access-modal'
 	         });
 		}
-		
+
 		modalInstance.result.then(function(){{}});
 	};
-	
-	
+
+
 	$scope.openRelevantProtectionModal = function(vmId, cgId){
 		var params = {};
 		params.vmId = vmId;
 		params.cgId = cgId;
 		var modalInstance;
-		
+
 		if(cgId !== undefined){
 			modalInstance = $modal.open({
 	             templateUrl: 'app/protect/protect-modal.html',
@@ -103,32 +103,32 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	             }
 	         });
 		}
-		
+
 		modalInstance.result.finally(function(){
 				$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
 		    	$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
 		    	$scope.totalVms = vmStructureService.getCachedTotalVms();
 		    	$scope.protectedVms = vmStructureService.getCachedProtectedVms();
 		});
-		
-		
+
+
 	};
-	
-	
+
+
 	$scope.openBookmarksModal = function(){
 		var modalInstance = $modal.open({
              templateUrl: 'app/bookmarks/bookmarks-modal.html',
              controller: 'bookmarksController',
              windowClass: 'bookmarks-modal'
          });
-		
+
 		modalInstance.result.then(function(){{}});
 	};
-	
-	
+
+
 	$scope.openFailoverModal = function(){
-		
-		
+
+
 		var isGroupSet = false;
 		if($scope.protectedSelectedIndex != -1){
     		var entityType = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type;
@@ -136,9 +136,9 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     			isGroupSet = true;
 			}
     	}
-		
+
 		var modalInstance = {};
-		
+
 		if(isGroupSet == true){
 			modalInstance = $modal.open({
 	             templateUrl: 'app/failover/group-set-failover-modal.html',
@@ -154,15 +154,15 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	         });
 		}
 
-		
-		modalInstance.result.then(function(result){ 
-			
+
+		modalInstance.result.then(function(result){
+
 		});
 	};
-	
-	
+
+
 	$scope.openRecoverModal = function(){
-		
+
 		var isGroupSet = false;
 		if($scope.protectedSelectedIndex != -1){
     		var entityType = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type;
@@ -170,9 +170,9 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     			isGroupSet = true;
 			}
     	}
-		
+
 		var modalInstance = {};
-		
+
 		if(isGroupSet == true){
 			modalInstance = $modal.open({
 	             templateUrl: 'app/recover/group-set-recover-modal.html',
@@ -187,23 +187,32 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	             windowClass: 'image-access-modal'
 	         });
 		}
-		
-		modalInstance.result.then(function(result){			
+
+		modalInstance.result.then(function(result){
 		});
 	};
-	
-	
+
+
 	$scope.openCreateCgModal = function(){
 		var modalInstance = $modal.open({
              templateUrl: 'app/protect/protect-create-cg-modal.html',
              controller: 'protectCreateCgController',
              windowClass: 'create-cg-modal'
          });
-		
+
 		modalInstance.result.then(function(){{}});
 	};
-	
-	
+
+	$scope.openAuditLogModal = function(){
+    		var modalInstance = $modal.open({
+                 templateUrl: 'app/audit/audit.html',
+                 controller: 'auditController',
+                 windowClass: 'auditlog-modal'
+             });
+
+    		modalInstance.result.then(function(){{}});
+    	};
+
 	$scope.refreshMainScreen = function(){
 		vmStructureService.getVmStructureData();
 		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
@@ -211,22 +220,22 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     	$scope.totalVms = vmStructureService.getCachedTotalVms();
     	$scope.protectedVms = vmStructureService.getCachedProtectedVms();
     };
-	
-	
-    
+
+
+
     $scope.protectedSelectedIndex = -1;
     $scope.unprotectedSelectedIndex = -1;
-    
+
     $scope.toggleSelect = function(ind, isProtected){
-    	
+
     	vmStructureService.toggleSelect(ind, isProtected);
     	$scope.protectedSelectedIndex = vmStructureService.getProtectedSelectedIndex();
     	$scope.unprotectedSelectedIndex = vmStructureService.getUnprotectedSelectedIndex();
     };
-    
-    
+
+
     $scope.isActionApplicable = function(){
-    	var res;    	
+    	var res;
     	if($scope.protectedSelectedIndex != -1){
     		var entityType = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type;
     		if(entityType == 'cg' || entityType == 'gs'){
@@ -238,14 +247,14 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     	}
     	return res;
     };
-    
-    
+
+
    $scope.getImageAccessIndicator = function(status){
 	   var res = status;
 	   if(status != null && status !== undefined){
-		   
-		   var $translate = $filter('translate');		
-		   
+
+		   var $translate = $filter('translate');
+
 		   if(status == 'Enabled'){
 			   res = $translate('HOME.DR_TEST_ENABLED_MSG');
 		   }
@@ -258,15 +267,15 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	   }
 	   return res;
     };
-    
-    
-    
+
+
+
     $scope.getReplicationStateIndicator = function(status, initCompletionPortion){
  	   var res = status;
  	   if(status != null && status !== undefined){
- 		   
+
  		   var $translate = $filter('translate');
- 		   
+
  		   if(status == 'Initializing'){
  			   res = $translate('HOME.TRANSFER_INIT_MSG');
  			   res += (' (' + initCompletionPortion + '%' + ')');
@@ -295,14 +304,14 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
  	   }
  	   return res;
      };
-     
-     
+
+
      $scope.getState = function(status){
   	   var res = status;
   	   if(status != null && status !== undefined){
-  		   
-  		   var $translate = $filter('translate');		
-  		   
+
+  		   var $translate = $filter('translate');
+
   		   if(status == 'Enabled'){
   			   res = $translate('HOME.STATE_ENABLED_MSG');
   		   }
@@ -312,8 +321,8 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
   	   }
   	   return res;
       };
-        
-    
+
+
 }]);
 
 
@@ -329,5 +338,5 @@ angular.module('home').config(function ($translateProvider) {
     prefix: 'locales/locale-',
     suffix: '.json'
   });
-  
+
 });

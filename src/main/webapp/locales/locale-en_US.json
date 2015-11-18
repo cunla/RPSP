@@ -8,6 +8,7 @@
         "SIGN_IN_MSG": "Sign in"
     },
     "HOME": {
+        "AUDIT_LOG":"Audit log",
         "WELCOME_MSG": "Welcome",
         "LOGOUT_MSG": "Logout",
         "RECOVER_POINT_FOR_VM_MSG": "RecoverPoint for Virtual Machines",
