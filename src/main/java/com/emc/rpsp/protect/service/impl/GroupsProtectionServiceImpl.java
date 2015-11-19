@@ -15,12 +15,12 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 	
 
 	@Override
-	public void createConsistencyGroup(String cgName, List<String> vmIds, boolean startReplication) {
+	public void createConsistencyGroup(String cgName, List<String> vmIds, int rpo, boolean startReplication) {
 		Client client = getClient();
     	if(client != null){
     		Account account = getCurrentUser().getAccount();
     		List<AccountConfig> accountConfigs = findAccountConfigsByAccount(account);
-    		client.createConsistencyGroup(cgName, vmIds, accountConfigs, startReplication);
+    		client.createConsistencyGroup(cgName, vmIds, accountConfigs, rpo, startReplication);
     	}		
 	}
 	

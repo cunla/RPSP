@@ -507,7 +507,7 @@ public class Client {
 
     @SuppressWarnings("unused")
     public void createConsistencyGroup(String cgName, List<String> vmIds,
-    List<AccountConfig> accountConfigList, boolean startReplication) {
+    List<AccountConfig> accountConfigList, int rpo, boolean startReplication) {
         Map<Long, AccountConfig> accountConfigsMap = getAccountConfigsMap(accountConfigList);
         ReplicateVmsParam replicateVmsParam = new ReplicateVmsParam();
 
@@ -643,7 +643,7 @@ public class Client {
         ConsistencyGroupLinkPolicy remoteDefaultLinkPolicy = connector
         .getDefaultRemoteGroupLinkPolicy();
         remoteDefaultLinkPolicy.getProtectionPolicy().getRpoPolicy()
-        .setMaximumAllowedLag(new Quantity(25, QuantityType.MINUTES));
+        .setMaximumAllowedLag(new Quantity(rpo, QuantityType.MINUTES));
         for (AccountConfig accountConfig : accountConfigList) {
             if (!accountConfig.getIsProductionCluster()) {
                 ConsistencyGroupLinkUID linkUID = new ConsistencyGroupLinkUID();
