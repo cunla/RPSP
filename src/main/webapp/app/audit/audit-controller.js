@@ -19,6 +19,10 @@ app.controller('auditController', ['$scope', '$modal', '$modalInstance','auditSe
         })
     }
 
+    $scope.getAuditLogAsCsv = function(p,search){
+        auditService.getAuditLogAsCsv(p,search);
+    }
+
     $scope.previousPages=function(){
         var x = $scope.pages[0];
         $scope.pages = [];

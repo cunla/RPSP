@@ -9,8 +9,8 @@
 <div class="modal-body">
     <div class="navbar">
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><i class="fa fa-refresh fa-lg"></i></a></li>
-            <li><a href="#"><i class="fa fa-floppy-o fa-lg"></i></a></li>
+            <li><a href="#" ng-click="getAuditLog(audit.currentPage,searchFilter)"><i class="fa fa-refresh fa-lg"></i></a></li>
+            <li><a href="#" ng-click="getAuditLogAsCsv(audit.currentPage,searchFilter)"><i class="fa fa-floppy-o fa-lg"></i></a></li>
         </ul>
         <div class="navbar-form navbar-left">
             <div class="input-group">
