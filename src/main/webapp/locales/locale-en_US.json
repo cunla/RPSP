@@ -75,7 +75,10 @@
         "CRITICAL_VM_MSG": "Critical VM",
         "PROTECT_VM_MSG": "Protect VM",
         "PROCEED_TO_UNPROTECT_MSG": "Proceed to unprotect ?",
-        "UNPROTECT_VM_MSG": "Unprotect VM"
+        "UNPROTECT_VM_MSG": "Unprotect VM",
+        "RPO_TIER_1_MSG": "15 min",
+        "RPO_TIER_2_MSG": "30 min",
+        "RPO_TIER_3_MSG": "45 min"
     },
     "BOOKMARK": {
         "CREATE_BOOKMARK_MSG": "Create Bookmark for",

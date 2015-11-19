@@ -88,12 +88,20 @@
 				<td>
 				        <div class="row">
 							<div class="col-xs-5 col-sm-5 col-md-5 margin-top">
-								<select ng-model="selectedRpo" 	                                
+							
+														
+								<select ng-model="selectedRpo" 
+	                                          ng-options="rpo.val for rpo in rpoData" 
+			                                              class="form-control">
+							
+								</select>
+							
+								<!-- <select ng-model="selectedRpo" 	                                
 			                                              class="form-control">
 			                                                         <option>15 min</option>
     																 <option>30 min</option>
 							
-								</select>
+								</select> -->
 							</div>	
 							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
 							</div>	
