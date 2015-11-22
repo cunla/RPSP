@@ -225,8 +225,22 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     $scope.unprotectedSelectedIndex = -1;
 
     $scope.toggleSelect = function(ind, isProtected){
-
-    	vmStructureService.toggleSelect(ind, isProtected);
+    	
+    	var prevSelectedIndex = vmStructureService.getProtectedSelectedIndex();
+    	if(ind == prevSelectedIndex 
+    			&& ind != -1 && $scope.vmGsAndCgFlatData[ind].id == 'new-section'){
+    		return;
+    	}
+    	else{
+	    	vmStructureService.toggleSelect(ind, isProtected);
+	    	$scope.protectedSelectedIndex = vmStructureService.getProtectedSelectedIndex();
+	    	$scope.unprotectedSelectedIndex = vmStructureService.getUnprotectedSelectedIndex();
+    	}
+    	
+    };
+    
+    
+    $scope.handleDoubleClick = function(ind, isProtected){
     	$scope.protectedSelectedIndex = vmStructureService.getProtectedSelectedIndex();
     	$scope.unprotectedSelectedIndex = vmStructureService.getUnprotectedSelectedIndex();
     	

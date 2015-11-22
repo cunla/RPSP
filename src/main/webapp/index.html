@@ -102,7 +102,7 @@
 					      </tr>
 					    </thead>
 					   <tbody>
-					     	<tr ng-repeat="row in vmGsAndCgFlatData" droppable="true" index="{{$index}}" cgid="{{row.id}}" prod-cluster-id="{{row.productionCluster.id}}" replica-cluster-id="{{row.replicaClusters[0].id}}" ng-click="toggleSelect($index, true)" ng-class="{'selected' : (protectedSelectedIndex == $index )}">
+					     	<tr ng-repeat="row in vmGsAndCgFlatData" droppable="true" index="{{$index}}" cgid="{{row.id}}" prod-cluster-id="{{row.productionCluster.id}}" replica-cluster-id="{{row.replicaClusters[0].id}}" ng-click="toggleSelect($index, true)" ng-dblclick="handleDoubleClick($index, true)" ng-class="{'selected' : (protectedSelectedIndex == $index )}">
 								<td>
 								    <cg-offset ng-if="row.parent != null">
 								   		<white-space>     </white-space>
