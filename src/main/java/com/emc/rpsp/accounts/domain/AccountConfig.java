@@ -60,13 +60,6 @@ public class AccountConfig implements Serializable {
     @Column(name = "dataCenterId", length = 100)
     private String dataCenterId;
     
-    //For journal creation
-    @Column(name = "arrayId")
-    private Long arrayId;
-    
-    //For journal creation
-    @Column(name = "resourcePoolId")
-    private Long resourcePoolId;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
@@ -175,23 +168,6 @@ public class AccountConfig implements Serializable {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-
-	public Long getArrayId() {
-		return arrayId;
-	}
-
-	public void setArrayId(Long arrayId) {
-		this.arrayId = arrayId;
-	}
-
-	public Long getResourcePoolId() {
-		return resourcePoolId;
-	}
-
-	public void setResourcePoolId(Long resourcePoolId) {
-		this.resourcePoolId = resourcePoolId;
-	}
-
 	
 
 }
