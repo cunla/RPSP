@@ -7,8 +7,11 @@ import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
+
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.http.GET;
+import retrofit.http.Path;
 
 import java.io.EOFException;
 import java.util.HashMap;
@@ -609,27 +612,14 @@ public class Client {
             VolumeCreationParams volumeCreationParams = new VolumeCreationParams();
 
             volumeCreationParams.setVolumeSize(new VolumeSize(10l*1024l*1024l*1024l));
-            volumeCreationParams.setPoolUid(
-            new ResourcePoolUID(accountConfig.getResourcePoolId(), accountConfig.getDatastoreId(),
-            new ArrayUID(accountConfig.getArrayId(),
-            new ClusterUID(accountConfig.getClusterId()))));
-            volumeCreationParams.setResourcePoolType(ArrayResourcePoolType.VC_DATASTORE);
-            volumeCreationParams.setArrayUid(
-            new ArrayUID(accountConfig.getArrayId(), new ClusterUID(accountConfig.getClusterId())));
+            
+            ResourcePoolUID resourcePoolUID = getRelevantResourcePool(accountConfig.getClusterId(), 
+            		accountConfig.getVcId(), accountConfig.getDatastoreId());
+            
+            volumeCreationParams.setPoolUid(resourcePoolUID);
+            volumeCreationParams.setResourcePoolType(ArrayResourcePoolType.VC_DATASTORE); 
+            volumeCreationParams.setArrayUid(resourcePoolUID.getArrayUid()); 
 
-
-			/*if(accountConfig.getClusterId() == 1948638374096422771L){
-				volumeCreationParams.setVolumeSize(new VolumeSize(10*1000*1000*1000));
-				volumeCreationParams.setPoolUid(new ResourcePoolUID(25761727271460198L, "datastore-47", new ArrayUID(244355130858105830L, new ClusterUID(accountConfig.getClusterId()))));
-				volumeCreationParams.setResourcePoolType(ArrayResourcePoolType.VC_DATASTORE);
-				volumeCreationParams.setArrayUid(new ArrayUID(244355130858105830L, new ClusterUID(accountConfig.getClusterId())));
-			}
-			else{
-				volumeCreationParams.setVolumeSize(new VolumeSize(10*1000*1000*1000));
-				volumeCreationParams.setPoolUid(new ResourcePoolUID(5371132172867647L, "datastore-46", new ArrayUID(271667398027662287L, new ClusterUID(accountConfig.getClusterId()))));
-				volumeCreationParams.setResourcePoolType(ArrayResourcePoolType.VC_DATASTORE);
-				volumeCreationParams.setArrayUid(new ArrayUID(271667398027662287L, new ClusterUID(accountConfig.getClusterId())));
-			}*/
 
             consistencyGroupCopyVolumeCreationParams.getVolumeParams().add(volumeCreationParams);
             consistencyGroupCopyParam
@@ -662,6 +652,42 @@ public class Client {
         ConsistencyGroupUID consistencyGroupUID = connector.replicateVms(replicateVmsParam, true);
         return;
     }
+    
+   
+    
+    
+    public ResourcePoolUID getRelevantResourcePool(long clusterId, String vcId, String datastoreId){
+    	ResourcePoolUID res = null;
+    	ClusterSettings clusterSettings = getClusterSettings(clusterId);
+    	List<ArrayManagementProviderSettings> arrayManagementProviderSettings = clusterSettings.getAmpsSettings();
+    	for(ArrayManagementProviderSettings currProviderSettings : arrayManagementProviderSettings){
+    		if(currProviderSettings.getType().equals(ArrayManagementProviderType.VC)){
+    			List<ArraySettings> managedArrays = currProviderSettings.getManagedArrays();
+    			for(ArraySettings currArraySettings : managedArrays){
+    				String serialNumber = currArraySettings.getSerialNumber();
+    				if(vcId.equals(serialNumber)){
+    					List<ArrayResourcePoolSettings>  resourcePools = currArraySettings.getResourcePools();
+    					for(ArrayResourcePoolSettings currArrayResourcePoolSettings : resourcePools){
+    						ResourcePoolUID resourcePoolUid = currArrayResourcePoolSettings.getResourcePoolUID();
+    						if(resourcePoolUid.getStorageResourcePoolId().equals(datastoreId)){
+    							res =  resourcePoolUid;
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
+    	return res;
+    }
+    
+   
+	public ClusterSettings getClusterSettings(long clusterId){
+		ClusterSettings clusterSettings =  connector.getClusterSettings(clusterId);
+		return clusterSettings;
+	}
+    
+    
+    
 
     private VmReplicationSetSettings getVmReplicationSettingsWithRetryOption(String vmId,
     int retryAttempts) {

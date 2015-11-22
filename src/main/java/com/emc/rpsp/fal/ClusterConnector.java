@@ -8,6 +8,7 @@ import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+import com.emc.fapi.jaxws.v4_3.ClusterSettings;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfraConfiguration;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresState;
 import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
@@ -201,9 +202,10 @@ public interface ClusterConnector {
 			+ "groups/virtual_machines/replicate")
 	public ConsistencyGroupUID replicateVms(@Body ReplicateVmsParam params, @Query("startTransfer") boolean startTransfer);
 	
+
 	
-	
-	
+	@GET(BASE_URL + "clusters/{clusterId}/settings")
+	public ClusterSettings getClusterSettings(@Path("clusterId") long clusterId);
 
 
 }
