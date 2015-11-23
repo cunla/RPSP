@@ -173,6 +173,11 @@ app.service('vmStructureService', ['$http', function ($http) {
 	            			vmStructureData.unprotectedVms.push(currVm);
 	            			allCgAndGs[i].vms.splice(j, 1);
 	            			protectedVms -= 1;
+	            			
+	            			if(allCgAndGs[i].vms == null || allCgAndGs[i].vms.length == 0){
+	            				allCgAndGs.splice(i, 1);
+	            				break;
+	            			}
 	            		}
 	            	}
     			}
