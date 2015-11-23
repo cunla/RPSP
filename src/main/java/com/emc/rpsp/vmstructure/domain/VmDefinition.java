@@ -1,11 +1,16 @@
 package com.emc.rpsp.vmstructure.domain;
 
+import com.emc.rpsp.accounts.domain.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class VmDefinition {
 
     private String id;
     private String name;
     private boolean isCritical;
     private int sequenceNumber;
+    @JsonIgnore
+    private Account account;
 
     public VmDefinition(String id, String name) {
         super();
@@ -43,6 +48,14 @@ public class VmDefinition {
 
 	public void setSequenceNumber(int sequenceNumber) {
 		this.sequenceNumber = sequenceNumber;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
     
     
