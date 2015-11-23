@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +28,9 @@ import com.emc.rpsp.users.service.UserService;
 
     @Autowired private AccountRepository accountRepository;
 
-    @PersistenceContext private EntityManager entityManager;
+    @PersistenceContext(unitName = "rpsp")
+    @Qualifier("entityManagerFactory")
+    private EntityManager entityManager;
 
     @Value("${rpsp.admin.login}") private String adminLogin;
 

@@ -6,8 +6,10 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.ApplicationContextException;
@@ -19,12 +21,15 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Arrays;
+import java.util.Map;
 
 @Configuration @EnableTransactionManagement
 //@EnableAutoConfiguration
@@ -41,8 +46,10 @@ public class DatabaseConfiguration implements EnvironmentAware {
     private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
 
     private RelaxedPropertyResolver propertyResolver;
-
     private Environment env;
+
+    private JpaProperties jpaProperties = new JpaProperties();
+    @Autowired(required = false) private PersistenceUnitManager persistenceUnitManager;
 
     private final String DB_URL = "DB_URL";
     private final String DB_USER = "DB_USER";
@@ -53,7 +60,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
         this.propertyResolver = new RelaxedPropertyResolver(env, "spring.datasource.");
     }
 
-    @Bean @Primary public DataSource dataSource() {
+    @Bean(name = "datasource") @Primary public DataSource dataSource() {
         log.debug("Configuring Datasource");
         if (propertyResolver.getProperty("url") == null
         && propertyResolver.getProperty("databaseName") == null) {
@@ -90,6 +97,38 @@ public class DatabaseConfiguration implements EnvironmentAware {
         }
 
         return new HikariDataSource(config);
+    }
+
+    @Bean(name = "emfb1") public EntityManagerFactoryBuilder entityManagerFactoryBuilder1() {
+        HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
+        adapter.setShowSql(this.jpaProperties.isShowSql());
+        adapter.setDatabase(this.jpaProperties.getDatabase());
+        adapter.setDatabasePlatform(this.jpaProperties.getDatabasePlatform());
+        adapter.setGenerateDdl(this.jpaProperties.isGenerateDdl());
+
+        EntityManagerFactoryBuilder builder = new EntityManagerFactoryBuilder(adapter,
+        this.jpaProperties, this.persistenceUnitManager);
+        //builder.setCallback(getVendorCallback());
+        return builder;
+    }
+
+    @Bean(name = "entityManagerFactory") @Primary
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory1(
+    @Qualifier("datasource") DataSource dataSource,
+    @Qualifier("emfb1") EntityManagerFactoryBuilder factoryBuilder) {
+        RelaxedPropertyResolver relaxedPropertyResolver = new RelaxedPropertyResolver(env,
+        "spring.jpa.properties.");
+        Map<String, Object> vendorProperties = relaxedPropertyResolver.getSubProperties(null);
+        return factoryBuilder.dataSource(dataSource)
+        .packages("com.emc.rpsp.repository", "com.emc.rpsp.mgmt",
+        "com.emc.rpsp.accounts.repository", "com.emc.rpsp.vms.repository",
+        "com.emc.rpsp.users.repository").persistenceUnit("rpsp").properties(vendorProperties)
+        .build();
+    }
+
+    @Bean(name = "transactionManager") public PlatformTransactionManager transactionManager1(
+    @Qualifier("entityManagerFactory") EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
     }
 
     @Bean public Hibernate4Module hibernate4Module() {

@@ -6,6 +6,7 @@ import com.emc.rpsp.vms.domain.VmOwnership;
 import com.emc.rpsp.vms.repository.VmOwnershipRepository;
 import com.emc.rpsp.vms.service.VmOwnershipService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,8 @@ public class VmOwnershipServiceImpl implements VmOwnershipService {
 	@Autowired
 	private VmOwnershipRepository vmOwnershipRepository;
 
-	@PersistenceContext
+    @PersistenceContext(unitName = "rpsp")
+    @Qualifier("entityManagerFactory")
 	private EntityManager entityManager;
 
 	@Autowired
@@ -46,7 +48,7 @@ public class VmOwnershipServiceImpl implements VmOwnershipService {
 
 	/*
 	 * @Override
-	 * 
+	 *
 	 * @Transactional public Account create(Account account, Long systemId) {
 	 * entityManager.persist(account); entityManager.flush(); SystemSettings
 	 * systemSettings = systemConnectionInfoRepository.findOne(systemId);

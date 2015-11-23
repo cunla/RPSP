@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +20,14 @@ import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 @Service public class AccountConfigServiceImpl implements AccountConfigService {
 
     @Autowired private AccountRepository accountRepository;
-    
+
     @Autowired private AccountConfigsRepository accountConfigRepository;
 
     @Autowired private SystemConnectionInfoRepository systemConnectionInfoRepository;
 
-    @PersistenceContext private EntityManager entityManager;
+    @PersistenceContext(unitName = "rpsp")
+    @Qualifier("entityManagerFactory")
+    private EntityManager entityManager;
 
 
 
@@ -58,7 +61,7 @@ import com.emc.rpsp.repository.SystemConnectionInfoRepository;
 	@Transactional
 	public void deleteAccountConfig(Long accountConfigId) {
 		accountConfigRepository.delete(accountConfigId);
-		
+
 	}
 
 }

@@ -12,14 +12,17 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Arrays;
 
-@SpringBootApplication @EnableAsync @EnableScheduling
-@EnableAutoConfiguration()
+@SpringBootApplication @EnableAsync @EnableScheduling @EnableTransactionManagement
+@EnableAutoConfiguration(exclude = { HibernateJpaAutoConfiguration.class,
+DataSourceTransactionManagerAutoConfiguration.class })
+//
 public class Application {
 
     private final Logger log = LoggerFactory.getLogger(Application.class);
