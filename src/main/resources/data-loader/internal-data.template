@@ -1,52 +1,48 @@
 [
-    {
-        "user": "admin",
-        "password": "admin",
-        "ip": "10.64.125.39",
-        "clusterFriendlyNames": {
-            "bdg-devA1rpCLS01": "New York",
-            "bdg-devA3rpCLS01": "London"
-        },
-        "accounts": [
-            {
-                "name": "28652",
-                "label": "Springfield bank",
-                "isDrttc": true,
-                "users": [
-                    {
-                        "login": "john.smith@28652",
-                        "firstName": "John",
-                        "lastName": "Smith",
-                        "password": "12345"
-                    }
-                ],
-                "accountConfigs": [
-                    {
-                        "clusterId": "5331003157847575533",
-                        "vcId": "C5AF5339-0AF0-40FA-BB56-5BCBB55E5590",
-                        "esxId": "421c3aa2-c757-407a-3877-c1f5b83bab28",
-                        "esxClusterId": "C5AF5339-0AF0-40FA-BB56-5BCBB55E5590:c7",
-                        "datastoreId": "datastore-26",
-                        "arrayId": "260281984659218584",
-                        "resourcePoolId":  "68883791956094610",
-                        "datacenterId": "datacenter-2",
-                        "testNetworkId": "testNetworkId",
-                        "isProdCluster": true
-                    },
-                    {
-                        "clusterId": "4421635743948481019",
-                        "vcId": "DECF29E0-8992-4DAB-949C-CE32A443235F",
-                        "esxId": "421c1cbd-8616-caea-ee24-97885e0e34a9",
-                        "esxClusterId": "DECF29E0-8992-4DAB-949C-CE32A443235F:c7",
-                        "datastoreId": "datastore-27",
-                        "arrayId": "244099146398403853",
-                        "resourcePoolId":  "68645547608596293",
-                        "datacenterId": "datacenter-2",
-                        "testNetworkId": "testNetworkId",
-                        "isProdCluster": false
-                    }
-                ]
-            }
+  {
+    "user": "admin",
+    "password": "admin",
+    "ip": "10.83.64.40",
+    "clusterFriendlyNames": {
+      "SFLDB-vrpa-cls01": "Springfield Bank",
+      "BDGT-HRZ-rp-cls01": "BDGT-HRZ"
+    },
+    "accounts": [
+      {
+        "name": "28652",
+        "label": "Springfield bank",
+        "isDrttc": true,
+        "users": [
+          {
+            "login": "john.smith@28652",
+            "firstName": "John",
+            "lastName": "Smith",
+            "password": "12345"
+          }
+        ],
+        "accountConfigs": [
+          {
+            "clusterId": "6430895962101652902",
+            "vcId": "0AB001D6-7A40-4A81-B542-1DE54CE361A2",
+            "esxId": "421c596e-f73c-6395-b616-2de99477a5c2",
+            "esxClusterId": "0AB001D6-7A40-4A81-B542-1DE54CE361A2:c38",
+            "datastoreId": "datastore-12",
+            "datacenterId": "datacenter-2",
+            "testNetworkId": "testNetworkId",
+            "isProdCluster": true
+          },
+          {
+            "clusterId": "2828594360186652947",
+            "vcId": "53BEAD6A-30E5-40E4-8F0A-EB03CCA8BBA1",
+            "esxId": "421c4f60-0a6e-3838-0a30-75564cf85a56",
+            "esxClusterId": "53BEAD6A-30E5-40E4-8F0A-EB03CCA8BBA1:s10",
+            "datastoreId": "datastore-15",
+            "datacenterId": "datacenter-2",
+            "testNetworkId": "testNetworkId",
+            "isProdCluster": false
+          }
         ]
-    }
+      }
+    ]
+  }
 ]
