@@ -7,11 +7,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -22,11 +19,11 @@ import java.util.Date;
 @Aspect public class AuditAspect {
     private final Logger log = LoggerFactory.getLogger(AuditAspect.class);
 
-//    @Autowired private AuditRepository auditRepository;
+    @Autowired private AuditRepository auditRepository;
     @Autowired private UserService userService;
 
-//    @PersistenceContext(unitName = "audit") @Qualifier("auditEmFactory")
-//    private EntityManager entityManager;
+    //    @PersistenceContext(unitName = "audit") @Qualifier("auditEmFactory")
+    //    private EntityManager entityManager;
 
     @Around("@annotation(com.emc.rpsp.config.auditing.RpspAudited)")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -55,12 +52,13 @@ import java.util.Date;
             throw e;
         }
     }
+
     @Transactional(value = "auditTransactionManager")
     private void writeAuditToDb(Date date, String action, String args, String result) {
         String username = userService.findCurrentUser().getUsername();
         AuditEntry auditEntry = new AuditEntry(date, username, action, args, result);
-//        auditRepository.save(auditEntry);
-//        auditRepository.flush();
+        auditRepository.save(auditEntry);
+        //        auditRepository.flush();
     }
 
 }

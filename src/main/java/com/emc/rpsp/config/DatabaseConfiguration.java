@@ -8,7 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.boot.orm.jpa.EntityScan;
@@ -32,8 +33,8 @@ import java.util.Arrays;
 import java.util.Map;
 
 @Configuration @EnableTransactionManagement
-@EntityScan(basePackages = { "com.emc.rpsp.accounts.domain", "com.emc.rpsp.users.domain",
-"com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain" })
+@EntityScan(basePackages = { "com.emc.rpsp.config.auditing", "com.emc.rpsp.accounts.domain",
+"com.emc.rpsp.users.domain", "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain" })
 @EnableJpaRepositories(
 basePackages = { "com.emc.rpsp.rpsystems", "com.emc.rpsp.accounts.repository",
 "com.emc.rpsp.vms.repository", "com.emc.rpsp.users.repository" },
@@ -46,7 +47,12 @@ implements EnvironmentAware {
     private RelaxedPropertyResolver propertyResolver;
     private Environment env;
 
-    private JpaProperties jpaProperties = new JpaProperties();
+    @Bean
+    @ConfigurationProperties("spring.jpa")
+    public JpaProperties jpaProperties() {
+        return new JpaProperties();
+    }
+
     @Autowired(required = false) private PersistenceUnitManager persistenceUnitManager;
 
     private final String DB_URL = "DB_URL";
@@ -99,13 +105,14 @@ implements EnvironmentAware {
 
     @Bean(name = "emfb1") public EntityManagerFactoryBuilder entityManagerFactoryBuilder1() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-        adapter.setShowSql(this.jpaProperties.isShowSql());
-        adapter.setDatabase(this.jpaProperties.getDatabase());
-        adapter.setDatabasePlatform(this.jpaProperties.getDatabasePlatform());
-        adapter.setGenerateDdl(this.jpaProperties.isGenerateDdl());
+        JpaProperties jpaProps = jpaProperties();
+        adapter.setShowSql(jpaProps.isShowSql());
+        adapter.setDatabase(jpaProps.getDatabase());
+        adapter.setDatabasePlatform(jpaProps.getDatabasePlatform());
+        adapter.setGenerateDdl(jpaProps.isGenerateDdl());
 
         EntityManagerFactoryBuilder builder = new EntityManagerFactoryBuilder(adapter,
-        this.jpaProperties, this.persistenceUnitManager);
+        jpaProps.getProperties(), this.persistenceUnitManager);
         //builder.setCallback(getVendorCallback());
         return builder;
     }
@@ -119,8 +126,7 @@ implements EnvironmentAware {
         Map<String, Object> vendorProperties = relaxedPropertyResolver.getSubProperties(null);
         return factoryBuilder.dataSource(dataSource)
         .packages("com.emc.rpsp.accounts.domain", "com.emc.rpsp.users.domain",
-        "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain")
-        .persistenceUnit("rpsp")
+        "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain").persistenceUnit("rpsp")
         .properties(vendorProperties).build();
     }
 
