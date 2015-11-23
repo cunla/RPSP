@@ -1,5 +1,7 @@
 package com.emc.rpsp.config.auditing;
 
+import com.emc.rpsp.config.auditing.annotations.RpspAuditObject;
+import com.emc.rpsp.config.auditing.annotations.RpspAuditSubject;
 import com.emc.rpsp.config.auditing.annotations.RpspAudited;
 import com.emc.rpsp.users.service.UserService;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
@@ -75,20 +76,30 @@ import java.util.Date;
     private String getSubjectType(ProceedingJoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
+        //        ParameterNameDiscoverer discoverer = new DefaultParameterNameDiscoverer();
         Parameter[] parameters = method.getParameters();
         Object[] paramValues = joinPoint.getArgs();
+
         for (int i = 0; i < parameters.length; ++i) {
             Parameter parameter = parameters[i];
+            //            parameter.initParameterNameDiscovery(discoverer);
             String paramName = parameter.getName();
-            String paramValue = paramValues[i].toString();
-            Annotation[][] annotations = method.getParameterAnnotations();
-            for (Annotation annotation : annotations[i]) {
-                String annotationName = annotation.annotationType().getName();
-
+            String annotation = null;
+            String annotationValue = null;
+            RpspAuditSubject subjectAnnotation = parameter.getAnnotation(RpspAuditSubject.class);
+            if (subjectAnnotation != null) {
+                annotation = "RpspAuditSubject";
+                annotationValue = subjectAnnotation.value();
             }
-        } return "";
+            RpspAuditObject objectAnnotation = parameter.getAnnotation(RpspAuditObject.class);
+            if (null != objectAnnotation) {
+                annotation = "RpspAuditObject";
+                annotationValue = objectAnnotation.value();
+            }
+            String paramValue = (null == paramValues[i]) ? "null" : paramValues[i].toString();
+        }
+        return "";
     }
-
 
     @Transactional(value = "auditTransactionManager")
     private void writeAuditToDb(Date date, String action, String args, String result) {

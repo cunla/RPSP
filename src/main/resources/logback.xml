@@ -3,6 +3,8 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.hibernate" level="WARN"/>
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+
     <logger name="com.emc.rpsp" level="DEBUG" />
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
