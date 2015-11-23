@@ -10,9 +10,9 @@ import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.protect.service.GroupsProtectionService;
 
-@Service 
+@Service
 public class GroupsProtectionServiceImpl extends BaseServiceImpl implements GroupsProtectionService {
-	
+
 
 	@Override
 	public void createConsistencyGroup(String cgName, List<String> vmIds, int rpo, boolean startReplication) {
@@ -21,9 +21,9 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
     		Account account = getCurrentUser().getAccount();
     		List<AccountConfig> accountConfigs = findAccountConfigsByAccount(account);
     		client.createConsistencyGroup(cgName, vmIds, accountConfigs, rpo, startReplication);
-    	}		
+    	}
 	}
-	
+
 	@Override
 	public void addVmToCG(String vmId, Long groupId, boolean isCritical, int sequenceNumber) {
 		Client client = getClient();
@@ -43,12 +43,12 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
     		List<AccountConfig> accountConfigs = findAccountConfigsByAccount(account);
     		client.removeVmsFromCG(vmId, groupId, accountConfigs);
     	}
-		
-		
+
+
 	}
 
-	
 
-    
+
+
 
 }

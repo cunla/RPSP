@@ -2,7 +2,7 @@ package com.emc.rpsp.vms.controller;
 
 import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.accounts.service.AccountService;
-import com.emc.rpsp.config.auditing.RpspAudited;
+import com.emc.rpsp.config.auditing.annotations.RpspAudited;
 import com.emc.rpsp.vms.domain.VmOwnership;
 import com.emc.rpsp.vms.service.VmOwnershipService;
 import org.springframework.beans.factory.annotation.Autowired;

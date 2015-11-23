@@ -2,7 +2,7 @@ package com.emc.rpsp.imageaccess.controller;
 
 import java.util.Map;
 
-import com.emc.rpsp.config.auditing.RpspAudited;
+import com.emc.rpsp.config.auditing.annotations.RpspAudited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

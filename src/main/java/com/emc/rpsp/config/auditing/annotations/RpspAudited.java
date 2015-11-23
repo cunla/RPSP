@@ -1,4 +1,4 @@
-package com.emc.rpsp.config.auditing;
+package com.emc.rpsp.config.auditing.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
  */
 @Target(value = ElementType.METHOD) @Retention(RetentionPolicy.RUNTIME)
 public @interface RpspAudited {
+    String action() default "";
 }

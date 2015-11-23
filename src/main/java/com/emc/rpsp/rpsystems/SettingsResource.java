@@ -1,7 +1,7 @@
 package com.emc.rpsp.rpsystems;
 
 import com.emc.rpsp.RpspException;
-import com.emc.rpsp.config.auditing.RpspAudited;
+import com.emc.rpsp.config.auditing.annotations.RpspAudited;
 import com.emc.rpsp.fal.Client;
 import org.apache.commons.httpclient.protocol.InetAddressUtils;
 import org.slf4j.Logger;
