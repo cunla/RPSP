@@ -6,7 +6,7 @@ import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.accounts.service.AccountService;
 import com.emc.rpsp.dataloader.service.DataLoaderService;
 import com.emc.rpsp.fal.Client;
-import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.domain.User;
@@ -40,7 +40,7 @@ import java.util.Map;
 
     private final String CLASSPATH_INTERNAL_DATA_EXPRESSION = "classpath:data-loader/internal-data.template";
 
-    @SuppressWarnings("unchecked") @Override @Transactional
+    @SuppressWarnings("unchecked") @Override @Transactional("transactionManager")
     public List<SystemSettings> populateInternalData(List<Map<String, Object>> fullSettings) {
 
         systemConnectionInfoRepository.deleteAll();
@@ -160,13 +160,13 @@ import java.util.Map;
         for (Map.Entry<Long, String> entry : clusters.entrySet()) {
             ClusterSettings cluster = new ClusterSettings(entry.getKey(), entry.getValue(),
             systemSettings);
-  
+
             Object clusterFriendlyName = clusterFriendlyNames.get(entry.getValue());
             if (null != clusterFriendlyName) {
                 cluster.setFriendlyName(clusterFriendlyName.toString());
                 systemSettings.addCluster(cluster);
             }
-            
+
         }
     }
 

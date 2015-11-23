@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
@@ -23,16 +24,19 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.Map;
 
-@EnableJpaRepositories(basePackages = "com.emc.rpsp.config.auditing",
-entityManagerFactoryRef = "auditEmFactory", transactionManagerRef = "auditTransactionMananger")
-@Configuration @EnableAspectJAutoProxy public class AuditAspectConfiguration
-implements EnvironmentAware {
+@Configuration
+//@EnableTransactionManagement
+//@EntityScan(basePackages = { "com.emc.rpsp.config.auditing" })
+//@EnableJpaRepositories(basePackages = "com.emc.rpsp.config.auditing",
+//entityManagerFactoryRef = "auditEmFactory", transactionManagerRef = "auditTransactionMananger")
+@EnableAspectJAutoProxy public class AuditAspectConfiguration implements EnvironmentAware {
     private final Logger log = LoggerFactory.getLogger(AuditAspectConfiguration.class);
 
     @Bean public AuditAspect loggingAspect() {
@@ -117,7 +121,7 @@ implements EnvironmentAware {
         .properties(vendorProperties).persistenceUnit("audit").build();
     }
 
-    @Bean(name = "auditTransactionMananger") public PlatformTransactionManager transactionManager1(
+    @Bean(name = "auditTransactionManager") public PlatformTransactionManager transactionManager1(
     @Qualifier("auditEmFactory") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }

@@ -4,14 +4,12 @@ import com.emc.fapi.jaxws.v4_3.*;
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
 import com.emc.rpsp.accounts.domain.AccountConfig;
-import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.http.GET;
-import retrofit.http.Path;
 
 import java.io.EOFException;
 import java.util.HashMap;
@@ -612,13 +610,13 @@ public class Client {
             VolumeCreationParams volumeCreationParams = new VolumeCreationParams();
 
             volumeCreationParams.setVolumeSize(new VolumeSize(10l*1024l*1024l*1024l));
-            
-            ResourcePoolUID resourcePoolUID = getRelevantResourcePool(accountConfig.getClusterId(), 
+
+            ResourcePoolUID resourcePoolUID = getRelevantResourcePool(accountConfig.getClusterId(),
             		accountConfig.getVcId(), accountConfig.getDatastoreId());
-            
+
             volumeCreationParams.setPoolUid(resourcePoolUID);
-            volumeCreationParams.setResourcePoolType(ArrayResourcePoolType.VC_DATASTORE); 
-            volumeCreationParams.setArrayUid(resourcePoolUID.getArrayUid()); 
+            volumeCreationParams.setResourcePoolType(ArrayResourcePoolType.VC_DATASTORE);
+            volumeCreationParams.setArrayUid(resourcePoolUID.getArrayUid());
 
 
             consistencyGroupCopyVolumeCreationParams.getVolumeParams().add(volumeCreationParams);
@@ -652,10 +650,10 @@ public class Client {
         ConsistencyGroupUID consistencyGroupUID = connector.replicateVms(replicateVmsParam, true);
         return;
     }
-    
-   
-    
-    
+
+
+
+
     public ResourcePoolUID getRelevantResourcePool(long clusterId, String vcId, String datastoreId){
     	ResourcePoolUID res = null;
     	ClusterSettings clusterSettings = getClusterSettings(clusterId);
@@ -679,15 +677,15 @@ public class Client {
     	}
     	return res;
     }
-    
-   
+
+
 	public ClusterSettings getClusterSettings(long clusterId){
 		ClusterSettings clusterSettings =  connector.getClusterSettings(clusterId);
 		return clusterSettings;
 	}
-    
-    
-    
+
+
+
 
     private VmReplicationSetSettings getVmReplicationSettingsWithRetryOption(String vmId,
     int retryAttempts) {

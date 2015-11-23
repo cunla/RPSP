@@ -14,7 +14,7 @@ import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.accounts.repository.AccountConfigsRepository;
 import com.emc.rpsp.accounts.repository.AccountRepository;
 import com.emc.rpsp.accounts.service.AccountService;
-import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 
 @Service

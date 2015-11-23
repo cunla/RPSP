@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    <logger name="org.springframework.web" level="DEBUG"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="com.emc.rpsp" level="DEBUG" />
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
@@ -25,8 +27,6 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-
-    <logger name="com.emc.rpsp.*" level="DEBUG" />
 
     <root level="info">
         <appender-ref ref="STDOUT" />

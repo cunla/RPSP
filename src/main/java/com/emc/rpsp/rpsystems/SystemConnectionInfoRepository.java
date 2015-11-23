@@ -1,4 +1,4 @@
-package com.emc.rpsp.repository;
+package com.emc.rpsp.rpsystems;
 
 import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;

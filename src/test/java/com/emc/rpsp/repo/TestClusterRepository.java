@@ -2,8 +2,6 @@ package com.emc.rpsp.repo;
 
 import static org.junit.Assert.assertTrue;
 
-import javax.inject.Inject;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,7 @@ import com.emc.rpsp.Application;
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.config.Constants;
 import com.emc.rpsp.fal.Client;
-import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 
 /**

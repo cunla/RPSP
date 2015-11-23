@@ -1,9 +1,8 @@
 package com.emc.rpsp.accounts.controller;
 
 import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.accounts.service.AccountService;
-import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +81,7 @@ import java.util.List;
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/accounts/{id}", method = RequestMethod.DELETE) 
+    @RequestMapping(value = "/accounts/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<HttpStatus> deleteAccount(@PathVariable("id") Long id) {
         Account account = accountService.findById(id);
@@ -92,6 +91,6 @@ import java.util.List;
         accountService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    
+
 
 }

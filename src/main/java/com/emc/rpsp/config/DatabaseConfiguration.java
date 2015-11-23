@@ -32,16 +32,14 @@ import java.util.Arrays;
 import java.util.Map;
 
 @Configuration @EnableTransactionManagement
-//@EnableAutoConfiguration
 @EntityScan(basePackages = { "com.emc.rpsp.accounts.domain", "com.emc.rpsp.users.domain",
-"com.emc.rpsp.rpsystems", "com.emc.rpsp.accounts.domain", "com.emc.rpsp.vms.domain" })
+"com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain" })
 @EnableJpaRepositories(
-basePackages = { "com.emc.rpsp.repository", "com.emc.rpsp.mgmt", "com.emc.rpsp.accounts.repository",
+basePackages = { "com.emc.rpsp.rpsystems", "com.emc.rpsp.accounts.repository",
 "com.emc.rpsp.vms.repository", "com.emc.rpsp.users.repository" },
 entityManagerFactoryRef = "entityManagerFactory",
-transactionManagerRef = "transactionManager")
-// @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
-public class DatabaseConfiguration implements EnvironmentAware {
+transactionManagerRef = "transactionManager") public class DatabaseConfiguration
+implements EnvironmentAware {
 
     private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
 
@@ -120,10 +118,10 @@ public class DatabaseConfiguration implements EnvironmentAware {
         "spring.jpa.properties.");
         Map<String, Object> vendorProperties = relaxedPropertyResolver.getSubProperties(null);
         return factoryBuilder.dataSource(dataSource)
-        .packages("com.emc.rpsp.repository", "com.emc.rpsp.mgmt",
-        "com.emc.rpsp.accounts.repository", "com.emc.rpsp.vms.repository",
-        "com.emc.rpsp.users.repository").persistenceUnit("rpsp").properties(vendorProperties)
-        .build();
+        .packages("com.emc.rpsp.accounts.domain", "com.emc.rpsp.users.domain",
+        "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain")
+        .persistenceUnit("rpsp")
+        .properties(vendorProperties).build();
     }
 
     @Bean(name = "transactionManager") public PlatformTransactionManager transactionManager1(

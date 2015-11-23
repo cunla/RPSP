@@ -15,7 +15,7 @@ import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.accounts.repository.AccountConfigsRepository;
 import com.emc.rpsp.accounts.repository.AccountRepository;
 import com.emc.rpsp.accounts.service.AccountConfigService;
-import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 
 @Service public class AccountConfigServiceImpl implements AccountConfigService {
 

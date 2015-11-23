@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.infra.common.systems.service.SystemsDataService;
-import com.emc.rpsp.repository.SystemConnectionInfoRepository;
+import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;
 
 @Service
 public class SystemsDataServiceSqlImpl implements SystemsDataService {
-	
+
 	@Autowired
 	private SystemConnectionInfoRepository systemConnectionInfoRepository;
 
