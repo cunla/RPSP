@@ -8,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
-import org.springframework.boot.orm.jpa.EntityScan;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
@@ -29,13 +29,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Arrays;
-import java.util.Map;
 
-@Configuration
-//@EnableTransactionManagement
-//@EntityScan(basePackages = { "com.emc.rpsp.config.auditing" })
-//@EnableJpaRepositories(basePackages = "com.emc.rpsp.config.auditing",
-//entityManagerFactoryRef = "auditEmFactory", transactionManagerRef = "auditTransactionMananger")
+@Configuration @EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "com.emc.rpsp.config.auditing",
+entityManagerFactoryRef = "auditEmFactory", transactionManagerRef = "auditTransactionManager")
 @EnableAspectJAutoProxy public class AuditAspectConfiguration implements EnvironmentAware {
     private final Logger log = LoggerFactory.getLogger(AuditAspectConfiguration.class);
 
@@ -53,8 +50,6 @@ import java.util.Map;
         this.env = env;
         this.propertyResolver = new RelaxedPropertyResolver(env, "spring.auditing.");
     }
-
-    private JpaProperties jpaProperties = new JpaProperties();
 
     @Autowired(required = false) private PersistenceUnitManager persistenceUnitManager;
 
@@ -97,16 +92,17 @@ import java.util.Map;
         return new HikariDataSource(config);
     }
 
+
     @Bean(name = "emfb2") public EntityManagerFactoryBuilder entityManagerFactoryBuilder1() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-        adapter.setShowSql(this.jpaProperties.isShowSql());
-        adapter.setDatabase(this.jpaProperties.getDatabase());
-        adapter.setDatabasePlatform(this.jpaProperties.getDatabasePlatform());
-        adapter.setGenerateDdl(this.jpaProperties.isGenerateDdl());
+        JpaProperties jpaProps = jpaProperties();
+        adapter.setShowSql(jpaProps.isShowSql());
+        adapter.setDatabase(jpaProps.getDatabase());
+        adapter.setDatabasePlatform(jpaProps.getDatabasePlatform());
+        adapter.setGenerateDdl(jpaProps.isGenerateDdl());
 
         EntityManagerFactoryBuilder builder = new EntityManagerFactoryBuilder(adapter,
-        this.jpaProperties, this.persistenceUnitManager);
-        //builder.setCallback(getVendorCallback());
+        jpaProps.getProperties(), this.persistenceUnitManager);
         return builder;
     }
 
@@ -114,16 +110,23 @@ import java.util.Map;
     public LocalContainerEntityManagerFactoryBean entityManagerFactory1(
     @Qualifier("auditDatasource") DataSource dataSource,
     @Qualifier("emfb2") EntityManagerFactoryBuilder factoryBuilder) {
-        RelaxedPropertyResolver relaxedPropertyResolver = new RelaxedPropertyResolver(env,
-        "spring.jpa.properties.");
-        Map<String, Object> vendorProperties = relaxedPropertyResolver.getSubProperties(null);
+        //        RelaxedPropertyResolver relaxedPropertyResolver = new RelaxedPropertyResolver(env,
+        //        "spring.jpa.properties.");
+        //        Map<String, Object> vendorProperties = relaxedPropertyResolver.getSubProperties(null);
         return factoryBuilder.dataSource(dataSource).packages("com.emc.rpsp.config.auditing")
-        .properties(vendorProperties).persistenceUnit("audit").build();
+        //        .properties(vendorProperties)
+        .persistenceUnit("audit").build();
     }
 
-    @Bean(name = "auditTransactionManager") public PlatformTransactionManager transactionManager1(
+    @Bean(name = "auditTransactionManager")
+    public PlatformTransactionManager auditTransactionManager(
     @Qualifier("auditEmFactory") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 
+    @Bean
+    @ConfigurationProperties("spring.jpa")
+    public JpaProperties jpaProperties() {
+        return new JpaProperties();
+    }
 }
