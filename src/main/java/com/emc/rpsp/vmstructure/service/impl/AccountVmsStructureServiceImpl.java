@@ -112,8 +112,19 @@ implements AccountVmsStructureService {
         }
 
     }
-
+    
+    
     private void updateVmNamesSubsetWithAccountInfo(List<VmDefinition> vmsList) {
+        //Map<String, Account> vmToAccountMap = getVmToAccountMap();
+        for (VmDefinition currVmDef : vmsList) {
+            currVmDef.setName(
+            currVmDef.getName() + " " + "[" + currVmDef.getAccount().getLabel()
+            + "]");
+        }
+        return;
+    }
+
+ /*   private void updateVmNamesSubsetWithAccountInfo(List<VmDefinition> vmsList) {
         Map<String, Account> vmToAccountMap = getVmToAccountMap();
         for (VmDefinition currVmDef : vmsList) {
             currVmDef.setName(
@@ -121,7 +132,7 @@ implements AccountVmsStructureService {
             + "]");
         }
         return;
-    }
+    }*/
 
     private Map<String, Account> getVmToAccountMap() {
         List<VmOwnership> vmOwnerships = findAllVms();
@@ -220,6 +231,7 @@ implements AccountVmsStructureService {
                                 }
                             }
                             VmDefinition currVm = new VmDefinition(vmId, vmName);
+                            currVm.setAccount(account);
                             currVm
                             .setCritical(vmReplicationSet.getVmReplicationSetPolicy().isCritical());
                             currVm.setSequenceNumber(vmReplicationSet.getVmReplicationSetPolicy()
@@ -316,6 +328,7 @@ implements AccountVmsStructureService {
                 .getInnerSet()) {
                     VmDefinition vmDefinition = new VmDefinition(
                     vmEntitiesInformation.getVmUID().getUuid(), vmEntitiesInformation.getName());
+                    vmDefinition.setAccount(account);
                     unprotectedVms.add(vmDefinition);
                 }
 
@@ -360,6 +373,7 @@ implements AccountVmsStructureService {
         if (vmsMap != null && !vmsMap.isEmpty()) {
             for (String vmId : vmsMap.keySet()) {
                 VmDefinition vmDefinition = new VmDefinition(vmId, vmsMap.get(vmId).getVmName());
+                vmDefinition.setAccount(vmsMap.get(vmId).getAccount());
                 vmsList.add(vmDefinition);
             }
         }
