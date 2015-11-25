@@ -8,6 +8,14 @@ app.service('vmStructureService', ['$http', function ($http) {
 	var protectedVms = {};
 	var allData = {};
 	
+	var sortFn = function compare(a,b) {
+  	  if (a.name < b.name)
+  	    return -1;
+  	  if (a.name > b.name)
+  	    return 1;
+  	  return 0;
+  };
+	
 	
 	this.getVmStructureData = function(){
 			
@@ -19,11 +27,15 @@ app.service('vmStructureService', ['$http', function ($http) {
 		        //flatten the hierarchical data to be displayed in table
 		        var vmGsAndCgFlatDataArr = new Array();
 		        var topLevelContainers = vmStructureData.protectedVms;
+		        //sort upper level
+		        topLevelContainers.sort(sortFn);
 		        var length = topLevelContainers.length;
 		        for (var i = 0; i < length; i++) {
 		            var currVmContainer = topLevelContainers[i];
 		            vmGsAndCgFlatDataArr.push(currVmContainer);
 		            if(currVmContainer.consistencyGroups != null){
+		            	//sort nested groups
+		            	currVmContainer.consistencyGroups.sort(sortFn);
 		            	for(var j = 0; j < currVmContainer.consistencyGroups.length; j++){
 		            		var currNestedCG = currVmContainer.consistencyGroups[j];
 		            		currNestedCG.parent = currVmContainer.name;
@@ -31,11 +43,19 @@ app.service('vmStructureService', ['$http', function ($http) {
 		            	}
 		            }
 		        }
+		       
+		        
+		        //new area
 		        var newCg = {};
 		        newCg.id = 'new-section';
 		        newCg.name = 'New ...';
 		        vmGsAndCgFlatDataArr.push(newCg);
+		        
+		      
+		        
 		        vmGsAndCgFlatData = vmGsAndCgFlatDataArr;
+		        
+		      
 		        
 		        //count protected vms
 		        var protectedVmsCount = 0;
