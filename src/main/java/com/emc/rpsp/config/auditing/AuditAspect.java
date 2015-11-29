@@ -1,8 +1,13 @@
 package com.emc.rpsp.config.auditing;
 
+import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.config.auditing.annotations.RpspAuditObject;
 import com.emc.rpsp.config.auditing.annotations.RpspAuditSubject;
 import com.emc.rpsp.config.auditing.annotations.RpspAudited;
+import com.emc.rpsp.config.auditing.rp4vm.Rp4vmAuditTypesHandler;
+import com.emc.rpsp.fal.Client;
+import com.emc.rpsp.infra.common.auth.domain.CurrentUser;
+import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.service.UserService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -28,15 +33,9 @@ import java.util.Date;
     @Autowired private AuditRepository auditRepository;
     @Autowired private UserService userService;
 
-    //    @PersistenceContext(unitName = "audit") @Qualifier("auditEmFactory")
-    //    private EntityManager entityManager;
-
     @Around("@annotation(com.emc.rpsp.config.auditing.annotations.RpspAudited)")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         Date date = new Date();
-        String action = getActionName(joinPoint);
-        String subject = getSubjectType(joinPoint);
-
         if (log.isDebugEnabled()) {
             log.debug("Enter: {}.{}() with argument[s] = {}",
             joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(),
@@ -44,7 +43,7 @@ import java.util.Date;
         }
         try {
             Object result = joinPoint.proceed();
-            writeAuditToDb(date, action, Arrays.toString(joinPoint.getArgs()), result.toString());
+            writeAuditToDb(date, joinPoint, result);
             if (log.isDebugEnabled()) {
                 log.debug("Exit: {}.{}() with result = {}",
                 joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(),
@@ -52,8 +51,7 @@ import java.util.Date;
             }
             return result;
         } catch (IllegalArgumentException e) {
-            writeAuditToDb(date, action, Arrays.toString(joinPoint.getArgs()),
-            "Exception" + e.getMessage());
+            writeAuditToDb(date, joinPoint, "Exception" + e.getMessage());
             log.error("Illegal argument: {} in {}.{}()", Arrays.toString(joinPoint.getArgs()),
             joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
 
@@ -61,52 +59,27 @@ import java.util.Date;
         }
     }
 
-    private String getActionName(ProceedingJoinPoint joinPoint) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Method method = signature.getMethod();
-        RpspAudited auditAnnotation = method.getAnnotation(RpspAudited.class);
-        String action = auditAnnotation.action();
-        String subject = getSubjectType(joinPoint);
-        if ("".equals(action)) {
-            action = signature.getName();
-        }
-        return action;
-    }
-
-    private String getSubjectType(ProceedingJoinPoint joinPoint) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Method method = signature.getMethod();
-        //        ParameterNameDiscoverer discoverer = new DefaultParameterNameDiscoverer();
-        Parameter[] parameters = method.getParameters();
-        Object[] paramValues = joinPoint.getArgs();
-
-        for (int i = 0; i < parameters.length; ++i) {
-            Parameter parameter = parameters[i];
-            //            parameter.initParameterNameDiscovery(discoverer);
-            String paramName = parameter.getName();
-            String annotation = null;
-            String annotationValue = null;
-            RpspAuditSubject subjectAnnotation = parameter.getAnnotation(RpspAuditSubject.class);
-            if (subjectAnnotation != null) {
-                annotation = "RpspAuditSubject";
-                annotationValue = subjectAnnotation.value();
-            }
-            RpspAuditObject objectAnnotation = parameter.getAnnotation(RpspAuditObject.class);
-            if (null != objectAnnotation) {
-                annotation = "RpspAuditObject";
-                annotationValue = objectAnnotation.value();
-            }
-            String paramValue = (null == paramValues[i]) ? "null" : paramValues[i].toString();
-        }
-        return "";
-    }
-
     @Transactional(value = "auditTransactionManager")
-    private void writeAuditToDb(Date date, String action, String args, String result) {
-        String username = userService.findCurrentUser().getUsername();
-        AuditEntry auditEntry = new AuditEntry(date, username, action, args, result);
+    private void writeAuditToDb(Date date, ProceedingJoinPoint joinPoint, Object result) {
+        CurrentUser user = userService.findCurrentUser();
+        String username = user.getUser().getLogin();
+        //TODO change to support multiple systems per account
+        Client client = getClientForAccount(user);
+        Rp4vmAuditTypesHandler auditHandler = new Rp4vmAuditTypesHandler(client);
+        AuditEntry auditEntry = auditHandler.getAuditEntry(date, username, joinPoint, result);
         auditRepository.save(auditEntry);
-        //        auditRepository.flush();
+        auditRepository.flush();
+    }
+
+    private Client getClientForAccount(CurrentUser user) {
+        Account account = user.getAccount();
+        if (null != account) {
+            SystemSettings systemSettings = account.getSystemSettings().get(0);
+            return account.getSystemSettings().isEmpty() ?
+            null :
+            new Client(account.getSystemSettings().get(0));
+        }
+        return null;
     }
 
 }

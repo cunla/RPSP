@@ -3,7 +3,11 @@ var app = angular.module('home');
 app.service('auditService',['$http', function($http) {
      var size = 1000;
  	 this.getAuditLog = function(page,search) {
- 		 return $http.get('app/audit/auditlog.sample.json')
+ 	    var url = 'app/audit/log?page='+page+"&pageSize="+size;
+ 	    if(search){
+ 	        url+="&query="+search;
+ 	    }
+ 		 return $http.get(url)
 		    .then(function(response){
                 return response.data;
 		    });

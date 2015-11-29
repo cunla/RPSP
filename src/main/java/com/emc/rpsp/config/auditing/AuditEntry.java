@@ -18,16 +18,19 @@ import java.util.Date;
     @Column private String action;
     @Column private String subject;
     @Column private String status;
+    @Column private String objects;
 
     public AuditEntry() {
     }
 
-    public AuditEntry(Date date, String user, String action, String subject, String status) {
+    public AuditEntry(Date date, String user, String action, String subject, String status,
+    String objects) {
         this.date = date;
         this.user = user;
         this.action = action;
         this.subject = subject;
         this.status = status;
+        this.objects = objects;
     }
 
     @JsonIgnore public long getId() {
@@ -52,5 +55,21 @@ import java.util.Date;
 
     public String getStatus() {
         return status;
+    }
+
+    public String getObjects() {
+        return objects;
+    }
+
+    @Override public String toString() {
+        return "AuditEntry{" +
+        "id=" + id +
+        ", date=" + date +
+        ", user='" + user + '\'' +
+        ", action='" + action + '\'' +
+        ", subject='" + subject + '\'' +
+        ", status='" + status + '\'' +
+        ", objects='" + objects + '\'' +
+        '}';
     }
 }
