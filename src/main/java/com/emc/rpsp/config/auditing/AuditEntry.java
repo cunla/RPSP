@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -12,6 +13,9 @@ import java.util.Date;
  */
 @Entity @Table(name = "T_AUDIT", schema = "RpspAudit")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE) public class AuditEntry {
+    @JsonIgnore private static SimpleDateFormat dateFormat = new SimpleDateFormat(
+    "yyyy.MM.dd @ HH:mm:ss z");
+
     @Id @GeneratedValue(strategy = GenerationType.AUTO) private long id;
     @Column private Date date;
     @Column private String user;
@@ -37,8 +41,8 @@ import java.util.Date;
         return id;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return dateFormat.format(date);
     }
 
     public String getUser() {
