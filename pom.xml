@@ -29,11 +29,11 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.4</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.projectlombok</groupId>-->
+            <!--<artifactId>lombok</artifactId>-->
+            <!--<version>1.16.4</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.geronimo.bundles</groupId>
             <artifactId>commons-httpclient</artifactId>
@@ -48,7 +48,7 @@
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
-            <version>1.9.2</version>
+            <version>1.9.13</version>
         </dependency>
 
         <dependency>
@@ -90,11 +90,11 @@
             <artifactId>jackson-datatype-joda</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.jadira.usertype</groupId>
-            <artifactId>usertype.core</artifactId>
-            <version>3.2.0.GA</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.jadira.usertype</groupId>-->
+            <!--<artifactId>usertype.core</artifactId>-->
+            <!--<version>3.2.0.GA</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
@@ -248,11 +248,11 @@
             <artifactId>telnetd-x</artifactId>
             <version>2.1.1</version>
         </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.4</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>commons-lang</groupId>-->
+            <!--<artifactId>commons-lang</artifactId>-->
+            <!--<version>2.4</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <!-- test commit #2 -->
