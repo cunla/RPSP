@@ -1,5 +1,6 @@
 package com.emc.rpsp.config;
 
+import com.emc.rpsp.exceptions.RpspLoadingException;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -36,20 +37,18 @@ import java.util.Map;
 //@EntityScan(basePackages = { "com.emc.rpsp.config.auditing", "com.emc.rpsp.accounts.domain",
 //"com.emc.rpsp.users.domain", "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain" })
 @EnableJpaRepositories(
-basePackages = { "com.emc.rpsp.rpsystems", "com.emc.rpsp.accounts.repository",
-"com.emc.rpsp.vms.repository", "com.emc.rpsp.users.repository" },
-entityManagerFactoryRef = "entityManagerFactory",
-transactionManagerRef = "transactionManager") public class DatabaseConfiguration
-implements EnvironmentAware {
+    basePackages = { "com.emc.rpsp.rpsystems", "com.emc.rpsp.accounts.repository",
+        "com.emc.rpsp.vms.repository", "com.emc.rpsp.users.repository" },
+    entityManagerFactoryRef = "entityManagerFactory",
+    transactionManagerRef = "transactionManager") public class DatabaseConfiguration
+    implements EnvironmentAware {
 
     private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
 
     private RelaxedPropertyResolver propertyResolver;
     private Environment env;
 
-    @Bean
-    @ConfigurationProperties("spring.jpa")
-    public JpaProperties jpaProperties() {
+    @Bean @ConfigurationProperties("spring.jpa") public JpaProperties jpaProperties() {
         return new JpaProperties();
     }
 
@@ -67,13 +66,13 @@ implements EnvironmentAware {
     @Bean(name = "datasource") @Primary public DataSource dataSource() {
         log.debug("Configuring Datasource");
         if (propertyResolver.getProperty("url") == null
-        && propertyResolver.getProperty("databaseName") == null) {
+            && propertyResolver.getProperty("databaseName") == null) {
             log.error("Your database connection pool configuration is incorrect! The application"
-            + "cannot start. Please check your Spring profile, current profiles are: {}",
-            Arrays.toString(env.getActiveProfiles()));
+                    + "cannot start. Please check your Spring profile, current profiles are: {}",
+                Arrays.toString(env.getActiveProfiles()));
 
             throw new ApplicationContextException(
-            "Database connection pool is not configured correctly");
+                "Database connection pool is not configured correctly");
         }
         HikariConfig config = new HikariConfig();
         config.setDataSourceClassName(propertyResolver.getProperty("dataSourceClassName"));
@@ -88,19 +87,23 @@ implements EnvironmentAware {
             }
         } else {
             if (propertyResolver.getProperty("url") == null || ""
-            .equals(propertyResolver.getProperty("url"))) {
+                .equals(propertyResolver.getProperty("url"))) {
                 config.addDataSourceProperty("databaseName",
-                propertyResolver.getProperty("databaseName"));
-                config
-                .addDataSourceProperty("serverName", propertyResolver.getProperty("serverName"));
+                    propertyResolver.getProperty("databaseName"));
+                config.addDataSourceProperty("serverName",
+                    propertyResolver.getProperty("serverName"));
             } else {
                 config.addDataSourceProperty("url", propertyResolver.getProperty("url"));
             }
             config.addDataSourceProperty("user", propertyResolver.getProperty("username"));
             config.addDataSourceProperty("password", propertyResolver.getProperty("password"));
         }
-
-        return new HikariDataSource(config);
+        try {
+            return new HikariDataSource(config);
+        } catch (Exception e) {
+            log.error("Couldn't create rpsp db datasource, exception: {}", e.getMessage());
+            throw new RpspLoadingException(e);
+        }
     }
 
     @Bean(name = "emfb1") public EntityManagerFactoryBuilder entityManagerFactoryBuilder1() {
@@ -112,26 +115,26 @@ implements EnvironmentAware {
         adapter.setGenerateDdl(jpaProps.isGenerateDdl());
 
         EntityManagerFactoryBuilder builder = new EntityManagerFactoryBuilder(adapter,
-        jpaProps.getProperties(), this.persistenceUnitManager);
+            jpaProps.getProperties(), this.persistenceUnitManager);
         //builder.setCallback(getVendorCallback());
         return builder;
     }
 
     @Bean(name = "entityManagerFactory") @Primary
     public LocalContainerEntityManagerFactoryBean entityManagerFactory1(
-    @Qualifier("datasource") DataSource dataSource,
-    @Qualifier("emfb1") EntityManagerFactoryBuilder factoryBuilder) {
+        @Qualifier("datasource") DataSource dataSource,
+        @Qualifier("emfb1") EntityManagerFactoryBuilder factoryBuilder) {
         RelaxedPropertyResolver relaxedPropertyResolver = new RelaxedPropertyResolver(env,
-        "spring.jpa.properties.");
+            "spring.jpa.properties.");
         Map<String, Object> vendorProperties = relaxedPropertyResolver.getSubProperties(null);
         return factoryBuilder.dataSource(dataSource)
-        .packages("com.emc.rpsp.accounts.domain", "com.emc.rpsp.users.domain",
-        "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain").persistenceUnit("rpsp")
-        .properties(vendorProperties).build();
+            .packages("com.emc.rpsp.accounts.domain", "com.emc.rpsp.users.domain",
+                "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain").persistenceUnit("rpsp")
+            .properties(vendorProperties).build();
     }
 
     @Bean(name = "transactionManager") public PlatformTransactionManager transactionManager1(
-    @Qualifier("entityManagerFactory") EntityManagerFactory emf) {
+        @Qualifier("entityManagerFactory") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 
