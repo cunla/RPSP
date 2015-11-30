@@ -112,14 +112,12 @@ implements AccountVmsStructureService {
         }
 
     }
-    
-    
+
     private void updateVmNamesSubsetWithAccountInfo(List<VmDefinition> vmsList) {
         //Map<String, Account> vmToAccountMap = getVmToAccountMap();
         for (VmDefinition currVmDef : vmsList) {
-            currVmDef.setName(
-            currVmDef.getName() + " " + "[" + currVmDef.getAccount().getLabel()
-            + "]");
+            currVmDef
+            .setName(currVmDef.getName() + " " + "[" + currVmDef.getAccount().getLabel() + "]");
         }
         return;
     }
@@ -304,7 +302,8 @@ implements AccountVmsStructureService {
         for (ClusterSettings clusterSettings : clusters) {
             ClusterDefinition currCluster = new ClusterDefinition(
             clusterSettings.getClusterId().toString(), clusterSettings.getFriendlyName());
-            if (accountConfigsMap.get(clusterSettings.getClusterId()).getIsProductionCluster()) {
+            AccountConfig accountConfig = accountConfigsMap.get(clusterSettings.getClusterId());
+            if (null != accountConfig && accountConfig.getIsProductionCluster()) {
                 systemInfo.setProductionCluster(currCluster);
             } else {
                 systemInfo.addReplicaCluster(currCluster);
@@ -641,7 +640,7 @@ implements AccountVmsStructureService {
         case APPLICATION_CONSISTENT:
             res = ConsistencyType.APPLICATION_CONSISTENT_SHORTCUT;
             break;
-		/*case CONSISTENCY_UNKNOWN:
+        /*case CONSISTENCY_UNKNOWN:
 		case UNKNOWN:
 			res = ConsistencyType.UNKNOWN;
 			break;*/
