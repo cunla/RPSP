@@ -1,8 +1,11 @@
 package com.emc.rpsp;
 
 import com.emc.rpsp.config.Constants;
+import com.emc.rpsp.exceptions.RpspLoadingException;
+import com.emc.rpsp.tools.PortBinding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,6 +40,11 @@ public class Application {
      * <p/>
      */
     @PostConstruct public void initApplication() throws IOException {
+        int port = Integer.valueOf(env.getProperty("server.port"));
+        if (!PortBinding.available(port)) {
+            log.error("Port {} unavailable, exiting", port);
+            throw new RpspLoadingException("Port unavailable, exiting");
+        }
         if (env.getActiveProfiles().length == 0) {
             log.warn("No Spring profile configured, running with default configuration");
         } else {
@@ -51,8 +59,7 @@ public class Application {
     public static void main(String[] args) {
 
         SpringApplication app = new SpringApplication(Application.class);
-        //        app.setShowBanner(false);
-
+        app.setBannerMode(Banner.Mode.OFF);
         SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
 
         // Check if the selected profile has been set as argument.
@@ -61,8 +68,8 @@ public class Application {
         try {
             app.run(args);
         } catch (Exception e) {
-
-            System.err.println(e.getMessage());
+            System.err.println("!!! Failed to start RPSP: " + e.getMessage());
+            System.err.println("!!! Please send log files (rpsp.log) to daniel.moran@emc.com");
         }
     }
 

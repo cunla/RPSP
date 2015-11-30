@@ -9,4 +9,8 @@ public class RpspLoadingException extends RpspException {
     public RpspLoadingException(Exception e) {
         super(e);
     }
+
+    public RpspLoadingException(String msg) {
+        super(msg);
+    }
 }
