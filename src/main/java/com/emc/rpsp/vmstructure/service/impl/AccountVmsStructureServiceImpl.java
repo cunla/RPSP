@@ -293,8 +293,49 @@ import java.util.stream.Collectors;
             unprotectedVms = getVmDefinitionsList(vmsMap);
         }
         accountVmsStructure.setUnprotectedVms(unprotectedVms);
+        setStrictModeIndicator(accountVmsStructure);
         return accountVmsStructure;
     }
+    
+    
+    
+    private void setStrictModeIndicator(AccountVmsStructure accountVmsStructure){
+    	List<VmContainer> vmContainers = accountVmsStructure.getProtectedVms();
+    	for (VmContainer currVmContainer : vmContainers){
+    		if(currVmContainer instanceof GroupSet){
+    			
+    			boolean strictMode = true;
+    			GroupSet currGroupSet = (GroupSet)currVmContainer;
+    			List<VmContainer> nestedGroups = currGroupSet.getConsistencyGroups();
+    			
+    			ConsistencyGroup firstConsistencyGroup = (ConsistencyGroup)nestedGroups.get(0);    			
+    			String firstImageAccessState = firstConsistencyGroup.getReplicaClusters().
+    					                         get(0).getGroupCopySettings().get(0).getImageAccess();
+    			String firstProdClusterId = firstConsistencyGroup.getProductionCluster().getId();
+    			
+    			
+    			for(VmContainer currCgContainer : nestedGroups){
+    				ConsistencyGroup consistencyGroup = (ConsistencyGroup)currCgContainer;
+    				ClusterDefinition currProdCluster = consistencyGroup.getProductionCluster();
+    				ClusterDefinition currReplicaCluster = consistencyGroup.getReplicaClusters().get(0);
+    				
+    				//check replication direction
+    				if(!currProdCluster.getId().equals(firstProdClusterId)){
+    					strictMode = false;
+    					break;
+    				}	
+    				//check image access    				
+    				if(!currReplicaCluster.getGroupCopySettings().get(0).getImageAccess().equals(firstImageAccessState)){
+        					strictMode = false;
+        					break;   					
+    				}				
+    			}    			
+    			currGroupSet.setStrictMode(strictMode);	
+    		}
+    	}
+    }
+    
+    
 
     private SystemInfo getSystemInfo(Account account, SystemSettings currSystem) {
         List<AccountConfig> accountConfigs = findAccountConfigsByAccount(account);

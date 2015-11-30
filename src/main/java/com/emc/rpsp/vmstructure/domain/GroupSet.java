@@ -8,6 +8,8 @@ public class GroupSet implements VmContainer {
     private String id;
     private String name;
     private List<VmContainer> consistencyGroups = new LinkedList<VmContainer>();
+    boolean strictMode;
+    
 
     public GroupSet() {
         super();
@@ -50,5 +52,15 @@ public class GroupSet implements VmContainer {
     public void setId(String id) {
         this.id = id;
     }
+
+	public boolean isStrictMode() {
+		return strictMode;
+	}
+
+	public void setStrictMode(boolean strictMode) {
+		this.strictMode = strictMode;
+	}
+    
+    
 
 }
