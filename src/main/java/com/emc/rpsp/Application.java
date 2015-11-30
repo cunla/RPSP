@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 @SpringBootApplication @EnableAsync @EnableScheduling @EnableTransactionManagement
 @EnableAutoConfiguration(exclude = { HibernateJpaAutoConfiguration.class,
-DataSourceTransactionManagerAutoConfiguration.class })
+    DataSourceTransactionManagerAutoConfiguration.class })
 //
 public class Application {
 
@@ -40,8 +40,8 @@ public class Application {
         if (env.getActiveProfiles().length == 0) {
             log.warn("No Spring profile configured, running with default configuration");
         } else {
-            log
-            .info("Running with Spring profile(s) : {}", Arrays.toString(env.getActiveProfiles()));
+            log.info("Running with Spring profile(s) : {}",
+                Arrays.toString(env.getActiveProfiles()));
         }
     }
 
@@ -58,15 +58,19 @@ public class Application {
         // Check if the selected profile has been set as argument.
         // if not the development profile will be added
         addDefaultProfile(app, source);
+        try {
+            app.run(args);
+        } catch (Exception e) {
 
-        app.run(args);
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
      * Set a default profile if it has not been set
      */
     private static void addDefaultProfile(SpringApplication app,
-    SimpleCommandLinePropertySource source) {
+        SimpleCommandLinePropertySource source) {
         if (!source.containsProperty("spring.profiles.active")) {
             app.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
         }

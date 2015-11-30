@@ -7,4 +7,8 @@ public class RpspException extends RuntimeException {
     public RpspException(String msg) {
         super(msg);
     }
+
+    public RpspException(Exception e) {
+        super(e);
+    }
 }

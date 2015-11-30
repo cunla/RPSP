@@ -1,6 +1,7 @@
 package com.emc.rpsp.config;
 
 import com.emc.rpsp.config.auditing.AuditAspect;
+import com.emc.rpsp.exceptions.RpspLoadingException;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +33,7 @@ import java.util.Arrays;
 
 @Configuration @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.emc.rpsp.config.auditing",
-entityManagerFactoryRef = "auditEmFactory", transactionManagerRef = "auditTransactionManager")
+    entityManagerFactoryRef = "auditEmFactory", transactionManagerRef = "auditTransactionManager")
 @EnableAspectJAutoProxy public class AuditAspectConfiguration implements EnvironmentAware {
     private final Logger log = LoggerFactory.getLogger(AuditAspectConfiguration.class);
 
@@ -56,13 +57,13 @@ entityManagerFactoryRef = "auditEmFactory", transactionManagerRef = "auditTransa
     @Bean(name = "auditDatasource") public DataSource dataSource() {
         log.debug("Configuring Datasource");
         if (propertyResolver.getProperty("url") == null
-        && propertyResolver.getProperty("databaseName") == null) {
+            && propertyResolver.getProperty("databaseName") == null) {
             log.error("Your database connection pool configuration is incorrect! The application"
-            + "cannot start. Please check your Spring profile, current profiles are: {}",
-            Arrays.toString(env.getActiveProfiles()));
+                    + "cannot start. Please check your Spring profile, current profiles are: {}",
+                Arrays.toString(env.getActiveProfiles()));
 
             throw new ApplicationContextException(
-            "Database connection pool is not configured correctly");
+                "Database connection pool is not configured correctly");
         }
         HikariConfig config = new HikariConfig();
         config.setDataSourceClassName(propertyResolver.getProperty("dataSourceClassName"));
@@ -77,21 +78,24 @@ entityManagerFactoryRef = "auditEmFactory", transactionManagerRef = "auditTransa
             }
         } else {
             if (propertyResolver.getProperty("url") == null || ""
-            .equals(propertyResolver.getProperty("url"))) {
+                .equals(propertyResolver.getProperty("url"))) {
                 config.addDataSourceProperty("databaseName",
-                propertyResolver.getProperty("databaseName"));
-                config
-                .addDataSourceProperty("serverName", propertyResolver.getProperty("serverName"));
+                    propertyResolver.getProperty("databaseName"));
+                config.addDataSourceProperty("serverName",
+                    propertyResolver.getProperty("serverName"));
             } else {
                 config.addDataSourceProperty("url", propertyResolver.getProperty("url"));
             }
             config.addDataSourceProperty("user", propertyResolver.getProperty("username"));
             config.addDataSourceProperty("password", propertyResolver.getProperty("password"));
         }
-
-        return new HikariDataSource(config);
+        try {
+            return new HikariDataSource(config);
+        } catch (Exception e) {
+            log.error("Couldn't create audit datasource, exception: {}", e.getMessage());
+            throw new RpspLoadingException(e);
+        }
     }
-
 
     @Bean(name = "emfb2") public EntityManagerFactoryBuilder entityManagerFactoryBuilder1() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
@@ -102,31 +106,29 @@ entityManagerFactoryRef = "auditEmFactory", transactionManagerRef = "auditTransa
         adapter.setGenerateDdl(jpaProps.isGenerateDdl());
 
         EntityManagerFactoryBuilder builder = new EntityManagerFactoryBuilder(adapter,
-        jpaProps.getProperties(), this.persistenceUnitManager);
+            jpaProps.getProperties(), this.persistenceUnitManager);
         return builder;
     }
 
     @Bean(name = "auditEmFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory1(
-    @Qualifier("auditDatasource") DataSource dataSource,
-    @Qualifier("emfb2") EntityManagerFactoryBuilder factoryBuilder) {
+        @Qualifier("auditDatasource") DataSource dataSource,
+        @Qualifier("emfb2") EntityManagerFactoryBuilder factoryBuilder) {
         //        RelaxedPropertyResolver relaxedPropertyResolver = new RelaxedPropertyResolver(env,
         //        "spring.jpa.properties.");
         //        Map<String, Object> vendorProperties = relaxedPropertyResolver.getSubProperties(null);
         return factoryBuilder.dataSource(dataSource).packages("com.emc.rpsp.config.auditing")
-        //        .properties(vendorProperties)
-        .persistenceUnit("audit").build();
+            //        .properties(vendorProperties)
+            .persistenceUnit("audit").build();
     }
 
     @Bean(name = "auditTransactionManager")
     public PlatformTransactionManager auditTransactionManager(
-    @Qualifier("auditEmFactory") EntityManagerFactory emf) {
+        @Qualifier("auditEmFactory") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 
-    @Bean
-    @ConfigurationProperties("spring.jpa")
-    public JpaProperties jpaProperties() {
+    @Bean @ConfigurationProperties("spring.jpa") public JpaProperties jpaProperties() {
         return new JpaProperties();
     }
 }
