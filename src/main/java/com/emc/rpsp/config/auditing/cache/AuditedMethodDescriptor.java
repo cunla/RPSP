@@ -4,7 +4,9 @@ import com.emc.rpsp.config.auditing.annotations.RpspAuditObject;
 import com.emc.rpsp.config.auditing.annotations.RpspAuditResult;
 import com.emc.rpsp.config.auditing.annotations.RpspAuditSubject;
 import com.emc.rpsp.config.auditing.annotations.RpspAudited;
-import javafx.util.Pair;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,13 +40,13 @@ public class AuditedMethodDescriptor {
             RpspAuditSubject subjectAnnotation = parameter.getAnnotation(RpspAuditSubject.class);
             if (subjectAnnotation != null) {
                 log.debug("Descriptor {}: Added param {} as subject with type {}", this.name,
-                paramName, subjectAnnotation.value());
-                this.subject = new Pair<>(i, subjectAnnotation.value());
+                    paramName, subjectAnnotation.value());
+                this.subject = new ImmutablePair<>(i, subjectAnnotation.value());
             } else {
                 RpspAuditObject objectAnnotation = parameter.getAnnotation(RpspAuditObject.class);
                 if (null != objectAnnotation) {
                     log.debug("Descriptor {}: Added param {} as subject with type {}", this.name,
-                    paramName, objectAnnotation.value());
+                        paramName, objectAnnotation.value());
                     this.objects.put(i, objectAnnotation.value());
                 } else { //No RpspAudit annotation on param
                     log.debug("Descriptor {}: Ignored param {}", this.name, paramName);
