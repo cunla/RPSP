@@ -14,6 +14,8 @@ import com.emc.rpsp.vmstructure.constants.TransferState;
 import com.emc.rpsp.vmstructure.domain.*;
 import com.emc.rpsp.vmstructure.service.AccountVmsStructureService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -22,7 +24,8 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 @Service public class AccountVmsStructureServiceImpl extends BaseServiceImpl
-implements AccountVmsStructureService {
+    implements AccountVmsStructureService {
+    private final Logger log = LoggerFactory.getLogger(AccountVmsStructureService.class);
 
     @Override public AccountVmsStructure getAccountVmsStrucure() {
 
@@ -49,11 +52,11 @@ implements AccountVmsStructureService {
             for (SystemSettings currSystem : systems) {
                 Client client = new Client(currSystem);
                 AccountVmsStructure currAccountVmsStructure = getAccountVmsStrucure(client, account,
-                currSystem);
+                    currSystem);
                 accountVmsStructure.getUnprotectedVms()
-                .addAll(currAccountVmsStructure.getUnprotectedVms());
+                    .addAll(currAccountVmsStructure.getUnprotectedVms());
                 accountVmsStructure.getProtectedVms()
-                .addAll(currAccountVmsStructure.getProtectedVms());
+                    .addAll(currAccountVmsStructure.getProtectedVms());
                 accountVmsStructure.setSystemInfo(currAccountVmsStructure.getSystemInfo());
             }
         }
@@ -69,11 +72,11 @@ implements AccountVmsStructureService {
                 for (SystemSettings currSystem : systems) {
                     Client client = new Client(currSystem);
                     AccountVmsStructure currAccountVmsStructure = getAccountVmsStrucure(client,
-                    account, currSystem);
+                        account, currSystem);
                     accountVmsStructure.getUnprotectedVms()
-                    .addAll(currAccountVmsStructure.getUnprotectedVms());
+                        .addAll(currAccountVmsStructure.getUnprotectedVms());
                     accountVmsStructure.getProtectedVms()
-                    .addAll(currAccountVmsStructure.getProtectedVms());
+                        .addAll(currAccountVmsStructure.getProtectedVms());
                     accountVmsStructure.setSystemInfo(currAccountVmsStructure.getSystemInfo());
                 }
             }
@@ -84,7 +87,7 @@ implements AccountVmsStructureService {
     private boolean isNotImpersonatedAdmin() {
         boolean res = false;
         if (getCurrentUser().getUser().getPermission().equals("ADMIN")
-        && getCurrentUser().getAccount() == null) {
+            && getCurrentUser().getAccount() == null) {
             res = true;
         }
         return res;
@@ -117,7 +120,7 @@ implements AccountVmsStructureService {
         //Map<String, Account> vmToAccountMap = getVmToAccountMap();
         for (VmDefinition currVmDef : vmsList) {
             currVmDef
-            .setName(currVmDef.getName() + " " + "[" + currVmDef.getAccount().getLabel() + "]");
+                .setName(currVmDef.getName() + " " + "[" + currVmDef.getAccount().getLabel() + "]");
         }
         return;
     }
@@ -142,7 +145,7 @@ implements AccountVmsStructureService {
     }
 
     private AccountVmsStructure getAccountVmsStrucure(Client client, Account account,
-    SystemSettings currSystem) {
+        SystemSettings currSystem) {
 
         AccountVmsStructure accountVmsStructure = new AccountVmsStructure();
         SystemInfo systemInfo = getSystemInfo(account, currSystem);
@@ -162,18 +165,18 @@ implements AccountVmsStructureService {
         ConsistencyGroupStateSet consistencyGroupStateSet = client.getConsistencyGroupStateSet();
 
         Map<ConsistencyGroupCopyUID, String> transferStatesMap = getGroupCopiesTransferStates(
-        consistencyGroupStateSet);
+            consistencyGroupStateSet);
         Map<ConsistencyGroupCopyUID, ConsistencyGroupCopyState> copiesStatesMap = getGroupCopiesStates(
-        consistencyGroupStateSet);
+            consistencyGroupStateSet);
         Map<String, Long> volumesMaxSizesMap = getGroupVolumesMaxSizes(client);
         Map<ConsistencyGroupCopyUID, String> initCompletionPortionsMap = getInitCompletionPortion(
-        client);
+            client);
 
         List<ConsistencyGroupSettings> groupSettingsList = rpSettings.getGroupsSettings();
         for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 
             Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copySnapshotsMap = getGroupCopiesSnapshots(
-            client, groupSettings.getGroupUID().getId());
+                client, groupSettings.getGroupUID().getId());
             Map<String, ClusterDefinition> handledCustersMap = new HashMap<String, ClusterDefinition>();
             ConsistencyGroup consistencyGroup = new ConsistencyGroup();
             String groupId = new Long(groupSettings.getGroupUID().getId()).toString();
@@ -183,7 +186,7 @@ implements AccountVmsStructureService {
             consistencyGroup.setMaxVolumeSize(volumesMaxSizesMap.get(groupId));
 
             List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
-            .getVmReplicationSetsSettings();
+                .getVmReplicationSetsSettings();
 
             ClusterDefinition productionCluster = null;
             List<ClusterDefinition> replicaClusters = new LinkedList<ClusterDefinition>();
@@ -198,7 +201,7 @@ implements AccountVmsStructureService {
                 if (originalProductionVm != null || account.getIsDrttc()) {
 
                     List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
-                    .getReplicatedVMs();
+                        .getReplicatedVMs();
 
                     for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
 
@@ -208,7 +211,7 @@ implements AccountVmsStructureService {
                         String clusterName = clusterNames.get(clusterId);
                         if (currSystem.getNameToClusterMap().get(clusterName) != null) {
                             clusterName = currSystem.getNameToClusterMap().get(clusterName)
-                            .getFriendlyName();
+                                .getFriendlyName();
                         }
                         String vmName = null;
                         if (vmNamesAllClusters.containsKey(clusterId)) {
@@ -216,7 +219,7 @@ implements AccountVmsStructureService {
                             vmName = vmNamesMap.get(vmId);
                         }
                         List<ConsistencyGroupCopyUID> production = groupSettings
-                        .getProductionCopiesUID();
+                            .getProductionCopiesUID();
                         // this vm belongs to production
                         if (production.contains(copyId)) {
                             // process vm only if it belongs to account
@@ -230,13 +233,13 @@ implements AccountVmsStructureService {
                             }
                             VmDefinition currVm = new VmDefinition(vmId, vmName);
                             currVm.setAccount(account);
-                            currVm
-                            .setCritical(vmReplicationSet.getVmReplicationSetPolicy().isCritical());
+                            currVm.setCritical(
+                                vmReplicationSet.getVmReplicationSetPolicy().isCritical());
                             currVm.setSequenceNumber(vmReplicationSet.getVmReplicationSetPolicy()
-                            .getPowerUpSequenceNumber());
+                                .getPowerUpSequenceNumber());
                             vmsList.add(currVm);
                             productionCluster = new ClusterDefinition(clusterId.toString(),
-                            clusterName);
+                                clusterName);
                             consistencyGroup.setProductionCluster(productionCluster);
                             // remove from unprotected candidates
                             vmsMap.remove(originalProductionVm);
@@ -249,13 +252,13 @@ implements AccountVmsStructureService {
                                 replicaCluster = handledCustersMap.get(clusterId.toString());
                             } else {
                                 replicaCluster = new ClusterDefinition(clusterId.toString(),
-                                clusterName);
+                                    clusterName);
                                 handledCustersMap.put(clusterId.toString(), replicaCluster);
                                 replicaClusters.add(replicaCluster);
                             }
                             GroupCopySettings groupCopySettings = getGroupCopySettings(copyId,
-                            groupSettings, transferStatesMap, copySnapshotsMap, copiesStatesMap,
-                            initCompletionPortionsMap);
+                                groupSettings, transferStatesMap, copySnapshotsMap, copiesStatesMap,
+                                initCompletionPortionsMap);
                             // add the copy in case it wasn't added in context of
                             // another vm
                             if (!replicaCluster.isExistingCopy(groupCopySettings)) {
@@ -296,14 +299,16 @@ implements AccountVmsStructureService {
     private SystemInfo getSystemInfo(Account account, SystemSettings currSystem) {
         List<AccountConfig> accountConfigs = findAccountConfigsByAccount(account);
         Map<Long, AccountConfig> accountConfigsMap = accountConfigs.stream()
-        .collect(Collectors.toMap(AccountConfig::getClusterId, (p) -> p));
+            .collect(Collectors.toMap(AccountConfig::getClusterId, (p) -> p));
         List<ClusterSettings> clusters = findClustersBySystem(currSystem);
         SystemInfo systemInfo = new SystemInfo();
         for (ClusterSettings clusterSettings : clusters) {
             ClusterDefinition currCluster = new ClusterDefinition(
-            clusterSettings.getClusterId().toString(), clusterSettings.getFriendlyName());
+                clusterSettings.getClusterId().toString(), clusterSettings.getFriendlyName());
             AccountConfig accountConfig = accountConfigsMap.get(clusterSettings.getClusterId());
-            if (null != accountConfig && accountConfig.getIsProductionCluster()) {
+            if (null == accountConfig) {
+                log.info("No configuration for cluster {} ", clusterSettings.getClusterId());
+            } else if (accountConfig.getIsProductionCluster()) {
                 systemInfo.setProductionCluster(currCluster);
             } else {
                 systemInfo.addReplicaCluster(currCluster);
@@ -319,14 +324,15 @@ implements AccountVmsStructureService {
             if (currAccountConfig.getIsProductionCluster()) {
 
                 VmEntitiesInformationSet vmEntitiesInformationSet = client.
-                getAvailableVMsForReplication(currAccountConfig.getClusterId(),
-                currAccountConfig.getVcId(), currAccountConfig.getDataCenterId(),
-                currAccountConfig.getEsxClusterId());
+                    getAvailableVMsForReplication(currAccountConfig.getClusterId(),
+                        currAccountConfig.getVcId(), currAccountConfig.getDataCenterId(),
+                        currAccountConfig.getEsxClusterId());
 
                 for (VMEntitiesInformation vmEntitiesInformation : vmEntitiesInformationSet
-                .getInnerSet()) {
+                    .getInnerSet()) {
                     VmDefinition vmDefinition = new VmDefinition(
-                    vmEntitiesInformation.getVmUID().getUuid(), vmEntitiesInformation.getName());
+                        vmEntitiesInformation.getVmUID().getUuid(),
+                        vmEntitiesInformation.getName());
                     vmDefinition.setAccount(account);
                     unprotectedVms.add(vmDefinition);
                 }
@@ -363,7 +369,7 @@ implements AccountVmsStructureService {
     private Map<String, VmOwnership> getVmsMap(Account account) {
         List<VmOwnership> vms = findVmsByAccount(account);
         Map<String, VmOwnership> vmsMap = vms.stream()
-        .collect(Collectors.toMap(VmOwnership::getVmId, (p) -> p));
+            .collect(Collectors.toMap(VmOwnership::getVmId, (p) -> p));
         return vmsMap;
     }
 
@@ -380,7 +386,7 @@ implements AccountVmsStructureService {
     }
 
     private Map<String, GroupSet> getGroupIdToGroupSetMap(
-    List<ConsistencyGroupSetSettings> groupSetSettings) {
+        List<ConsistencyGroupSetSettings> groupSetSettings) {
         Map<String, GroupSet> cgIdToGs = new HashMap<String, GroupSet>();
         if (groupSetSettings != null) {
             for (ConsistencyGroupSetSettings currGroupSetSettings : groupSetSettings) {
@@ -389,7 +395,7 @@ implements AccountVmsStructureService {
                 currGroupSet.setId(setUID.toString());
                 currGroupSet.setName(currGroupSetSettings.getName());
                 for (ConsistencyGroupUID currConsistencyGroupUID : currGroupSetSettings
-                .getGroupsUIDs()) {
+                    .getGroupsUIDs()) {
                     Long groupUID = currConsistencyGroupUID.getId();
                     cgIdToGs.put(groupUID.toString(), currGroupSet);
                 }
@@ -414,43 +420,43 @@ implements AccountVmsStructureService {
     }
 
     private GroupCopySettings getGroupCopySettings(ConsistencyGroupCopyUID copyId,
-    ConsistencyGroupSettings consistencyGroupSettings,
-    Map<ConsistencyGroupCopyUID, String> transferStatesMap,
-    Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copySnapshotsMap,
-    Map<ConsistencyGroupCopyUID, ConsistencyGroupCopyState> copiesStatesMap,
-    Map<ConsistencyGroupCopyUID, String> initCompletionPortionsMap) {
+        ConsistencyGroupSettings consistencyGroupSettings,
+        Map<ConsistencyGroupCopyUID, String> transferStatesMap,
+        Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copySnapshotsMap,
+        Map<ConsistencyGroupCopyUID, ConsistencyGroupCopyState> copiesStatesMap,
+        Map<ConsistencyGroupCopyUID, String> initCompletionPortionsMap) {
 
         GroupCopySettings groupCopySettings = null;
         List<ConsistencyGroupCopySettings> allCopiesSettings = consistencyGroupSettings
-        .getGroupCopiesSettings();
+            .getGroupCopiesSettings();
         for (ConsistencyGroupCopySettings currGroupCopySettings : allCopiesSettings) {
             if (currGroupCopySettings.getCopyUID().equals(copyId)) {
                 RecoverPointTimeStamp imageAccessTimeStamp = null;
                 groupCopySettings = new GroupCopySettings();
                 groupCopySettings
-                .setId(new Integer(copyId.getGlobalCopyUID().getCopyUID()).toString());
+                    .setId(new Integer(copyId.getGlobalCopyUID().getCopyUID()).toString());
                 groupCopySettings.setName(currGroupCopySettings.getName());
                 groupCopySettings.setClusterId(new Long(
-                currGroupCopySettings.getCopyUID().getGlobalCopyUID().getClusterUID().getId())
-                .toString());
+                    currGroupCopySettings.getCopyUID().getGlobalCopyUID().getClusterUID().getId())
+                    .toString());
 
                 List<CopySnapshot> allSnapshots = copySnapshotsMap
-                .get(currGroupCopySettings.getCopyUID());
+                    .get(currGroupCopySettings.getCopyUID());
 
                 if (currGroupCopySettings.getImageAccessInformation() != null
-                && currGroupCopySettings.getImageAccessInformation().isImageAccessEnabled()) {
+                    && currGroupCopySettings.getImageAccessInformation().isImageAccessEnabled()) {
 
                     ConsistencyGroupCopyState consistencyGroupCopyState = copiesStatesMap
-                    .get(copyId);
+                        .get(copyId);
                     //setting more detailed status for enabled image access
                     if (consistencyGroupCopyState.getStorageAccessState().
-                    equals(StorageAccessState.ENABLING_LOGGED_ACCESS)) {
+                        equals(StorageAccessState.ENABLING_LOGGED_ACCESS)) {
                         groupCopySettings.setImageAccess(ImageAccess.ENABLING.value());
                     } else {
                         groupCopySettings.setImageAccess(ImageAccess.ENABLED.value());
                     }
                     imageAccessTimeStamp = currGroupCopySettings.getImageAccessInformation()
-                    .getImageInformation().getTimeStamp();
+                        .getImageInformation().getTimeStamp();
                     setSnapshotImageAccess(allSnapshots, imageAccessTimeStamp);
                 } else {
                     groupCopySettings.setImageAccess(ImageAccess.DISABLED.value());
@@ -461,7 +467,7 @@ implements AccountVmsStructureService {
                 }
                 groupCopySettings.setReplication(replication);
                 groupCopySettings.setInitCompletionPortion(initCompletionPortionsMap.
-                get(currGroupCopySettings.getCopyUID()));
+                    get(currGroupCopySettings.getCopyUID()));
 
                 groupCopySettings.setSnapshots(getSnapshotsByType(allSnapshots, false));
                 groupCopySettings.setBookmarks(getSnapshotsByType(allSnapshots, true));
@@ -472,7 +478,7 @@ implements AccountVmsStructureService {
     }
 
     private void setSnapshotImageAccess(List<CopySnapshot> allSnapshots,
-    RecoverPointTimeStamp imageAccessTimeStamp) {
+        RecoverPointTimeStamp imageAccessTimeStamp) {
         if (allSnapshots != null) {
             for (CopySnapshot currCopySnapshot : allSnapshots) {
                 //for Group Set those will be different
@@ -482,7 +488,7 @@ implements AccountVmsStructureService {
 				}*/
 
                 if (currCopySnapshot.getClosingTimestamp()
-                .equals(getTimestampStr(imageAccessTimeStamp))) {
+                    .equals(getTimestampStr(imageAccessTimeStamp))) {
                     currCopySnapshot.setImageAccessEnabled(true);
                 }
             }
@@ -490,7 +496,7 @@ implements AccountVmsStructureService {
     }
 
     private Map<ConsistencyGroupCopyUID, String> getGroupCopiesTransferStates(
-    ConsistencyGroupStateSet consistencyGroupStateSet) {
+        ConsistencyGroupStateSet consistencyGroupStateSet) {
         Map<ConsistencyGroupCopyUID, String> statesMap = new HashMap<ConsistencyGroupCopyUID, String>();
         List<ConsistencyGroupState> groupsStates = consistencyGroupStateSet.getInnerSet();
 
@@ -501,18 +507,18 @@ implements AccountVmsStructureService {
             List<ConsistencyGroupLinkState> linksStates = currGroupState.getLinksState();
             for (ConsistencyGroupLinkState consistencyGroupLinkState : linksStates) {
                 ConsistencyGroupUID consistencyGroupUID = consistencyGroupLinkState
-                .getGroupLinkUID().getGroupUID();
+                    .getGroupLinkUID().getGroupUID();
                 GlobalCopyUID firstCopyUID = consistencyGroupLinkState.getGroupLinkUID()
-                .getFirstCopy();
+                    .getFirstCopy();
                 GlobalCopyUID secondCopyUID = consistencyGroupLinkState.getGroupLinkUID()
-                .getSecondCopy();
+                    .getSecondCopy();
 
                 ConsistencyGroupCopyUID consistencyGroupCopyUID = new ConsistencyGroupCopyUID(
-                consistencyGroupUID, firstCopyUID);
+                    consistencyGroupUID, firstCopyUID);
 
                 if (productionCopies.contains(consistencyGroupCopyUID)) {
                     consistencyGroupCopyUID = new ConsistencyGroupCopyUID(consistencyGroupUID,
-                    secondCopyUID);
+                        secondCopyUID);
                 }
 
                 PipeState pipeState = consistencyGroupLinkState.getPipeState();
@@ -528,7 +534,7 @@ implements AccountVmsStructureService {
                     break;
                 case READY_TO_REPLICATE:
                     statesMap
-                    .put(consistencyGroupCopyUID, TransferState.READY_TO_REPLICATE.value());
+                        .put(consistencyGroupCopyUID, TransferState.READY_TO_REPLICATE.value());
                     break;
                 case PAUSED:
                     statesMap.put(consistencyGroupCopyUID, TransferState.PAUSED.value());
@@ -554,16 +560,16 @@ implements AccountVmsStructureService {
     }
 
     private Map<ConsistencyGroupCopyUID, ConsistencyGroupCopyState> getGroupCopiesStates(
-    ConsistencyGroupStateSet consistencyGroupStateSet) {
+        ConsistencyGroupStateSet consistencyGroupStateSet) {
         Map<ConsistencyGroupCopyUID, ConsistencyGroupCopyState> statesMap = new HashMap<ConsistencyGroupCopyUID, ConsistencyGroupCopyState>();
         List<ConsistencyGroupState> groupsStates = consistencyGroupStateSet.getInnerSet();
 
         for (ConsistencyGroupState currGroupState : groupsStates) {
             List<ConsistencyGroupCopyState> groupCopiesStates = currGroupState
-            .getGroupCopiesState();
+                .getGroupCopiesState();
             for (ConsistencyGroupCopyState currConsistencyGroupCopyState : groupCopiesStates) {
                 ConsistencyGroupCopyUID consistencyGroupCopyUID = currConsistencyGroupCopyState
-                .getCopyUID();
+                    .getCopyUID();
                 statesMap.put(consistencyGroupCopyUID, currConsistencyGroupCopyState);
             }
 
@@ -576,12 +582,12 @@ implements AccountVmsStructureService {
     private Map<String, Long> getGroupVolumesMaxSizes(Client client) {
         Map<String, Long> volumesMaxSizes = new HashMap<String, Long>();
         ConsistencyGroupVolumesStateSet volumesStateSet = client
-        .getConsistencyGroupVolumesStateSet();
+            .getConsistencyGroupVolumesStateSet();
         List<ConsistencyGroupVolumesState> volumesStates = volumesStateSet.getInnerSet();
         for (ConsistencyGroupVolumesState consistencyGroupVolumesState : volumesStates) {
             Long groupId = consistencyGroupVolumesState.getGroupUID().getId();
             List<ReplicationSetVolumesState> replicationSetVolumesState = consistencyGroupVolumesState
-            .getReplicationSetsVolumesState();
+                .getReplicationSetsVolumesState();
             long totalVolumeSize = 0;
             for (ReplicationSetVolumesState volumeState : replicationSetVolumesState) {
                 totalVolumeSize += volumeState.getMaxPossibleSizeInBytes();
@@ -593,11 +599,11 @@ implements AccountVmsStructureService {
     }
 
     private Map<ConsistencyGroupCopyUID, List<CopySnapshot>> getGroupCopiesSnapshots(Client client,
-    Long groupId) {
+        Long groupId) {
         Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copyUIDToSnapshotsMap = new HashMap<ConsistencyGroupCopyUID, List<CopySnapshot>>();
         ConsistencyGroupSnapshots consistencyGroupSnapshots = client.getGroupSnapshots(groupId);
         List<ConsistencyGroupCopySnapshots> copiesSnapshots = consistencyGroupSnapshots
-        .getCopiesSnapshots();
+            .getCopiesSnapshots();
 
         for (ConsistencyGroupCopySnapshots currCopy : copiesSnapshots) {
             ConsistencyGroupCopyUID copyUID = currCopy.getCopyUID();
@@ -607,7 +613,7 @@ implements AccountVmsStructureService {
             int currSnapshotCounter = 0;
             for (Snapshot currSnapshot : snapshots) {
                 if (currSnapshotCounter < maxSnapshots || (currSnapshot.getRelevantEvent() != null
-                && !StringUtils.isEmpty(currSnapshot.getRelevantEvent().getDetails()))) {
+                    && !StringUtils.isEmpty(currSnapshot.getRelevantEvent().getDetails()))) {
                     RecoverPointTimeStamp timestamp = currSnapshot.getClosingTimeStamp();
 
                     String dateStr = getTimestampStr(timestamp);
@@ -617,11 +623,11 @@ implements AccountVmsStructureService {
                     snapshot.setClosingTimestamp(dateStr);
                     snapshot.setOriginalClosingTimeStamp(timestamp.getTimeInMicroSeconds());
                     if (currSnapshot.getRelevantEvent() != null && !StringUtils
-                    .contains(currSnapshot.getRelevantEvent().getDetails(), "GUID")) {
+                        .contains(currSnapshot.getRelevantEvent().getDetails(), "GUID")) {
                         snapshot.setName(currSnapshot.getRelevantEvent().getDetails());
                     }
                     ConsistencyType consistencyType = getConsistencyType(
-                    currSnapshot.getConsistencyType());
+                        currSnapshot.getConsistencyType());
                     snapshot.setConsistencyType(consistencyType.value());
 
                     snapshotsList.add(snapshot);
@@ -641,7 +647,7 @@ implements AccountVmsStructureService {
             res = ConsistencyType.APPLICATION_CONSISTENT_SHORTCUT;
             break;
         /*case CONSISTENCY_UNKNOWN:
-		case UNKNOWN:
+        case UNKNOWN:
 			res = ConsistencyType.UNKNOWN;
 			break;*/
         default:
@@ -652,7 +658,7 @@ implements AccountVmsStructureService {
     }
 
     private List<CopySnapshot> getSnapshotsByType(List<CopySnapshot> snapshots,
-    boolean isBookmark) {
+        boolean isBookmark) {
         List<CopySnapshot> res = new LinkedList<CopySnapshot>();
         if (snapshots != null) {
             for (CopySnapshot currSnapshot : snapshots) {
@@ -674,19 +680,19 @@ implements AccountVmsStructureService {
         ConsistencyGroupStatisticsSet consistencyGroupStatisticsSet = client.getGroupStatistics();
         Map<ConsistencyGroupCopyUID, String> completionPortionsMap = new HashMap<ConsistencyGroupCopyUID, String>();
         List<ConsistencyGroupStatistics> groupsStatistics = consistencyGroupStatisticsSet
-        .getInnerSet();
+            .getInnerSet();
         for (ConsistencyGroupStatistics currGroupStatistics : groupsStatistics) {
             List<ConsistencyGroupLinkStatistics> linkStatistics = currGroupStatistics
-            .getConsistencyGroupLinkStatistics();
+                .getConsistencyGroupLinkStatistics();
             for (ConsistencyGroupLinkStatistics currLinkStatistics : linkStatistics) {
                 ConsistencyGroupLinkUID linkUID = currLinkStatistics.getLinkUID();
                 ConsistencyGroupCopyUID consistencyGroupCopyUID = new ConsistencyGroupCopyUID();
                 consistencyGroupCopyUID.setGroupUID(linkUID.getGroupUID());
                 consistencyGroupCopyUID.setGlobalCopyUID(linkUID.getFirstCopy());
                 Double initCompletionValue = new Double(
-                currLinkStatistics.getInitStatistics().getInitCompletionPortion() * 100);
+                    currLinkStatistics.getInitStatistics().getInitCompletionPortion() * 100);
                 String initCompletionValueStr = new Integer(initCompletionValue.intValue())
-                .toString();
+                    .toString();
                 completionPortionsMap.put(consistencyGroupCopyUID, initCompletionValueStr);
 
                 consistencyGroupCopyUID = new ConsistencyGroupCopyUID();
@@ -699,7 +705,7 @@ implements AccountVmsStructureService {
     }
 
     private String locateViewRelatedVm(VmReplicationSetSettings vmReplicationSet,
-    Map<String, VmOwnership> vmsMap) {
+        Map<String, VmOwnership> vmsMap) {
         String res = null;
         List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet.getReplicatedVMs();
 
