@@ -33,8 +33,8 @@ import java.util.Arrays;
 import java.util.Map;
 
 @Configuration @EnableTransactionManagement
-@EntityScan(basePackages = { "com.emc.rpsp.config.auditing", "com.emc.rpsp.accounts.domain",
-"com.emc.rpsp.users.domain", "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain" })
+//@EntityScan(basePackages = { "com.emc.rpsp.config.auditing", "com.emc.rpsp.accounts.domain",
+//"com.emc.rpsp.users.domain", "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain" })
 @EnableJpaRepositories(
 basePackages = { "com.emc.rpsp.rpsystems", "com.emc.rpsp.accounts.repository",
 "com.emc.rpsp.vms.repository", "com.emc.rpsp.users.repository" },
