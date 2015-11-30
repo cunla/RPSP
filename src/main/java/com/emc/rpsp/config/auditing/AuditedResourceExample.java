@@ -15,7 +15,9 @@ import java.util.List;
 /**
  * Created by morand3 on 11/23/2015.
  */
-@RestController @RequestMapping("/app") public class AuditedResourceExample {
+@RestController
+@RequestMapping("/sample")
+public class AuditedResourceExample {
 
     @RpspAudited @RequestMapping(value = "/audittest/{subject}",
     method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
