@@ -1,4 +1,4 @@
-var app = angular.module('home',  ['pascalprecht.translate', 'locale', 'ui.bootstrap', 'btorfs.multiselect','tableSort']);
+var app = angular.module('home');
 
 
 app.controller('homeController', ['$scope', '$http', 'userService', function($scope, $http, userService) {
@@ -225,9 +225,9 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     $scope.unprotectedSelectedIndex = -1;
 
     $scope.toggleSelect = function(ind, isProtected){
-    	
+
     	var prevSelectedIndex = vmStructureService.getProtectedSelectedIndex();
-    	if(ind == prevSelectedIndex 
+    	if(ind == prevSelectedIndex
     			&& ind != -1 && $scope.vmGsAndCgFlatData[ind].id == 'new-section'){
     		return;
     	}
@@ -236,14 +236,14 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	    	$scope.protectedSelectedIndex = vmStructureService.getProtectedSelectedIndex();
 	    	$scope.unprotectedSelectedIndex = vmStructureService.getUnprotectedSelectedIndex();
     	}
-    	
+
     };
-    
-    
+
+
     $scope.handleDoubleClick = function(ind, isProtected){
     	$scope.protectedSelectedIndex = vmStructureService.getProtectedSelectedIndex();
     	$scope.unprotectedSelectedIndex = vmStructureService.getUnprotectedSelectedIndex();
-    	
+
     	if($scope.protectedSelectedIndex != -1 && $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].id == 'new-section'){
     		$scope.openCreateCgModal()
     	}
