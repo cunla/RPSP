@@ -267,7 +267,8 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     	var res;
     	if($scope.protectedSelectedIndex != -1){
     		var entityType = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].type;
-    		if(entityType == 'cg' || entityType == 'gs'){
+    		var strictMode = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].strictMode;
+    		if(entityType == 'cg' || (entityType == 'gs' && strictMode == true)){
 				res = true;
 			}
     	}
