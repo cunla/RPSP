@@ -58,6 +58,7 @@ Notice you need to define the environment variables to connect to the database R
         
  3. Compile and package RPSP using maven, using command:  `mvn package` 
  4. Run Application class from the WAR file using the command `java -jar rpsp.war`
+ 4.1. if you want to run in embedded DB mode use the profile `test` when running: `java -jar rpsp.war --spring.profiles.active=test`
  5. You can also deploy the WAR on your own web-container (tomcat/etc.)
 
 ####Installation as a windows service
@@ -87,16 +88,8 @@ and a configuration for default protection ESX and datastore.
 ##USER OPERATIONS
 To access RPSP either AngularJS client or the REST API can be used
 ##RPSP UI – AngularJS Client
-The RPSP Web client can be accessed in: http://hostname:8080/rpsp (8080 is the default port) 
+The RPSP Web client can be accessed in: http://hostname:9999/rpsp (9999 is the default port) 
 
-RPSP UI provides the following functionality:
- 1. RPSP Configuration – Define RP systems to collect data from
-	 - List RP clusters for system
-	 - Assign country per cluster
-	 - Update settings (i.e., change RP user/password)
- 2. Generate report of #VMs per month per country
-     - Select report quarter (past or current)
- 
 ###RPSP REST API
 The following methods are supported in the RPSP RESP API, with base being http://*hostname*:*port*/rpsp
 
