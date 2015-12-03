@@ -20,11 +20,24 @@ app.controller('homeController', ['$scope', '$http', 'userService', function($sc
 
 app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translate', '$filter', '$timeout', 'vmStructureService', function ($scope, $http, $modal, $translate, $filter, $timeout, vmStructureService) {
 
+    $scope.hiddengs={};
 	$scope.vmStructureData = {};
 	$scope.vmGsAndCgFlatData = {};
 	$scope.totalVms = {};
 	$scope.protectedVms = {};
 	$scope.loading = true;
+
+    $scope.toggleRow = function(row){
+        if(row.type=='gs'){
+            for(cgInd in $scope.vmGsAndCgFlatData){
+                var cg=$scope.vmGsAndCgFlatData[cgInd];
+                if(row.name == cg.parent){
+                    cg.hideRow=!cg.hideRow;
+                }
+            }
+        }
+        row.hideChildren=!row.hideChildren;
+    }
 
 	$scope.getVmStructureData = function(){
 			vmStructureService.getVmStructureData().then(function(allData) {

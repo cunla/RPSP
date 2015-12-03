@@ -139,29 +139,25 @@
                         replica-cluster-id="{{row.replicaClusters[0].id}}"
                         ng-click="toggleSelect($index, true)"
                         ng-dblclick="handleDoubleClick($index, true)"
-                        ng-class="{'selected' : (protectedSelectedIndex == $index )}">
+                        ng-class="{'selected' : (protectedSelectedIndex == $index )}"
+                        ng-hide="row.hideRow"
+                        >
                         <td>
-                            <cg-offset ng-if="row.parent != null">
-                                <white-space></white-space>
-                            </cg-offset>
-                                    <span ng-if="row.id != 'new-section'">
-                                        <i class="fa {{row.hide? 'fa-plus':'fa-minus'}} icon-silver"
-                                           title="{{row.hide? 'Expand':'Collapse'}}"
-                                           ng-click="row.hide=!row.hide"></i>
-                                    </span>
+                            <white-space ng-show="row.parent">      </white-space>
+                            <span ng-show=" row.id != 'new-section'">
+                                <i class="fa {{row.hideChildren? 'fa-plus':'fa-minus'}} icon-silver"
+                                   title="{{row.hideChildren? 'Expand':'Collapse'}}"
+                                   ng-click="toggleRow(row)"></i>
+                            </span>
                             {{row.name}}
-                            <div ng-hide="row.hide" ng-repeat="vm in row.vms" draggable="true"
+                            <div ng-hide="row.hideChildren" ng-repeat="vm in row.vms" draggable="true"
                                  vmid="{{vm.id}}">
-                                <cg-offset ng-if="row.parent != null">
-                                    <white-space></white-space>
-                                </cg-offset>
-                                <vm-offset>
-                                    <white-space></white-space>
-                                </vm-offset>
+                                <white-space ng-show="row.parent">      </white-space>
+                                <white-space>      </white-space>
                                 {{vm.name}}
                             </div>
                             <div ng-if="row.id == 'new-section'">
-                                <white-space></white-space>
+                                <white-space>      </white-space>
                             </div>
                             <div ng-if="row.id == 'new-section'">
                                 <white-space></white-space>
