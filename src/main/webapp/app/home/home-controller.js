@@ -340,19 +340,3 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 
 
 }]);
-
-
-
-angular.module('home').run(['localeService', function(localeService){
-	localeService.setLocale();
-}]);
-
-
-angular.module('home').config(function ($translateProvider) {
-
-  $translateProvider.useStaticFilesLoader({
-    prefix: 'locales/locale-',
-    suffix: '.json'
-  });
-
-});
