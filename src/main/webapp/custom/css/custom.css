@@ -1,6 +1,6 @@
 /*
-body { 
-  background: url("../images/background.jpg") no-repeat center center fixed; 
+body {
+  background: url("../images/background.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -8,7 +8,7 @@ body {
 }
 
 
-body.body-grey {  
+body.body-grey {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -19,7 +19,8 @@ body.body-grey {
 
 */
 
-
+*.icon-white {color: white}
+*.icon-silver {color: silver}
 
 div.image {
    width: 142px;
@@ -27,19 +28,19 @@ div.image {
    margin: 0 auto 20px;
    display: block;
    background-size:contain;
-   background-image:url("../images/login.png");	
+   background-image:url("../images/login.png");
 }
 
 
 div.logo-image {
    width: 71px;
    height: 43px;
-   margin-top: 8px; 
+   margin-top: 8px;
    margin-bottom: 8px;
    display: block;
    background-size:contain;
-   background-image:url("../images/login.png");	
-}	
+   background-image:url("../images/login.png");
+}
 
 
 

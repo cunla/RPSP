@@ -16,10 +16,7 @@
         <link rel="stylesheet" href="custom/css/custom.css">
 	</head>
 
-
 	<body ng-controller="vmStructureController">
-
-
 
 	<div class="div-grey">
 
@@ -108,7 +105,8 @@
 								   		<white-space>     </white-space>
 								   	</cg-offset>
                                     <span ng-if="row.id != 'new-section'">
-                                        <i class="fa {{row.hide? 'fa-plus':'fa-minus'}}"
+                                        <i class="fa {{row.hide? 'fa-plus':'fa-minus'}} icon-silver"
+                                           title="{{row.hide? 'Expand':'Collapse'}}"
                                            ng-click="row.hide=!row.hide"></i>
                                     </span>
                                     {{row.name}}
