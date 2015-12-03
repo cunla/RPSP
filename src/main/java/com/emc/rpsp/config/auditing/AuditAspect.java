@@ -30,8 +30,8 @@ import java.util.Date;
 @Aspect public class AuditAspect {
     private final Logger log = LoggerFactory.getLogger(AuditAspect.class);
 
-    @Autowired private AuditRepository auditRepository;
     @Autowired private UserService userService;
+    @Autowired private AuditTypesHandler auditTypesHandler;
 
     @Around("@annotation(com.emc.rpsp.config.auditing.annotations.RpspAudited)")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -63,23 +63,8 @@ import java.util.Date;
     private void writeAuditToDb(Date date, ProceedingJoinPoint joinPoint, Object result) {
         CurrentUser user = userService.findCurrentUser();
         String username = user.getUser().getLogin();
-        //TODO change to support multiple systems per account
-        Client client = getClientForAccount(user);
-        Rp4vmAuditTypesHandler auditHandler = new Rp4vmAuditTypesHandler(client);
-        AuditEntry auditEntry = auditHandler.getAuditEntry(date, username, joinPoint, result);
-        auditRepository.save(auditEntry);
-        auditRepository.flush();
+        auditTypesHandler.writeRecordToAudit(date, username, joinPoint, result);
     }
 
-    private Client getClientForAccount(CurrentUser user) {
-        Account account = user.getAccount();
-        if (null != account) {
-            SystemSettings systemSettings = account.getSystemSettings().get(0);
-            return account.getSystemSettings().isEmpty() ?
-            null :
-            new Client(account.getSystemSettings().get(0));
-        }
-        return null;
-    }
 
 }

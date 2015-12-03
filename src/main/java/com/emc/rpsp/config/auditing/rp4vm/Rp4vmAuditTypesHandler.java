@@ -1,14 +1,22 @@
 package com.emc.rpsp.config.auditing.rp4vm;
 
+import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.config.auditing.AuditEntry;
+import com.emc.rpsp.config.auditing.AuditRepository;
+import com.emc.rpsp.config.auditing.AuditTypesHandler;
 import com.emc.rpsp.config.auditing.RpspAuditException;
 import com.emc.rpsp.config.auditing.cache.AuditedMethodDescriptor;
 import com.emc.rpsp.config.auditing.cache.AuditingCache;
 import com.emc.rpsp.fal.Client;
+import com.emc.rpsp.infra.common.auth.domain.CurrentUser;
+import com.emc.rpsp.rpsystems.SystemSettings;
+import com.emc.rpsp.users.domain.User;
+import com.emc.rpsp.users.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.lang.reflect.Method;
@@ -20,15 +28,16 @@ import java.util.Map;
 /**
  * Created by morand3 on 11/25/2015.
  */
-public class Rp4vmAuditTypesHandler {
-    private Client client;
+public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
+    @Autowired private AuditRepository auditRepository;
+    @Autowired private UserService userService;
+    private Client client = null;
 
-    public Rp4vmAuditTypesHandler(Client client) {
-        this.client = client;
+    public Rp4vmAuditTypesHandler() {
     }
 
     public AuditEntry getAuditEntry(Date date, String username, ProceedingJoinPoint joinPoint,
-    Object resultValue) {
+        Object resultValue) {
         AuditedMethodDescriptor descriptor = getAuditMethodDescriptor(joinPoint);
         String actionName = descriptor.getAction();
         Object[] args = joinPoint.getArgs();
@@ -36,7 +45,7 @@ public class Rp4vmAuditTypesHandler {
         String resultText = getResultText(descriptor, resultValue);
         String objects = getObjectsText(descriptor, args);
         AuditEntry auditEntry = new AuditEntry(date, username, actionName, subject, resultText,
-        objects);
+            objects);
         return auditEntry;
     }
 
@@ -71,7 +80,7 @@ public class Rp4vmAuditTypesHandler {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         AuditedMethodDescriptor methodDescriptor = AuditingCache.instance()
-        .getAuditDescriptor(method);
+            .getAuditDescriptor(method);
         return methodDescriptor;
     }
 
@@ -87,6 +96,26 @@ public class Rp4vmAuditTypesHandler {
             return getGroupSetName(paramValue);
         }
         throw new RpspAuditException("Couldn't get text for audit type {" + paramType + "}");
+    }
+
+    @Override
+    public void writeRecordToAudit(Date date, String username, ProceedingJoinPoint joinPoint,
+        Object resultValue) {
+        AuditEntry entry = getAuditEntry(date, username, joinPoint, resultValue);
+        auditRepository.save(entry);
+        auditRepository.flush();
+    }
+
+    private Client getClientForAccount(String username) {
+        User user = userService.findUserByLogin(username);
+        Account account = user.getAccount();
+        if (null != account) {
+            SystemSettings systemSettings = account.getSystemSettings().get(0);
+            return account.getSystemSettings().isEmpty() ?
+                null :
+                new Client(account.getSystemSettings().get(0));
+        }
+        return null;
     }
 
     private String getGroupSetName(Object groupSetId) {

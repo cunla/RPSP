@@ -1,6 +1,8 @@
 package com.emc.rpsp.config;
 
 import com.emc.rpsp.config.auditing.AuditAspect;
+import com.emc.rpsp.config.auditing.AuditTypesHandler;
+import com.emc.rpsp.config.auditing.rp4vm.Rp4vmAuditTypesHandler;
 import com.emc.rpsp.exceptions.RpspLoadingException;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -130,5 +132,9 @@ import java.util.Arrays;
 
     @Bean @ConfigurationProperties("spring.jpa") public JpaProperties jpaProperties() {
         return new JpaProperties();
+    }
+
+    @Bean public AuditTypesHandler auditTypesHandler() {
+        return new Rp4vmAuditTypesHandler();
     }
 }
