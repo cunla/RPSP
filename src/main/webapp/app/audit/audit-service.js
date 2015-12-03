@@ -7,10 +7,9 @@ app.service('auditService',['$http', function($http) {
  	    if(search){
  	        url+="&query="+search;
  	    }
- 		 return $http.get(url)
-		    .then(function(response){
-                return response.data;
-		    });
+ 		return $http.get(url).then(function(response){
+            return response.data;
+		});
      };
 
      var convertJsonToCsv = function(json){
@@ -25,14 +24,17 @@ app.service('auditService',['$http', function($http) {
      }
 
      this.getAuditLogAsCsv = function(page,search) {
-         return $http.get('app/audit/auditlog.sample.json')
-            .then(function(response){
-                return convertJsonToCsv(response.data.log);
-            });
+          var url = 'app/audit/log?page='+page+"&pageSize="+size;
+          if(search){
+              url+="&query="+search;
+          }
+          return $http.get(url).then(function(response){
+               return convertJsonToCsv(response.data);
+          });
      };
 
-     this.getOther = function() {
-   	  return 'Other!!!';
-     };
+//     this.getOther = function() {
+//   	  return 'Other!!!';
+//     };
    }
  ]);
