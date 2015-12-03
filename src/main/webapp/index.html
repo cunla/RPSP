@@ -106,8 +106,13 @@
 								<td>
 								    <cg-offset ng-if="row.parent != null">
 								   		<white-space>     </white-space>
-								   	</cg-offset>{{row.name}}
-								    <div ng-repeat="vm in row.vms" draggable="true" vmid="{{vm.id}}">
+								   	</cg-offset>
+                                    <span ng-if="row.id != 'new-section'">
+                                        <i class="fa {{row.hide? 'fa-plus':'fa-minus'}}"
+                                           ng-click="row.hide=!row.hide"></i>
+                                    </span>
+                                    {{row.name}}
+								    <div ng-hide="row.hide" ng-repeat="vm in row.vms" draggable="true" vmid="{{vm.id}}">
 								        <cg-offset ng-if="row.parent != null">
 								        	<white-space>     </white-space>
 							        	</cg-offset>
