@@ -1,7 +1,7 @@
 {
     "LOGIN": {
         "RECOVER_POINT_FOR_VM_MSG": "RecoverPoint for Virtual Machines",
-        "DISASTER_RECOVERY_MSG": "Disaster Recovery Services in the Cloud",
+        "DISASTER_RECOVERY_MSG": "Cloud Disaster Recovery Services",
         "ACCOUNT_MSG": "Account",
         "USERNAME_MSG": "Username",
         "PASSWORD_MSG": "Password",
