@@ -13,137 +13,38 @@
     <link rel="stylesheet" href="../custom/css/custom.css">
 </head>
 
-<body ng-controller="adminCtrl">
+<body ng-app="adminUI">
+
 <nav class="light-blue lighten-1" role="navigation">
     <div class="nav-wrapper container">
-        <a id="logo-container" href="#" class="brand-logo">
+        <a id="logo-container" href="#" class="left brand-logo">
             <div class="logo-image"></div>
         </a>
+        <!--<div class="col s12">-->
+
+        <!--</div>-->
+        <!--<div id="test1" class="col s12">Test 1</div>-->
+        <!--<div id="test2" class="col s12">Test 2</div>-->
+        <!--<div id="test3" class="col s12">Test 3</div>-->
+        <!--<div id="test4" class="col s12">Test 4</div>-->
 
         <ul class="right hide-on-med-and-down">
-            <li><a href="/rpsp">User view</a></li>
+            <li class="tab col s3"><a href="/rpsp">User view</a></li>
         </ul>
     </div>
 </nav>
 
-<!--<div class="section no-pad-bot" id="index-banner">-->
-<!--<div class="container">-->
-<!--<br><br>-->
+<ul class="tabs">
+    <li class="tab col s3"><a href="#test1">RecoverPoint Cluster systems</a></li>
+    <li class="tab col s3"><a href="#test2">Policy packages</a></li>
+    <li class="tab col s3"><a href="#test3">Tenants</a></li>
+    <li class="tab col s3"><a href="#test4">Users</a></li>
+</ul>
 
-<!--<h1 class="header center orange-text">Starter Template</h1>-->
-
-<!--<div class="row center">-->
-<!--<h5 class="header col s12 light">A modern responsive front-end framework based on-->
-<!--Material Design</h5>-->
-<!--</div>-->
-<!--<div class="row center">-->
-<!--<a href="http://materializecss.com/getting-started.html" id="download-button"-->
-<!--class="btn-large waves-effect waves-light orange">Get Started</a>-->
-<!--</div>-->
-<!--<br><br>-->
-
-<!--</div>-->
-<!--</div>-->
-
-<div class="section">
-    <div class="row">
-        <div class="col s12"><h5>Add new system to RPSP</h5></div>
-    </div>
-    <div class="row">
-        <form class="col s12">
-            <a class="col s1 btn waves-effect waves-light green"><i
-                class="material-icons">add</i></a>
-
-            <div class="input-field col s3">
-                <input placeholder="x.x.x.x" id="systemIp" type="text" class="validate">
-                <label for="systemIp">RP4VM SP system IP</label>
-            </div>
-            <div class="input-field col s2">
-                <input placeholder="admin" id="username" type="text" class="validate">
-                <label for="username">RP4VM SP system user name</label>
-            </div>
-            <div class="input-field col s2">
-                <input placeholder="password" id="password" type="password" class="validate">
-                <label for="password">RP4VM SP system user password</label>
-            </div>
-            <div class="input-field col s3">
-                <input type="checkbox" class="filled-in" id="dr2c" checked="checked"/>
-                <label for="dr2c">Tenant host production VMs</label>
-            </div>
-        </form>
-    </div>
-</div>
-<div class="section">
-    <h3 align="center">List of systems connected to RPSP</h3>
-    <div class="preloader-wrapper big active" ng-hide="data">
-        <div class="spinner-layer spinner-blue">
-            <div class="circle-clipper left">
-                <div class="circle"></div>
-            </div><div class="gap-patch">
-            <div class="circle"></div>
-        </div><div class="circle-clipper right">
-            <div class="circle"></div>
-        </div>
-        </div>
-    </div>
-    <!-- Display data here -->
-</div>
-<div class="container">
-    <pre>
-        <code>
-            {{data}}
-        </code>
-    </pre>
-</div>
+<ng-view></ng-view>
 
 <div class="container">
-    <div class="section">
 
-        <!--   Icon Section   -->
-        <div class="row">
-            <div class="col s12 m4">
-                <div class="icon-block">
-                    <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
-                    <h5 class="center">Speeds up development</h5>
-
-                    <p class="light">We did most of the heavy lifting for you to provide a default
-                        stylings that incorporate our custom components. Additionally, we refined
-                        animations and transitions to provide a smoother experience for
-                        developers.</p>
-                </div>
-            </div>
-
-            <div class="col s12 m4">
-                <div class="icon-block">
-                    <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
-                    <h5 class="center">User Experience Focused</h5>
-
-                    <p class="light">By utilizing elements and principles of Material Design, we
-                        were able to create a framework that incorporates components and animations
-                        that provide more feedback to users. Additionally, a single underlying
-                        responsive system across all platforms allow for a more unified user
-                        experience.</p>
-                </div>
-            </div>
-
-            <div class="col s12 m4">
-                <div class="icon-block">
-                    <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
-                    <h5 class="center">Easy to work with</h5>
-
-                    <p class="light">We have provided detailed documentation as well as specific
-                        code examples to help new users get started. We are also always open to
-                        feedback and can answer any questions a user may have about Materialize.</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <br><br>
-
-    <div class="section">
-
-    </div>
 </div>
 
 <footer class="page-footer orange">
@@ -156,7 +57,6 @@
                     Powered by RecoverPoint for Virtual Machines.
                     Some more text here........
                 </p>
-
 
             </div>
             <div class="col l3 s12">
@@ -189,11 +89,13 @@
 
 <!--  Scripts-->
 <script src="assets/jquery/jquery-2.1.1.min.js"></script>
+<script src="assets/js/angularjs/1.4.7/angular.min.js"></script>
+<script src="assets/js/angularjs/1.4.7/angular-route.min.js"></script>
 <script src="assets/js/materialize.min.js"></script>
-<script src="../assets/js/angularjs/1.4.7/angular.min.js"></script>
 <script src="app/admin.js"></script>
 <script src="app/services.js"></script>
-<script src="app/adminCtrl.js"></script>
+<script src="templates/packages/packages.ctrl.js"></script>
+<script src="templates/rpsystems/rpsystems.ctrl.js"></script>
 
 </body>
 </html>

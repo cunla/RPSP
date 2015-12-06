@@ -17,6 +17,7 @@ A standalone web-container exposes REST services and an AngularJS client for ten
 
 Database holds information about
  * RP4VM connectivity 
+ * Packages information (packages are the settings for RP4VM actions, e.g., ESXi, datastore)
  * VM ownership 
  * Accounts and users
  * Tenants activity
@@ -69,7 +70,7 @@ After running the app make sure that accessing the port brings a login screen.
 The initial account/user/password to work with are: system/admin/123.
 
 In order to add your first RP system and its relevant data, a support REST API was created
-`GET rpsp/data-loader/internal-data/template`
+`GET /rpsp/data-loader/internal-data/template`
 There is a template for an array of RP system configurations.
 Each RP system as its clusters and its accounts.
 Each account has a list of all its virtual machines registered as their vSphere ID when using DR **in** the cloud template.
