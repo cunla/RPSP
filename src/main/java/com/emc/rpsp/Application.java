@@ -69,7 +69,7 @@ public class Application {
             app.run(args);
         } catch (Exception e) {
             System.err.println("!!! Failed to start RPSP: " + e.getMessage());
-            System.err.println("!!! Please send log files (rpsp.log) to daniel.moran@emc.com");
+            System.err.println("!!! Please send log files (rpsp.log) to ask.vplex.rp.bizdev@emc.com");
         }
     }
 
