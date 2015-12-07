@@ -25,7 +25,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	$scope.vmGsAndCgFlatData = {};
 	$scope.totalVms = {};
 	$scope.protectedVms = {};
-	$scope.loading = true;
+//	$scope.finishedLoading = false;
 
     $scope.toggleRow = function(row){
         if(row.type=='gs'){
@@ -47,7 +47,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 		      $scope.protectedVms = allData.protectedVms;
 		   })
 		   .finally(function (res) {
-			  $scope.loading = false;
+			  $scope.finishedLoading = true;
 		   })
 	};
 
@@ -204,11 +204,16 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 	};
 
 
-	$scope.openCreateCgModal = function(){
+	$scope.openCreateCgModal = function(vmId){
 		var modalInstance = $modal.open({
              templateUrl: 'app/protect/protect-create-cg-modal.html',
              controller: 'protectCreateCgController',
-             windowClass: 'create-cg-modal'
+             windowClass: 'create-cg-modal',
+             resolve: {
+                 vmId : function () {
+                       return vmId;
+                 }
+             }
          });
 
 		modalInstance.result.then(function(){{}});
