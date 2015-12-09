@@ -96,6 +96,27 @@ public class Client {
         systemSettings.setTestResult(true);
         return getClusterNames(rpClusters);
     }
+    
+    
+    public Map<Long, String> getGroupNames() {
+    	ConsistencyGroupSettingsSet consistencyGroupSettingsSet = connector.getAllGroupsSettings();
+    	Map<Long, String> groupIdToNameMap = new HashMap<Long, String>();
+    	for(ConsistencyGroupSettings consistencyGroupSettings : consistencyGroupSettingsSet.getInnerSet()){
+    		groupIdToNameMap.put(consistencyGroupSettings.getGroupUID().getId(), consistencyGroupSettings.getName());
+    	}
+    	return groupIdToNameMap;
+    }
+    
+    
+    public Map<Long, String> getGroupSetNames() {
+    	ConsistencyGroupSetSettingsSet consistencyGroupSetSettingsSet = connector.getAllGroupSetsSettings();
+    	Map<Long, String> groupSetIdToNameMap = new HashMap<Long, String>();
+    	for(ConsistencyGroupSetSettings consistencyGroupSetSettings : consistencyGroupSetSettingsSet.getInnerSet()){
+    		groupSetIdToNameMap.put(consistencyGroupSetSettings.getSetUID().getId(), consistencyGroupSetSettings.getName());
+    	}
+    	return groupSetIdToNameMap;
+    }
+    
 
     private Map<Long, String> getClusterNames(RecoverPointClustersInformation rpClusters) {
         Map<Long, String> res = new HashMap<>();
