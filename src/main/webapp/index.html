@@ -44,8 +44,8 @@
             </div>
         </nav>
 
-        <div class="container-fluid padding-bottom">
-            <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-body">
                 <div class="col-xs-2 col-sm-2 col-md-2">
                     <div class="msg-alert-info all-borders">
                         <div class="centered-text">{{'HOME.PROTECTED_VMS_MSG' | translate}}
@@ -73,7 +73,6 @@
                 </div>
             </div>
         </div>
-
 
     </div>
 
@@ -117,10 +116,10 @@
     <br/>
 
 
-    <div class="panel panel-default full-height">
+    <div class="panel padding-top panel-default">
 
         <div class="panel-body full-height">
-            <div class="row full-height">
+            <div class="row">
                 <div class="col-xs-9 col-sm-9 col-md-9 right-border">
                     <table class="table table-condensed table-striped">
                         <thead>
@@ -185,10 +184,9 @@
                             <!-- <td>{{row.replicaClusters[0].groupCopySettings[0].imageAccess == 'Enabled' ? ('HOME.DR_TEST_ENABLED_MSG' | translate) : ('HOME.DR_TEST_DISABLED_MSG' | translate)}}</td> -->
                         </tr>
                         </tbody>
-
                     </table>
                 </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 full-height" droppable="true">
+                <div class="col-xs-3 col-sm-3 col-md-3" droppable="true">
                     <table class="table table-condensed table-striped">
                         <thead>
                         <tr>
@@ -205,17 +203,17 @@
                             ng-class="{'selected' : unprotectedSelectedIndex == $index}">
                             <td class="centered-text">{{row.name}}</td>
                         </tr>
+                        <tr></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
         </div>
-    </div>
-    <div class="navbar navbar-default navbar-fixed-bottom">
-        <div class="container">
-            <p class="navbar-text pull-left" id="corp-footer">{{'HOME.POWERED_BY_RECOVERPOINT_FOR_VMS' |
-                translate}}</p>
+        <div class="navbar navbar-default navbar-fixed-bottom">
+            <div class="container">
+                {{'HOME.POWERED_BY_RECOVERPOINT_FOR_VMS' | translate}}
+            </div>
         </div>
     </div>
 

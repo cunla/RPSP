@@ -92,40 +92,56 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 		params.cgId = cgId;
 		var modalInstance;
 
-		if(cgId !== undefined){
-			modalInstance = $modal.open({
-	             templateUrl: 'app/protect/protect-modal.html',
-	             controller: 'protectController',
-	             windowClass: 'protect-modal',
-	             resolve: {
-	                 modalParams : function () {
-	                   return params;
-	                 }
-	             }
-	         });
-		}
-		else{
-			modalInstance = $modal.open({
-	             templateUrl: 'app/unprotect/unprotect-modal.html',
-	             controller: 'unprotectController',
-	             windowClass: 'protect-modal',
-	             resolve: {
-	                 modalParams : function () {
-	                   return params;
-	                 }
-	             }
-	         });
-		}
+        if( cgId == 'new-section'){
+		    $scope.openCreateCgModal(vmId);
+		} else{
+		    if(cgId !== undefined){
+                modalInstance = $modal.open({
+                     templateUrl: 'app/protect/protect-modal.html',
+                     controller: 'protectController',
+                     windowClass: 'protect-modal',
+                     resolve: {
+                         modalParams : function () {
+                           return params;
+                         }
+                     }
+                 });
+            } else{
+                modalInstance = $modal.open({
+                     templateUrl: 'app/unprotect/unprotect-modal.html',
+                     controller: 'unprotectController',
+                     windowClass: 'protect-modal',
+                     resolve: {
+                         modalParams : function () {
+                           return params;
+                         }
+                     }
+                 });
+            }
 
-		modalInstance.result.finally(function(){
-				$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
-		    	$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
-		    	$scope.totalVms = vmStructureService.getCachedTotalVms();
-		    	$scope.protectedVms = vmStructureService.getCachedProtectedVms();
-		});
-
-
+            modalInstance.result.finally(function(){
+                    $scope.vmStructureData = vmStructureService.getCachedVmStructureData();
+                    $scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
+                    $scope.totalVms = vmStructureService.getCachedTotalVms();
+                    $scope.protectedVms = vmStructureService.getCachedProtectedVms();
+            });
+        }
 	};
+
+	$scope.openCreateCgModal = function(vmId){
+        var modalInstance = $modal.open({
+             templateUrl: 'app/protect/protect-create-cg-modal.html',
+             controller: 'protectCreateCgController',
+             windowClass: 'create-cg-modal',
+             resolve: {
+                 vmId : function () {
+                       return vmId;
+                 }
+             }
+         });
+
+        modalInstance.result.then(function(){{}});
+    };
 
 
 	$scope.openBookmarksModal = function(){
@@ -203,22 +219,6 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 		});
 	};
 
-
-	$scope.openCreateCgModal = function(vmId){
-		var modalInstance = $modal.open({
-             templateUrl: 'app/protect/protect-create-cg-modal.html',
-             controller: 'protectCreateCgController',
-             windowClass: 'create-cg-modal',
-             resolve: {
-                 vmId : function () {
-                       return vmId;
-                 }
-             }
-         });
-
-		modalInstance.result.then(function(){{}});
-	};
-
 	$scope.openAuditLogModal = function(){
     		var modalInstance = $modal.open({
                  templateUrl: 'app/audit/audit.html',
@@ -229,7 +229,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     		modalInstance.result.then(function(){{}});
     };
 
-    	
+
 	$scope.refreshMainScreen = function(){
 		vmStructureService.getVmStructureData().then(function(allData) {
 		      $scope.vmStructureData = allData.vmStructureData;

@@ -8,17 +8,22 @@ app.controller('protectCreateCgController', ['$scope', '$http', '$modal', '$moda
 	$scope.unprotectedVms = {};
 	$scope.productionCluster = {};
 	$scope.selectedReplicaCluster = {};
-	$scope.selectedVms = vmId!=null ? {vmId}: {};
+	$scope.selectedVms = {};
 	$scope.cgName = '';
 	$scope.replicationPolicy = {};
 	$scope.enableReplication = true;
 	$scope.rpoData = {};
 
-
-
 	$scope.initData = function(){
 		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
 		$scope.unprotectedVms = $scope.vmStructureData.unprotectedVms;
+        if(vmId){
+		    for(i in $scope.unprotectedVms){
+		        if($scope.unprotectedVms[i].id == vmId){
+		            $scope.selectedVms=[$scope.unprotectedVms[i]];
+		        }
+		    }
+		}
 		$scope.productionCluster = $scope.vmStructureData.systemInfo.productionCluster;
 		$scope.selectedReplicaCluster = $scope.vmStructureData.systemInfo.replicaClusters[0];
 
