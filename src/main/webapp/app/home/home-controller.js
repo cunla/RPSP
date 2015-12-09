@@ -227,14 +227,16 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
              });
 
     		modalInstance.result.then(function(){{}});
-    	};
+    };
 
+    	
 	$scope.refreshMainScreen = function(){
-		vmStructureService.getVmStructureData();
-		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
-    	$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
-    	$scope.totalVms = vmStructureService.getCachedTotalVms();
-    	$scope.protectedVms = vmStructureService.getCachedProtectedVms();
+		vmStructureService.getVmStructureData().then(function(allData) {
+		      $scope.vmStructureData = allData.vmStructureData;
+		      $scope.vmGsAndCgFlatData = allData.vmGsAndCgFlatData;
+		      $scope.totalVms = allData.totalVms;
+		      $scope.protectedVms = allData.protectedVms;
+		   })
     };
 
 
