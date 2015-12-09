@@ -1,20 +1,21 @@
 var app = angular.module('home');
 
 
-app.controller('protectCreateCgController', ['$scope', '$http', '$modal', '$modalInstance', '$translate', '$filter','vmStructureService', function ($scope, $http, $modal, $modalInstance, $translate, $filter, vmStructureService) {	
-	
+app.controller('protectCreateCgController', ['$scope', '$http', '$modal', '$modalInstance', '$translate', '$filter','vmStructureService', 'vmId',
+    function ($scope, $http, $modal, $modalInstance, $translate, $filter, vmStructureService, vmId) {
+
 	$scope.vmStructureData = {};
 	$scope.unprotectedVms = {};
 	$scope.productionCluster = {};
 	$scope.selectedReplicaCluster = {};
-	$scope.selectedVms = {};
+	$scope.selectedVms = vmId!=null ? {vmId}: {};
 	$scope.cgName = '';
 	$scope.replicationPolicy = {};
 	$scope.enableReplication = true;
 	$scope.rpoData = {};
-	
-	
-	
+
+
+
 	$scope.initData = function(){
 		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
 		$scope.unprotectedVms = $scope.vmStructureData.unprotectedVms;
@@ -25,29 +26,29 @@ app.controller('protectCreateCgController', ['$scope', '$http', '$modal', '$moda
 		var tierOne = $translate('PROTECT-UNPROTECT.RPO_TIER_1_MSG');
 		var tierTwo = $translate('PROTECT-UNPROTECT.RPO_TIER_2_MSG');
 		var tierThree = $translate('PROTECT-UNPROTECT.RPO_TIER_3_MSG');
-		
-		
-		$scope.rpoData = [{"val" : tierOne, "rawVal" : 15}, 
-			                  {"val" : tierTwo, "rawVal" : 30}, 
+
+
+		$scope.rpoData = [{"val" : tierOne, "rawVal" : 15},
+			                  {"val" : tierTwo, "rawVal" : 30},
 			                  {"val" : tierThree, "rawVal" : 45}];
-		
+
 		$scope.selectedRpo = $scope.rpoData[0];
 	};
-	   
+
 	$scope.initData();
-	
-	
+
+
 	$scope.createCg = function(){
     	vmStructureService.createCg($scope.cgName, $scope.productionCluster.id, $scope.selectedReplicaCluster.id, $scope.selectedVms, $scope.enableReplication, $scope.selectedRpo.rawVal);
     	$modalInstance.dismiss('cancel');
 	}
-	
-	
+
+
 	$scope.cancel = function(){
 		$modalInstance.dismiss('cancel');
 	}
-	
-	
+
+
 	$scope.getRpoVal = function(val){
 		   var res = 15;
 		   if(val != null && val !== undefined){
@@ -66,6 +67,6 @@ app.controller('protectCreateCgController', ['$scope', '$http', '$modal', '$moda
 		   }
 		   return res;
 	  };
-	   
-    
+
+
 }]);
