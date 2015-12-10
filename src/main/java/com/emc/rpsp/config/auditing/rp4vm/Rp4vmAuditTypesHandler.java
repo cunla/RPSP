@@ -8,10 +8,12 @@ import com.emc.rpsp.config.auditing.RpspAuditException;
 import com.emc.rpsp.config.auditing.cache.AuditedMethodDescriptor;
 import com.emc.rpsp.config.auditing.cache.AuditingCache;
 import com.emc.rpsp.fal.Client;
+import com.emc.rpsp.infra.common.auth.domain.AbstractCurrentUser;
 import com.emc.rpsp.infra.common.auth.domain.CurrentUser;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.users.service.UserService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -19,6 +21,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.criteria.CriteriaBuilder;
+
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.LinkedList;
@@ -85,6 +88,7 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
     }
 
     public String getAuditText(String paramType, Object paramValue) {
+    	client = getClientForAccount();
         if (null == client) {
             return paramType + paramValue;
         }
@@ -95,7 +99,16 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
         } else if ("groupSet".equals(paramType)) {
             return getGroupSetName(paramValue);
         }
-        throw new RpspAuditException("Couldn't get text for audit type {" + paramType + "}");
+        else if ("copy".equals(paramType)){
+        	return getCopyName(paramValue);
+        }
+        else if ("cluster".equals(paramType)){
+        	return getClusterName(paramValue);
+        }
+        else{
+        	return paramType + paramValue;
+        }
+        //throw new RpspAuditException("Couldn't get text for audit type {" + paramType + "}");
     }
 
     @Override
@@ -106,11 +119,10 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
         auditRepository.flush();
     }
 
-    private Client getClientForAccount(String username) {
-        User user = userService.findUserByLogin(username);
+    private Client getClientForAccount() {
+        AbstractCurrentUser user = userService.findCurrentUser();
         Account account = user.getAccount();
         if (null != account) {
-            SystemSettings systemSettings = account.getSystemSettings().get(0);
             return account.getSystemSettings().isEmpty() ?
                 null :
                 new Client(account.getSystemSettings().get(0));
@@ -118,15 +130,23 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
         return null;
     }
 
-    private String getGroupSetName(Object groupSetId) {
-        return "groupSet: " + groupSetId;
+    private String getGroupSetName(Object groupSetId) {    	
+        return "GroupSet: " + client.getGroupSetNames().get(groupSetId);
     }
 
     private String getVmName(Object vmId) {
-        return "VM: " + vmId;
+        return "VM: " + client.getVmNamesAllClusters().get(vmId);
     }
 
     private String getCgName(Object cgId) {
-        return "CG: " + cgId;
+        return "CG: " + client.getGroupNames().get(cgId);
+    }
+    
+    private String getCopyName(Object copyId) {
+        return "Copy: " + copyId;
+    }
+    
+    private String getClusterName(Object clusterId) {
+        return "Cluster: " + client.getClusterNames().get(clusterId);
     }
 }

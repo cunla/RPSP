@@ -15,7 +15,9 @@ import com.emc.fapi.jaxws.v4_3.ClusterVirtualInfrastructuresStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupCopySettingsSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupLinkPolicy;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetSettings;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetSettingsSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSetSubset;
+import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSettingsSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupSnapshots;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStateSet;
 import com.emc.fapi.jaxws.v4_3.ConsistencyGroupStatisticsSet;
@@ -206,6 +208,14 @@ public interface ClusterConnector {
 	
 	@GET(BASE_URL + "clusters/{clusterId}/settings")
 	public ClusterSettings getClusterSettings(@Path("clusterId") long clusterId);
+	
+	
+	@GET(BASE_URL + "groups/settings")
+	public ConsistencyGroupSettingsSet getAllGroupsSettings();
+	
+	
+	@GET(BASE_URL + "group_sets")
+	public ConsistencyGroupSetSettingsSet getAllGroupSetsSettings();
 
 
 }
