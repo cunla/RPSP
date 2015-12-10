@@ -114,7 +114,12 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
         else if ("cluster".equals(paramType)){
         	return getClusterName(paramValue);
         }
-        else if("DR test result".equals(paramType) || "Disable DR test result".equals(paramType)){
+        else if ("bookmark params".equals(paramType)){
+        	return "Bookmark: " + ((Map<String, String>)paramValue).get("name");
+        }
+        else if("DR test result".equals(paramType) 
+        		|| "Disable DR test result".equals(paramType)
+        		|| "Create bookmark result".equals(paramType)){
         	ResponseEntity<HttpStatus> response = (ResponseEntity<HttpStatus>)paramValue;
         	return response.getStatusCode().name();
         }
