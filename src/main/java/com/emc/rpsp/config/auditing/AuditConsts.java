@@ -21,5 +21,7 @@ public class AuditConsts {
 	public static final String BOOKMARK_PARAMS = "bookmark_params";
 	public static final String FAILOVER = "Failover";
 	public static final String FAILOVER_RESULT = "failover_result";
+	public static final String RECOVER_PRODUCTION = "Recover production";
+	public static final String RECOVER_PRODUCTION_RESULT = "recover_production_result";
 	
 }
