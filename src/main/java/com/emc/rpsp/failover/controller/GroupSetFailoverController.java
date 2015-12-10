@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.emc.rpsp.config.auditing.AuditConsts;
+import com.emc.rpsp.config.auditing.annotations.RpspAuditObject;
+import com.emc.rpsp.config.auditing.annotations.RpspAuditResult;
+import com.emc.rpsp.config.auditing.annotations.RpspAuditSubject;
+import com.emc.rpsp.config.auditing.annotations.RpspAudited;
 import com.emc.rpsp.failover.service.GroupSetFailoverService;
 
 @Controller
@@ -20,9 +25,10 @@ public class GroupSetFailoverController {
 
 	@RequestMapping(value = "/group-sets/{groupSetId}/clusters/{clusterId}/failover", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<HttpStatus> failover(
-			@PathVariable("clusterId") Long clusterId,
-			@PathVariable("groupSetId") Long groupSetId) {
+	@RpspAudited(action = AuditConsts.FAILOVER)
+	public @RpspAuditResult(AuditConsts.FAILOVER_RESULT) ResponseEntity<HttpStatus> failover(
+			@RpspAuditObject(AuditConsts.CLUSTER) @PathVariable("clusterId") Long clusterId,
+			@RpspAuditSubject(AuditConsts.GS) @PathVariable("groupSetId") Long groupSetId) {
 		failoverService.failoverGroupSetSubset(clusterId, groupSetId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
