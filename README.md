@@ -92,7 +92,7 @@ To access RPSP either AngularJS client or the REST API can be used
 The RPSP Web client can be accessed in: http://hostname:9999/rpsp (9999 is the default port) 
 
 ###RPSP REST API
-The following methods are supported in the RPSP RESP API, with base being http://*hostname*:*port*/rpsp
+The following methods are supported in the RPSP REST API, with base being http://*hostname*:*port*/rpsp
 
 1. RP systems API *(admin permissions only)*
      - `GET /rest/systems` Get list of all RP4VM systems installed
