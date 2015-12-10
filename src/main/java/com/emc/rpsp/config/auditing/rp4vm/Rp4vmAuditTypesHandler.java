@@ -120,7 +120,8 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
         }
         else if(AuditConsts.DR_TEST_RESULT.equals(paramType) 
         		|| AuditConsts.DISABLE_DR_TEST_RESULT.equals(paramType)
-        		|| AuditConsts.CREATE_BOOKMARK_RESULT.equals(paramType)){
+        		|| AuditConsts.CREATE_BOOKMARK_RESULT.equals(paramType)
+        		|| AuditConsts.FAILOVER_RESULT.equals(paramType)){
         	ResponseEntity<HttpStatus> response = (ResponseEntity<HttpStatus>)paramValue;
         	return response.getStatusCode().name();
         }

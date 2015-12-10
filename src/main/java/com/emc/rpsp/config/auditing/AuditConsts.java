@@ -19,5 +19,7 @@ public class AuditConsts {
 	public static final String CREATE_BOOKMARK = "Create bookmark";
 	public static final String CREATE_BOOKMARK_RESULT = "create_bookmark_result";
 	public static final String BOOKMARK_PARAMS = "bookmark_params";
+	public static final String FAILOVER = "Failover";
+	public static final String FAILOVER_RESULT = "failover_result";
 	
 }
