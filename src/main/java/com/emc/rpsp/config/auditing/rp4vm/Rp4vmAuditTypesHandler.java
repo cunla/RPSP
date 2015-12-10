@@ -105,7 +105,7 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
             return getCgName(paramValue);
         } else if ("vm".equals(paramType)) {
             return getVmName(paramValue);
-        } else if ("groupSet".equals(paramType)) {
+        } else if ("gs".equals(paramType)) {
             return getGroupSetName(paramValue);
         }
         else if ("copy".equals(paramType)){
