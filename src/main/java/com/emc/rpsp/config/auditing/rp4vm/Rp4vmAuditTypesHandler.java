@@ -10,6 +10,8 @@ import com.emc.rpsp.config.auditing.cache.AuditingCache;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.infra.common.auth.domain.AbstractCurrentUser;
 import com.emc.rpsp.infra.common.auth.domain.CurrentUser;
+import com.emc.rpsp.infra.common.systems.service.SystemsDataService;
+import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.users.service.UserService;
@@ -19,6 +21,8 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import javax.persistence.criteria.CriteriaBuilder;
 
@@ -32,8 +36,13 @@ import java.util.Map;
  * Created by morand3 on 11/25/2015.
  */
 public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
-    @Autowired private AuditRepository auditRepository;
-    @Autowired private UserService userService;
+    @Autowired 
+    private AuditRepository auditRepository;
+    @Autowired 
+    private UserService userService;
+    @Autowired
+	private SystemsDataService systemsDataService = null;
+    
     private Client client = null;
 
     public Rp4vmAuditTypesHandler() {
@@ -105,6 +114,10 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
         else if ("cluster".equals(paramType)){
         	return getClusterName(paramValue);
         }
+        else if("DR test result".equals(paramType) || "Disable DR test result".equals(paramType)){
+        	ResponseEntity<HttpStatus> response = (ResponseEntity<HttpStatus>)paramValue;
+        	return response.getStatusCode().name();
+        }
         else{
         	return paramType + paramValue;
         }
@@ -139,7 +152,7 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
     }
 
     private String getCgName(Object cgId) {
-        return "CG: " + client.getGroupNames().get(cgId);
+        return "Group: " + client.getGroupNames().get(cgId);
     }
     
     private String getCopyName(Object copyId) {
@@ -147,6 +160,16 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
     }
     
     private String getClusterName(Object clusterId) {
-        return "Cluster: " + client.getClusterNames().get(clusterId);
+    	AbstractCurrentUser user = userService.findCurrentUser();
+        Account account = user.getAccount();
+        String clusterFriendlyName = null;
+        if(account != null){
+        	SystemSettings system = systemsDataService.findByAccount(account).get(0);
+        	Map<String, ClusterSettings> nameToFriendlyClusterNamesMap = system.getNameToClusterMap();
+        	String clusterName = client.getClusterNames().get(clusterId);
+        	clusterFriendlyName = nameToFriendlyClusterNamesMap.get(clusterName).getFriendlyName();
+        }
+    	
+        return "Cluster: " + clusterFriendlyName;
     }
 }
