@@ -42,24 +42,19 @@ app.controller('protectCreateCgController', ['$scope', '$http', '$modal', '$moda
 
 	$scope.initData();
 
-
 	$scope.createCg = function(){
     	vmStructureService.createCg($scope.cgName, $scope.productionCluster.id, $scope.selectedReplicaCluster.id, $scope.selectedVms, $scope.enableReplication, $scope.selectedRpo.rawVal);
     	$modalInstance.dismiss('cancel');
 	}
 
-
 	$scope.cancel = function(){
 		$modalInstance.dismiss('cancel');
 	}
 
-
 	$scope.getRpoVal = function(val){
 		   var res = 15;
 		   if(val != null && val !== undefined){
-
 			   var $translate = $filter('translate');
-
 			   if(val == $translate('PROTECT-UNPROTECT.RPO_TIER_1_MSG')){
 				   res = 15
 			   }

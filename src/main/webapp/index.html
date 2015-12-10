@@ -121,7 +121,7 @@
         <div class="panel-body full-height">
             <div class="row">
                 <div class="col-xs-9 col-sm-9 col-md-9 right-border">
-                    <table class="table table-condensed table-striped">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
                             <th></th>
@@ -149,7 +149,9 @@
                                    title="{{row.hideChildren? 'Expand':'Collapse'}}"
                                    ng-click="toggleRow(row)"></i>
                             </span>
-                                {{row.name}}
+                                <span title="{{isActionApplicable()?'':'Actions disabled because not all CGs are in the same state'}}">
+                                    {{row.name}}
+                                </span>
                                 <div ng-hide="row.hideChildren" ng-repeat="vm in row.vms" draggable="true"
                                      vmid="{{vm.id}}">
                                     <white-space ng-show="row.parent">      </white-space>
