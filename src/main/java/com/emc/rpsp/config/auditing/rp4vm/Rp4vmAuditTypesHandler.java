@@ -1,6 +1,7 @@
 package com.emc.rpsp.config.auditing.rp4vm;
 
 import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.config.auditing.AuditConsts;
 import com.emc.rpsp.config.auditing.AuditEntry;
 import com.emc.rpsp.config.auditing.AuditRepository;
 import com.emc.rpsp.config.auditing.AuditTypesHandler;
@@ -101,25 +102,25 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
         if (null == client) {
             return paramType + paramValue;
         }
-        if ("cg".equals(paramType)) {
+        if (AuditConsts.CG.equals(paramType)) {
             return getCgName(paramValue);
-        } else if ("vm".equals(paramType)) {
+        } else if (AuditConsts.VM.equals(paramType)) {
             return getVmName(paramValue);
-        } else if ("gs".equals(paramType)) {
+        } else if (AuditConsts.GS.equals(paramType)) {
             return getGroupSetName(paramValue);
         }
-        else if ("copy".equals(paramType)){
+        else if (AuditConsts.COPY.equals(paramType)){
         	return getCopyName(paramValue);
         }
-        else if ("cluster".equals(paramType)){
+        else if (AuditConsts.CLUSTER.equals(paramType)){
         	return getClusterName(paramValue);
         }
-        else if ("bookmark params".equals(paramType)){
+        else if (AuditConsts.BOOKMARK_PARAMS.equals(paramType)){
         	return "Bookmark: " + ((Map<String, String>)paramValue).get("name");
         }
-        else if("DR test result".equals(paramType) 
-        		|| "Disable DR test result".equals(paramType)
-        		|| "Create bookmark result".equals(paramType)){
+        else if(AuditConsts.DR_TEST_RESULT.equals(paramType) 
+        		|| AuditConsts.DISABLE_DR_TEST_RESULT.equals(paramType)
+        		|| AuditConsts.CREATE_BOOKMARK_RESULT.equals(paramType)){
         	ResponseEntity<HttpStatus> response = (ResponseEntity<HttpStatus>)paramValue;
         	return response.getStatusCode().name();
         }

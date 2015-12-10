@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.emc.rpsp.bookmarks.service.GroupSetBookmarksService;
+import com.emc.rpsp.config.auditing.AuditConsts;
 import com.emc.rpsp.config.auditing.annotations.RpspAuditObject;
 import com.emc.rpsp.config.auditing.annotations.RpspAuditResult;
 import com.emc.rpsp.config.auditing.annotations.RpspAuditSubject;
@@ -28,10 +29,10 @@ public class GroupSetBookmarksController {
 	@RequestMapping(value = "/group-sets/{groupSetId}/bookmarks", method = RequestMethod.POST, 
 										consumes = MediaType.APPLICATION_JSON_VALUE, 
 												produces = MediaType.APPLICATION_JSON_VALUE)
-	@RpspAudited(action="Create bookmark")
+	@RpspAudited(action=AuditConsts.CREATE_BOOKMARK)
 	@ResponseBody
-	public @RpspAuditResult("Create bookmark result") ResponseEntity<HttpStatus> createBookmark(@RpspAuditSubject("gs") @PathVariable("groupSetId") Long groupSetId , 
-			@RpspAuditObject("bookmark params") @RequestBody Map<String, String> params) {
+	public @RpspAuditResult(AuditConsts.CREATE_BOOKMARK_RESULT) ResponseEntity<HttpStatus> createBookmark(@RpspAuditSubject(AuditConsts.GS) @PathVariable("groupSetId") Long groupSetId , 
+			@RpspAuditObject(AuditConsts.BOOKMARK_PARAMS) @RequestBody Map<String, String> params) {
 		groupSetBookmarksService.createGroupSetBookmark(groupSetId, params.get("name"), params.get("consistencyType"));
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
