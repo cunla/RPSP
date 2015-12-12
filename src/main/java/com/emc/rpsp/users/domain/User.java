@@ -100,6 +100,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+	
 
 	public String getLastName() {
 		return lastName;
@@ -163,6 +164,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+	
+	public String getFullName(){
+		return firstName + " " + lastName;
 	}
 
 	@Override

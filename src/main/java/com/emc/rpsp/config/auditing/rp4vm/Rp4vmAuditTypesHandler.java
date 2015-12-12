@@ -139,6 +139,12 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
         auditRepository.save(entry);
         auditRepository.flush();
     }
+    
+    @Override
+    public void writeRecordToAudit(AuditEntry entry) {
+        auditRepository.save(entry);
+        auditRepository.flush();
+    }
 
     private Client getClientForAccount() {
         AbstractCurrentUser user = userService.findCurrentUser();

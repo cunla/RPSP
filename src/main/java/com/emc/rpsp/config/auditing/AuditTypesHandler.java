@@ -1,6 +1,7 @@
 package com.emc.rpsp.config.auditing;
 
 import com.emc.rpsp.config.auditing.cache.AuditedMethodDescriptor;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 
 import java.util.Date;
@@ -16,4 +17,6 @@ public interface AuditTypesHandler {
 
     public void writeRecordToAudit(Date date, String username, ProceedingJoinPoint joinPoint,
         Object resultValue);
+    
+    public void writeRecordToAudit(AuditEntry entry);
 }

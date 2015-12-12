@@ -23,5 +23,9 @@ public class AuditConsts {
 	public static final String FAILOVER_RESULT = "failover_result";
 	public static final String RECOVER_PRODUCTION = "Recover production";
 	public static final String RECOVER_PRODUCTION_RESULT = "recover_production_result";
+	public static final String LOGIN_ACTION = "Login";
+	public static final String LOGOUT_ACTION = "Logout";
+	public static final String LOGIN_LOGOUT_SUCCESS_RESULT = "OK";
+	public static final String LOGIN_LOGOUT_FAILURE_RESULT = "Failure";
 	
 }
