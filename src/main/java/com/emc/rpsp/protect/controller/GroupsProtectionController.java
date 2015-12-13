@@ -32,10 +32,10 @@ public class GroupsProtectionController {
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/groups", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	/*@RpspAudited(action=AuditConsts.CREATE_CG)*/
+	@RpspAudited(action=AuditConsts.CREATE_CG)
 	@ResponseBody
-	public /*@RpspAuditResult(AuditConsts.CREATE_CG_RESULT)*/ ResponseEntity<HttpStatus> createConsistencyGroup(
-								@RequestBody Map<String, Object> params) {
+	public @RpspAuditResult(AuditConsts.CREATE_CG_RESULT) ResponseEntity<HttpStatus> createConsistencyGroup(
+			@RpspAuditSubject(AuditConsts.CREATE_CG_SUBJ_PARAMS) @RpspAuditObject(AuditConsts.CREATE_CG_OBJ_PARAMS) @RequestBody Map<String, Object> params) {
 		String groupName = params.get("groupName").toString();
 		boolean startReplication = Boolean.parseBoolean(params.get("enableReplication").toString());
 		int rpo = Integer.parseInt(params.get("rpo").toString());
@@ -68,10 +68,11 @@ public class GroupsProtectionController {
 	}
 
 	@RequestMapping(value = "/groups/{groupId}/vms/{vmId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RpspAudited(action=AuditConsts.REMOVE_VM_FROM_CG)
 	@ResponseBody
-	public ResponseEntity<HttpStatus> removeVmsFromCG(
-			@PathVariable("vmId") String vmId,
-			@PathVariable("groupId") Long groupId) {
+	public @RpspAuditResult(AuditConsts.REMOVE_VM_FROM_CG_RESULT) ResponseEntity<HttpStatus> removeVmsFromCG(
+			@RpspAuditObject(AuditConsts.VM) @PathVariable("vmId") String vmId,
+			@RpspAuditSubject(AuditConsts.CG) @PathVariable("groupId") Long groupId) {
 		groupsProtectionService.removeVmsFromCG(vmId, groupId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
