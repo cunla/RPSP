@@ -28,7 +28,8 @@ public class AuditConsts {
 	public static final String LOGIN_LOGOUT_SUCCESS_RESULT = "OK";
 	public static final String LOGIN_LOGOUT_FAILURE_RESULT = "Failure";
 	public static final String CREATE_CG = "Create CG";
-	public static final String CREATE_CG_PARAMS = "create_cg_params";
+	public static final String CREATE_CG_SUBJ_PARAMS = "create_cg_subj_params";
+	public static final String CREATE_CG_OBJ_PARAMS = "create_cg_obj_params";
 	public static final String CREATE_CG_RESULT = "create_cg_result";
 	public static final String ADD_VM_TO_CG = "Add VM to CG";
 	public static final String ADD_VM_TO_CG_PARAMS = "add_vm_to_cg_params";
