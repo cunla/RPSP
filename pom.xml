@@ -26,6 +26,7 @@
         <hibernate.version>4.3.6.Final</hibernate.version>
         <retrofit.version>1.9.0</retrofit.version>
         <commons-codec.version>1.10</commons-codec.version>
+        <build.number>SNAPSHOT</build.number>
     </properties>
 
     <dependencies>
@@ -256,7 +257,7 @@
     <!-- test commit #2 -->
 
     <build>
-        <finalName>rpsp</finalName>
+        <finalName>rpsp.${version}.${build.number}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -1,4 +1,5 @@
-var app = angular.module('home',  ['pascalprecht.translate', 'locale', 'ui.bootstrap', 'btorfs.multiselect','tableSort']);
+var app = angular.module('home',
+    ['pascalprecht.translate', 'locale', 'ui.bootstrap', 'btorfs.multiselect','tableSort','ngRoute']);
 app.run(['localeService', function(localeService){
 	localeService.setLocale();
 }]);
