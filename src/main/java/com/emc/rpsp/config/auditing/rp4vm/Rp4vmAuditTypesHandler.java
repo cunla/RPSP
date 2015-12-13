@@ -21,9 +21,7 @@ import com.emc.rpsp.config.auditing.AuditRepository;
 import com.emc.rpsp.config.auditing.AuditTypesHandler;
 import com.emc.rpsp.config.auditing.cache.AuditedMethodDescriptor;
 import com.emc.rpsp.config.auditing.cache.AuditingCache;
-import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.infra.common.auth.domain.AbstractCurrentUser;
-import com.emc.rpsp.infra.common.systems.service.SystemsDataService;
 import com.emc.rpsp.users.service.UserService;
 import com.emc.rpsp.vmstructure.domain.AccountVmsStructure;
 import com.emc.rpsp.vmstructure.domain.ClusterDefinition;
@@ -184,33 +182,68 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
     	AbstractCurrentUser user = userService.findCurrentUser();
         Account account = user.getAccount();
         if(accountIdToStructureMap.get(account.getId()) == null){
-        	AccountVmsStructure accountVmsStructure = accountVmsStructureService.getAccountVmsStrucure();
-        	accountIdToStructureMap.put(account.getId(), accountVmsStructure);
+        	updateAccountVmsStructure();
         }
         res = accountIdToStructureMap.get(account.getId());
         return res;
     }
-
+  
+    
+    private void updateAccountVmsStructure(){
+    	AbstractCurrentUser user = userService.findCurrentUser();
+        Account account = user.getAccount();
+    	AccountVmsStructure accountVmsStructure = accountVmsStructureService.getAccountVmsStrucure();
+    	accountIdToStructureMap.put(account.getId(), accountVmsStructure);
+    }
+    
+    
+    private String getGroupSetName(Object groupSetId){
+    	String groupSetName = null;
+    	GroupSet groupSet = getGroupSetData(groupSetId);
+    	if(groupSet == null){
+    		updateAccountVmsStructure();
+    	}
+    	groupSet = getGroupSetData(groupSetId);
+    	if(groupSet != null){
+    		groupSetName = groupSet.getName();
+    	}
+    	return groupSetName;
+    }
 
     
-    private String getGroupSetName(Object groupSetId) {    	
+    
+    private GroupSet getGroupSetData(Object groupSetId) {    	
     	AccountVmsStructure accountVmsStructure = getAccountVmsStructure();
         for(VmContainer currVmContainer : accountVmsStructure.getProtectedVms()){        	
         	if(currVmContainer instanceof GroupSet){
         		GroupSet currGs = (GroupSet)currVmContainer;
         		if(currGs.getId().equals(groupSetId.toString())){
-        			return currGs.getName();
+        			return currGs;
         		}
         	}		  		
     	}
         return null;
     }
     
-    private String getVmName(Object vmId) {
+    
+    private String getVmName(Object vmId){
+    	String vmName = null;
+    	VmDefinition vmDefinition = getVmData(vmId);
+    	if(vmDefinition == null){
+    		updateAccountVmsStructure();
+    	}
+    	vmDefinition = getVmData(vmId);
+    	if(vmDefinition != null){
+    		vmName = vmDefinition.getName();
+    	}
+    	return vmName;
+    }
+    
+    private VmDefinition getVmData(Object vmId) {
     	AccountVmsStructure accountVmsStructure = getAccountVmsStructure();
     	for(VmDefinition currVmdeDefinition : accountVmsStructure.getUnprotectedVms()){
     		if(currVmdeDefinition.getId().equals(vmId)){
-    			return currVmdeDefinition.getName();
+    			return currVmdeDefinition;
     		}
     	}
     	for(VmContainer currVmContainer : accountVmsStructure.getProtectedVms()){
@@ -219,7 +252,7 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
     			List<VmDefinition> vms = ((ConsistencyGroup)currVmContainer).getVms();
     			for(VmDefinition currVmdeDefinition : vms){
     				if(currVmdeDefinition.getId().equals(vmId)){
-    					return currVmdeDefinition.getName();
+    					return currVmdeDefinition;
     				}
     			}
     		}
@@ -230,7 +263,7 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
     				List<VmDefinition> vms = ((ConsistencyGroup)currCg).getVms();
     				for(VmDefinition currVmdeDefinition : vms){
         				if(currVmdeDefinition.getId().equals(vmId)){
-        					return currVmdeDefinition.getName();
+        					return currVmdeDefinition;
         				}
         			}
     			}
@@ -239,9 +272,23 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
     	}
         return null;
     }
+    
+    
+    private String getCgName(Object cgId){
+    	String cgName = null;
+    	ConsistencyGroup cg = getCgData(cgId);
+    	if(cg == null){
+    		updateAccountVmsStructure();
+    	}
+    	cg = getCgData(cgId);
+    	if(cg != null){
+    		cgName = cg.getName();
+    	}
+    	return cgName;
+    }
 
     
-    private String getCgName(Object cgId) {
+    private ConsistencyGroup getCgData(Object cgId) {
     	AccountVmsStructure accountVmsStructure = getAccountVmsStructure();
     	
     	for(VmContainer currVmContainer : accountVmsStructure.getProtectedVms()){
@@ -249,7 +296,7 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
     		if(currVmContainer instanceof ConsistencyGroup){
         		ConsistencyGroup currCg = (ConsistencyGroup)currVmContainer;
         		if(currCg.getId().equals(cgId.toString())){
-        			return currCg.getName();
+        			return currCg;
         		}	
     		}
     		else{
@@ -258,7 +305,7 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
     			for(VmContainer currCg : groups){
     				ConsistencyGroup currNestedCg = (ConsistencyGroup)currCg;
     				if(currNestedCg.getId().equals(cgId.toString())){
-            			return currNestedCg.getName();
+            			return currNestedCg;
             		}
     			}
     		}
@@ -268,16 +315,30 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
     }
     
     
-    private String getClusterName(Object clusterId) {
+    private String getClusterName(Object clusterId){
+    	String clusterName = null;
+    	ClusterDefinition clusterDefinition = getClusterData(clusterId);
+    	if(clusterDefinition == null){
+    		updateAccountVmsStructure();
+    	}
+    	clusterDefinition = getClusterData(clusterId);
+    	if(clusterDefinition != null){
+    		clusterName = clusterDefinition.getName();
+    	}
+    	return clusterName;
+    }
+    
+    
+    private ClusterDefinition getClusterData(Object clusterId) {
     	AccountVmsStructure accountVmsStructure = getAccountVmsStructure();
     	SystemInfo sysInfo = accountVmsStructure.getSystemInfo();
     	if(sysInfo.getProductionCluster().getId().equals(clusterId.toString())){
-    		return sysInfo.getProductionCluster().getName();
+    		return sysInfo.getProductionCluster();
     	}
     	else{
     		for(ClusterDefinition currReplicaCluster : sysInfo.getReplicaClusters()){
     			if(currReplicaCluster.getId().equals(clusterId.toString())){
-    	    		return currReplicaCluster.getName();
+    	    		return currReplicaCluster;
     	    	}
     		}
     	}
