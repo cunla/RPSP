@@ -1,6 +1,11 @@
 package com.emc.rpsp.recover.controller;
 
+import com.emc.rpsp.config.auditing.AuditConsts;
+import com.emc.rpsp.config.auditing.annotations.RpspAuditObject;
+import com.emc.rpsp.config.auditing.annotations.RpspAuditResult;
+import com.emc.rpsp.config.auditing.annotations.RpspAuditSubject;
 import com.emc.rpsp.config.auditing.annotations.RpspAudited;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,11 +25,11 @@ public class GroupSetRecoverController {
 	private GroupSetRecoverService recoverService;
 
 	@RequestMapping(value = "/group-sets/{groupSetId}/clusters/{clusterId}/recover-production", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    @RpspAudited
+	@RpspAudited(action = AuditConsts.RECOVER_PRODUCTION)
 	@ResponseBody
-	public ResponseEntity<HttpStatus> failover(
-			@PathVariable("clusterId") Long clusterId,
-			@PathVariable("groupSetId") Long groupSetId) {
+	public @RpspAuditResult(AuditConsts.RECOVER_PRODUCTION_RESULT) ResponseEntity<HttpStatus> failover(
+			@RpspAuditObject(AuditConsts.CLUSTER) @PathVariable("clusterId") Long clusterId,
+			@RpspAuditSubject(AuditConsts.GS) @PathVariable("groupSetId") Long groupSetId) {
 		recoverService.recoverProduction(clusterId, groupSetId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

@@ -2,6 +2,7 @@ package com.emc.rpsp.imageaccess.controller;
 
 import java.util.Map;
 
+import com.emc.rpsp.config.auditing.AuditConsts;
 import com.emc.rpsp.config.auditing.annotations.RpspAuditObject;
 import com.emc.rpsp.config.auditing.annotations.RpspAuditResult;
 import com.emc.rpsp.config.auditing.annotations.RpspAuditSubject;
@@ -28,9 +29,9 @@ import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
     @RequestMapping(value = "/groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/enable-latest",
     		method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    @RpspAudited(action="Enable DR test")
-    @ResponseBody public @RpspAuditResult("DR test result") ResponseEntity<HttpStatus> enableLatestImageAccess(
-    		@RpspAuditObject("cluster")  @PathVariable("clusterId") Long clusterId, @RpspAuditSubject("cg") @PathVariable("groupId") Long groupId,
+    @RpspAudited(action=AuditConsts.ENABLE_DR_TEST)
+    @ResponseBody public @RpspAuditResult(AuditConsts.DR_TEST_RESULT) ResponseEntity<HttpStatus> enableLatestImageAccess(
+    		@RpspAuditObject(AuditConsts.CLUSTER)  @PathVariable("clusterId") Long clusterId, @RpspAuditSubject(AuditConsts.CG) @PathVariable("groupId") Long groupId,
     		@PathVariable("copyId") Integer copyId) {
         imageAccessService.enableLatestImageAccess(clusterId, groupId, copyId);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -40,9 +41,9 @@ import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
     @RequestMapping(value = "/groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/enable", method = RequestMethod.PUT,
     		produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RpspAudited(action="Enable DR test")
-    @ResponseBody public @RpspAuditResult("DR test result") ResponseEntity<HttpStatus> enableSnapshotImageAccess(
-    		@RpspAuditObject("cluster") @PathVariable("clusterId") Long clusterId, @RpspAuditSubject("cg") @PathVariable("groupId") Long groupId,
+    @RpspAudited(action=AuditConsts.ENABLE_DR_TEST)
+    @ResponseBody public @RpspAuditResult(AuditConsts.DR_TEST_RESULT) ResponseEntity<HttpStatus> enableSnapshotImageAccess(
+    		@RpspAuditObject(AuditConsts.CLUSTER) @PathVariable("clusterId") Long clusterId, @RpspAuditSubject(AuditConsts.CG) @PathVariable("groupId") Long groupId,
     @PathVariable("copyId") Integer copyId, @RequestBody Map<String, Long> params) {
         CopySnapshot copySnapshot = new CopySnapshot();
         copySnapshot.setId(params.get("snapshotId"));
@@ -54,10 +55,10 @@ import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
 
     @RequestMapping(value = "/groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/disable", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    @RpspAudited(action="Disable DR test")
+    @RpspAudited(action=AuditConsts.DISABLE_DR_TEST)
     @ResponseBody
-    public  @RpspAuditResult("Disable DR test result") ResponseEntity<HttpStatus> disableImageAccess(@RpspAuditObject("cluster") @PathVariable("clusterId") Long clusterId,
-    		 @RpspAuditSubject("cg") @PathVariable("groupId") Long groupId, @PathVariable("copyId") Integer copyId) {
+    public  @RpspAuditResult(AuditConsts.DISABLE_DR_TEST_RESULT) ResponseEntity<HttpStatus> disableImageAccess(@RpspAuditObject(AuditConsts.CLUSTER) @PathVariable("clusterId") Long clusterId,
+    		 @RpspAuditSubject(AuditConsts.CG) @PathVariable("groupId") Long groupId, @PathVariable("copyId") Integer copyId) {
         imageAccessService.disableImageAccess(clusterId, groupId, copyId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
