@@ -49,13 +49,18 @@ Notice you need to define the environment variables to connect to the database R
  
 ####Installation instructions:
  1. Download the RPSP code from GIT
- 2. Deploy fapi-client to your local repository using
-    `mvn install:install-file -Dfile=fapi-client-4.3.jar -DgroupId=com.emc -DartifactId=fapi-client -Dversion=4.3 -Dpackaging=jar`
+ 2. Deploy fapi-client to your local repository using the command
+    `mvn install:install-file -Dfile=fapi-client-4.3.jar -DgroupId=com.emc -DartifactId=fapi-client -Dversion=4.3 -Dpackaging=jar` 
+    from the root directory of the code (where the file is located).
+    
  3. Set database assosiation:
     RPSP comes out of the box using H2 embedded file system database so it does not require any settings changed.
-    However, if you like to work with other database, you can change the configuration under src/main/resources/config/application.yml
-    You can see example of MySQL connection under src/main/resources/config/application-dev.yml.
+    
+    However, if you like to work with other database, you can change the configuration under `src/main/resources/config/application.yml`
+    You can see example of MySQL connection under `src/main/resources/config/application-dev.yml`.
     Notice the drivers that are bundled are for mysql and H2 - add to pom.xml drivers if needed.
+    
+    You need to set up two schemas on your database, one for RPSP data (tenants, users, RP4VM systems, etc.) and another for the audit log. 
         
  3. Compile and package RPSP using maven, using command:  `mvn package` 
  4. Run Application class from the WAR file using the command `java -jar rpsp.war`
