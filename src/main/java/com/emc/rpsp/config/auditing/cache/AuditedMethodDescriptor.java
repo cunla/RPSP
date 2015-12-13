@@ -42,16 +42,16 @@ public class AuditedMethodDescriptor {
                 log.debug("Descriptor {}: Added param {} as subject with type {}", this.name,
                     paramName, subjectAnnotation.value());
                 this.subject = new ImmutablePair<>(i, subjectAnnotation.value());
-            } else {
-                RpspAuditObject objectAnnotation = parameter.getAnnotation(RpspAuditObject.class);
-                if (null != objectAnnotation) {
-                    log.debug("Descriptor {}: Added param {} as subject with type {}", this.name,
-                        paramName, objectAnnotation.value());
-                    this.objects.put(i, objectAnnotation.value());
-                } else { //No RpspAudit annotation on param
-                    log.debug("Descriptor {}: Ignored param {}", this.name, paramName);
-                }
             }
+            RpspAuditObject objectAnnotation = parameter.getAnnotation(RpspAuditObject.class);
+            if (null != objectAnnotation) {
+                log.debug("Descriptor {}: Added param {} as subject with type {}", this.name,
+                    paramName, objectAnnotation.value());
+                this.objects.put(i, objectAnnotation.value());
+            } else { //No RpspAudit annotation on param
+                log.debug("Descriptor {}: Ignored param {}", this.name, paramName);
+            }
+
         }
     }
 
