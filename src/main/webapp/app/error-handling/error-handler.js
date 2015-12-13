@@ -1,5 +1,3 @@
-var HEADER_NAME = 'RPSP-Handle-Errors-Generically';
-var specificallyHandleInProgress = false;
 var app = angular.module('home');
 app
     .controller('errorController', ['$scope', '$modalInstance', 'modalParams',
@@ -9,27 +7,14 @@ app
                 $modalInstance.dismiss('cancel');
             }
         }]);
-(function () {
-
-    var showError = function (error) {
-        var display = JSON.stringify(error.data);
-        alert(display);
-        //var $injector = angular.injector(['app']);
-        //var $modal = $injector.get('$modal');
-        //$modal.open({
-        //    templateUrl: 'app/error-modal.html',
-        //    controller: 'errorController',
-        //    windowClass: 'error-modal',
-        //    resolve: {
-        //        modalParams : function () {
-        //            return error;
-        //        }
-        //    }
-        //});
-    };
-    var httpInterceptor = function ($provide, $httpProvider) {
-
-
+app
+    .config(function ($provide, $httpProvider) {
+        var showError = function (error) {
+            var data = error.data;
+            var display = JSON.stringify(data);
+            display = display.replace(/\\r\\n\\t/g,"\n");
+            alert(display);
+        };
         $provide.factory('httpInterceptor', function ($q) {
             return {
                 response: function (response) {
@@ -42,6 +27,4 @@ app
             };
         });
         $httpProvider.interceptors.push('httpInterceptor');
-    };
-    app.config(httpInterceptor);
-}());
+    });
