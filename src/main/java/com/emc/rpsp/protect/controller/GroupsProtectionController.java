@@ -4,7 +4,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.emc.rpsp.config.auditing.AuditConsts;
+import com.emc.rpsp.config.auditing.annotations.RpspAuditObject;
+import com.emc.rpsp.config.auditing.annotations.RpspAuditResult;
+import com.emc.rpsp.config.auditing.annotations.RpspAuditSubject;
 import com.emc.rpsp.config.auditing.annotations.RpspAudited;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,9 +32,9 @@ public class GroupsProtectionController {
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/groups", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RpspAudited
+	/*@RpspAudited(action=AuditConsts.CREATE_CG)*/
 	@ResponseBody
-	public ResponseEntity<HttpStatus> createConsistencyGroup(
+	public /*@RpspAuditResult(AuditConsts.CREATE_CG_RESULT)*/ ResponseEntity<HttpStatus> createConsistencyGroup(
 								@RequestBody Map<String, Object> params) {
 		String groupName = params.get("groupName").toString();
 		boolean startReplication = Boolean.parseBoolean(params.get("enableReplication").toString());
@@ -42,11 +47,11 @@ public class GroupsProtectionController {
 	}
 
 	@RequestMapping(value = "/groups/{groupId}/vms", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RpspAudited
+	@RpspAudited(action=AuditConsts.ADD_VM_TO_CG)
 	@ResponseBody
-	public ResponseEntity<HttpStatus> addVmToCG(
-			@PathVariable("groupId") Long groupId,
-			@RequestBody Map<String, Object> params) {
+	public @RpspAuditResult(AuditConsts.ADD_VM_TO_CG_RESULT) ResponseEntity<HttpStatus> addVmToCG(
+			@RpspAuditSubject(AuditConsts.CG) @PathVariable("groupId") Long groupId,
+			@RpspAuditObject(AuditConsts.ADD_VM_TO_CG_PARAMS) @RequestBody Map<String, Object> params) {
 		boolean isCritical = true;
 		int sequenceNumber = 3;
 		if (params.get("isCritical") != null) {

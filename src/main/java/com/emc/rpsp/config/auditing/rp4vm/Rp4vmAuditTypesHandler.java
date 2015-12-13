@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Created by morand3 on 11/25/2015.
@@ -118,11 +119,17 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
         else if (AuditConsts.BOOKMARK_PARAMS.equals(paramType)){
         	return "Bookmark: " + ((Map<String, String>)paramValue).get("name");
         }
+        else if (AuditConsts.ADD_VM_TO_CG_PARAMS.equals(paramType)){
+        	return "VM: " + getVmName(((Map<String, String>)paramValue).get("id"));
+        }
         else if(AuditConsts.DR_TEST_RESULT.equals(paramType) 
         		|| AuditConsts.DISABLE_DR_TEST_RESULT.equals(paramType)
         		|| AuditConsts.CREATE_BOOKMARK_RESULT.equals(paramType)
         		|| AuditConsts.FAILOVER_RESULT.equals(paramType)
-        		|| AuditConsts.RECOVER_PRODUCTION_RESULT.equals(paramType)){
+        		|| AuditConsts.RECOVER_PRODUCTION_RESULT.equals(paramType)
+        		|| AuditConsts.CREATE_CG_RESULT.equals(paramType)
+        		|| AuditConsts.ADD_VM_TO_CG_RESULT.equals(paramType)
+        		|| AuditConsts.REMOVE_VM_FROM_CG_RESULT.equals(paramType)){
         	ResponseEntity<HttpStatus> response = (ResponseEntity<HttpStatus>)paramValue;
         	return response.getStatusCode().name();
         }
@@ -162,7 +169,12 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
     }
 
     private String getVmName(Object vmId) {
-        return "VM: " + client.getVmNamesAllClusters().get(vmId);
+    	for(Entry<Long, Map<String, String>>  currEntry : client.getVmNamesAllClusters().entrySet()){
+    		if(currEntry.getValue().get(vmId) != null){
+    			return "VM: " + client.getVmNamesAllClusters().get(vmId); 
+    		}
+    	}
+        return null;
     }
 
     private String getCgName(Object cgId) {
