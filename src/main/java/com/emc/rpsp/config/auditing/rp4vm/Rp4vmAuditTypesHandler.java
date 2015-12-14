@@ -299,6 +299,7 @@ public class Rp4vmAuditTypesHandler implements AuditTypesHandler {
         			return currCg;
         		}	
     		}
+    		//Nested CG
     		else{
     			GroupSet currGs = (GroupSet)currVmContainer;
     			List<VmContainer> groups = currGs.getConsistencyGroups();
