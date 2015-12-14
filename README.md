@@ -186,6 +186,18 @@ The following methods are supported in the RPSP REST API, with base being http:/
 			"name": "Bookmark_B",
 			"consistencyType":"crash-consistency"
 	   }`
+	   
+	   
+	 - `POST /groups` - Creates a consistency group with specified vms.
+	The following values are passed in the HTTP body - the name of the CG, its VMs, enable replication parameter and RPO. 
+
+	   `{
+                "groupName": "group_A",
+                "vms": ["502ffe14-9b74-cb6c-8485-8f6e5cd66b94"],
+                "enableReplication": true,
+                "rpo": 15
+		 }`
+	   
    
 	- `POST /groups/{groupId}/vms` - Adds VM to the specific consistency group that is 	identified by {groupId}.
 	The following values are passed in the HTTP body - the id of the VM, its order in the 	boot sequence (sequenceNumber) and if it is critical or not. 
