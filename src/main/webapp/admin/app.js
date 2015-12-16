@@ -18,7 +18,7 @@ var app = angular
         'ngRoute',
         'ngSanitize',
         'ngTouch',
-        'ngMaterial', 'ui.router', 'ngMdIcons'
+        'ngMaterial', 'ui.router', 'ngMdIcons', 'md.data.table'
     ])
     .config(
         function ($stateProvider, $urlRouterProvider) {
@@ -48,7 +48,7 @@ var app = angular
                     views: {
                         'menuContent': {
                             templateUrl: "views/systems/systems.html",
-                            controller: 'MainCtrl'
+                            controller: 'SystemsCtrl'
                         }
                     }
                 })

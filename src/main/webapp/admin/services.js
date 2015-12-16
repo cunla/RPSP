@@ -1,10 +1,14 @@
-app.service('RPSP', ['$http',
-    function ($http) {
+app.service('RPSP', ['$http', '$q',
+    function ($http, $q) {
         return {
             settings: function () {
-                //$timeout(function () {
-                return $http.get('data/settings.json');
-                //}, 1000);
+                return $q(function (resolve, reject) {
+                    setTimeout(function () {
+                        $http.get('data/settings.json').then(function (res) {
+                            resolve(res);
+                        });
+                    }, 1000);
+                });
             }
         }
     }]);

@@ -12,6 +12,18 @@
                     "dc01-cl01-attempt2": "New York",
                     "dc02-cl02-attempt2": "London"
                 }
+            },
+            {
+                "id": 2,
+                "user": "admin",
+                "password": "xxx",
+                "ip": "10.64.125.32",
+                "name": "Test system",
+                "isDrttc": true,
+                "clusterFriendlyNames": {
+                    "dc01-cl01-attempt2": "New York",
+                    "dc02-cl02-attempt2": "London"
+                }
             }
         ],
         "packages": [
