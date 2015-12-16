@@ -638,8 +638,44 @@ import java.util.stream.Collectors;
         }
         return volumesMaxSizes;
     }
-
+    
     private Map<ConsistencyGroupCopyUID, List<CopySnapshot>> getGroupCopiesSnapshots(Client client,
+            Long groupId) {
+            Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copyUIDToSnapshotsMap = new HashMap<ConsistencyGroupCopyUID, List<CopySnapshot>>();
+            ConsistencyGroupSnapshots consistencyGroupSnapshots = client.getGroupSnapshots(groupId);
+            List<ConsistencyGroupCopySnapshots> copiesSnapshots = consistencyGroupSnapshots
+                .getCopiesSnapshots();
+
+            for (ConsistencyGroupCopySnapshots currCopy : copiesSnapshots) {
+                ConsistencyGroupCopyUID copyUID = currCopy.getCopyUID();
+                List<Snapshot> snapshots = currCopy.getSnapshots();
+                List<CopySnapshot> snapshotsList = new LinkedList<CopySnapshot>();
+                for (Snapshot currSnapshot : snapshots) {
+                        RecoverPointTimeStamp timestamp = currSnapshot.getClosingTimeStamp();
+
+                        String dateStr = getTimestampStr(timestamp);
+                        SnapshotUID snapshotUID = currSnapshot.getSnapshotUID();
+                        CopySnapshot snapshot = new CopySnapshot();
+                        snapshot.setId(snapshotUID.getId());
+                        snapshot.setClosingTimestamp(dateStr);
+                        snapshot.setOriginalClosingTimeStamp(timestamp.getTimeInMicroSeconds());
+                        if (currSnapshot.getRelevantEvent() != null && !StringUtils
+                            .contains(currSnapshot.getRelevantEvent().getDetails(), "GUID")) {
+                            snapshot.setName(currSnapshot.getRelevantEvent().getDetails());
+                        }
+                        ConsistencyType consistencyType = getConsistencyType(
+                            currSnapshot.getConsistencyType());
+                        snapshot.setConsistencyType(consistencyType.value());
+
+                        snapshotsList.add(snapshot);
+                }
+                copyUIDToSnapshotsMap.put(copyUID, snapshotsList);
+            }
+            return copyUIDToSnapshotsMap;
+
+        }
+
+/*    private Map<ConsistencyGroupCopyUID, List<CopySnapshot>> getGroupCopiesSnapshots(Client client,
         Long groupId) {
         Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copyUIDToSnapshotsMap = new HashMap<ConsistencyGroupCopyUID, List<CopySnapshot>>();
         ConsistencyGroupSnapshots consistencyGroupSnapshots = client.getGroupSnapshots(groupId);
@@ -679,7 +715,7 @@ import java.util.stream.Collectors;
         }
         return copyUIDToSnapshotsMap;
 
-    }
+    }*/
 
     private ConsistencyType getConsistencyType(SnapshotConsistencyType snapshotConsistencyType) {
         ConsistencyType res = null;
