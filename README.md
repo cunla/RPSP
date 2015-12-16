@@ -213,6 +213,10 @@ The following methods are supported in the RPSP REST API, with base being http:/
    - `PUT /groups/{groupId}/clusters/{clusterId}/copies/{copyId}/failover` - Executes a failover for group that is 	identified by {groupId} to the specified cluster and copy.
    
    - `PUT /group-sets/{group-set-id}/clusters/{clusterId}/failover` - Executes a failover for group set that is 	identified by {group-set-id} in the specified cluster.
+   
+   - `PUT /groups/{groupId}/clusters/{clusterId}/copies/{copyId}/recover-production` - Executes  recover production for group that is 	identified by {groupId} to the specified cluster and copy.
+   
+   - `PUT /group-sets/{group-set-id}/clusters/{clusterId}/recover-production` - Executes recover production for group set that is identified by {group-set-id} in the specified cluster.
     
 ###CONTRIBUTION INSTRUCTIONS
 Create a fork of the project into your own repository. 
