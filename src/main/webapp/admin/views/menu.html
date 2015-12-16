@@ -1,0 +1,56 @@
+<md-toolbar layout="row">
+
+    <div class="md-toolbar-tools">
+        <h2>
+            <span>Self-Service Portal Admin Console</span>
+        </h2>
+        <span flex></span>
+        <md-button class="md-icon-button" aria-label="Favorite">
+            <ng-md-icon icon="favorite" style="fill:white"></ng-md-icon>
+        </md-button>
+        <md-button class="md-icon-button md-hue-1" aria-label="More">
+            <ng-md-icon icon="more_vert" style="fill:white"></ng-md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+
+
+<md-tabs md-dynamic-height md-border-bottom>
+    <md-tab>
+        <md-button flex ng-click="goSystems()">Systems</md-button>
+    </md-tab>
+    <md-divider></md-divider>
+    <md-tab>
+        <md-button flex ng-click="goPackages()">Packages</md-button>
+
+    </md-tab>
+    <md-divider></md-divider>
+    <md-tab>
+        <md-button flex ng-click="goTenants()">Tenants</md-button>
+    </md-tab>
+    <md-divider></md-divider>
+    <md-tab>
+        <md-button flex ng-click="goUsers()">Users</md-button>
+    </md-tab>
+    <md-divider></md-divider>
+    <md-tab>
+        <md-button flex ng-click="goVms()">Virtual Machines</md-button>
+    </md-tab>
+    <md-divider></md-divider>
+    <md-tab>
+        <md-button flex ng-click="goTools()">Tools</md-button>
+    </md-tab>
+</md-tabs>
+
+<div flex>
+
+    <md-content flex id="content">
+        <md-content layout-padding ui-view="menuContent">
+
+        </md-content>
+    </md-content>
+
+</div>
+<md-bottom-sheet class="md-grid" layout="column">
+    <h3>Created by BDG</h3>
+</md-bottom-sheet>

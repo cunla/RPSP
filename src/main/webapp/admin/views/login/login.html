@@ -1,0 +1,42 @@
+<div layout="row" flex style="background-color: lightseagreen" layout-align="center center">
+
+    <div class="md-whiteframe-z4" flex="35">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Sample Login</h2>
+            </div>
+        </md-toolbar>
+        <md-content layout-padding>
+
+            <md-card>
+
+                <md-card-content>
+
+                    <form name="loginForm">
+
+                        <div layout layout-sm="column">
+                            <md-input-container flex>
+                                <label>Email</label>
+                                <input ng-model="user.email" required type="text">
+                            </md-input-container>
+                        </div>
+                        <div layout layout-sm="column">
+                            <md-input-container flex>
+                                <label>Password</label>
+                                <input type="password" ng-model="user.password" required>
+                            </md-input-container>
+                        </div>
+
+                    </form>
+                </md-card-content>
+                <div class="md-actions" layout="row" layout-align="end center">
+                    <md-button ng-click="login(user)">Login</md-button>
+                    <md-button ng-click="clearUser()">Reset</md-button>
+                </div>
+            </md-card>
+
+        </md-content>
+
+    </div>
+
+</div>
