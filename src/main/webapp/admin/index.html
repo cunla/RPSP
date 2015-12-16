@@ -1,101 +1,51 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="adminUI">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-    <title>RPSP Management</title>
-
-    <!-- CSS  -->
-    <link href="assets/css/material-icons.css" rel="stylesheet">
-    <link href="assets/css/materialize.min.css" type="text/css" rel="stylesheet"
-          media="screen,projection"/>
-    <!--<link href="assets/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>-->
-    <link rel="stylesheet" href="../custom/css/custom.css">
-</head>
-
-<body ng-app="adminUI">
-
-<nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container">
-        <a id="logo-container" href="#" class="left brand-logo">
-            <div class="logo-image"></div>
-        </a>
-        <!--<div class="col s12">-->
-
-        <!--</div>-->
-        <!--<div id="test1" class="col s12">Test 1</div>-->
-        <!--<div id="test2" class="col s12">Test 2</div>-->
-        <!--<div id="test3" class="col s12">Test 3</div>-->
-        <!--<div id="test4" class="col s12">Test 4</div>-->
-
-        <ul class="right hide-on-med-and-down">
-            <li class="tab col s3"><a href="/rpsp">User view</a></li>
-        </ul>
-    </div>
-</nav>
-
-<ul class="tabs">
-    <li class="tab col s3"><a href="#test1">RecoverPoint Cluster systems</a></li>
-    <li class="tab col s3"><a href="#test2">Policy packages</a></li>
-    <li class="tab col s3"><a href="#test3">Tenants</a></li>
-    <li class="tab col s3"><a href="#test4">Users</a></li>
-</ul>
-
-<ng-view></ng-view>
-
-<div class="container">
-
-</div>
-
-<footer class="page-footer orange">
-    <div class="container">
-        <div class="row">
-            <div class="col l6 s12">
-                <h5 class="white-text">RecoverPoint Self-Service Portal</h5>
-
-                <p class="grey-text text-lighten-4">
-                    Powered by RecoverPoint for Virtual Machines.
-                    Some more text here........
-                </p>
-
-            </div>
-            <div class="col l3 s12">
-                <h5 class="white-text">Settings</h5>
-                <ul>
-                    <li><a class="white-text" href="#!">Link 1</a></li>
-                    <li><a class="white-text" href="#!">Link 2</a></li>
-                    <li><a class="white-text" href="#!">Link 3</a></li>
-                    <li><a class="white-text" href="#!">Link 4</a></li>
-                </ul>
-            </div>
-            <div class="col l3 s12">
-                <h5 class="white-text">Connect</h5>
-                <ul>
-                    <li><a class="white-text" href="#!">Link 1</a></li>
-                    <li><a class="white-text" href="#!">Link 2</a></li>
-                    <li><a class="white-text" href="#!">Link 3</a></li>
-                    <li><a class="white-text" href="#!">Link 4</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="footer-copyright">
-        <div class="container">
-            Made by BDG
-        </div>
-    </div>
-</footer>
+<!doctype html>
+<html class="no-js" >
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body  layout="column" ng-app="adminApp">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div ui-view style="min-height:100vh" layout="column"></div>
 
 
-<!--  Scripts-->
-<script src="assets/jquery/jquery-2.1.1.min.js"></script>
-<script src="assets/js/angularjs/1.4.7/angular.min.js"></script>
-<script src="assets/js/angularjs/1.4.7/angular-route.min.js"></script>
-<script src="assets/js/materialize.min.js"></script>
-<script src="app/admin.js"></script>
-<script src="app/services.js"></script>
-<script src="templates/packages/packages.ctrl.js"></script>
-<script src="templates/rpsystems/rpsystems.ctrl.js"></script>
 
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-material-icons/angular-material-icons.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="app.js"></script>
+        <script src="views/login/login.ctrl.js"></script>
+        <script src="views/tools/tools.js"></script>
+         <script src="views/systems/systems.ctrl.js"></script>
+        <!-- endbuild -->
 </body>
 </html>
