@@ -31,9 +31,9 @@
 
     <dependencies>
         <!--<dependency>-->
-            <!--<groupId>org.projectlombok</groupId>-->
-            <!--<artifactId>lombok</artifactId>-->
-            <!--<version>1.16.4</version>-->
+        <!--<groupId>org.projectlombok</groupId>-->
+        <!--<artifactId>lombok</artifactId>-->
+        <!--<version>1.16.4</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>org.apache.geronimo.bundles</groupId>
@@ -67,6 +67,12 @@
             <artifactId>fapi-client</artifactId>
             <version>4.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.cloudbees.thirdparty</groupId>
+            <artifactId>vijava</artifactId>
+            <version>5.5-beta</version>
+        </dependency>
+
 
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
@@ -90,9 +96,9 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>org.jadira.usertype</groupId>-->
-            <!--<artifactId>usertype.core</artifactId>-->
-            <!--<version>3.2.0.GA</version>-->
+        <!--<groupId>org.jadira.usertype</groupId>-->
+        <!--<artifactId>usertype.core</artifactId>-->
+        <!--<version>3.2.0.GA</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>commons-validator</groupId>
@@ -138,15 +144,15 @@
             </exclusions>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.liquibase</groupId>-->
-            <!--<artifactId>liquibase-core</artifactId>-->
-            <!--<version>${liquibase.version}</version>-->
-            <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<artifactId>jetty-servlet</artifactId>-->
-                    <!--<groupId>org.eclipse.jetty</groupId>-->
-                <!--</exclusion>-->
-            <!--</exclusions>-->
+        <!--<groupId>org.liquibase</groupId>-->
+        <!--<artifactId>liquibase-core</artifactId>-->
+        <!--<version>${liquibase.version}</version>-->
+        <!--<exclusions>-->
+        <!--<exclusion>-->
+        <!--<artifactId>jetty-servlet</artifactId>-->
+        <!--<groupId>org.eclipse.jetty</groupId>-->
+        <!--</exclusion>-->
+        <!--</exclusions>-->
         <!--</dependency>-->
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -238,19 +244,19 @@
             <version>${javax.inject.version}</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.neo4j</groupId>-->
-            <!--<artifactId>neo4j-cypher-compiler-2.1</artifactId>-->
-            <!--<version>2.1.5</version>-->
+        <!--<groupId>org.neo4j</groupId>-->
+        <!--<artifactId>neo4j-cypher-compiler-2.1</artifactId>-->
+        <!--<version>2.1.5</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>net.wimpi</groupId>-->
-            <!--<artifactId>telnetd-x</artifactId>-->
-            <!--<version>2.1.1</version>-->
+        <!--<groupId>net.wimpi</groupId>-->
+        <!--<artifactId>telnetd-x</artifactId>-->
+        <!--<version>2.1.1</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>commons-lang</groupId>-->
-            <!--<artifactId>commons-lang</artifactId>-->
-            <!--<version>2.4</version>-->
+        <!--<groupId>commons-lang</groupId>-->
+        <!--<artifactId>commons-lang</artifactId>-->
+        <!--<version>2.4</version>-->
         <!--</dependency>-->
     </dependencies>
 
@@ -320,9 +326,9 @@
             <url>http://repo.spring.io/milestone</url>
         </repository>
         <!--<repository>-->
-            <!--<id>remote-repos</id>-->
-            <!--<name>artifacts-il-releases</name>-->
-            <!--<url>http://artifacts-il:8081/artifactory/remote-repos</url>-->
+        <!--<id>remote-repos</id>-->
+        <!--<name>artifacts-il-releases</name>-->
+        <!--<url>http://artifacts-il:8081/artifactory/remote-repos</url>-->
         <!--</repository>-->
 
     </repositories>
