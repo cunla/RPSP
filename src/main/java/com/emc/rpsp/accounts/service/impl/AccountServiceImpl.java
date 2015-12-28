@@ -11,11 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.accounts.repository.AccountConfigsRepository;
 import com.emc.rpsp.accounts.repository.AccountRepository;
 import com.emc.rpsp.accounts.service.AccountService;
-import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
-import com.emc.rpsp.rpsystems.SystemSettings;
+import com.emc.rpsp.packages.domain.PackageDefinition;
+import com.emc.rpsp.packages.repository.PackageDefinitionRepository;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -23,11 +22,10 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	private AccountRepository accountRepository;
 
+	
 	@Autowired
-	private AccountConfigsRepository accountConfigRepository;
+	private PackageDefinitionRepository packageDefinitionRepository;
 
-	@Autowired
-	private SystemConnectionInfoRepository systemConnectionInfoRepository;
 
     @PersistenceContext(unitName = "rpsp")
     @Qualifier("entityManagerFactory")
@@ -36,29 +34,36 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public List<Account> findAll() {
 		List<Account> accounts = accountRepository.findAll();
+		setAdditionalValues(accounts);
 		return accounts;
 	}
 
 	@Override
 	public Account findById(Long id) {
 		Account account = accountRepository.findOne(id);
+		account.setAdditionalValues();
 		return account;
 	}
 
 	@Override
 	public Account findByName(String name) {
 		Account account = accountRepository.findOneByName(name);
+		if(account != null){
+			account.setAdditionalValues();
+		}
 		return account;
 	}
 
 	@Override
-	@Transactional
-	public Account create(Account account, Long systemId) {
+	@Transactional("transactionManager")
+	public Account create(Account account) {
 		entityManager.persist(account);
 		entityManager.flush();
-		SystemSettings systemSettings = systemConnectionInfoRepository
-				.findOne(systemId);
-		account.addSystem(systemSettings);
+		for(Long currPackageId : account.getPackageIds()){
+			PackageDefinition packageDef = packageDefinitionRepository
+					.findOne(currPackageId);
+			account.addPackage(packageDef);
+		}
 		Account newAccount = entityManager.merge(account);
 		entityManager.flush();
 		return newAccount;
@@ -77,6 +82,14 @@ public class AccountServiceImpl implements AccountService {
 	public void delete(Long id) {
 		accountRepository.delete(id);
 
+	}
+	
+	private void setAdditionalValues(List<Account> accounts){
+		if(accounts != null){
+			for(Account currAccount : accounts){
+				currAccount.setAdditionalValues();
+			}
+		}
 	}
 
 }

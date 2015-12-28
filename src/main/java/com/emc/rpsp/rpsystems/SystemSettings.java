@@ -1,19 +1,29 @@
 package com.emc.rpsp.rpsystems;
 
-import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.tools.StringXORer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-import javax.persistence.*;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import com.emc.rpsp.packages.domain.PackageDefinition;
+import com.emc.rpsp.tools.StringXORer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by morand3 on 1/13/2015.
@@ -22,27 +32,57 @@ import java.util.Map;
 public class SystemSettings {
     private static final String ENCRYPT_KEY1 = "Bar12345Bar12345";
     private static final String ENCRYPT_KEY2 = "ThisIsASecretKey";
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) private Long id;
+    @Id 
+    @GeneratedValue(strategy = GenerationType.AUTO) 
+    private Long id;
+    
+    @Column 
+    private String name;
 
-    @JsonProperty("ip") @Column private String systemIp;
-    @Column private String user;
+    @JsonProperty("ip") 
+    @Column 
+    private String systemIp;
+    
+    @Column 
+    private String user;
+    
     @Column
     // @JsonIgnore
     private String password;
-    @Column private Boolean testResult;
-    @Column @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    
+    @Column
+    private Boolean isDrttc;
+    
+    @Column
+    private Boolean isMultiTenanctEnabled;
+    
+    @Column 
+    private Boolean testResult;
+    
+    @Column 
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime lastTested;
-    @Column @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    
+    
+    @Column 
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime lastCollected;
-    @Column private String systemVersion;
+    
+    
+    @Column 
+    private String systemVersion;
 
+    @JsonIgnore
     @Column
     @OneToMany(mappedBy = "systemSettings", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JsonProperty("clusters") private List<ClusterSettings> clusters;
+    //@JsonProperty("clusters") 
+    private List<ClusterSettings> clusters;
+    
+    @JsonIgnore
+	@Column
+	@OneToMany(mappedBy = "systemSettings", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<PackageDefinition> packages;
 
-    @Column
-    @ManyToMany(targetEntity = com.emc.rpsp.accounts.domain.Account.class, mappedBy = "systemSettings", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonProperty("accounts") private List<Account> accounts;
 
     public static enum TestResult {
         OK, AUTH_FAILED, FAILED
@@ -50,7 +90,7 @@ public class SystemSettings {
 
     public SystemSettings() {
         clusters = new LinkedList<>();
-        accounts = new LinkedList<>();
+        packages = new LinkedList<>();
     }
 
     public SystemSettings(String systemIp, String user, String password) {
@@ -129,23 +169,52 @@ public class SystemSettings {
         return clusters;
     }
 
-    public List<Account> getAccounts() {
-        return accounts;
-    }
+    
 
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
-    }
+    public List<PackageDefinition> getPackages() {
+		return packages;
+	}
 
-    public void setId(Long id) {
+	public void setPackages(List<PackageDefinition> packages) {
+		this.packages = packages;
+	}
+
+	public void setId(Long id) {
         this.id = id;
     }
 
-    public void addAccount(Account account) {
-        accounts.add(account);
+    public void addPackage(PackageDefinition packageParam) {
+    	packages.add(packageParam);
     }
+    
+    
 
-    public Map<String, ClusterSettings> getNameToClusterMap() {
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Boolean getIsDrttc() {
+		return isDrttc;
+	}
+
+	public void setIsDrttc(Boolean isDrttc) {
+		this.isDrttc = isDrttc;
+	}
+
+	public Boolean getIsMultiTenanctEnabled() {
+		return isMultiTenanctEnabled;
+	}
+
+	public void setIsMultiTenanctEnabled(Boolean isMultiTenanctEnabled) {
+		this.isMultiTenanctEnabled = isMultiTenanctEnabled;
+	}
+
+	@JsonIgnore
+	public Map<String, ClusterSettings> getNameToClusterMap() {
         Map<String, ClusterSettings> clustersMap = new HashMap<String, ClusterSettings>();
         for (ClusterSettings clusterSettings : clusters) {
             clustersMap.put(clusterSettings.getClusterName(), clusterSettings);

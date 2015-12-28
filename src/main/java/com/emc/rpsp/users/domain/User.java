@@ -3,6 +3,7 @@ package com.emc.rpsp.users.domain;
 import com.emc.rpsp.accounts.domain.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import java.io.Serializable;
 
 @Entity
@@ -21,6 +23,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
+	
+	@Transient
+	@JsonProperty
+	private Long tenantId;
 
 	@NotNull
 	@Size(min = 0, max = 50)
@@ -63,7 +69,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(length = 100)
 	private String permission;
 
-	// @JsonIgnore
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Account account;
 
@@ -168,6 +174,21 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	
 	public String getFullName(){
 		return firstName + " " + lastName;
+	}	
+
+	public Long getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(Long tenantId) {
+		this.tenantId = tenantId;
+	}
+	
+	
+	public void setAdditionalValues(){
+		if(account != null){
+			tenantId = account.getId();
+		}
 	}
 
 	@Override

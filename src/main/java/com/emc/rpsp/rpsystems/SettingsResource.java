@@ -32,11 +32,25 @@ import java.util.Optional;
         return new ResponseEntity<>(systemsSettings, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+   /* @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/rest/systems/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SystemSettings> findSystem(@PathVariable("id") Long id) {
         log.debug("Testing systemSettings with id {}", id);
         SystemSettings systemSettings = systemConnectionInfoRepository.findOne(id);
+        return new ResponseEntity<>(systemSettings, HttpStatus.OK);
+    }*/
+    
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/rest/systems/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SystemSettings> findSystem(@PathVariable("id") Long id) {
+        log.debug("Testing systemSettings with id {}", id);
+        SystemSettings systemSettings = new SystemSettings();
+        systemSettings.setIsDrttc(true);
+        systemSettings.setIsMultiTenanctEnabled(false);
+        systemSettings.setName("Test system");
+        systemSettings.setSystemIp("10.64.125.131");
+        systemSettings.setUser("admin");
+        systemSettings.setPassword("admin");
         return new ResponseEntity<>(systemSettings, HttpStatus.OK);
     }
 
@@ -93,9 +107,22 @@ import java.util.Optional;
         for (Map.Entry<Long, String> entry : clusters.entrySet()) {
             ClusterSettings cluster = new ClusterSettings(entry.getKey(), entry.getValue(),
             systemSettings);
+            cluster.setFriendlyName(entry.getValue());
             systemSettings.addCluster(cluster);
         }
     }
+    
+    
+ /*   private void propagateClusterData(SystemSettings systemSettings) {
+    	
+    	ClusterSettings cluster = new ClusterSettings(2398086092600946265l, "NY-orig-name",
+                systemSettings);
+    	systemSettings.addCluster(cluster);
+    	
+    	cluster = new ClusterSettings(3794617345752337726l, "London-orig-name",
+                systemSettings);
+    	systemSettings.addCluster(cluster);
+    }*/
 
     private void validateNewSystem(SystemSettings cluster) {
         List<SystemSettings> clustersWithIp = systemConnectionInfoRepository

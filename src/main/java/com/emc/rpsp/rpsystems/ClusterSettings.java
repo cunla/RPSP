@@ -18,7 +18,9 @@ public class ClusterSettings {
     @Column private String clusterName;
     @Column private String friendlyName;
 
-    @JsonIgnore @ManyToOne(fetch = FetchType.LAZY) private SystemSettings systemSettings;
+    @JsonIgnore 
+    @ManyToOne(fetch = FetchType.LAZY) 
+    private SystemSettings systemSettings;
 
     public ClusterSettings() {
     }

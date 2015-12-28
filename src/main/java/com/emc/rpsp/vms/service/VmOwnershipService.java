@@ -11,7 +11,7 @@ public interface VmOwnershipService {
 
     public VmOwnership findByVmId(String vmId);
 
-    public VmOwnership create(VmOwnership vmOwnership, Long accountId);
+    public VmOwnership create(VmOwnership vmOwnership);
 
     public List<VmOwnership> bulkCreate(List<VmOwnership> vmOwnership);
 

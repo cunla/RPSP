@@ -15,7 +15,7 @@ public interface UserService {
 
     public User findUserByLogin(String login);
 
-    public User createUser(User user, Long accountId);
+    public User createUser(User user);
 
     public User updateUser(User user);
 

@@ -38,7 +38,7 @@ import java.util.Map;
 //"com.emc.rpsp.users.domain", "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain" })
 @EnableJpaRepositories(
     basePackages = { "com.emc.rpsp.rpsystems", "com.emc.rpsp.accounts.repository",
-        "com.emc.rpsp.vms.repository", "com.emc.rpsp.users.repository" },
+        "com.emc.rpsp.vms.repository", "com.emc.rpsp.users.repository", "com.emc.rpsp.packages.repository" },
     entityManagerFactoryRef = "entityManagerFactory",
     transactionManagerRef = "transactionManager") public class DatabaseConfiguration
     implements EnvironmentAware {
@@ -129,7 +129,7 @@ import java.util.Map;
         Map<String, Object> vendorProperties = relaxedPropertyResolver.getSubProperties(null);
         return factoryBuilder.dataSource(dataSource)
             .packages("com.emc.rpsp.accounts.domain", "com.emc.rpsp.users.domain",
-                "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain").persistenceUnit("rpsp")
+                "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain", "com.emc.rpsp.packages.domain").persistenceUnit("rpsp")
             .properties(vendorProperties).build();
     }
 

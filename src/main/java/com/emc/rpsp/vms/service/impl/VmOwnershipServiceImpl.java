@@ -1,19 +1,21 @@
 package com.emc.rpsp.vms.service.impl;
 
-import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.accounts.repository.AccountRepository;
-import com.emc.rpsp.vms.domain.VmOwnership;
-import com.emc.rpsp.vms.repository.VmOwnershipRepository;
-import com.emc.rpsp.vms.service.VmOwnershipService;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.LinkedList;
-import java.util.List;
+import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.accounts.repository.AccountRepository;
+import com.emc.rpsp.vms.domain.VmOwnership;
+import com.emc.rpsp.vms.repository.VmOwnershipRepository;
+import com.emc.rpsp.vms.service.VmOwnershipService;
 
 @Service
 public class VmOwnershipServiceImpl implements VmOwnershipService {
@@ -31,6 +33,7 @@ public class VmOwnershipServiceImpl implements VmOwnershipService {
 	@Override
 	public List<VmOwnership> findAll() {
 		List<VmOwnership> vmOwnership = vmOwnershipRepository.findAll();
+		setAdditionalValues(vmOwnership);
 		return vmOwnership;
 	}
 
@@ -57,11 +60,11 @@ public class VmOwnershipServiceImpl implements VmOwnershipService {
 	 */
 
 	@Override
-	@Transactional
-	public VmOwnership create(VmOwnership vmOwnership, Long accountId) {
+	@Transactional("transactionManager")
+	public VmOwnership create(VmOwnership vmOwnership) {
 		entityManager.persist(vmOwnership);
 		entityManager.flush();
-		Account account = accountRepository.findOne(accountId);
+		Account account = accountRepository.findOne(vmOwnership.getTenantId());
 		vmOwnership.setAccount(account);
 		VmOwnership createdVmOwnership = entityManager.merge(vmOwnership);
 		entityManager.flush();
@@ -84,6 +87,14 @@ public class VmOwnershipServiceImpl implements VmOwnershipService {
 		vmOwnershipRepository.delete(id);
 		return;
 
+	}
+	
+	private void setAdditionalValues(List<VmOwnership> vms){
+		if(vms != null){
+			for(VmOwnership currVm : vms){
+				currVm.setAdditionalValues();
+			}
+		}
 	}
 
 }

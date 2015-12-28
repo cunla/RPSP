@@ -2,6 +2,8 @@ package com.emc.rpsp.vms.domain;
 
 import com.emc.rpsp.accounts.domain.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -19,6 +21,10 @@ public class VmOwnership {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	
+	@Transient
+	@JsonProperty
+	private Long tenantId;
 
 	@Column
 	private String vmId;
@@ -68,6 +74,18 @@ public class VmOwnership {
 
 	public void setVmName(String vmName) {
 		this.vmName = vmName;
+	}
+
+	public Long getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(Long tenantId) {
+		this.tenantId = tenantId;
+	}
+	
+	public void setAdditionalValues(){
+		tenantId = account.getId();
 	}
 
 }

@@ -13,6 +13,7 @@ import com.emc.rpsp.vmstructure.constants.ImageAccess;
 import com.emc.rpsp.vmstructure.constants.TransferState;
 import com.emc.rpsp.vmstructure.domain.*;
 import com.emc.rpsp.vmstructure.service.AccountVmsStructureService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -173,6 +174,8 @@ import java.util.stream.Collectors;
             client);
 
         List<ConsistencyGroupSettings> groupSettingsList = rpSettings.getGroupsSettings();
+        boolean isDrttc = findSystemsByAccount(account).get(0).getIsDrttc();
+        
         for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 
             Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copySnapshotsMap = getGroupCopiesSnapshots(
@@ -193,12 +196,18 @@ import java.util.stream.Collectors;
             consistencyGroup.setReplicaClusters(replicaClusters);
             List<VmDefinition> vmsList = new LinkedList<VmDefinition>();
             consistencyGroup.setVms(vmsList);
+            
+            
 
             for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {
 
                 String originalProductionVm = locateViewRelatedVm(vmReplicationSet, vmsMap);
+                
+               
+                
+                if (originalProductionVm != null || isDrttc) {
 
-                if (originalProductionVm != null || account.getIsDrttc()) {
+                /*if (originalProductionVm != null || account.getIsDrttc()) {*/
 
                     List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
                         .getReplicatedVMs();
@@ -287,7 +296,8 @@ import java.util.stream.Collectors;
         accountVmsStructure.getProtectedVms().addAll(groupSets);
         accountVmsStructure.getProtectedVms().addAll(protectedVms);
         List<VmDefinition> unprotectedVms = null;
-        if (account.getIsDrttc()) {
+
+        if (isDrttc) {
             unprotectedVms = getUnprotectedVmsForDrttc(account, client);
         } else {
             unprotectedVms = getVmDefinitionsList(vmsMap);
@@ -339,8 +349,13 @@ import java.util.stream.Collectors;
 
     private SystemInfo getSystemInfo(Account account, SystemSettings currSystem) {
         List<AccountConfig> accountConfigs = findAccountConfigsByAccount(account);
-        Map<Long, AccountConfig> accountConfigsMap = accountConfigs.stream()
-            .collect(Collectors.toMap(AccountConfig::getClusterId, (p) -> p));
+        /*Map<Long, AccountConfig> accountConfigsMap = accountConfigs.stream()
+            .collect(Collectors.toMap(AccountConfig::getClusterId, (p) -> p));*/
+        
+        Map<Long, AccountConfig> accountConfigsMap = new HashMap<Long, AccountConfig>();
+        for(AccountConfig curraAccountConfig : accountConfigs){
+        	accountConfigsMap.put(curraAccountConfig.getClusterId(), curraAccountConfig);
+        }
         List<ClusterSettings> clusters = findClustersBySystem(currSystem);
         SystemInfo systemInfo = new SystemInfo();
         for (ClusterSettings clusterSettings : clusters) {
@@ -360,10 +375,14 @@ import java.util.stream.Collectors;
 
     List<VmDefinition> getUnprotectedVmsForDrttc(Account account, Client client) {
         List<VmDefinition> unprotectedVms = new LinkedList<VmDefinition>();
-        List<AccountConfig> accountconfigs = account.getAccountConfigs();
+        List<AccountConfig> accountconfigs = findAccountConfigsByAccount(account);
+        Map<String,String> esxClustersMap = new HashMap<String, String>();
+        //List<AccountConfig> accountconfigs = account.getAccountConfigs();
         for (AccountConfig currAccountConfig : accountconfigs) {
-            if (currAccountConfig.getIsProductionCluster()) {
-
+            if (currAccountConfig.getIsProductionCluster() 
+            		&& esxClustersMap.get(currAccountConfig.getEsxClusterId()) == null) {
+            	
+            	esxClustersMap.put(currAccountConfig.getEsxClusterId(), currAccountConfig.getEsxClusterId());
                 VmEntitiesInformationSet vmEntitiesInformationSet = client.
                     getAvailableVMsForReplication(currAccountConfig.getClusterId(),
                         currAccountConfig.getVcId(), currAccountConfig.getDataCenterId(),

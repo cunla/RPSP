@@ -42,6 +42,9 @@ import java.util.Map;
 
     @SuppressWarnings("unchecked") @Override @Transactional("transactionManager")
     public List<SystemSettings> populateInternalData(List<Map<String, Object>> fullSettings) {
+    	return null;
+    	
+    	/*
 
         systemConnectionInfoRepository.deleteAll();
         List<SystemSettings> createdSettingsList = new LinkedList<SystemSettings>();
@@ -136,7 +139,7 @@ import java.util.Map;
         }
         return createdSettingsList;
 
-    }
+    */}
 
     @Override public String getInternalDataTemplate() {
         String template = null;

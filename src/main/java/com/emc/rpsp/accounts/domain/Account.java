@@ -1,9 +1,11 @@
 package com.emc.rpsp.accounts.domain;
 
+import com.emc.rpsp.packages.domain.PackageDefinition;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.vms.domain.VmOwnership;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -34,8 +36,15 @@ public class Account implements Serializable {
 	@Column(name = "label", length = 100)
 	private String label;
 	
-	@Column(name = "is_drttc")
-	private Boolean isDrttc;
+	@Transient
+	@JsonProperty
+	private List<Long> packageIds = new LinkedList<Long>();
+	
+
+	@JsonIgnore
+	@JoinTable(name = "T_ACCOUNT_PACKAGES")
+	@ManyToMany(targetEntity = com.emc.rpsp.packages.domain.PackageDefinition.class, fetch = FetchType.LAZY)
+	private List<PackageDefinition> packageDefinition;
 
 	@JsonIgnore
 	@Column
@@ -47,22 +56,13 @@ public class Account implements Serializable {
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<User> users;
 
-	@JsonIgnore
-	@Column
-	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	private List<AccountConfig> accountConfigs;
 
-	@JsonIgnore
-	@JoinTable(name = "T_ACCOUNT_SYSTEMS")
-	@ManyToMany(targetEntity = com.emc.rpsp.rpsystems.SystemSettings.class, fetch = FetchType.LAZY)
-	private List<SystemSettings> systemSettings;
 
 	public Account() {
 		super();
 		vms = new LinkedList<>();
 		users = new LinkedList<>();
-		systemSettings = new LinkedList<>();
-		accountConfigs = new LinkedList<AccountConfig>();
+		packageDefinition = new LinkedList<>();
 	}
 
 	public Long getId() {
@@ -87,14 +87,16 @@ public class Account implements Serializable {
 
 	public void setLabel(String label) {
 		this.label = label;
-	}	
+	}		
 
-	public Boolean getIsDrttc() {
-		return isDrttc;
+	@JsonIgnore
+	public List<PackageDefinition> getPackages() {
+		return packageDefinition;
 	}
 
-	public void setIsDrttc(Boolean isDrttc) {
-		this.isDrttc = isDrttc;
+	@JsonIgnore
+	public void setPackages(List<PackageDefinition> packages) {
+		this.packageDefinition = packages;
 	}
 
 	public List<VmOwnership> getVms() {
@@ -112,29 +114,9 @@ public class Account implements Serializable {
 	public void setUsers(List<User> users) {
 		this.users = users;
 	}
-
-	public List<SystemSettings> getSystemSettings() {
-		return systemSettings;
-	}
-
-	public void setSystemSettings(List<SystemSettings> systemSettings) {
-		this.systemSettings = systemSettings;
-	}
-
-	public List<AccountConfig> getAccountConfigs() {
-		return accountConfigs;
-	}
-
-	public Map<Long, AccountConfig> getAccountConfigsMap() {
-		Map<Long, AccountConfig> accountConfigsMap = accountConfigs
-				.stream()
-				.collect(
-						Collectors.toMap(AccountConfig::getClusterId, (p) -> p));
-		return accountConfigsMap;
-	}
-
-	public void setAccountConfigs(List<AccountConfig> accountConfigs) {
-		this.accountConfigs = accountConfigs;
+	
+	public void addPackage(PackageDefinition packageDefinition) {
+		this.packageDefinition.add(packageDefinition);
 	}
 
 	public void addVm(VmOwnership vmOwnership) {
@@ -145,13 +127,23 @@ public class Account implements Serializable {
 		users.add(user);
 	}
 
-	public void addAccountConfig(AccountConfig accountConfig) {
-		accountConfigs.add(accountConfig);
+	public List<Long> getPackageIds() {
+		return packageIds;
 	}
 
-	public void addSystem(SystemSettings systemSettings) {
-		this.systemSettings.add(systemSettings);
+	public void setPackageIds(List<Long> packageIds) {
+		this.packageIds = packageIds;
 	}
+	
+	public void setAdditionalValues(){
+		if(packageDefinition != null){
+			for(PackageDefinition currPackagedDefinition : packageDefinition){
+				packageIds.add(currPackagedDefinition.getId());
+			}
+		}
+	}
+
+	
 
 	@Override
 	public String toString() {
