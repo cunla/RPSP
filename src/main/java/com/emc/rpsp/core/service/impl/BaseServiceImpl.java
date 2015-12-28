@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.core.service.BaseService;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.infra.common.accounts.service.AccountsDataService;
 import com.emc.rpsp.infra.common.auth.domain.AbstractCurrentUser;
 import com.emc.rpsp.infra.common.systems.service.SystemsDataService;
 import com.emc.rpsp.infra.common.vms.service.VmsDataService;
+import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.service.UserService;
@@ -60,7 +60,7 @@ public class BaseServiceImpl implements BaseService{
 	
 	
 	@Override
-	public List<AccountConfig> findAccountConfigsByAccount(Account account) {
+	public List<PackageConfig> findAccountConfigsByAccount(Account account) {
 		return accountsDataService.findAccountConfigsByAccount(account);
 	}
 

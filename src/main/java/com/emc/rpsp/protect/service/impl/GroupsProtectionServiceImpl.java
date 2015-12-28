@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.fal.Client;
+import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.protect.service.GroupsProtectionService;
 
 @Service
@@ -19,7 +19,7 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 		Client client = getClient();
     	if(client != null){
     		Account account = getCurrentUser().getAccount();
-    		List<AccountConfig> accountConfigs = findAccountConfigsByAccount(account);
+    		List<PackageConfig> accountConfigs = findAccountConfigsByAccount(account);
     		client.createConsistencyGroup(cgName, vmIds, accountConfigs, rpo, startReplication);
     	}
 	}
@@ -29,7 +29,7 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 		Client client = getClient();
     	if(client != null){
     		Account account = getCurrentUser().getAccount();
-    		List<AccountConfig> accountConfigs = findAccountConfigsByAccount(account);
+    		List<PackageConfig> accountConfigs = findAccountConfigsByAccount(account);
     		client.addVmToCG(vmId, groupId, accountConfigs);
             client.changeVmsPowerUpSequence(vmId, groupId, isCritical, sequenceNumber);
     	}
@@ -40,7 +40,7 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 		Client client = getClient();
     	if(client != null){
     		Account account = getCurrentUser().getAccount();
-    		List<AccountConfig> accountConfigs = findAccountConfigsByAccount(account);
+    		List<PackageConfig> accountConfigs = findAccountConfigsByAccount(account);
     		client.removeVmsFromCG(vmId, groupId, accountConfigs);
     	}
 

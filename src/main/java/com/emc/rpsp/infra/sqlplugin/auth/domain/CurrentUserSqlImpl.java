@@ -3,8 +3,8 @@ package com.emc.rpsp.infra.sqlplugin.auth.domain;
 import java.util.List;
 
 import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.infra.common.auth.domain.AbstractCurrentUser;
+import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.vms.domain.VmOwnership;

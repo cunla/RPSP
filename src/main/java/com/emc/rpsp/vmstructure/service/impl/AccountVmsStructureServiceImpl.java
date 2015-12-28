@@ -2,9 +2,9 @@ package com.emc.rpsp.vmstructure.service.impl;
 
 import com.emc.fapi.jaxws.v4_3.*;
 import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.fal.Client;
+import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vms.domain.VmOwnership;
@@ -348,12 +348,12 @@ import java.util.stream.Collectors;
     
 
     private SystemInfo getSystemInfo(Account account, SystemSettings currSystem) {
-        List<AccountConfig> accountConfigs = findAccountConfigsByAccount(account);
+        List<PackageConfig> accountConfigs = findAccountConfigsByAccount(account);
         /*Map<Long, AccountConfig> accountConfigsMap = accountConfigs.stream()
             .collect(Collectors.toMap(AccountConfig::getClusterId, (p) -> p));*/
         
-        Map<Long, AccountConfig> accountConfigsMap = new HashMap<Long, AccountConfig>();
-        for(AccountConfig curraAccountConfig : accountConfigs){
+        Map<Long, PackageConfig> accountConfigsMap = new HashMap<Long, PackageConfig>();
+        for(PackageConfig curraAccountConfig : accountConfigs){
         	accountConfigsMap.put(curraAccountConfig.getClusterId(), curraAccountConfig);
         }
         List<ClusterSettings> clusters = findClustersBySystem(currSystem);
@@ -361,7 +361,7 @@ import java.util.stream.Collectors;
         for (ClusterSettings clusterSettings : clusters) {
             ClusterDefinition currCluster = new ClusterDefinition(
                 clusterSettings.getClusterId().toString(), clusterSettings.getFriendlyName());
-            AccountConfig accountConfig = accountConfigsMap.get(clusterSettings.getClusterId());
+            PackageConfig accountConfig = accountConfigsMap.get(clusterSettings.getClusterId());
             if (null == accountConfig) {
                 log.info("No configuration for cluster {} ", clusterSettings.getClusterId());
             } else if (accountConfig.getIsProductionCluster()) {
@@ -375,10 +375,10 @@ import java.util.stream.Collectors;
 
     List<VmDefinition> getUnprotectedVmsForDrttc(Account account, Client client) {
         List<VmDefinition> unprotectedVms = new LinkedList<VmDefinition>();
-        List<AccountConfig> accountconfigs = findAccountConfigsByAccount(account);
+        List<PackageConfig> accountconfigs = findAccountConfigsByAccount(account);
         Map<String,String> esxClustersMap = new HashMap<String, String>();
         //List<AccountConfig> accountconfigs = account.getAccountConfigs();
-        for (AccountConfig currAccountConfig : accountconfigs) {
+        for (PackageConfig currAccountConfig : accountconfigs) {
             if (currAccountConfig.getIsProductionCluster() 
             		&& esxClustersMap.get(currAccountConfig.getEsxClusterId()) == null) {
             	

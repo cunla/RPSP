@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.accounts.domain.AccountConfig;
+import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.vms.domain.VmOwnership;

@@ -3,7 +3,7 @@ package com.emc.rpsp.fal;
 import com.emc.fapi.jaxws.v4_3.*;
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
-import com.emc.rpsp.accounts.domain.AccountConfig;
+import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
@@ -227,7 +227,7 @@ public class Client {
     }
 
     @SuppressWarnings("unused")
-    public void addVmToCG(String vmId, Long groupId, List<AccountConfig> accountConfig) {
+    public void addVmToCG(String vmId, Long groupId, List<PackageConfig> accountConfig) {
 
         ConsistencyGroupCopySettingsSet consistencyGroupCopySettingsSet = connector
         .getAllGroupCopies(groupId);
@@ -245,7 +245,7 @@ public class Client {
         }
 
         List<ReplicatedVMParams> replicatedVmParams = new LinkedList<ReplicatedVMParams>();
-        Map<Long, AccountConfig> accountConfigsMap = getAccountConfigsMap(accountConfig);
+        Map<Long, PackageConfig> accountConfigsMap = getAccountConfigsMap(accountConfig);
 
         for (ConsistencyGroupCopySettings currConsistencyGroupCopySettings : consistencyGroupCopySettingsList) {
             if (currConsistencyGroupCopySettings.getRoleInfo().getSourceCopyUID() != null) {
@@ -328,7 +328,7 @@ public class Client {
         }
     }
 
-    public void removeVmsFromCG(String vmId, Long groupId, List<AccountConfig> accountConfig) {
+    public void removeVmsFromCG(String vmId, Long groupId, List<PackageConfig> accountConfig) {
 
         ConsistencyGroupCopySettingsSet consistencyGroupCopySettingsSet = connector
         .getAllGroupCopies(groupId);
@@ -529,8 +529,8 @@ public class Client {
 
     @SuppressWarnings("unused")
     public void createConsistencyGroup(String cgName, List<String> vmIds,
-    List<AccountConfig> accountConfigList, int rpo, boolean startReplication) {
-        Map<Long, AccountConfig> accountConfigsMap = getAccountConfigsMap(accountConfigList);
+    List<PackageConfig> accountConfigList, int rpo, boolean startReplication) {
+        Map<Long, PackageConfig> accountConfigsMap = getAccountConfigsMap(accountConfigList);
         ReplicateVmsParam replicateVmsParam = new ReplicateVmsParam();
 
         //CG name
@@ -538,9 +538,9 @@ public class Client {
         replicateVmsParam.setStartTransfer(startReplication);
 
         //production copy ID
-        AccountConfig productionConfig = null;
+        PackageConfig productionConfig = null;
         //List<AccountConfig> replicasConfig = new LinkedList<AccountConfig>();
-        for (AccountConfig accountConfig : accountConfigList) {
+        for (PackageConfig accountConfig : accountConfigList) {
             if (accountConfig.getIsProductionCluster()) {
                 productionConfig = accountConfig;
             }
@@ -576,7 +576,7 @@ public class Client {
             //replicatedVmParams.add(sourceReplicatedVMParam);
 
             //add source and targets
-            for (AccountConfig accountConfig : accountConfigList) {
+            for (PackageConfig accountConfig : accountConfigList) {
                 if (!accountConfig.getIsProductionCluster()) {
                     //add source vm parameter
                     replicatedVmParams.add(sourceReplicatedVMParam);
@@ -620,7 +620,7 @@ public class Client {
 
         //create copies
         List<ConsistencyGroupCopyParam> copiesList = replicateVmsParam.getCopies();
-        for (AccountConfig accountConfig : accountConfigList) {
+        for (PackageConfig accountConfig : accountConfigList) {
             GlobalCopyUID copyUID = new GlobalCopyUID(new ClusterUID(accountConfig.getClusterId()),
             0);
             ConsistencyGroupCopyParam consistencyGroupCopyParam = new ConsistencyGroupCopyParam();
@@ -653,7 +653,7 @@ public class Client {
         .getDefaultRemoteGroupLinkPolicy();
         remoteDefaultLinkPolicy.getProtectionPolicy().getRpoPolicy()
         .setMaximumAllowedLag(new Quantity(rpo, QuantityType.MINUTES));
-        for (AccountConfig accountConfig : accountConfigList) {
+        for (PackageConfig accountConfig : accountConfigList) {
             if (!accountConfig.getIsProductionCluster()) {
                 ConsistencyGroupLinkUID linkUID = new ConsistencyGroupLinkUID();
                 linkUID.setGroupUID(new ConsistencyGroupUID(0));
@@ -814,9 +814,9 @@ public class Client {
         return res;
     }
 
-    private Map<Long, AccountConfig> getAccountConfigsMap(List<AccountConfig> accountConfigs) {
-        Map<Long, AccountConfig> accountConfigsMap = accountConfigs.stream()
-        .collect(Collectors.toMap(AccountConfig::getClusterId, (p) -> p));
+    private Map<Long, PackageConfig> getAccountConfigsMap(List<PackageConfig> accountConfigs) {
+        Map<Long, PackageConfig> accountConfigsMap = accountConfigs.stream()
+        .collect(Collectors.toMap(PackageConfig::getClusterId, (p) -> p));
         return accountConfigsMap;
     }
 

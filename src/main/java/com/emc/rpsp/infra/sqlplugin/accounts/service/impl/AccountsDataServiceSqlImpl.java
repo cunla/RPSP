@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.emc.rpsp.accounts.domain.Account;
-import com.emc.rpsp.accounts.domain.AccountConfig;
 import com.emc.rpsp.accounts.repository.AccountRepository;
 import com.emc.rpsp.infra.common.accounts.service.AccountsDataService;
+import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.packages.domain.PackageDefinition;
 
 @Service
@@ -25,11 +25,11 @@ public class AccountsDataServiceSqlImpl implements AccountsDataService {
 	}
 
 	@Override
-	public List<AccountConfig> findAccountConfigsByAccount(Account account) {
-		List<AccountConfig> res = new LinkedList<AccountConfig>();
+	public List<PackageConfig> findAccountConfigsByAccount(Account account) {
+		List<PackageConfig> res = new LinkedList<PackageConfig>();
 		List<PackageDefinition> packageDefs = account.getPackages();
 		for(PackageDefinition currPackageDefinition : packageDefs){
-			AccountConfig prodConfig = new AccountConfig();
+			PackageConfig prodConfig = new PackageConfig();
 			prodConfig.setIsProductionCluster(true);
 			prodConfig.setClusterId(currPackageDefinition.getSourceClusterId());
 			prodConfig.setVcId(currPackageDefinition.getSourceVcId());
@@ -39,7 +39,7 @@ public class AccountsDataServiceSqlImpl implements AccountsDataService {
 			prodConfig.setDatastoreId(currPackageDefinition.getSourceDatastoreId());
 			res.add(prodConfig);
 			
-			AccountConfig replicaConfig = new AccountConfig(); 
+			PackageConfig replicaConfig = new PackageConfig(); 
 			replicaConfig.setIsProductionCluster(false);
 			replicaConfig.setClusterId(currPackageDefinition.getTargetClusterId());
 			replicaConfig.setVcId(currPackageDefinition.getTargetVcId());
