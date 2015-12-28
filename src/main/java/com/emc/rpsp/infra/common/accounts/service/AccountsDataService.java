@@ -7,5 +7,5 @@ import com.emc.rpsp.packages.domain.PackageConfig;
 
 public interface AccountsDataService {
 	public List<Account> findAll();
-	public List<PackageConfig> findAccountConfigsByAccount(Account account);
+	public List<PackageConfig> findPackageConfigsByAccount(Account account);
 }

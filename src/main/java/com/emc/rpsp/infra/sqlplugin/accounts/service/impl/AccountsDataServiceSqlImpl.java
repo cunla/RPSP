@@ -25,7 +25,7 @@ public class AccountsDataServiceSqlImpl implements AccountsDataService {
 	}
 
 	@Override
-	public List<PackageConfig> findAccountConfigsByAccount(Account account) {
+	public List<PackageConfig> findPackageConfigsByAccount(Account account) {
 		List<PackageConfig> res = new LinkedList<PackageConfig>();
 		List<PackageDefinition> packageDefs = account.getPackages();
 		for(PackageDefinition currPackageDefinition : packageDefs){
@@ -50,7 +50,6 @@ public class AccountsDataServiceSqlImpl implements AccountsDataService {
 			res.add(replicaConfig);
 		}
 		return res;
-		//return account.getAccountConfigs();
 		
 	}
 

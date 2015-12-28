@@ -348,23 +348,21 @@ import java.util.stream.Collectors;
     
 
     private SystemInfo getSystemInfo(Account account, SystemSettings currSystem) {
-        List<PackageConfig> accountConfigs = findAccountConfigsByAccount(account);
-        /*Map<Long, AccountConfig> accountConfigsMap = accountConfigs.stream()
-            .collect(Collectors.toMap(AccountConfig::getClusterId, (p) -> p));*/
+        List<PackageConfig> packageConfigs = findPackageConfigsByAccount(account);
         
-        Map<Long, PackageConfig> accountConfigsMap = new HashMap<Long, PackageConfig>();
-        for(PackageConfig curraAccountConfig : accountConfigs){
-        	accountConfigsMap.put(curraAccountConfig.getClusterId(), curraAccountConfig);
+        Map<Long, PackageConfig> packageConfigsMap = new HashMap<Long, PackageConfig>();
+        for(PackageConfig currPackageConfig : packageConfigs){
+        	packageConfigsMap.put(currPackageConfig.getClusterId(), currPackageConfig);
         }
         List<ClusterSettings> clusters = findClustersBySystem(currSystem);
         SystemInfo systemInfo = new SystemInfo();
         for (ClusterSettings clusterSettings : clusters) {
             ClusterDefinition currCluster = new ClusterDefinition(
                 clusterSettings.getClusterId().toString(), clusterSettings.getFriendlyName());
-            PackageConfig accountConfig = accountConfigsMap.get(clusterSettings.getClusterId());
-            if (null == accountConfig) {
+            PackageConfig packageConfig = packageConfigsMap.get(clusterSettings.getClusterId());
+            if (null == packageConfig) {
                 log.info("No configuration for cluster {} ", clusterSettings.getClusterId());
-            } else if (accountConfig.getIsProductionCluster()) {
+            } else if (packageConfig.getIsProductionCluster()) {
                 systemInfo.setProductionCluster(currCluster);
             } else {
                 systemInfo.addReplicaCluster(currCluster);
@@ -375,18 +373,17 @@ import java.util.stream.Collectors;
 
     List<VmDefinition> getUnprotectedVmsForDrttc(Account account, Client client) {
         List<VmDefinition> unprotectedVms = new LinkedList<VmDefinition>();
-        List<PackageConfig> accountconfigs = findAccountConfigsByAccount(account);
+        List<PackageConfig> packageConfigs = findPackageConfigsByAccount(account);
         Map<String,String> esxClustersMap = new HashMap<String, String>();
-        //List<AccountConfig> accountconfigs = account.getAccountConfigs();
-        for (PackageConfig currAccountConfig : accountconfigs) {
-            if (currAccountConfig.getIsProductionCluster() 
-            		&& esxClustersMap.get(currAccountConfig.getEsxClusterId()) == null) {
+        for (PackageConfig currPackageConfig : packageConfigs) {
+            if (currPackageConfig.getIsProductionCluster() 
+            		&& esxClustersMap.get(currPackageConfig.getEsxClusterId()) == null) {
             	
-            	esxClustersMap.put(currAccountConfig.getEsxClusterId(), currAccountConfig.getEsxClusterId());
+            	esxClustersMap.put(currPackageConfig.getEsxClusterId(), currPackageConfig.getEsxClusterId());
                 VmEntitiesInformationSet vmEntitiesInformationSet = client.
-                    getAvailableVMsForReplication(currAccountConfig.getClusterId(),
-                        currAccountConfig.getVcId(), currAccountConfig.getDataCenterId(),
-                        currAccountConfig.getEsxClusterId());
+                    getAvailableVMsForReplication(currPackageConfig.getClusterId(),
+                        currPackageConfig.getVcId(), currPackageConfig.getDataCenterId(),
+                        currPackageConfig.getEsxClusterId());
 
                 for (VMEntitiesInformation vmEntitiesInformation : vmEntitiesInformationSet
                     .getInnerSet()) {
@@ -404,27 +401,6 @@ import java.util.stream.Collectors;
     }
 
 
-/*	List<VmDefinition> getUnprotectedVmsForDrttc(Account account, Client client){
-        List<VmDefinition> unprotectedVms = new LinkedList<VmDefinition>();
-		List<AccountConfig> accountconfigs = account.getAccountConfigs();
-		for(AccountConfig currAccountConfig : accountconfigs){
-			if(currAccountConfig.getIsProductionCluster()){
-				ClusterVirtualInfraConfiguration virtualInfraConfig = client.getClusterVirtualInfraConfiguration(currAccountConfig.getClusterId());
-				VmEntitiesInformationSet vmEntitiesInformationSet = client.getAvailableVMsForReplication(virtualInfraConfig.getClusterUID().getId(),
-						virtualInfraConfig.getVirtualCentersConfiguration().get(0).getVirtualCenterUID().getUuid(),
-						virtualInfraConfig.getVirtualCentersConfiguration().get(0).getDatacentersConfiguration().get(0).getDatacenterUID().getUuid(),
-						virtualInfraConfig.getVirtualCentersConfiguration().get(0).getDatacentersConfiguration().get(0).getEsxClustersConfiguration().get(0).getEsxClusterUID().getUuid());
-
-				for(VMEntitiesInformation vmEntitiesInformation : vmEntitiesInformationSet.getInnerSet()){
-					VmDefinition vmDefinition = new VmDefinition(vmEntitiesInformation.getVmUID().getUuid(), vmEntitiesInformation.getName());
-					unprotectedVms.add(vmDefinition);
-				}
-
-				break;
-			}
-		}
-		return unprotectedVms;
-	}*/
 
     private Map<String, VmOwnership> getVmsMap(Account account) {
         List<VmOwnership> vms = findVmsByAccount(account);

@@ -60,8 +60,8 @@ public class BaseServiceImpl implements BaseService{
 	
 	
 	@Override
-	public List<PackageConfig> findAccountConfigsByAccount(Account account) {
-		return accountsDataService.findAccountConfigsByAccount(account);
+	public List<PackageConfig> findPackageConfigsByAccount(Account account) {
+		return accountsDataService.findPackageConfigsByAccount(account);
 	}
 
 	@Override

@@ -13,7 +13,7 @@ public interface BaseService {
 	public Client getClient();
 	public AbstractCurrentUser getCurrentUser();	
 	public List<Account> findAllAccounts();
-	public List<PackageConfig> findAccountConfigsByAccount(Account account);
+	public List<PackageConfig> findPackageConfigsByAccount(Account account);
 	public List<SystemSettings> findAllSystems();
 	public List<SystemSettings> findSystemsByAccount(Account account);
 	public List<VmOwnership> findAllVms();

@@ -35,31 +35,6 @@ public class CurrentUserSqlImpl extends AbstractCurrentUser {
 		return user.getAccount();
 	}
 
-	/*@Override
-	public List<SystemSettings> getSystemSettings() {
-		List<SystemSettings> res = null;
-		if(getAccount() != null){
-			res = getAccount().getSystemSettings();
-		}
-		return res;
-	}
-
-	@Override
-	public List<VmOwnership> getVms() {
-		List<VmOwnership> res = null;
-		if(getAccount() != null){
-			res = getAccount().getVms();
-		}
-		return res;
-	}
-
-	@Override
-	public List<AccountConfig> getAccountConfig() {
-		List<AccountConfig> res = null;
-		if(getAccount() != null){
-			res = getAccount().getAccountConfigs();
-		}
-		return res;
-	}*/
+	
 
 }

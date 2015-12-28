@@ -22,8 +22,5 @@ implements CurrentUser {
     public abstract User getUser();
 
     public abstract Account getAccount();
-/*    public abstract List<SystemSettings> getSystemSettings();
-    public abstract List<VmOwnership> getVms();
-    public abstract List<AccountConfig> getAccountConfig();*/
 
 }

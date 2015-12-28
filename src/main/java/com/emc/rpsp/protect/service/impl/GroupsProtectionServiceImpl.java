@@ -19,7 +19,7 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 		Client client = getClient();
     	if(client != null){
     		Account account = getCurrentUser().getAccount();
-    		List<PackageConfig> accountConfigs = findAccountConfigsByAccount(account);
+    		List<PackageConfig> accountConfigs = findPackageConfigsByAccount(account);
     		client.createConsistencyGroup(cgName, vmIds, accountConfigs, rpo, startReplication);
     	}
 	}
@@ -29,7 +29,7 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 		Client client = getClient();
     	if(client != null){
     		Account account = getCurrentUser().getAccount();
-    		List<PackageConfig> accountConfigs = findAccountConfigsByAccount(account);
+    		List<PackageConfig> accountConfigs = findPackageConfigsByAccount(account);
     		client.addVmToCG(vmId, groupId, accountConfigs);
             client.changeVmsPowerUpSequence(vmId, groupId, isCritical, sequenceNumber);
     	}
@@ -40,7 +40,7 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 		Client client = getClient();
     	if(client != null){
     		Account account = getCurrentUser().getAccount();
-    		List<PackageConfig> accountConfigs = findAccountConfigsByAccount(account);
+    		List<PackageConfig> accountConfigs = findPackageConfigsByAccount(account);
     		client.removeVmsFromCG(vmId, groupId, accountConfigs);
     	}
 
