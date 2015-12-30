@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 public class ExceptionInfo {
     public final String url;
     public final String ex;
-    public String stackTrace;
+    public String[] stackTrace;
 
     public ExceptionInfo(String url, Exception ex) {
         this.url = url;
         this.ex = ex.getLocalizedMessage();
-        this.stackTrace = ExceptionUtils.getStackTrace(ex);
+        this.stackTrace = ExceptionUtils.getStackTrace(ex).split("\r\n");
     }
 
     public ExceptionInfo(HttpServletRequest req, Exception e) {
