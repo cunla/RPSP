@@ -15,7 +15,7 @@ public class ExceptionInfo {
     public ExceptionInfo(String url, Exception ex) {
         this.url = url;
         this.ex = ex.getLocalizedMessage();
-        this.stackTrace = ExceptionUtils.getStackTrace(ex).split("\r\n");
+        this.stackTrace = ExceptionUtils.getStackTrace(ex).split("\r\n\t");
     }
 
     public ExceptionInfo(HttpServletRequest req, Exception e) {
