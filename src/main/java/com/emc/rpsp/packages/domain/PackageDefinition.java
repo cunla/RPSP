@@ -19,7 +19,7 @@ import java.util.List;
 @Table(name = "T_PACKAGE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PackageDefinition implements Serializable {
-    private final Logger log = LoggerFactory.getLogger(PackageDefinition.class);
+    private static final Logger log = LoggerFactory.getLogger(PackageDefinition.class);
     @Id
     @GeneratedValue
     private Long id;
