@@ -8,6 +8,7 @@ import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.packages.domain.PackageConfig;
+import com.emc.rpsp.packages.domain.PackageDefinition;
 import com.emc.rpsp.protect.service.GroupsProtectionService;
 
 @Service
@@ -15,9 +16,11 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 
 
 	@Override
-	public void createConsistencyGroup(String cgName, List<String> vmIds, int rpo, boolean startReplication, long packageId) {
+	public void createConsistencyGroup(String cgName, List<String> vmIds, boolean startReplication, long packageId) {
 		Client client = getClient();
     	if(client != null){
+    		PackageDefinition packageDefinition = findPackageById(packageId);
+    		int rpo = packageDefinition.getRpo();
     		List<PackageConfig> packageConfigs = findPackageConfigsByPackageId(packageId);
     		Long groupId = client.createConsistencyGroup(cgName, vmIds, packageConfigs, rpo, startReplication);
     		client.setGroupPackage(groupId, packageId);

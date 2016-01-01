@@ -38,12 +38,11 @@ public class GroupsProtectionController {
 			@RpspAuditSubject(AuditConsts.CREATE_CG_SUBJ_PARAMS) @RpspAuditObject(AuditConsts.CREATE_CG_OBJ_PARAMS) @RequestBody Map<String, Object> params) {
 		String groupName = params.get("groupName").toString();
 		boolean startReplication = Boolean.parseBoolean(params.get("enableReplication").toString());
-		int rpo = Integer.parseInt(params.get("rpo").toString());
 		long packageId = Long.parseLong(params.get("packageId").toString());
 		List<Object> vmIdsObj = (List<Object>) params.get("vms");
 		List<String> vmIds = new LinkedList<String>();
 		vmIdsObj.forEach((obj) -> vmIds.add(String.valueOf(obj)));
-		groupsProtectionService.createConsistencyGroup(groupName, vmIds, rpo, startReplication, packageId);
+		groupsProtectionService.createConsistencyGroup(groupName, vmIds, startReplication, packageId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
