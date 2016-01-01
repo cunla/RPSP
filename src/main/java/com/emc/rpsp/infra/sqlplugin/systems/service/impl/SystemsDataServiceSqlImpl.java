@@ -31,7 +31,6 @@ public class SystemsDataServiceSqlImpl implements SystemsDataService {
 		PackageDefinition packageDef = account.getPackages().get(0);
 		systems.add(packageDef.getSystemSettings());
 		return systems;
-		/*return account.getSystemSettings();*/
 	}
 
 	@Override

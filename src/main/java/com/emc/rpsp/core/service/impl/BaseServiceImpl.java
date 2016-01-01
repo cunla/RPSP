@@ -1,5 +1,6 @@
 package com.emc.rpsp.core.service.impl;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,11 @@ import com.emc.rpsp.core.service.BaseService;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.infra.common.accounts.service.AccountsDataService;
 import com.emc.rpsp.infra.common.auth.domain.AbstractCurrentUser;
+import com.emc.rpsp.infra.common.packages.service.PackagesDataService;
 import com.emc.rpsp.infra.common.systems.service.SystemsDataService;
 import com.emc.rpsp.infra.common.vms.service.VmsDataService;
 import com.emc.rpsp.packages.domain.PackageConfig;
+import com.emc.rpsp.packages.domain.PackageDefinition;
 import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.service.UserService;
@@ -32,6 +35,9 @@ public class BaseServiceImpl implements BaseService{
 	
 	@Autowired
 	private VmsDataService vmsDataService = null;
+	
+	@Autowired
+	private PackagesDataService packagesDataService = null;
 	
 	
 	@Override
@@ -58,11 +64,37 @@ public class BaseServiceImpl implements BaseService{
 		return accountsDataService.findAll();
 	}
 	
+	@Override
+	public PackageDefinition findPackageById(Long id){
+		return packagesDataService.findPackageById(id);
+	}
+	
+	@Override
+	public List<PackageDefinition> findPackagesByAccount(Account account){
+		return packagesDataService.findPackagesByAccount(account);
+	}
+	
 	
 	@Override
 	public List<PackageConfig> findPackageConfigsByAccount(Account account) {
-		return accountsDataService.findPackageConfigsByAccount(account);
+		List<PackageConfig> res = new LinkedList<PackageConfig>();
+		List<PackageDefinition> packageDefs = packagesDataService.findPackagesByAccount(account);
+		for(PackageDefinition currPackageDefinition : packageDefs){
+			res.addAll(getPackageConfigs(currPackageDefinition));
+		}
+		return res;		
+		
 	}
+	
+	@Override
+	public List<PackageConfig> findPackageConfigsByPackageId(Long id) {
+		List<PackageConfig> res = new LinkedList<PackageConfig>();
+		PackageDefinition packageDefinition = packagesDataService.findPackageById(id);
+		res.addAll(getPackageConfigs(packageDefinition));
+		return res;		
+		
+	}
+	
 
 	@Override
 	public List<SystemSettings> findAllSystems() {
@@ -87,5 +119,32 @@ public class BaseServiceImpl implements BaseService{
 	public List<VmOwnership> findVmsByAccount(Account account) {
 		return vmsDataService.findByAccount(account);
 	}
+	
+	private List<PackageConfig> getPackageConfigs(PackageDefinition packageDefinition){
+		List<PackageConfig> res = new LinkedList<PackageConfig>();
+		
+		PackageConfig prodConfig = new PackageConfig();
+		prodConfig.setIsProductionCluster(true);
+		prodConfig.setClusterId(packageDefinition.getSourceClusterId());
+		prodConfig.setVcId(packageDefinition.getSourceVcId());
+		prodConfig.setDataCenterId(packageDefinition.getSourceDataCenterId());
+		prodConfig.setEsxClusterId(packageDefinition.getSourceEsxClusterId());
+		prodConfig.setEsxId(packageDefinition.getSourceEsxId());
+		prodConfig.setDatastoreId(packageDefinition.getSourceDatastoreId());
+		res.add(prodConfig);
+		
+		PackageConfig replicaConfig = new PackageConfig(); 
+		replicaConfig.setIsProductionCluster(false);
+		replicaConfig.setClusterId(packageDefinition.getTargetClusterId());
+		replicaConfig.setVcId(packageDefinition.getTargetVcId());
+		replicaConfig.setDataCenterId(packageDefinition.getTargetDataCenterId());
+		replicaConfig.setEsxClusterId(packageDefinition.getTargetEsxClusterId());
+		replicaConfig.setEsxId(packageDefinition.getTargetEsxId());
+		replicaConfig.setDatastoreId(packageDefinition.getTargetDatastoreId());
+		res.add(replicaConfig);
+		
+		return res;
+	}
+	
 
 }
