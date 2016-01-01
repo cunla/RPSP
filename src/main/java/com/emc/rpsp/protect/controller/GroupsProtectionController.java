@@ -39,10 +39,11 @@ public class GroupsProtectionController {
 		String groupName = params.get("groupName").toString();
 		boolean startReplication = Boolean.parseBoolean(params.get("enableReplication").toString());
 		int rpo = Integer.parseInt(params.get("rpo").toString());
+		long packageId = Long.parseLong(params.get("packageId").toString());
 		List<Object> vmIdsObj = (List<Object>) params.get("vms");
 		List<String> vmIds = new LinkedList<String>();
 		vmIdsObj.forEach((obj) -> vmIds.add(String.valueOf(obj)));
-		groupsProtectionService.createConsistencyGroup(groupName, vmIds, rpo, startReplication);
+		groupsProtectionService.createConsistencyGroup(groupName, vmIds, rpo, startReplication, packageId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

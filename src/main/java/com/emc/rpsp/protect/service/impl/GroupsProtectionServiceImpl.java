@@ -15,12 +15,12 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 
 
 	@Override
-	public void createConsistencyGroup(String cgName, List<String> vmIds, int rpo, boolean startReplication) {
+	public void createConsistencyGroup(String cgName, List<String> vmIds, int rpo, boolean startReplication, long packageId) {
 		Client client = getClient();
     	if(client != null){
-    		Account account = getCurrentUser().getAccount();
-    		List<PackageConfig> accountConfigs = findPackageConfigsByAccount(account);
-    		client.createConsistencyGroup(cgName, vmIds, accountConfigs, rpo, startReplication);
+    		List<PackageConfig> packageConfigs = findPackageConfigsByPackageId(packageId);
+    		Long groupId = client.createConsistencyGroup(cgName, vmIds, packageConfigs, rpo, startReplication);
+    		client.setGroupPackage(groupId, packageId);
     	}
 	}
 
@@ -28,9 +28,9 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 	public void addVmToCG(String vmId, Long groupId, boolean isCritical, int sequenceNumber) {
 		Client client = getClient();
     	if(client != null){
-    		Account account = getCurrentUser().getAccount();
-    		List<PackageConfig> accountConfigs = findPackageConfigsByAccount(account);
-    		client.addVmToCG(vmId, groupId, accountConfigs);
+    		Long packageId = client.getGroupPackage(groupId);
+    		List<PackageConfig> packageConfigs = findPackageConfigsByPackageId(packageId);
+    		client.addVmToCG(vmId, groupId, packageConfigs);
             client.changeVmsPowerUpSequence(vmId, groupId, isCritical, sequenceNumber);
     	}
 	}
@@ -39,9 +39,17 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
 	public void removeVmsFromCG(String vmId, Long groupId) {
 		Client client = getClient();
     	if(client != null){
-    		Account account = getCurrentUser().getAccount();
-    		List<PackageConfig> accountConfigs = findPackageConfigsByAccount(account);
-    		client.removeVmsFromCG(vmId, groupId, accountConfigs);
+    		Long packageId = client.getGroupPackage(groupId);
+    		List<PackageConfig> packageConfigs = null;
+    		if(packageId != null){
+    			packageConfigs = findPackageConfigsByPackageId(packageId);
+    		}
+    		else{
+    			Account account = getCurrentUser().getAccount();
+        		packageConfigs = findPackageConfigsByAccount(account);
+    		}  		
+    		
+    		client.removeVmsFromCG(vmId, groupId, packageConfigs);
     	}
 
 
