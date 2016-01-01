@@ -38,6 +38,7 @@ import com.emc.fapi.jaxws.v4_3.RecoverPointClustersInformation;
 import com.emc.fapi.jaxws.v4_3.RecoverPointTimeStamp;
 import com.emc.fapi.jaxws.v4_3.RecoverPointVersion;
 import com.emc.fapi.jaxws.v4_3.ReplicateVmsParam;
+import com.emc.fapi.jaxws.v4_3.UserDefinedProperties;
 import com.emc.fapi.jaxws.v4_3.VmEntitiesInformationSet;
 import com.emc.fapi.jaxws.v4_3.VmPowerUpSequenceParamSet;
 import com.emc.fapi.jaxws.v4_3.VmReplicationSetParamSet;
@@ -216,6 +217,14 @@ public interface ClusterConnector {
 	
 	@GET(BASE_URL + "group_sets")
 	public ConsistencyGroupSetSettingsSet getAllGroupSetsSettings();
+	
+	
+	@GET(BASE_URL + "system/user_properties")
+	public UserDefinedProperties getUserProperties();
+	
+	
+	@PUT(BASE_URL + "system/user_properties")
+	public Response setUserProperties(@Body UserDefinedProperties userDefinedProperties);
 
 
 }

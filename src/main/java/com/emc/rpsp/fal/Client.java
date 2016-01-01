@@ -527,8 +527,7 @@ public class Client {
         }
     }
 
-    @SuppressWarnings("unused")
-    public void createConsistencyGroup(String cgName, List<String> vmIds,
+    public long createConsistencyGroup(String cgName, List<String> vmIds,
     List<PackageConfig> accountConfigList, int rpo, boolean startReplication) {
         Map<Long, PackageConfig> accountConfigsMap = getAccountConfigsMap(accountConfigList);
         ReplicateVmsParam replicateVmsParam = new ReplicateVmsParam();
@@ -669,11 +668,40 @@ public class Client {
         }
 
         ConsistencyGroupUID consistencyGroupUID = connector.replicateVms(replicateVmsParam, true);
-        return;
+        return consistencyGroupUID.getId();
     }
 
 
+    
+    public void setGroupPackage(Long groupId, Long packageId) {
+    	UserDefinedProperties userProps = connector.getUserProperties();
+    	Property property = new Property(groupId + "-pkg", packageId.toString());
+    	userProps.getProperties().add(property);
+    	connector.setUserProperties(userProps);
+    }
 
+    
+    public Long getGroupPackage(Long groupId) {
+    	Long res = null;
+    	UserDefinedProperties userProps = connector.getUserProperties();
+    	for(Property prop : userProps.getProperties()){
+    		if(prop.getKey().equals(groupId + "-pkg")){
+    			res = Long.parseLong(prop.getValue());
+    		}
+    	}
+    	return res;
+    }
+    
+    
+    public Map<String, String> getUserPropertiesMap() {
+    	Map<String, String> propsMap = new HashMap<String, String>();
+    	UserDefinedProperties userProps = connector.getUserProperties();
+    	for(Property prop : userProps.getProperties()){
+    		propsMap.put(prop.getKey(), prop.getValue());
+    	}
+    	return propsMap;
+    }
+    
 
     public ResourcePoolUID getRelevantResourcePool(long clusterId, String vcId, String datastoreId){
     	ResourcePoolUID res = null;
@@ -813,11 +841,19 @@ public class Client {
         }
         return res;
     }
-
+    
     private Map<Long, PackageConfig> getAccountConfigsMap(List<PackageConfig> accountConfigs) {
+        Map<Long, PackageConfig> accountConfigsMap = new HashMap<Long, PackageConfig>();
+        for(PackageConfig currPackageConfig : accountConfigs){
+        	accountConfigsMap.put(currPackageConfig.getClusterId(), currPackageConfig);
+        }
+        return accountConfigsMap;
+    }
+
+/*    private Map<Long, PackageConfig> getAccountConfigsMap(List<PackageConfig> accountConfigs) {
         Map<Long, PackageConfig> accountConfigsMap = accountConfigs.stream()
         .collect(Collectors.toMap(PackageConfig::getClusterId, (p) -> p));
         return accountConfigsMap;
-    }
+    }*/
 
 }
