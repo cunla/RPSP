@@ -48,7 +48,7 @@
 								 <select ng-model="selectedReplicaCluster" 
 	                                          ng-options="cluster.name for cluster in vmStructureData.systemInfo.replicaClusters" 
 			                                              class="form-control">
-			                                                          <option value="" ng-if="false"></option>
+			                                                          <!-- <option value="" ng-if="false"></option> -->
 							
 								</select>
 							</div>	
@@ -77,6 +77,58 @@
 
 				</td>
 			</tr>
+			
+			
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Service Class:	
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-5 col-sm-5 col-md-5 margin-top">
+							
+														
+								 <select ng-model="selectedPackage" 
+	                                          ng-options="package.displayName for package in vmStructureData.systemInfo.packages" 
+			                                              class="form-control">
+			                                                          <!-- <option value="" ng-if="false"></option> -->
+							
+								</select>
+								
+							</div>	
+							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+			
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Description:	
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
+								{{selectedPackage.description}}
+							
+							</div>	
+							<div class="col-xs-4 col-sm-4 col-md-4 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+			
+			
 			<tr>						
 				<td margin-top>
 				    <div class="row">
@@ -141,7 +193,9 @@
 						</div>
 					</div>
 				</td>
-			</tr><tr>						
+			</tr>
+			
+			<tr>						
 				<td margin-top>
 				    <div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 radio">

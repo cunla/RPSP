@@ -13,6 +13,7 @@ app.controller('protectCreateCgController', ['$scope', '$http', '$modal', '$moda
 	$scope.replicationPolicy = {};
 	$scope.enableReplication = true;
 	$scope.rpoData = {};
+	$scope.selectedPackage = {};
 
 	$scope.initData = function(){
 		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
@@ -26,6 +27,7 @@ app.controller('protectCreateCgController', ['$scope', '$http', '$modal', '$moda
 		}
 		$scope.productionCluster = $scope.vmStructureData.systemInfo.productionCluster;
 		$scope.selectedReplicaCluster = $scope.vmStructureData.systemInfo.replicaClusters[0];
+		$scope.selectedPackage = $scope.vmStructureData.systemInfo.packages[0];
 
 		var $translate = $filter('translate');
 		var tierOne = $translate('PROTECT-UNPROTECT.RPO_TIER_1_MSG');
@@ -43,7 +45,8 @@ app.controller('protectCreateCgController', ['$scope', '$http', '$modal', '$moda
 	$scope.initData();
 
 	$scope.createCg = function(){
-    	vmStructureService.createCg($scope.cgName, $scope.productionCluster.id, $scope.selectedReplicaCluster.id, $scope.selectedVms, $scope.enableReplication, $scope.selectedRpo.rawVal);
+    	vmStructureService.createCg($scope.cgName, $scope.productionCluster.id, $scope.selectedReplicaCluster.id, 
+    			$scope.selectedVms, $scope.enableReplication, $scope.selectedRpo.rawVal, $scope.selectedPackage.id);
     	$modalInstance.dismiss('cancel');
 	}
 

@@ -426,7 +426,7 @@ app.service('vmStructureService', ['$http', function ($http) {
 
 
 
-    this.createCg = function(cgName, productionClusterId, replicaClusterId, selectedVms, enableReplication, rpo){
+    this.createCg = function(cgName, productionClusterId, replicaClusterId, selectedVms, enableReplication, rpo, packageId){
     	var url = '/rpsp/groups';
 
     	var cgParams = {};
@@ -438,6 +438,7 @@ app.service('vmStructureService', ['$http', function ($http) {
     	cgParams.vms = vmIds;
     	cgParams.enableReplication = enableReplication;
     	cgParams.rpo = rpo;
+    	cgParams.packageId = packageId;
 
 
 		$http.post(url, cgParams).
