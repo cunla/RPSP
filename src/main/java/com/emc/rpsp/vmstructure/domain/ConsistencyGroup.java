@@ -7,9 +7,13 @@ public class ConsistencyGroup implements VmContainer {
     private String id;
     private String name;
     private Long maxVolumeSize;
+    private String packageId;
+    private String packageName;
+    private String packageDisplayName;
     private List<VmDefinition> vms;
     private ClusterDefinition productionCluster;
     private List<ClusterDefinition> replicaClusters;
+
 
     public String getName() {
         return name;
@@ -62,5 +66,31 @@ public class ConsistencyGroup implements VmContainer {
     public void setMaxVolumeSize(Long maxVolumeSize) {
         this.maxVolumeSize = maxVolumeSize;
     }
+
+	public String getPackageId() {
+		return packageId;
+	}
+
+	public void setPackageId(String packageId) {
+		this.packageId = packageId;
+	}
+
+	public String getPackageName() {
+		return packageName;
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
+
+	public String getPackageDisplayName() {
+		return packageDisplayName;
+	}
+
+	public void setPackageDisplayName(String packageDisplayName) {
+		this.packageDisplayName = packageDisplayName;
+	}
+    
+    
 
 }

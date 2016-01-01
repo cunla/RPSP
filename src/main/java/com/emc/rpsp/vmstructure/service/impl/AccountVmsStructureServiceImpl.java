@@ -5,6 +5,7 @@ import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.packages.domain.PackageConfig;
+import com.emc.rpsp.packages.domain.PackageDefinition;
 import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vms.domain.VmOwnership;
@@ -155,6 +156,7 @@ import java.util.stream.Collectors;
         List<VmContainer> protectedVms = new LinkedList<VmContainer>();
 
         FullRecoverPointSettings rpSettings = client.getFullRecoverPointSettings();
+        Map<String, String> userProps = client.getUserPropertiesMap();
 
         Map<String, VmOwnership> vmsMap = getVmsMap(account);
         Map<Long, String> clusterNames = client.getClusterNames();
@@ -187,6 +189,16 @@ import java.util.stream.Collectors;
             consistencyGroup.setId(groupId);
             consistencyGroup.setName(groupName);
             consistencyGroup.setMaxVolumeSize(volumesMaxSizesMap.get(groupId));
+            
+            if(userProps != null){
+            	if(userProps.get(groupId + "-pkg") != null){
+            		Long packageId = Long.parseLong(userProps.get(groupId + "-pkg"));
+            		PackageDefinition groupPackage = findPackageById(packageId);
+            		consistencyGroup.setPackageId(packageId.toString());
+            		consistencyGroup.setPackageName(groupPackage.getName());
+            		consistencyGroup.setPackageDisplayName(groupPackage.getDisplayName());
+            	}
+            }
 
             List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
                 .getVmReplicationSetsSettings();
@@ -348,14 +360,16 @@ import java.util.stream.Collectors;
     
 
     private SystemInfo getSystemInfo(Account account, SystemSettings currSystem) {
+    	
         List<PackageConfig> packageConfigs = findPackageConfigsByAccount(account);
-        
+                
         Map<Long, PackageConfig> packageConfigsMap = new HashMap<Long, PackageConfig>();
         for(PackageConfig currPackageConfig : packageConfigs){
         	packageConfigsMap.put(currPackageConfig.getClusterId(), currPackageConfig);
         }
         List<ClusterSettings> clusters = findClustersBySystem(currSystem);
         SystemInfo systemInfo = new SystemInfo();
+        systemInfo.setPackages(findPackagesByAccount(account));
         for (ClusterSettings clusterSettings : clusters) {
             ClusterDefinition currCluster = new ClusterDefinition(
                 clusterSettings.getClusterId().toString(), clusterSettings.getFriendlyName());
