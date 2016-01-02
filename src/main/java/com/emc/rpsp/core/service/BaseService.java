@@ -1,6 +1,7 @@
 package com.emc.rpsp.core.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.fal.Client;
@@ -18,8 +19,11 @@ public interface BaseService {
 	public List<SystemSettings> findSystemsByAccount(Account account);
 	public List<VmOwnership> findAllVms();
 	public List<VmOwnership> findVmsByAccount(Account account);
-	public List<PackageConfig> findPackageConfigsByAccount(Account account);
 	public List<PackageConfig> findPackageConfigsByPackageId(Long id);
+	public List<PackageConfig> findPackageConfigsByAccount(Account account);
 	public PackageDefinition findPackageById(Long id);
 	public List<PackageDefinition> findPackagesByAccount(Account account);
+	public Long getGroupPackage(Long groupId);
+	public void setGroupPackage(Long groupId, Long packageId);
+	public Map<String, String> getCustomProperties();
 }

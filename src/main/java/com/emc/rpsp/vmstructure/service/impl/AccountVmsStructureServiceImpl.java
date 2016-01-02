@@ -156,7 +156,7 @@ import java.util.stream.Collectors;
         List<VmContainer> protectedVms = new LinkedList<VmContainer>();
 
         FullRecoverPointSettings rpSettings = client.getFullRecoverPointSettings();
-        Map<String, String> userProps = client.getUserPropertiesMap();
+        Map<String, String> groupPackages = getCustomProperties();
 
         Map<String, VmOwnership> vmsMap = getVmsMap(account);
         Map<Long, String> clusterNames = client.getClusterNames();
@@ -190,13 +190,18 @@ import java.util.stream.Collectors;
             consistencyGroup.setName(groupName);
             consistencyGroup.setMaxVolumeSize(volumesMaxSizesMap.get(groupId));
             
-            if(userProps != null){
-            	if(userProps.get(groupId + "-pkg") != null){
-            		Long packageId = Long.parseLong(userProps.get(groupId + "-pkg"));
+            if(groupPackages != null){
+            	if(groupPackages.get(groupId + "-pkg") != null){
+            		Long packageId = Long.parseLong(groupPackages.get(groupId + "-pkg"));
             		PackageDefinition groupPackage = findPackageById(packageId);
             		consistencyGroup.setPackageId(packageId.toString());
             		consistencyGroup.setPackageName(groupPackage.getName());
             		consistencyGroup.setPackageDisplayName(groupPackage.getDisplayName());
+            	}
+            	else{
+            		consistencyGroup.setPackageId("-1");
+            		consistencyGroup.setPackageName("default");
+            		consistencyGroup.setPackageDisplayName("Default");
             	}
             }
 

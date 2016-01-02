@@ -2,6 +2,7 @@ package com.emc.rpsp.core.service.impl;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -119,6 +120,29 @@ public class BaseServiceImpl implements BaseService{
 	public List<VmOwnership> findVmsByAccount(Account account) {
 		return vmsDataService.findByAccount(account);
 	}
+	
+	
+	@Override
+	public Long getGroupPackage(Long groupId) {
+		Client client = getClient();
+		return client.getGroupPackage(groupId);
+	}
+
+
+	@Override
+	public void setGroupPackage(Long groupId, Long packageId) {
+		Client client = getClient();
+		client.setGroupPackage(groupId, packageId);		
+	}
+
+
+	@Override
+	public Map<String, String> getCustomProperties() {
+		Client client = getClient();
+		return client.getUserPropertiesMap();
+	}
+	
+	
 	
 	private List<PackageConfig> getPackageConfigs(PackageDefinition packageDefinition){
 		List<PackageConfig> res = new LinkedList<PackageConfig>();
