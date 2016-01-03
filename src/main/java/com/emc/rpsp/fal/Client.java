@@ -3,6 +3,7 @@ package com.emc.rpsp.fal;
 import com.emc.fapi.jaxws.v4_3.*;
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
+import com.emc.rpsp.backupsystems.BackupConsts;
 import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
 
 /**
  * Created by morand3 on 1/14/2015.
@@ -814,6 +817,62 @@ public class Client {
                     res.put(vmId, vmReplicationSet);
 
                 }
+            }
+        }
+        return res;
+    }
+    
+    
+    public Map<String, Object> getReplicaInfoByProductionVmId(String productionVmId) {
+    	Map<String, Object> res = null;new HashMap<String, Object>();
+        FullRecoverPointSettings rpSettings = getFullRecoverPointSettings();
+
+        List<ConsistencyGroupSettings> groupSettingsList = rpSettings.getGroupsSettings();
+        for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
+
+            List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
+            .getVmReplicationSetsSettings();
+
+            for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {
+            	if(isContainsVm(vmReplicationSet, productionVmId)){
+	                List<VmReplicationSettings> vmReplicationSettingsList = 
+	                								vmReplicationSet.getReplicatedVMs();
+	
+	                for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
+	                    String vmId = vmReplication.getVmUID().getUuid();
+	                    ConsistencyGroupCopyUID copyId = vmReplication.getGroupCopyUID();
+	                    Long clusterId = copyId.getGlobalCopyUID().getClusterUID().getId();
+	                    
+	                    List<ConsistencyGroupCopyUID> production = groupSettings
+	                            .getProductionCopiesUID();
+	                        if (!production.contains(copyId)) {
+	                        	 res = new HashMap<String, Object>();
+	                        	 Map<Long, Map<String, String>> vmNamesAllClusters = getVmNamesAllClusters();
+	                        	 Map<String, String> vmNamesMap = vmNamesAllClusters.get(clusterId);
+	                             String vmName = vmNamesMap.get(vmId);
+	                             res.put(BackupConsts.CLUSTER_ID, clusterId);
+	                             res.put(BackupConsts.GROUP_ID, copyId.getGroupUID().getId());
+	                             res.put(BackupConsts.COPY_ID, copyId.getGlobalCopyUID().getCopyUID());
+	                             res.put(BackupConsts.VM_NAME, vmName);
+	                        }
+	
+	                }
+            	}
+            }
+        }
+        return res;
+    }
+    
+    
+    private boolean isContainsVm(VmReplicationSetSettings vmReplicationSet , String vmId){
+    	boolean res = false;
+    	List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
+                .getReplicatedVMs();
+
+        for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
+            String currVmId = vmReplication.getVmUID().getUuid();
+            if(currVmId.equals(vmId)){
+            	res = true;
             }
         }
         return res;
