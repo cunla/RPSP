@@ -177,7 +177,7 @@ import java.util.stream.Collectors;
 
         List<ConsistencyGroupSettings> groupSettingsList = rpSettings.getGroupsSettings();
         boolean isDrttc = findSystemsByAccount(account).get(0).getIsDrttc();
-        
+
         for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 
             Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copySnapshotsMap = getGroupCopiesSnapshots(
@@ -189,7 +189,7 @@ import java.util.stream.Collectors;
             consistencyGroup.setId(groupId);
             consistencyGroup.setName(groupName);
             consistencyGroup.setMaxVolumeSize(volumesMaxSizesMap.get(groupId));
-            
+
             if(groupPackages != null){
             	if(groupPackages.get(groupId + "-pkg") != null){
             		Long packageId = Long.parseLong(groupPackages.get(groupId + "-pkg"));
@@ -213,15 +213,15 @@ import java.util.stream.Collectors;
             consistencyGroup.setReplicaClusters(replicaClusters);
             List<VmDefinition> vmsList = new LinkedList<VmDefinition>();
             consistencyGroup.setVms(vmsList);
-            
-            
+
+
 
             for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {
 
                 String originalProductionVm = locateViewRelatedVm(vmReplicationSet, vmsMap);
-                
-               
-                
+
+
+
                 if (originalProductionVm != null || isDrttc) {
 
                 /*if (originalProductionVm != null || account.getIsDrttc()) {*/
@@ -323,51 +323,51 @@ import java.util.stream.Collectors;
         setStrictModeIndicator(accountVmsStructure);
         return accountVmsStructure;
     }
-    
-    
-    
+
+
+
     private void setStrictModeIndicator(AccountVmsStructure accountVmsStructure){
     	List<VmContainer> vmContainers = accountVmsStructure.getProtectedVms();
     	for (VmContainer currVmContainer : vmContainers){
     		if(currVmContainer instanceof GroupSet){
-    			
+
     			boolean strictMode = true;
     			GroupSet currGroupSet = (GroupSet)currVmContainer;
     			List<VmContainer> nestedGroups = currGroupSet.getConsistencyGroups();
-    			
-    			ConsistencyGroup firstConsistencyGroup = (ConsistencyGroup)nestedGroups.get(0);    			
+
+    			ConsistencyGroup firstConsistencyGroup = (ConsistencyGroup)nestedGroups.get(0);
     			String firstImageAccessState = firstConsistencyGroup.getReplicaClusters().
     					                         get(0).getGroupCopySettings().get(0).getImageAccess();
     			String firstProdClusterId = firstConsistencyGroup.getProductionCluster().getId();
-    			
-    			
+
+
     			for(VmContainer currCgContainer : nestedGroups){
     				ConsistencyGroup consistencyGroup = (ConsistencyGroup)currCgContainer;
     				ClusterDefinition currProdCluster = consistencyGroup.getProductionCluster();
     				ClusterDefinition currReplicaCluster = consistencyGroup.getReplicaClusters().get(0);
-    				
+
     				//check replication direction
     				if(!currProdCluster.getId().equals(firstProdClusterId)){
     					strictMode = false;
     					break;
-    				}	
-    				//check image access    				
+    				}
+    				//check image access
     				if(!currReplicaCluster.getGroupCopySettings().get(0).getImageAccess().equals(firstImageAccessState)){
         					strictMode = false;
-        					break;   					
-    				}				
-    			}    			
-    			currGroupSet.setStrictMode(strictMode);	
+        					break;
+    				}
+    			}
+    			currGroupSet.setStrictMode(strictMode);
     		}
     	}
     }
-    
-    
+
+
 
     private SystemInfo getSystemInfo(Account account, SystemSettings currSystem) {
-    	
+
         List<PackageConfig> packageConfigs = findPackageConfigsByAccount(account);
-                
+
         Map<Long, PackageConfig> packageConfigsMap = new HashMap<Long, PackageConfig>();
         for(PackageConfig currPackageConfig : packageConfigs){
         	packageConfigsMap.put(currPackageConfig.getClusterId(), currPackageConfig);
@@ -395,9 +395,9 @@ import java.util.stream.Collectors;
         List<PackageConfig> packageConfigs = findPackageConfigsByAccount(account);
         Map<String,String> esxClustersMap = new HashMap<String, String>();
         for (PackageConfig currPackageConfig : packageConfigs) {
-            if (currPackageConfig.getIsProductionCluster() 
+            if (currPackageConfig.getIsProductionCluster()
             		&& esxClustersMap.get(currPackageConfig.getEsxClusterId()) == null) {
-            	
+
             	esxClustersMap.put(currPackageConfig.getEsxClusterId(), currPackageConfig.getEsxClusterId());
                 VmEntitiesInformationSet vmEntitiesInformationSet = client.
                     getAvailableVMsForReplication(currPackageConfig.getClusterId(),
@@ -652,7 +652,7 @@ import java.util.stream.Collectors;
         }
         return volumesMaxSizes;
     }
-    
+
     private Map<ConsistencyGroupCopyUID, List<CopySnapshot>> getGroupCopiesSnapshots(Client client,
             Long groupId) {
             Map<ConsistencyGroupCopyUID, List<CopySnapshot>> copyUIDToSnapshotsMap = new HashMap<ConsistencyGroupCopyUID, List<CopySnapshot>>();

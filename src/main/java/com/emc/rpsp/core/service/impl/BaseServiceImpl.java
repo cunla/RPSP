@@ -1,12 +1,5 @@
 package com.emc.rpsp.core.service.impl;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.core.service.BaseService;
 import com.emc.rpsp.fal.Client;
@@ -21,154 +14,159 @@ import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.service.UserService;
 import com.emc.rpsp.vms.domain.VmOwnership;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 @Service
-public class BaseServiceImpl implements BaseService{
-	
-	@Autowired 
-	private UserService userService = null;
-	
-	@Autowired
-	private AccountsDataService accountsDataService = null;
-	
-	@Autowired
-	private SystemsDataService systemsDataService = null;
-	
-	@Autowired
-	private VmsDataService vmsDataService = null;
-	
-	@Autowired
-	private PackagesDataService packagesDataService = null;
-	
-	
-	@Override
-	public Client getClient() {
-		Account account = userService.findCurrentUser().getAccount();		
-		Client client = null;
-		if(account != null){
-			List<SystemSettings> systemSettings = findSystemsByAccount(account);
-			client = new Client(systemSettings.get(0));
-		}
-		return client;
-	}
-	
-	
-	@Override
-	public AbstractCurrentUser getCurrentUser() {
-		AbstractCurrentUser currentUser = userService.findCurrentUser();
-		return currentUser;
-	}
-		
+public class BaseServiceImpl implements BaseService {
 
-	@Override
-	public List<Account> findAllAccounts() {
-		return accountsDataService.findAll();
-	}
-	
-	@Override
-	public PackageDefinition findPackageById(Long id){
-		return packagesDataService.findPackageById(id);
-	}
-	
-	@Override
-	public List<PackageDefinition> findPackagesByAccount(Account account){
-		return packagesDataService.findPackagesByAccount(account);
-	}
-	
-	
-	@Override
-	public List<PackageConfig> findPackageConfigsByAccount(Account account) {
-		List<PackageConfig> res = new LinkedList<PackageConfig>();
-		List<PackageDefinition> packageDefs = packagesDataService.findPackagesByAccount(account);
-		for(PackageDefinition currPackageDefinition : packageDefs){
-			res.addAll(getPackageConfigs(currPackageDefinition));
-		}
-		return res;		
-		
-	}
-	
-	@Override
-	public List<PackageConfig> findPackageConfigsByPackageId(Long id) {
-		List<PackageConfig> res = new LinkedList<PackageConfig>();
-		PackageDefinition packageDefinition = packagesDataService.findPackageById(id);
-		res.addAll(getPackageConfigs(packageDefinition));
-		return res;		
-		
-	}
-	
+    @Autowired
+    private UserService userService = null;
 
-	@Override
-	public List<SystemSettings> findAllSystems() {
-		return systemsDataService.findAll();
-	}
+    @Autowired
+    private AccountsDataService accountsDataService = null;
 
-	@Override
-	public List<SystemSettings> findSystemsByAccount(Account account) {
-		return systemsDataService.findByAccount(account);
-	}
-	
-	public List<ClusterSettings> findClustersBySystem(SystemSettings systemSettings){
-		return systemsDataService.findClustersBySystem(systemSettings);
-	}
+    @Autowired
+    private SystemsDataService systemsDataService = null;
 
-	@Override
-	public List<VmOwnership> findAllVms() {
-		return vmsDataService.findAll();
-	}
+    @Autowired
+    private VmsDataService vmsDataService = null;
 
-	@Override
-	public List<VmOwnership> findVmsByAccount(Account account) {
-		return vmsDataService.findByAccount(account);
-	}
-	
-	
-	@Override
-	public Long getGroupPackage(Long groupId) {
-		Client client = getClient();
-		return client.getGroupPackage(groupId);
-	}
+    @Autowired
+    private PackagesDataService packagesDataService = null;
 
 
-	@Override
-	public void setGroupPackage(Long groupId, Long packageId) {
-		Client client = getClient();
-		client.setGroupPackage(groupId, packageId);		
-	}
+    @Override
+    public Client getClient() {
+        Account account = userService.findCurrentUser().getAccount();
+        Client client = null;
+        if (account != null) {
+            List<SystemSettings> systemSettings = findSystemsByAccount(account);
+            client = new Client(systemSettings.get(0));
+        }
+        return client;
+    }
 
 
-	@Override
-	public Map<String, String> getCustomProperties() {
-		Client client = getClient();
-		return client.getUserPropertiesMap();
-	}
-	
-	
-	
-	private List<PackageConfig> getPackageConfigs(PackageDefinition packageDefinition){
-		List<PackageConfig> res = new LinkedList<PackageConfig>();
-		
-		PackageConfig prodConfig = new PackageConfig();
-		prodConfig.setIsProductionCluster(true);
-		prodConfig.setClusterId(packageDefinition.getSourceClusterId());
-		prodConfig.setVcId(packageDefinition.getSourceVcId());
-		prodConfig.setDataCenterId(packageDefinition.getSourceDataCenterId());
-		prodConfig.setEsxClusterId(packageDefinition.getSourceEsxClusterId());
-		prodConfig.setEsxId(packageDefinition.getSourceEsxId());
-		prodConfig.setDatastoreId(packageDefinition.getSourceDatastoreId());
-		res.add(prodConfig);
-		
-		PackageConfig replicaConfig = new PackageConfig(); 
-		replicaConfig.setIsProductionCluster(false);
-		replicaConfig.setClusterId(packageDefinition.getTargetClusterId());
-		replicaConfig.setVcId(packageDefinition.getTargetVcId());
-		replicaConfig.setDataCenterId(packageDefinition.getTargetDataCenterId());
-		replicaConfig.setEsxClusterId(packageDefinition.getTargetEsxClusterId());
-		replicaConfig.setEsxId(packageDefinition.getTargetEsxId());
-		replicaConfig.setDatastoreId(packageDefinition.getTargetDatastoreId());
-		res.add(replicaConfig);
-		
-		return res;
-	}
-	
+    @Override
+    public AbstractCurrentUser getCurrentUser() {
+        AbstractCurrentUser currentUser = userService.findCurrentUser();
+        return currentUser;
+    }
+
+
+    @Override
+    public List<Account> findAllAccounts() {
+        return accountsDataService.findAll();
+    }
+
+    @Override
+    public PackageDefinition findPackageById(Long id) {
+        return packagesDataService.findPackageById(id);
+    }
+
+    @Override
+    public List<PackageDefinition> findPackagesByAccount(Account account) {
+        return packagesDataService.findPackagesByAccount(account);
+    }
+
+
+    @Override
+    public List<PackageConfig> findPackageConfigsByAccount(Account account) {
+        List<PackageConfig> res = new LinkedList<PackageConfig>();
+        List<PackageDefinition> packageDefs = packagesDataService.findPackagesByAccount(account);
+        for (PackageDefinition currPackageDefinition : packageDefs) {
+            res.addAll(getPackageConfigs(currPackageDefinition));
+        }
+        return res;
+
+    }
+
+    @Override
+    public List<PackageConfig> findPackageConfigsByPackageId(Long id) {
+        List<PackageConfig> res = new LinkedList<PackageConfig>();
+        PackageDefinition packageDefinition = packagesDataService.findPackageById(id);
+        res.addAll(getPackageConfigs(packageDefinition));
+        return res;
+
+    }
+
+
+    @Override
+    public List<SystemSettings> findAllSystems() {
+        return systemsDataService.findAll();
+    }
+
+    @Override
+    public List<SystemSettings> findSystemsByAccount(Account account) {
+        return systemsDataService.findByAccount(account);
+    }
+
+    public List<ClusterSettings> findClustersBySystem(SystemSettings systemSettings) {
+        return systemsDataService.findClustersBySystem(systemSettings);
+    }
+
+    @Override
+    public List<VmOwnership> findAllVms() {
+        return vmsDataService.findAll();
+    }
+
+    @Override
+    public List<VmOwnership> findVmsByAccount(Account account) {
+        return vmsDataService.findByAccount(account);
+    }
+
+
+    @Override
+    public Long getGroupPackage(Long groupId) {
+        Client client = getClient();
+        return client.getGroupPackage(groupId);
+    }
+
+
+    @Override
+    public void setGroupPackage(Long groupId, Long packageId) {
+        Client client = getClient();
+        client.setGroupPackage(groupId, packageId);
+    }
+
+
+    @Override
+    public Map<String, String> getCustomProperties() {
+        Client client = getClient();
+        return (null == client) ? null : client.getUserPropertiesMap();
+    }
+
+
+    private List<PackageConfig> getPackageConfigs(PackageDefinition packageDefinition) {
+        List<PackageConfig> res = new LinkedList<PackageConfig>();
+
+        PackageConfig prodConfig = new PackageConfig();
+        prodConfig.setIsProductionCluster(true);
+        prodConfig.setClusterId(packageDefinition.getSourceClusterId());
+        prodConfig.setVcId(packageDefinition.getSourceVcId());
+        prodConfig.setDataCenterId(packageDefinition.getSourceDataCenterId());
+        prodConfig.setEsxClusterId(packageDefinition.getSourceEsxClusterId());
+        prodConfig.setEsxId(packageDefinition.getSourceEsxId());
+        prodConfig.setDatastoreId(packageDefinition.getSourceDatastoreId());
+        res.add(prodConfig);
+
+        PackageConfig replicaConfig = new PackageConfig();
+        replicaConfig.setIsProductionCluster(false);
+        replicaConfig.setClusterId(packageDefinition.getTargetClusterId());
+        replicaConfig.setVcId(packageDefinition.getTargetVcId());
+        replicaConfig.setDataCenterId(packageDefinition.getTargetDataCenterId());
+        replicaConfig.setEsxClusterId(packageDefinition.getTargetEsxClusterId());
+        replicaConfig.setEsxId(packageDefinition.getTargetEsxId());
+        replicaConfig.setDatastoreId(packageDefinition.getTargetDatastoreId());
+        res.add(replicaConfig);
+
+        return res;
+    }
+
 
 }

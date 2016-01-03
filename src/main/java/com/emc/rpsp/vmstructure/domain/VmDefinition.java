@@ -2,6 +2,9 @@ package com.emc.rpsp.vmstructure.domain;
 
 import com.emc.rpsp.accounts.domain.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
+import java.util.Date;
 
 public class VmDefinition {
 
@@ -9,6 +12,8 @@ public class VmDefinition {
     private String name;
     private boolean isCritical;
     private int sequenceNumber;
+    private Date lastBackup;
+    private Boolean backupActive;
     @JsonIgnore
     private Account account;
 
@@ -16,6 +21,23 @@ public class VmDefinition {
         super();
         this.id = id;
         this.name = name;
+    }
+
+
+    public Date getLastBackup() {
+        return lastBackup;
+    }
+
+    public void setLastBackup(Date lastBackup) {
+        this.lastBackup = lastBackup;
+    }
+
+    public Boolean getBackupActive() {
+        return backupActive;
+    }
+
+    public void setBackupActive(Boolean backupActive) {
+        this.backupActive = backupActive;
     }
 
     public String getId() {
@@ -57,7 +79,7 @@ public class VmDefinition {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-    
-    
+
+
 
 }

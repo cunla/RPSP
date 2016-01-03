@@ -7,6 +7,7 @@ public class AccountVmsStructure {
 
     private String id;
     private String name;
+    private Boolean backupActive;
     private SystemInfo systemInfo;
     private List<VmDefinition> unprotectedVms;
     private List<VmContainer> protectedVms;
@@ -65,7 +66,12 @@ public class AccountVmsStructure {
 	public void setSystemInfo(SystemInfo systemInfo) {
 		this.systemInfo = systemInfo;
 	}
-    
-    
 
+    public Boolean getBackupActive() {
+        return backupActive;
+    }
+
+    public void setBackupActive(Boolean backupActive) {
+        this.backupActive = backupActive;
+    }
 }
