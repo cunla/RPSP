@@ -1,5 +1,6 @@
 package com.emc.rpsp.backupsystems;
 
+import com.emc.rpsp.exceptions.RpspParamsException;
 import com.emc.rpsp.vmwal.VSphereApi;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -53,9 +54,10 @@ public class BackupApi {
         }
     }
 
-    public void enableAccessBackup(BackupSystem system, String backupName) {
+    public void enableAccessBackup(BackupSystem system, String backupName) throws Exception {
         if (null == system || null == backupName) {
             log.warn("Called enable access backup with no params");
+            throw new RpspParamsException();
         }
         try {
             VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
@@ -65,7 +67,22 @@ public class BackupApi {
                 system.getAccessBackupDatastore(),
                 true);
         } catch (Exception e) {
-            log.warn("Failed to backup/clone VM {}", backupName);
+            log.warn("Failed to enable access to backup {}", backupName);
+            throw e;
+        }
+    }
+
+    public void disableAccessBackup(BackupSystem system, String backupName) throws Exception {
+        if (null == system || null == backupName) {
+            log.warn("Called enable access backup with no params");
+            throw new RpspParamsException();
+        }
+        try {
+            VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
+            vSphereApi.removeVM(accessBackupName(backupName));
+        } catch (Exception e) {
+            log.warn("Failed to disable backup access VM {}", backupName);
+            throw e;
         }
     }
 
