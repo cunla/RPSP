@@ -85,6 +85,16 @@ public class BackupApi {
             throw e;
         }
     }
+    
+    //TODO #1 - returns all needed params for image access 
+    private BackupImageAccessParams getImageAccessParams(String productionVmId){
+    	return null;
+    }
+    
+   //TODO #2 - returns id of the replica vm
+    private String getReplicaVmId(String productionVmId) {
+        return null;
+    }
 
     private String getDrTestVmName(String vmName) {
         //TODO Boris - please implement
