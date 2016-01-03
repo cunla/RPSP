@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class VSphereApi {
 //    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     //Initial Configuration
-    VSphereApi(String vcenter, String uname, String pwd) {
+    public VSphereApi(String vcenter, String uname, String pwd) {
         this.vcenter = vcenter;
         this.uname = uname;
         this.pwd = pwd;
@@ -130,6 +131,19 @@ public class VSphereApi {
         }
     }
 
+    public List<String> vmsInFolder(String backupFolder) {
+        try {
+            InventoryNavigator inventoryNavigator = new InventoryNavigator(rootFolder);
+            Folder folder = (Folder) inventoryNavigator.searchManagedEntity("Folder", backupFolder);
+            ManagedEntity[] vms = new InventoryNavigator(rootFolder).searchManagedEntities("VirtualMachine");
+            return listEntityNames(vms);
+        } catch (RemoteException e) {
+            log.warn("Couldn't get list of VMs");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<String> vmNames() {
         return listEntityNames(vms);
     }
@@ -194,6 +208,5 @@ public class VSphereApi {
             log.debug("Failure -: VM cannot be cloned");
         }
     }
-
 
 }

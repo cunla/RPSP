@@ -4,6 +4,7 @@ import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
@@ -14,4 +15,6 @@ import java.util.List;
 @RepositoryRestResource(collectionResourceRel = "backupsystems", path = "backupsystems")
 public interface BackupSystemsRepository extends JpaRepository<BackupSystem, Long> {
 
+    @Query("SELECT v from VmBackup v where v.vmName=:name")
+    public VmBackup findVmByName(@Param("name") String vmName);
 }

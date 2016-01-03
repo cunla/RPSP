@@ -6,12 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by morand3 on 1/3/2016.
  */
 @Entity
-@Table(name = "T_BACKUPSYSTEMS")
+@Table(name = "T_BACKUP_SYSTEMS")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class BackupSystem {
     @Id
@@ -27,10 +28,33 @@ public class BackupSystem {
     private String backupDatastore = "DDVE-2_backup";
     @Column
     private String backupFolder = "DD-backup";
+    @Column
+    private String accessBackupFolder = "backup-access";
 
+    @Column
+    private String accessBackupDatastore = "DevA2-DS04-NFS02";
+
+    @OneToMany(mappedBy = "backupSystemId")
+    private List<VmBackup> vms;
 
     public BackupSystem() {
 
+    }
+
+    public String getAccessBackupDatastore() {
+        return accessBackupDatastore;
+    }
+
+    public void setAccessBackupDatastore(String accessBackupDatastore) {
+        this.accessBackupDatastore = accessBackupDatastore;
+    }
+
+    public String getAccessBackupFolder() {
+        return accessBackupFolder;
+    }
+
+    public void setAccessBackupFolder(String accessBackupFolder) {
+        this.accessBackupFolder = accessBackupFolder;
     }
 
     public String getVcenterUrl() {
