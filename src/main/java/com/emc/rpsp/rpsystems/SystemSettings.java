@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.emc.rpsp.config.Consts;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
@@ -30,54 +31,52 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Entity @Table(name = "T_SYSTEMS") @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SystemSettings {
-    private static final String ENCRYPT_KEY1 = "Bar12345Bar12345";
-    private static final String ENCRYPT_KEY2 = "ThisIsASecretKey";
-    @Id 
-    @GeneratedValue(strategy = GenerationType.AUTO) 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @Column 
+
+    @Column
     private String name;
 
-    @JsonProperty("ip") 
-    @Column 
+    @JsonProperty("ip")
+    @Column
     private String systemIp;
-    
-    @Column 
+
+    @Column
     private String user;
-    
+
     @Column
     // @JsonIgnore
     private String password;
-    
+
     @Column
     private Boolean isDrttc;
-    
+
     @Column
     private Boolean isMultiTenanctEnabled;
-    
-    @Column 
+
+    @Column
     private Boolean testResult;
-    
-    @Column 
+
+    @Column
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime lastTested;
-    
-    
-    @Column 
+
+
+    @Column
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime lastCollected;
-    
-    
-    @Column 
+
+
+    @Column
     private String systemVersion;
 
     @JsonIgnore
     @Column
     @OneToMany(mappedBy = "systemSettings", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    //@JsonProperty("clusters") 
+    //@JsonProperty("clusters")
     private List<ClusterSettings> clusters;
-    
+
     @JsonIgnore
 	@Column
 	@OneToMany(mappedBy = "systemSettings", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -117,7 +116,7 @@ public class SystemSettings {
     }
 
     @JsonIgnore public String getRealPassword() {
-        return StringXORer.decrypt(ENCRYPT_KEY1, ENCRYPT_KEY2, password);
+        return StringXORer.decrypt(Consts.ENCRYPT_KEY1, Consts.ENCRYPT_KEY2, password);
     }
 
     public String getPassword() {
@@ -146,7 +145,7 @@ public class SystemSettings {
     }
 
     public void setPassword(String password) {
-        this.password = StringXORer.encrypt(ENCRYPT_KEY1, ENCRYPT_KEY2, password);
+        this.password = StringXORer.encrypt(Consts.ENCRYPT_KEY1, Consts.ENCRYPT_KEY2, password);
     }
 
     public DateTime getLastCollected() {
@@ -169,7 +168,7 @@ public class SystemSettings {
         return clusters;
     }
 
-    
+
 
     public List<PackageDefinition> getPackages() {
 		return packages;
@@ -186,8 +185,8 @@ public class SystemSettings {
     public void addPackage(PackageDefinition packageParam) {
     	packages.add(packageParam);
     }
-    
-    
+
+
 
     public String getName() {
 		return name;

@@ -7,7 +7,7 @@ public class AccountVmsStructure {
 
     private String id;
     private String name;
-    private Boolean backupActive;
+    private Boolean backupActive = true;
     private SystemInfo systemInfo;
     private List<VmDefinition> unprotectedVms;
     private List<VmContainer> protectedVms;
@@ -19,7 +19,7 @@ public class AccountVmsStructure {
     }
 
     public AccountVmsStructure(String id, String name, List<VmDefinition> unprotectedVms,
-    List<VmContainer> protectedVms) {
+                               List<VmContainer> protectedVms) {
         super();
         this.id = id;
         this.name = name;
@@ -59,13 +59,13 @@ public class AccountVmsStructure {
         this.protectedVms = protectedVms;
     }
 
-	public SystemInfo getSystemInfo() {
-		return systemInfo;
-	}
+    public SystemInfo getSystemInfo() {
+        return systemInfo;
+    }
 
-	public void setSystemInfo(SystemInfo systemInfo) {
-		this.systemInfo = systemInfo;
-	}
+    public void setSystemInfo(SystemInfo systemInfo) {
+        this.systemInfo = systemInfo;
+    }
 
     public Boolean getBackupActive() {
         return backupActive;

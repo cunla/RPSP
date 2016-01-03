@@ -16,6 +16,10 @@ import java.util.List;
  */
 public class VSphereApi {
     private static final Logger log = LoggerFactory.getLogger(VSphereApi.class);
+    private final String vcenter;
+    private final String uname;
+    private final String pwd;
+
     public ServiceInstance si;
     public Folder rootFolder;
     public Datacenter dc;
@@ -26,16 +30,21 @@ public class VSphereApi {
     public String vmName;
     public VirtualMachine vm;
     public HostSystem host;
-    private String vcenter = "https://10.64.125.35/sdk";
-    private String uname = "administrator@vsphere.local";
-    private String pwd = "DmBU@EMC!2014";
+
 
 //    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     //Initial Configuration
-    VSphereApi() {
+    VSphereApi(String vcenter, String uname, String pwd) {
+        this.vcenter = vcenter;
+        this.uname = uname;
+        this.pwd = pwd;
+        this.connect();
+    }
+
+    private void connect() {
         try {
-            log.info("Connecting to {} using user {}", vcenter, uname);
+            log.info("Connecting to vcenter {} using user {}", vcenter, uname);
             this.si = new ServiceInstance(new URL(vcenter), uname, pwd, true);
             rootFolder = si.getRootFolder();
             this.dc = (Datacenter) new InventoryNavigator(rootFolder).searchManagedEntities("Datacenter")[0];

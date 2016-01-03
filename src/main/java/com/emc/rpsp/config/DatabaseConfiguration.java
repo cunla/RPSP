@@ -9,11 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
-import org.springframework.boot.orm.jpa.EntityScan;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
@@ -33,37 +32,45 @@ import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.Map;
 
-@Configuration @EnableTransactionManagement
+@Configuration
+@EnableTransactionManagement
 //@EntityScan(basePackages = { "com.emc.rpsp.config.auditing", "com.emc.rpsp.accounts.domain",
 //"com.emc.rpsp.users.domain", "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain" })
 @EnableJpaRepositories(
-    basePackages = { "com.emc.rpsp.rpsystems", "com.emc.rpsp.accounts.repository",
-        "com.emc.rpsp.vms.repository", "com.emc.rpsp.users.repository", "com.emc.rpsp.packages.repository" },
+    basePackages = {"com.emc.rpsp.rpsystems", "com.emc.rpsp.backupsystems",
+        "com.emc.rpsp.accounts.repository",
+        "com.emc.rpsp.vms.repository",
+        "com.emc.rpsp.users.repository",
+        "com.emc.rpsp.packages.repository"},
     entityManagerFactoryRef = "entityManagerFactory",
-    transactionManagerRef = "transactionManager") public class DatabaseConfiguration
+    transactionManagerRef = "transactionManager")
+public class DatabaseConfiguration
     implements EnvironmentAware {
 
     private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
-
-    private RelaxedPropertyResolver propertyResolver;
-    private Environment env;
-
-    @Bean @ConfigurationProperties("spring.jpa") public JpaProperties jpaProperties() {
-        return new JpaProperties();
-    }
-
-    @Autowired(required = false) private PersistenceUnitManager persistenceUnitManager;
-
     private final String DB_URL = "DB_URL";
     private final String DB_USER = "DB_USER";
     private final String DB_PASSWORD = "DB_PASSWORD";
+    private RelaxedPropertyResolver propertyResolver;
+    private Environment env;
+    @Autowired(required = false)
+    private PersistenceUnitManager persistenceUnitManager;
 
-    @Override public void setEnvironment(Environment env) {
+    @Bean
+    @ConfigurationProperties("spring.jpa")
+    public JpaProperties jpaProperties() {
+        return new JpaProperties();
+    }
+
+    @Override
+    public void setEnvironment(Environment env) {
         this.env = env;
         this.propertyResolver = new RelaxedPropertyResolver(env, "spring.datasource.");
     }
 
-    @Bean(name = "datasource") @Primary public DataSource dataSource() {
+    @Bean(name = "datasource")
+    @Primary
+    public DataSource dataSource() {
         log.debug("Configuring Datasource");
         if (propertyResolver.getProperty("url") == null
             && propertyResolver.getProperty("databaseName") == null) {
@@ -106,7 +113,8 @@ import java.util.Map;
         }
     }
 
-    @Bean(name = "emfb1") public EntityManagerFactoryBuilder entityManagerFactoryBuilder1() {
+    @Bean(name = "emfb1")
+    public EntityManagerFactoryBuilder entityManagerFactoryBuilder1() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         JpaProperties jpaProps = jpaProperties();
         adapter.setShowSql(jpaProps.isShowSql());
@@ -120,7 +128,8 @@ import java.util.Map;
         return builder;
     }
 
-    @Bean(name = "entityManagerFactory") @Primary
+    @Bean(name = "entityManagerFactory")
+    @Primary
     public LocalContainerEntityManagerFactoryBean entityManagerFactory1(
         @Qualifier("datasource") DataSource dataSource,
         @Qualifier("emfb1") EntityManagerFactoryBuilder factoryBuilder) {
@@ -129,16 +138,19 @@ import java.util.Map;
         Map<String, Object> vendorProperties = relaxedPropertyResolver.getSubProperties(null);
         return factoryBuilder.dataSource(dataSource)
             .packages("com.emc.rpsp.accounts.domain", "com.emc.rpsp.users.domain",
-                "com.emc.rpsp.rpsystems", "com.emc.rpsp.vms.domain", "com.emc.rpsp.packages.domain").persistenceUnit("rpsp")
+                "com.emc.rpsp.rpsystems", "com.emc.rpsp.backupsystems",
+                "com.emc.rpsp.vms.domain", "com.emc.rpsp.packages.domain").persistenceUnit("rpsp")
             .properties(vendorProperties).build();
     }
 
-    @Bean(name = "transactionManager") public PlatformTransactionManager transactionManager1(
+    @Bean(name = "transactionManager")
+    public PlatformTransactionManager transactionManager1(
         @Qualifier("entityManagerFactory") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 
-    @Bean public Hibernate4Module hibernate4Module() {
+    @Bean
+    public Hibernate4Module hibernate4Module() {
         return new Hibernate4Module();
     }
 }
