@@ -91,18 +91,23 @@ extends WebSecurityConfigurerAdapter {
     		                            AuthenticationException authenticationException,String action, String res){
     	AuditEntry auditEntry = null;
     	if(res.equals(AuditConsts.LOGIN_LOGOUT_SUCCESS_RESULT)){
-	   		 String accountName = null;
-	   		 String userName = null;	   		
-    		 CurrentUser currentUser = (CurrentUser)authentication.getPrincipal();
-    		 if(currentUser.getAccount() != null){
-	   			 accountName = currentUser.getAccount().getLabel();
-	   			 userName = currentUser.getUser().getFullName();
+    		 String login = "";
+	   		 String accountName = "";
+	   		 String userName = "";
+	   		 
+	   		 if(authentication != null){
+	    		 CurrentUser currentUser = (CurrentUser)authentication.getPrincipal();
+	    		 login = currentUser.getUser().getLogin();
+	    		 if(currentUser.getAccount() != null){
+		   			 accountName = currentUser.getAccount().getLabel();
+		   			 userName = currentUser.getUser().getFullName();
+		   		 }
+	    		 else{
+	    			 accountName = "system";
+		   			 userName = "admin";
+	    		 }
 	   		 }
-    		 else{
-    			 accountName = "system";
-	   			 userName = "admin";
-    		 }
-             auditEntry = new AuditEntry(new Date(), currentUser.getUser().getLogin(), action, "User: " + userName, res, "Account: " + accountName);           
+             auditEntry = new AuditEntry(new Date(), login, action, "User: " + userName, res, "Account: " + accountName);           
     	}
     	else{
     		auditEntry = new AuditEntry(new Date(), httpServletRequest.getParameter("username"), action, "", res, authenticationException.getLocalizedMessage());
