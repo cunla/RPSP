@@ -624,7 +624,7 @@ public class Client {
             0);
             ConsistencyGroupCopyParam consistencyGroupCopyParam = new ConsistencyGroupCopyParam();
             consistencyGroupCopyParam.setCopyUID(copyUID);
-            consistencyGroupCopyParam.setCopyName("copy-" + accountConfig.getClusterId());
+            consistencyGroupCopyParam.setCopyName(accountConfig.getClusterFriendlyName());
 
             ConsistencyGroupCopyVolumeCreationParams consistencyGroupCopyVolumeCreationParams = new ConsistencyGroupCopyVolumeCreationParams();
             VolumeCreationParams volumeCreationParams = new VolumeCreationParams();

@@ -24,6 +24,12 @@ public class PackageConfig implements Serializable {
 
 
     private Long clusterId;
+    
+    
+    private String clusterName;
+    
+    
+    private String clusterFriendlyName;
 
 
 	private Boolean isProductionCluster;
@@ -45,6 +51,8 @@ public class PackageConfig implements Serializable {
 
     //Datacenter to access for DR2C
     private String dataCenterId;
+    
+    
     
 
 
@@ -138,6 +146,30 @@ public class PackageConfig implements Serializable {
 	public void setDataCenterId(String dataCenterId) {
 		this.dataCenterId = dataCenterId;
 	}
-	
 
+
+
+	public String getClusterName() {
+		return clusterName;
+	}
+
+
+
+	public void setClusterName(String clusterName) {
+		this.clusterName = clusterName;
+	}
+
+
+
+	public String getClusterFriendlyName() {
+		return clusterFriendlyName;
+	}
+
+
+
+	public void setClusterFriendlyName(String clusterFriendlyName) {
+		this.clusterFriendlyName = clusterFriendlyName;
+	}
+	
+	
 }

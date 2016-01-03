@@ -8,11 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 
 /**
  * Created by morand3 on 2/9/2015.
@@ -26,7 +26,7 @@ import javax.transaction.Transactional;
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/rest/updateClusterForSystem/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Transactional
+    @Transactional("transactionManager")
     public ResponseEntity<ClusterSettings> updateClusterForSystem(@PathVariable("id") Long id,
     @RequestBody ClusterSettings clusterSettings) {
         log.debug("Trying to update cluster settings for system {}", id);
