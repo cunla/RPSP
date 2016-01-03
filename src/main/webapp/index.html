@@ -16,12 +16,12 @@
     <link rel="stylesheet" href="custom/css/custom.css">
     <style>
         [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-        display: none !important;
+            display: none !important;
         }
     </style>
 </head>
 
-<body ng-controller="vmStructureController" >
+<body ng-controller="vmStructureController">
 <div class="spinner-gif" ng-hide="finishedLoading"></div>
 <div class="ng-cloak">
     <div class="div-grey">
@@ -131,6 +131,7 @@
                             <th>{{'HOME.REPLICATION_MSG' | translate}}</th>
                             <th>{{'HOME.SIZE_MSG' | translate}}</th>
                             <th>{{'HOME.DR_TEST_MSG' | translate}}</th>
+                            <th ng-show="backupActive">{{'HOME.BACKUP_MSG'|translate}}</thng-sh>
                         </tr>
                         </thead>
                         <tbody>
@@ -143,19 +144,20 @@
                             ng-hide="row.hideRow"
                         >
                             <td width="30%">
-                                <white-space ng-show="row.parent">      </white-space>
+                                <white-space ng-show="row.parent"></white-space>
                             <span ng-show=" row.id != 'new-section'">
                                 <i class="fa {{row.hideChildren? 'fa-plus':'fa-minus'}} icon-silver"
                                    title="{{row.hideChildren? 'Expand':'Collapse'}}"
                                    ng-click="toggleRow(row)"></i>
                             </span>
-                                <span title="{{isActionApplicable()?'':'Actions disabled because not all CGs are in the same state'}}">
+                                <span
+                                    title="{{isActionApplicable()?'':'Actions disabled because not all CGs are in the same state'}}">
                                     {{row.name}}
                                 </span>
                                 <div ng-hide="row.hideChildren" ng-repeat="vm in row.vms" draggable="true"
                                      vmid="{{vm.id}}">
-                                    <white-space ng-show="row.parent">      </white-space>
-                                    <white-space>      </white-space>
+                                    <white-space ng-show="row.parent"></white-space>
+                                    <white-space></white-space>
                                     {{vm.name}}
                                 </div>
                                 <!--<div ng-if="row.id == 'new-section'">-->
@@ -183,6 +185,11 @@
                             <td>
                                 {{getImageAccessIndicator(row.replicaClusters[0].groupCopySettings[0].imageAccess)}}
                             </td>
+                            <td ng-show="backupActive">
+                                <div ng-hide="row.hideChildren" ng-repeat="vm in row.vms" vmid="{{vm.id}}">
+                                    <i class="fa {{vm.backupActive ? 'fa-check':'fa-close'"></i>
+                                </div>
+                            </td>
                             <!-- <td>{{row.replicaClusters[0].groupCopySettings[0].imageAccess == 'Enabled' ? ('HOME.DR_TEST_ENABLED_MSG' | translate) : ('HOME.DR_TEST_DISABLED_MSG' | translate)}}</td> -->
                         </tr>
                         </tbody>
@@ -196,9 +203,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr><td>
-                            <input class="form-control" type="search" ng-model="q" placeholder="filter VMs..." aria-label="filter VMs" />
-                        </td></tr>
+                        <tr>
+                            <td>
+                                <input class="form-control" type="search" ng-model="q" placeholder="filter VMs..."
+                                       aria-label="filter VMs"/>
+                            </td>
+                        </tr>
                         <tr ng-repeat="row in vmStructureData.unprotectedVms | filter:q | orderBy:'name' as filtered_result track by row.id"
                             draggable="true" index="{{$index}}" vmid="{{row.id}}"
                             ng-click="toggleSelect($index, false)"

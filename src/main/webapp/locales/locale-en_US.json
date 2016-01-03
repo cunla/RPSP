@@ -8,7 +8,8 @@
         "SIGN_IN_MSG": "Sign in"
     },
     "HOME": {
-        "AUDIT_LOG":"Audit log",
+        "BACKUP_MSG": "Backup",
+        "AUDIT_LOG": "Audit log",
         "WELCOME_MSG": "Welcome",
         "LOGOUT_MSG": "Logout",
         "RECOVER_POINT_FOR_VM_MSG": "RecoverPoint for Virtual Machines",
@@ -88,13 +89,13 @@
         "APPLICATION_CONSISTENT_MSG": "Application-Consistent",
         "CREATE_MSG": "Create"
     },
-    "AUDIT":{
-        "TITLE":"Audit log",
-        "DATETIME":"Date&Time",
-        "ACCOUNT_AND_USER":"Account/User",
-        "ACTION":"Action",
-        "ENTITY":"Entity",
-        "STATUS":"Status",
-        "DETAILS":"Details"
+    "AUDIT": {
+        "TITLE": "Audit log",
+        "DATETIME": "Date&Time",
+        "ACCOUNT_AND_USER": "Account/User",
+        "ACTION": "Action",
+        "ENTITY": "Entity",
+        "STATUS": "Status",
+        "DETAILS": "Details"
     }
 }
