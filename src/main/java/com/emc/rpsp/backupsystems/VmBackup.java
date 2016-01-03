@@ -16,7 +16,6 @@ public class VmBackup {
     private Long id;
 
     @ManyToOne
-    @JoinColumn
     private BackupSystem backupSystem;
     @Column
     private String vmName;

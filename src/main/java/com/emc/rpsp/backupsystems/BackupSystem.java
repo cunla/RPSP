@@ -34,7 +34,8 @@ public class BackupSystem {
     @Column
     private String accessBackupDatastore = "DevA2-DS04-NFS02";
 
-    @OneToMany(mappedBy = "backupSystemId")
+    @JsonIgnore
+    @OneToMany(mappedBy = "backupSystem")
     private List<VmBackup> vms;
 
     public BackupSystem() {
