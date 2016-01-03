@@ -1,6 +1,8 @@
 package com.emc.rpsp.protect.service.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,8 @@ import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.packages.domain.PackageDefinition;
 import com.emc.rpsp.protect.service.GroupsProtectionService;
+import com.emc.rpsp.rpsystems.ClusterSettings;
+import com.emc.rpsp.rpsystems.SystemSettings;
 
 @Service
 public class GroupsProtectionServiceImpl extends BaseServiceImpl implements GroupsProtectionService {
@@ -22,6 +26,7 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
     		PackageDefinition packageDefinition = findPackageById(packageId);
     		int rpo = packageDefinition.getRpo();
     		List<PackageConfig> packageConfigs = findPackageConfigsByPackageId(packageId);
+    		setAdditionalClusterData(client, packageConfigs);
     		Long groupId = client.createConsistencyGroup(cgName, vmIds, packageConfigs, rpo, startReplication);
     		setGroupPackage(groupId, packageId);
     	}
@@ -62,6 +67,20 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
     		}  		
     	}
     	return packageConfigs;
+	}
+	
+	private void setAdditionalClusterData(Client client, List<PackageConfig> packageConfigs){
+		SystemSettings system = client.getSystemSettings();
+		List<ClusterSettings> clusters = findClustersBySystem(system);
+		Map<Long, ClusterSettings> clustersMap = clusters.stream()
+		        .collect(Collectors.toMap(ClusterSettings::getClusterId, (p) -> p));
+		for(PackageConfig currPackageConfig : packageConfigs){
+			ClusterSettings clusterSettings = clustersMap.get(currPackageConfig.getClusterId());
+			if(clusterSettings != null){
+				currPackageConfig.setClusterName(clusterSettings.getClusterName());
+				currPackageConfig.setClusterFriendlyName(clusterSettings.getFriendlyName());
+			}
+		}
 	}
 
 
