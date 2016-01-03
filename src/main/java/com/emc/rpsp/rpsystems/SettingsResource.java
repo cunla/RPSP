@@ -32,15 +32,15 @@ import java.util.Optional;
         return new ResponseEntity<>(systemsSettings, HttpStatus.OK);
     }
 
-   /* @PreAuthorize("hasAuthority('ADMIN')")
+   @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/rest/systems/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SystemSettings> findSystem(@PathVariable("id") Long id) {
         log.debug("Testing systemSettings with id {}", id);
         SystemSettings systemSettings = systemConnectionInfoRepository.findOne(id);
         return new ResponseEntity<>(systemSettings, HttpStatus.OK);
-    }*/
+    }
     
-    @PreAuthorize("hasAuthority('ADMIN')")
+    /*@PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/rest/systems/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SystemSettings> findSystem(@PathVariable("id") Long id) {
         log.debug("Testing systemSettings with id {}", id);
@@ -52,7 +52,7 @@ import java.util.Optional;
         systemSettings.setUser("admin");
         systemSettings.setPassword("admin");
         return new ResponseEntity<>(systemSettings, HttpStatus.OK);
-    }
+    }*/
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/rest/testSystem/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

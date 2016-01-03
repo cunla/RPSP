@@ -71,10 +71,9 @@ public class SystemSettings {
     @Column
     private String systemVersion;
 
-    @JsonIgnore
     @Column
     @OneToMany(mappedBy = "systemSettings", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    //@JsonProperty("clusters")
+    @JsonProperty("clusters")
     private List<ClusterSettings> clusters;
 
     @JsonIgnore
