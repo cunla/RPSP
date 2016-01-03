@@ -119,8 +119,8 @@
     <div class="panel padding-top panel-default">
 
         <div class="panel-body full-height">
-            <div class="row">
-                <div class="col-xs-9 col-sm-9 col-md-9 right-border">
+            <div class="row row-height">
+                <div class="col-xs-10 col-sm-10 col-md-10 col-sm-height right-border">
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -131,7 +131,7 @@
                             <th>{{'HOME.REPLICATION_MSG' | translate}}</th>
                             <th>{{'HOME.SIZE_MSG' | translate}}</th>
                             <th>{{'HOME.DR_TEST_MSG' | translate}}</th>
-                            <th ng-show="backupActive">{{'HOME.BACKUP_MSG'|translate}}</thng-sh>
+                            <th ng-show="backupActive">{{'HOME.BACKUP_MSG'|translate}}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -186,8 +186,10 @@
                                 {{getImageAccessIndicator(row.replicaClusters[0].groupCopySettings[0].imageAccess)}}
                             </td>
                             <td ng-show="backupActive">
+                                <div>.</div>
                                 <div ng-hide="row.hideChildren" ng-repeat="vm in row.vms" vmid="{{vm.id}}">
-                                    <i class="fa {{vm.backupActive ? 'fa-check':'fa-close'"></i>
+                                    <i class="fa {{vm.backupActive ? 'fa-check':'fa-close'}}"></i>
+                                    <span ng-show="vm.backupActive">{{vm.lastBackup | date}}</span>
                                 </div>
                             </td>
                             <!-- <td>{{row.replicaClusters[0].groupCopySettings[0].imageAccess == 'Enabled' ? ('HOME.DR_TEST_ENABLED_MSG' | translate) : ('HOME.DR_TEST_DISABLED_MSG' | translate)}}</td> -->
@@ -195,39 +197,42 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-xs-3 col-sm-3 col-md-3" droppable="true">
-                    <table class="table table-condensed table-striped">
-                        <thead>
-                        <tr>
-                            <th class="centered-text">{{'HOME.UNPROTECTED_VMS_MSG' | translate}}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <input class="form-control" type="search" ng-model="q" placeholder="filter VMs..."
-                                       aria-label="filter VMs"/>
-                            </td>
-                        </tr>
-                        <tr ng-repeat="row in vmStructureData.unprotectedVms | filter:q | orderBy:'name' as filtered_result track by row.id"
-                            draggable="true" index="{{$index}}" vmid="{{row.id}}"
-                            ng-click="toggleSelect($index, false)"
-                            ng-class="{'selected' : unprotectedSelectedIndex == $index}">
-                            <td class="centered-text">{{row.name}}</td>
-                        </tr>
-                        <tr></tr>
-                        </tbody>
-                    </table>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-sm-height" droppable="true">
+                    <div class="inside inside-full-height">
+                        <table class="table table-condensed table-striped">
+                            <thead>
+                            <tr>
+                                <th class="centered-text">{{'HOME.UNPROTECTED_VMS_MSG' | translate}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input class="form-control" type="search" ng-model="q"
+                                           placeholder="filter VMs..."
+                                           aria-label="filter VMs"/>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="row in vmStructureData.unprotectedVms | filter:q | orderBy:'name' as filtered_result track by row.id"
+                                draggable="true" index="{{$index}}" vmid="{{row.id}}"
+                                ng-click="toggleSelect($index, false)"
+                                ng-class="{'selected' : unprotectedSelectedIndex == $index}">
+                                <td class="centered-text">{{row.name}}</td>
+                            </tr>
+                            <tr></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-
-        </div>
-        <div class="navbar navbar-default navbar-fixed-bottom">
-            <div class="container">
-                {{'HOME.POWERED_BY_RECOVERPOINT_FOR_VMS' | translate}}
             </div>
         </div>
     </div>
+    <div class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+            {{'HOME.POWERED_BY_RECOVERPOINT_FOR_VMS' | translate}}
+        </div>
+    </div>
+</div>
 
 </div>
 
