@@ -134,7 +134,7 @@ app.service('vmStructureService', ['$http', function ($http) {
     };
 
 
-    this.moveVm = function (vmId, sgId, sequenceNumber, isCritical, backup, schedule, actionType) {
+    this.moveVm = function (vmId, vmName, sgId, sequenceNumber, isCritical, backup, schedule, actionType) {
 
         var url;
 
@@ -163,6 +163,7 @@ app.service('vmStructureService', ['$http', function ($http) {
             url = '/rpsp/groups/' + sgId + '/vms';
             var vmData = {};
             vmData.id = vmId;
+            vmData.name = vmName;
             vmData.isCritical = isCritical;
             vmData.sequenceNumber = sequenceNumber;
             vmData.backup = backup;
@@ -425,7 +426,10 @@ app.service('vmStructureService', ['$http', function ($http) {
         cgParams.groupName = cgName;
         var vmIds = new Array();
         for (i = 0; i < selectedVms.length; i++) {
-            vmIds.push(selectedVms[i].id);
+        	var vmInfo = {};
+        	vmInfo.id = selectedVms[i].id;
+        	vmInfo.name = selectedVms[i].name;
+            vmIds.push(vmInfo);
         }
         cgParams.vms = vmIds;
         cgParams.enableReplication = enableReplication;

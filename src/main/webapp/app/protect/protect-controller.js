@@ -69,7 +69,7 @@ app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstanc
 
 
 	$scope.moveVm = function(){
-	    vmStructureService.moveVm($scope.vmId,
+	    vmStructureService.moveVm($scope.vmId, $scope.vmName,
             $scope.cgId,
             $scope.selectedSequenceNumber - 1,
             $scope.isCriticalVm,

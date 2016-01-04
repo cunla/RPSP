@@ -86,7 +86,7 @@ app.controller('unprotectController', ['$scope', '$http', '$modal', '$modalInsta
 	
 	
 	$scope.moveVm = function(){
-	    vmStructureService.moveVm($scope.vmId, $scope.cgId, $scope.selectedSequenceNumber, $scope.isCriticalVm, 'unprotect');
+	    vmStructureService.moveVm($scope.vmId, null, $scope.cgId, $scope.selectedSequenceNumber, $scope.isCriticalVm, 'unprotect');
 	    $modalInstance.dismiss('cancel');
 	}
 
