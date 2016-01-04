@@ -2,6 +2,7 @@ package com.emc.rpsp.backupsystems.tasks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -28,8 +29,9 @@ public class BackupWorker implements Runnable {
         return tasks;
     }
 
-    //    @Scheduled(cron = EVERY_MINUTE)
+    @Scheduled(cron = EVERY_MINUTE)
     public void run() {
+        log.info("Started Backup worker...");
         while (tasks.size() > 0) {
             running = true;
             Task t = tasks.poll();
