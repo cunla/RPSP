@@ -3,6 +3,7 @@ package com.emc.rpsp.backupsystems;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by morand3 on 1/3/2016.
@@ -23,8 +24,20 @@ public class VmBackup {
     private String vmId;
     @Column
     private Boolean enabled;
+    @Column
+    private String schedule;
+    @Column
+    private Date lastBackup;
 
     public VmBackup() {
+    }
+
+    public VmBackup(BackupSystem system, String vmId, String vmName, String schedule) {
+        this.backupSystem = system;
+        this.vmName = vmName;
+        this.vmId = vmId;
+        this.schedule = schedule;
+        this.enabled = true;
     }
 
     public BackupSystem getBackupSystem() {
@@ -57,5 +70,13 @@ public class VmBackup {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Date getLastBackup() {
+        return lastBackup;
+    }
+
+    public void setLastBackup(Date lastBackup) {
+        this.lastBackup = lastBackup;
     }
 }

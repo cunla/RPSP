@@ -1,10 +1,15 @@
 package com.emc.rpsp.backupsystems;
 
+import com.emc.rpsp.backupsystems.tasks.BackupWorker;
+import com.emc.rpsp.backupsystems.tasks.DisableBackupAccessTask;
+import com.emc.rpsp.backupsystems.tasks.EnableImageAccessTask;
+import com.emc.rpsp.backupsystems.tasks.Task;
 import com.emc.rpsp.config.auditing.AuditConsts;
 import com.emc.rpsp.config.auditing.annotations.RpspAuditResult;
 import com.emc.rpsp.config.auditing.annotations.RpspAuditSubject;
 import com.emc.rpsp.config.auditing.annotations.RpspAudited;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,7 +28,9 @@ import java.util.Collection;
 public class BackupRestServices {
 
     @Autowired
-    BackupApi backupApi;
+    private BackupApi backupApi;
+    @Autowired
+    private VmBackupRepository vmBackupRepository;
 
     @RequestMapping(value = "/backup/{vm}/enable/{backup}",
         method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -34,7 +41,10 @@ public class BackupRestServices {
     ResponseEntity<Task> enableBackupAccess(
         @PathVariable("vm") String vmName,
         @PathVariable("backup") @RpspAuditSubject(AuditConsts.BACKUP_NAME) String backupName) {
-        return null;
+        VmBackup backup = vmBackupRepository.findByName(vmName);
+        Task task = new EnableImageAccessTask(backupApi, backup.getBackupSystem(), backupName);
+        BackupWorker.addTask(task);
+        return new ResponseEntity<Task>(task, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/backup/{vm}/disable/{backup}",
@@ -46,7 +56,10 @@ public class BackupRestServices {
     ResponseEntity<Task> disableBackupAccess(
         @PathVariable("vm") String vmName,
         @PathVariable("backup") @RpspAuditSubject(AuditConsts.BACKUP_NAME) String backupName) {
-        return null;
+        VmBackup backup = vmBackupRepository.findByName(vmName);
+        Task task = new DisableBackupAccessTask(backupApi, backup.getBackupSystem(), backupName);
+        BackupWorker.addTask(task);
+        return new ResponseEntity<Task>(task, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/backup/tasks",
@@ -56,7 +69,7 @@ public class BackupRestServices {
     public
     @RpspAuditResult(AuditConsts.TASKS)
     ResponseEntity<Collection<Task>> listTasks() {
-        return null;
+        return new ResponseEntity<Collection<Task>>(BackupWorker.getTasks(), HttpStatus.OK);
     }
 
 }
