@@ -61,6 +61,9 @@
         "DISABLE_MSG": "Stop DR Test"
     },
     "PROTECT-UNPROTECT": {
+        "BACKUP_TITLE":"Backup",
+        "BACKUP_MSG": "Backup",
+        "BACKUP_PACKAGES": "Schedule",
         "ADD_VM_MSG": "Add VM:",
         "REMOVE_VM_MSG": "Remove VM:",
         "TO_CONSIST_GROUP_MSG": "to Consistency Group:",

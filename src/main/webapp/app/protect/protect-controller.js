@@ -1,8 +1,8 @@
 var app = angular.module('home');
 
 
-app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstance','vmStructureService','modalParams',  function ($scope, $http, $modal, $modalInstance, vmStructureService, modalParams) {	
-	
+app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstance','vmStructureService','modalParams',  function ($scope, $http, $modal, $modalInstance, vmStructureService, modalParams) {
+
 	$scope.vmGsAndCgFlatData = {};
 	$scope.vmStructureData = {};
 	$scope.protectedSelectedIndex = -1;
@@ -11,8 +11,8 @@ app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstanc
 	$scope.vmName = {};
 	$scope.cgName = {};
 
-	
-	
+
+
 	$scope.locateVmInfo = function(vmId, vmStructureData){
 		var res;
 	    for(var i = 0; i < vmStructureData.unprotectedVms.length; i++){
@@ -22,9 +22,9 @@ app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstanc
 	    }
 	    return res;
 	};
-	
-	
-	
+
+
+
 	$scope.locateCgInfo = function(cgId, vmGsAndCgFlatData){
 		var res;
 	    for(var i = 0; i < vmGsAndCgFlatData.length; i++){
@@ -34,9 +34,9 @@ app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstanc
 	    }
 	    return res;
 	};
-	
-	
-	
+
+
+
 	$scope.locateCgIndex = function(cgId, vmGsAndCgFlatData){
 		var res;
 	    for(var i = 0; i < vmGsAndCgFlatData.length; i++){
@@ -46,8 +46,8 @@ app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstanc
 	    }
 	    return res;
 	};
-	
-	
+
+
 	$scope.initData = function(){
 		$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
 		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
@@ -57,19 +57,25 @@ app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstanc
 		$scope.vmName = vmInfo.name;
 		var cgInfo = $scope.locateCgInfo($scope.cgId, $scope.vmGsAndCgFlatData);
 		$scope.cgName = cgInfo.name;
-		$scope.protectedSelectedIndex = $scope.locateCgIndex($scope.cgId, $scope.vmGsAndCgFlatData);	
+		$scope.protectedSelectedIndex = $scope.locateCgIndex($scope.cgId, $scope.vmGsAndCgFlatData);
 		$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
 		$scope.selectedSequenceNumber = 3;
 		$scope.isCriticalVm = true;
 	};
-	
-	   
+
+
 	$scope.initData();
-	
-	
-	
+
+
+
 	$scope.moveVm = function(){
-	    vmStructureService.moveVm($scope.vmId, $scope.cgId, $scope.selectedSequenceNumber - 1, $scope.isCriticalVm,'protect');
+	    vmStructureService.moveVm($scope.vmId,
+            $scope.cgId,
+            $scope.selectedSequenceNumber - 1,
+            $scope.isCriticalVm,
+            $scope.backup,
+            $scope.schedule,
+            'protect');
 	    $modalInstance.dismiss('cancel');
 	}
 
@@ -77,8 +83,8 @@ app.controller('protectController', ['$scope', '$http', '$modal', '$modalInstanc
 	$scope.cancel = function(){
 		$modalInstance.dismiss('cancel');
 	}
-		   
-    
+
+
 }]);
 
 
@@ -94,5 +100,5 @@ angular.module('home').config(function ($translateProvider) {
     prefix: 'locales/locale-',
     suffix: '.json'
   });
-  
+
 });

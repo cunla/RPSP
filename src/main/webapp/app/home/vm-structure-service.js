@@ -134,7 +134,7 @@ app.service('vmStructureService', ['$http', function ($http) {
     };
 
 
-    this.moveVm = function (vmId, sgId, sequenceNumber, isCritical, actionType) {
+    this.moveVm = function (vmId, sgId, sequenceNumber, isCritical, backup, schedule, actionType) {
 
         var url;
 
@@ -165,6 +165,8 @@ app.service('vmStructureService', ['$http', function ($http) {
             vmData.id = vmId;
             vmData.isCritical = isCritical;
             vmData.sequenceNumber = sequenceNumber;
+            vmData.backup=backup;
+            vmData.schedule=schedule;
             $http.post(url, vmData)
                 .success(function (data, status, headers, config) {
                 })

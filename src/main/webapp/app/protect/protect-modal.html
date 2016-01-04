@@ -1,93 +1,124 @@
 <div class="modal-header modal-header-primary protect-modal">
     <a class="close" ng-click="cancel()">x</a>
-	<h3 class="modal-title">
-		<div class="centered-text">{{'PROTECT-UNPROTECT.ADD_VM_MSG' | translate}} <b>{{vmName}}</b> {{'PROTECT-UNPROTECT.TO_CONSIST_GROUP_MSG' | translate}} <b>{{cgName}}</b></div>
-	</h3>
+    <h3 class="modal-title">
+        <div class="centered-text">{{'PROTECT-UNPROTECT.ADD_VM_MSG' | translate}} <b>{{vmName}}</b>
+            {{'PROTECT-UNPROTECT.TO_CONSIST_GROUP_MSG' | translate}} <b>{{cgName}}</b></div>
+    </h3>
 </div>
 <div class="modal-body">
 
-	<br/>
-	<table class="table table-condensed table-striped">
-		<thead>
-		</thead>
-		<tbody>
-			<tr>						
-				<td>
-				    <div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								{{'PROTECT-UNPROTECT.TARGET_COPIES_MSG' | translate}}	
-						</div>
-					</div>										
-				</td>			
-				<td>
-				        <div class="row">
-							<div class="col-xs-5 col-sm-5 col-md-5 radio">
-								{{vmGsAndCgFlatData[protectedSelectedIndex].
-	                                          replicaClusters[0].groupCopySettings[0].name}}
-							</div>	
-							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
-							</div>	
-						</div>
+    <br/>
+    <table class="table table-condensed table-striped">
+        <thead>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
+                        {{'PROTECT-UNPROTECT.TARGET_COPIES_MSG' | translate}}
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-xs-5 col-sm-5 col-md-5 radio">
+                        {{vmGsAndCgFlatData[protectedSelectedIndex].
+                        replicaClusters[0].groupCopySettings[0].name}}
+                    </div>
+                    <div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+                    </div>
+                </div>
 
-				</td>
-			</tr>
-			<tr>						
-				<td>
-				    <div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								Service Class:	
-						</div>
-					</div>										
-				</td>			
-				<td>
-				        <div class="row">
-							<div class="col-xs-5 col-sm-5 col-md-5 radio">
-								{{vmGsAndCgFlatData[protectedSelectedIndex].packageDisplayName}}
-							</div>	
-							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
-							</div>	
-						</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
+                        Service Class:
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-xs-5 col-sm-5 col-md-5 radio">
+                        {{vmGsAndCgFlatData[protectedSelectedIndex].packageDisplayName}}
+                    </div>
+                    <div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+                    </div>
+                </div>
 
-				</td>
-			</tr>
-			<tr>					
-				<td>
-					<div class="margin-top-lg">
-							{{'PROTECT-UNPROTECT.BOOT_ORDER_MSG' | translate}}
-					</div>
-				</td>				
-				<td>
-					<div class="row">
-						<div class="col-xs-5 col-sm-5 col-md-5 margin-top-lg">
-						     {{'PROTECT-UNPROTECT.VM_PRIORITY_IN_CG_MSG' | translate}}
-						</div>
-						<div class="col-xs-3 col-sm-3 col-md-3 margin-top">
-								<select class="form-control" ng-model="selectedSequenceNumber">
-									<option>1</option>
-									<option>2</option>
-									<option>3</option>
-									<option>4</option>
-									<option>5</option>
-								</select>
-						</div>
-						<div class="col-xs-4 col-sm-4 col-md-4">
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-5 col-sm-5 col-md-5">
-						     <label class="checkbox-inline">
-							  	<input type="checkbox" id="inlineCheckbox1" ng-model="isCriticalVm" value="option1"> {{'PROTECT-UNPROTECT.CRITICAL_VM_MSG' | translate}}
-							</label>
-						</div>
-					</div>
-				</td>
-			</tr>
-		</tbody>					    
-	</table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="margin-top-lg">
+                    {{'PROTECT-UNPROTECT.BOOT_ORDER_MSG' | translate}}
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-xs-5 col-sm-5 col-md-5 margin-top-lg">
+                        {{'PROTECT-UNPROTECT.VM_PRIORITY_IN_CG_MSG' | translate}}
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 margin-top">
+                        <select class="form-control" ng-model="selectedSequenceNumber">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 col-sm-5 col-md-5">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="inlineCheckbox1" ng-model="isCriticalVm" value="option1">
+                            {{'PROTECT-UNPROTECT.CRITICAL_VM_MSG' | translate}}
+                        </label>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="margin-top-lg">
+                    {{'PROTECT-UNPROTECT.BACKUP_TITLE' | translate}}
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-xs-5 col-sm-5 col-md-5">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" id="backupCheckbox" ng-model="backup" value="unchecked">
+                            {{'PROTECT-UNPROTECT.BACKUP_MSG' | translate}}
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 col-sm-5 col-md-5 margin-top-lg">
+                        {{'PROTECT-UNPROTECT.BACKUP_PACKAGES' | translate}}
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 margin-top">
+                        <select class="form-control" ng-model="schedule">
+                            <option>Monthly</option>
+                            <option>Weekly</option>
+                            <option>Daily</option>
+                        </select>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <div class="modal-footer centered-text div-grey">
-	<button type="button" class="btn btn-primary" ng-click="moveVm()">
-	         {{'PROTECT-UNPROTECT.PROTECT_VM_MSG' | translate}}
-	</button>
+    <button type="button" class="btn btn-primary" ng-click="moveVm()">
+        {{'PROTECT-UNPROTECT.PROTECT_VM_MSG' | translate}}
+    </button>
 </div>
 
