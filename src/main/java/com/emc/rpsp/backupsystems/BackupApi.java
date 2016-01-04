@@ -73,6 +73,7 @@ public class BackupApi extends BaseServiceImpl {
         } catch (Exception e) {
             log.warn("Failed to backup/clone VM {}", vmName);
         }
+        client.disableImageAccess(params.getClusterId(), params.getGroupId(), params.getCopyId());
     }
 
     public void enableAccessBackup(BackupSystem system, String backupName) throws Exception {
