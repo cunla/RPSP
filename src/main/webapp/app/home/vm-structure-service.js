@@ -165,8 +165,8 @@ app.service('vmStructureService', ['$http', function ($http) {
             vmData.id = vmId;
             vmData.isCritical = isCritical;
             vmData.sequenceNumber = sequenceNumber;
-            vmData.backup=backup;
-            vmData.schedule=schedule;
+            vmData.backup = backup;
+            vmData.schedule = schedule;
             $http.post(url, vmData)
                 .success(function (data, status, headers, config) {
                 })
@@ -418,7 +418,7 @@ app.service('vmStructureService', ['$http', function ($http) {
     };
 
 
-    this.createCg = function (cgName, productionClusterId, replicaClusterId, selectedVms, enableReplication, packageId) {
+    this.createCg = function (cgName, productionClusterId, replicaClusterId, selectedVms, enableReplication, packageId, backup, schedule) {
         var url = '/rpsp/groups';
 
         var cgParams = {};
@@ -430,6 +430,8 @@ app.service('vmStructureService', ['$http', function ($http) {
         cgParams.vms = vmIds;
         cgParams.enableReplication = enableReplication;
         cgParams.packageId = packageId;
+        cgParams.backup = backup;
+        cgParams.schedule = schedule;
 
 
         $http.post(url, cgParams).
