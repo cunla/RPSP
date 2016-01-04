@@ -1,7 +1,10 @@
 package com.emc.rpsp.backupsystems;
 
+import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.exceptions.RpspParamsException;
+import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.vmwal.VSphereApi;
+
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +14,13 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by morand3 on 1/3/2016.
  */
 @Service
-public class BackupApi {
+public class BackupApi extends BaseServiceImpl{
     private final Logger log = LoggerFactory.getLogger(BackupApi.class);
     @Autowired
     private BackupSystemsRepository repository;
@@ -86,20 +90,35 @@ public class BackupApi {
         }
     }
     
-    //TODO #1 - returns all needed params for image access 
     private BackupImageAccessParams getImageAccessParams(String productionVmId){
-    	return null;
+    	BackupImageAccessParams backupImageAccessParams = null;
+    	Client client = getClient();
+    	Map<String, Object> replicaInfo = client.getReplicaInfoByProductionVmId(productionVmId);
+    	if(replicaInfo != null)
+    	{
+	    	backupImageAccessParams = new BackupImageAccessParams();
+	    	backupImageAccessParams.setClusterId(Long.parseLong(replicaInfo.get(BackupConsts.CLUSTER_ID).toString()));
+	    	backupImageAccessParams.setGroupId(Long.parseLong(replicaInfo.get(BackupConsts.GROUP_ID).toString()));
+	    	backupImageAccessParams.setCopyId(Integer.parseInt(replicaInfo.get(BackupConsts.COPY_ID).toString()));
+    	}
+    	return backupImageAccessParams;
     }
     
-   //TODO #2 - returns id of the replica vm
-    private String getReplicaVmId(String productionVmId) {
-        return null;
-    }
-
-    private String getDrTestVmName(String vmName) {
-        //TODO Boris - please implement
+    
+    
+    private String getDrTestVmName(String productionVmId) {
+    	String vmName = null;
+    	Client client = getClient();
+    	Map<String, Object> replicaInfo = client.getReplicaInfoByProductionVmId(productionVmId);
+    	if(replicaInfo != null)
+    	{
+    		vmName = replicaInfo.get(BackupConsts.VM_NAME).toString();
+    	}
+    	
         return vmName;
     }
+
+
 
     private String accessBackupName(String backup) {
         return backup + "_restore";
