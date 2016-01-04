@@ -1,5 +1,6 @@
 package com.emc.rpsp.backupsystems;
 
+import com.emc.rpsp.backupsystems.tasks.GenerateBackupTask;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.exceptions.RpspBackupSystemNotSetException;
 import com.emc.rpsp.exceptions.RpspParamsException;
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -21,6 +23,7 @@ import java.util.Map;
  */
 @Service
 public class BackupApi extends BaseServiceImpl {
+    public static final String EVERY_MINUTE = "1 * * * * *";
     private final Logger log = LoggerFactory.getLogger(BackupApi.class);
     @Autowired
     private BackupSystemsRepository repository;
@@ -31,6 +34,16 @@ public class BackupApi extends BaseServiceImpl {
         VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
         List<String> vms = vSphereApi.vmsInFolder(system.getBackupFolder());
         return vms;
+    }
+
+    @Scheduled(cron = EVERY_MINUTE)
+    public void addTasksFromDb() {
+        log.info("Adding tasks from DB");
+        List<VmBackup> backups = vmBackupRepo.findAll();
+        for (VmBackup backup : backups) {
+            GenerateBackupTask task = new GenerateBackupTask(this, backup);
+        }
+
     }
 
     public List<String> getBackupsList(String vmName) {
@@ -59,8 +72,9 @@ public class BackupApi extends BaseServiceImpl {
     }
 
 
-    public void backupVm(String vmName) {
-        VmBackup vm = repository.findVmByName(vmName);
+    public void backupVm(VmBackup vm) {
+//        VmBackup vm = repository.findVmByName(vmName);
+        String vmName = vm.getVmName();
         Client client = getClient();
         BackupImageAccessParams params = getImageAccessParams(client, vm.getVmId());
         client.enableLatestImageAccess(params.getClusterId(), params.getGroupId(), params.getCopyId());

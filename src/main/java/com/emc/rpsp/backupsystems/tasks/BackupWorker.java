@@ -2,7 +2,6 @@ package com.emc.rpsp.backupsystems.tasks;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -19,6 +18,7 @@ public class BackupWorker implements Runnable {
 
     public static synchronized void addTask(Task t) {
         tasks.add(t);
+        log.info("Added task {} : {}", t.getId(), t.toString());
         if (!running) {
             new Thread(new BackupWorker()).start();
             running = true;
@@ -29,7 +29,6 @@ public class BackupWorker implements Runnable {
         return tasks;
     }
 
-    @Scheduled(cron = EVERY_MINUTE)
     public void run() {
         log.info("Started Backup worker...");
         while (tasks.size() > 0) {
