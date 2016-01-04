@@ -144,7 +144,7 @@
                             ng-hide="row.hideRow"
                         >
                             <td width="30%">
-                                <white-space ng-show="row.parent">     </white-space>
+                                <white-space ng-show="row.parent">&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
                             <span ng-show=" row.id != 'new-section'">
                                 <i class="fa {{row.hideChildren? 'fa-plus':'fa-minus'}} icon-silver"
                                    title="{{row.hideChildren? 'Expand':'Collapse'}}"
@@ -156,8 +156,8 @@
                                 </span>
                                 <div ng-hide="row.hideChildren" ng-repeat="vm in row.vms" draggable="true"
                                      vmid="{{vm.id}}">
-                                    <white-space ng-show="row.parent">     </white-space>
-                                    <white-space>     </white-space>
+                                    <white-space ng-show="row.parent">&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
+                                    <white-space>&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
                                     {{vm.name}}
                                 </div>
                                 <!--<div ng-if="row.id == 'new-section'">-->
