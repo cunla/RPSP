@@ -823,6 +823,59 @@ public class Client {
     }
     
     
+    
+    public Map<String, Map<String, Object>> getVmInfoMap() {
+    	Map<String, Map<String, Object>> res = new HashMap<String, Map<String, Object>>();
+        FullRecoverPointSettings rpSettings = getFullRecoverPointSettings();
+        Map<Long, Map<String, String>> vmNamesAllClusters = getVmNamesAllClusters();
+
+        List<ConsistencyGroupSettings> groupSettingsList = rpSettings.getGroupsSettings();
+        for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
+
+            List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
+            .getVmReplicationSetsSettings();
+
+            for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {///
+	                List<VmReplicationSettings> vmReplicationSettingsList = 
+	                								vmReplicationSet.getReplicatedVMs();
+	                Map<String, Object> singleVmInfoMap = new HashMap<String, Object>();
+	                String productionVmId = null;
+	
+	                for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
+	                    String vmId = vmReplication.getVmUID().getUuid();
+	                    ConsistencyGroupCopyUID copyId = vmReplication.getGroupCopyUID();
+	                    Long clusterId = copyId.getGlobalCopyUID().getClusterUID().getId();
+	                    
+	                    List<ConsistencyGroupCopyUID> production = groupSettings
+	                            .getProductionCopiesUID();
+	                    if (production.contains(copyId)) {
+	                    	productionVmId = vmId;
+	                       	
+	                       	Map<String, String> vmNamesMap = vmNamesAllClusters.get(clusterId);
+                            String vmName = vmNamesMap.get(vmId);
+                            singleVmInfoMap.put(BackupConsts.PRODUCTION_VM_NAME, vmName);
+                        }
+	                    else{
+                        	 Map<String, String> vmNamesMap = vmNamesAllClusters.get(clusterId);
+                             String vmName = vmNamesMap.get(vmId);
+                             singleVmInfoMap.put(BackupConsts.REPLICA_CLUSTER_ID, clusterId);
+                             singleVmInfoMap.put(BackupConsts.REPLICA_GROUP_ID, copyId.getGroupUID().getId());
+                             singleVmInfoMap.put(BackupConsts.REPLICA_COPY_ID, copyId.getGlobalCopyUID().getCopyUID());
+                             singleVmInfoMap.put(BackupConsts.REPLICA_VM_NAME, vmName);
+	                    }
+	
+	                }
+	                
+	                
+	               res.put(productionVmId, singleVmInfoMap); 
+	                
+            }
+        }
+        return res;
+    }
+    
+    
+    
     public Map<String, Object> getReplicaInfoByProductionVmId(String productionVmId) {
     	Map<String, Object> res = null;new HashMap<String, Object>();
         FullRecoverPointSettings rpSettings = getFullRecoverPointSettings();
@@ -850,10 +903,10 @@ public class Client {
 	                        	 Map<Long, Map<String, String>> vmNamesAllClusters = getVmNamesAllClusters();
 	                        	 Map<String, String> vmNamesMap = vmNamesAllClusters.get(clusterId);
 	                             String vmName = vmNamesMap.get(vmId);
-	                             res.put(BackupConsts.CLUSTER_ID, clusterId);
-	                             res.put(BackupConsts.GROUP_ID, copyId.getGroupUID().getId());
-	                             res.put(BackupConsts.COPY_ID, copyId.getGlobalCopyUID().getCopyUID());
-	                             res.put(BackupConsts.VM_NAME, vmName);
+	                             res.put(BackupConsts.REPLICA_CLUSTER_ID, clusterId);
+	                             res.put(BackupConsts.REPLICA_GROUP_ID, copyId.getGroupUID().getId());
+	                             res.put(BackupConsts.REPLICA_COPY_ID, copyId.getGlobalCopyUID().getCopyUID());
+	                             res.put(BackupConsts.REPLICA_VM_NAME, vmName);
 	                        }
 	
 	                }

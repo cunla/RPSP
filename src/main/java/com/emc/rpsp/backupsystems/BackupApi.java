@@ -5,7 +5,9 @@ import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.exceptions.RpspBackupSystemNotSetException;
 import com.emc.rpsp.exceptions.RpspParamsException;
 import com.emc.rpsp.fal.Client;
+import com.emc.rpsp.vmstructure.domain.VmDefinition;
 import com.emc.rpsp.vmwal.VSphereApi;
+
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +61,12 @@ public class BackupApi extends BaseServiceImpl {
                 res.add(backup);
         }
         return res;
+    }
+    
+    public void addVmsToBackupSchedule(List<VmDefinition> vmDefs, String schedule) {
+    	for(VmDefinition currVmDef : vmDefs){
+    		 addVmToBackupSchedule(currVmDef.getId(), currVmDef.getName(), schedule);
+    	}
     }
 
     public void addVmToBackupSchedule(String vmId, String vmName, String schedule) {
@@ -124,14 +132,14 @@ public class BackupApi extends BaseServiceImpl {
 
     private BackupImageAccessParams getImageAccessParams(Client client, String productionVmId) {
         BackupImageAccessParams backupImageAccessParams = null;
-//        Client client = getClient();
-        Map<String, Object> replicaInfo = client.getReplicaInfoByProductionVmId(productionVmId);
+        Map<String, Map<String, Object>> vmsInfo = client.getVmInfoMap();
+        Map<String, Object> replicaInfo = vmsInfo.get(productionVmId);
         if (replicaInfo != null) {
             backupImageAccessParams = new BackupImageAccessParams(
-                Long.parseLong(replicaInfo.get(BackupConsts.GROUP_ID).toString()),
-                Long.parseLong(replicaInfo.get(BackupConsts.CLUSTER_ID).toString()),
-                Integer.parseInt(replicaInfo.get(BackupConsts.COPY_ID).toString()),
-                replicaInfo.get(BackupConsts.VM_NAME).toString());
+                Long.parseLong(replicaInfo.get(BackupConsts.REPLICA_GROUP_ID).toString()),
+                Long.parseLong(replicaInfo.get(BackupConsts.REPLICA_CLUSTER_ID).toString()),
+                Integer.parseInt(replicaInfo.get(BackupConsts.REPLICA_COPY_ID).toString()),
+                replicaInfo.get(BackupConsts.REPLICA_VM_NAME).toString());
         }
         return backupImageAccessParams;
     }
