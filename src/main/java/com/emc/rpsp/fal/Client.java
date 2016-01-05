@@ -3,7 +3,6 @@ package com.emc.rpsp.fal;
 import com.emc.fapi.jaxws.v4_3.*;
 import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
-import com.emc.rpsp.backupsystems.BackupConsts;
 import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
@@ -998,19 +997,19 @@ public class Client {
 						Map<String, String> vmNamesMap = vmNamesAllClusters
 								.get(clusterId);
 						String vmName = vmNamesMap.get(vmId);
-						singleVmInfoMap.put(BackupConsts.PRODUCTION_VM_NAME,
+						singleVmInfoMap.put(GeneralFalConsts.PRODUCTION_VM_NAME,
 								vmName);
 					} else {
 						Map<String, String> vmNamesMap = vmNamesAllClusters
 								.get(clusterId);
 						String vmName = vmNamesMap.get(vmId);
-						singleVmInfoMap.put(BackupConsts.REPLICA_CLUSTER_ID,
+						singleVmInfoMap.put(GeneralFalConsts.REPLICA_CLUSTER_ID,
 								clusterId);
-						singleVmInfoMap.put(BackupConsts.REPLICA_GROUP_ID,
+						singleVmInfoMap.put(GeneralFalConsts.REPLICA_GROUP_ID,
 								copyId.getGroupUID().getId());
-						singleVmInfoMap.put(BackupConsts.REPLICA_COPY_ID,
+						singleVmInfoMap.put(GeneralFalConsts.REPLICA_COPY_ID,
 								copyId.getGlobalCopyUID().getCopyUID());
-						singleVmInfoMap.put(BackupConsts.REPLICA_VM_NAME,
+						singleVmInfoMap.put(GeneralFalConsts.REPLICA_VM_NAME,
 								vmName);
 					}
 
@@ -1056,12 +1055,12 @@ public class Client {
 							Map<String, String> vmNamesMap = vmNamesAllClusters
 									.get(clusterId);
 							String vmName = vmNamesMap.get(vmId);
-							res.put(BackupConsts.REPLICA_CLUSTER_ID, clusterId);
-							res.put(BackupConsts.REPLICA_GROUP_ID, copyId
+							res.put(GeneralFalConsts.REPLICA_CLUSTER_ID, clusterId);
+							res.put(GeneralFalConsts.REPLICA_GROUP_ID, copyId
 									.getGroupUID().getId());
-							res.put(BackupConsts.REPLICA_COPY_ID, copyId
+							res.put(GeneralFalConsts.REPLICA_COPY_ID, copyId
 									.getGlobalCopyUID().getCopyUID());
-							res.put(BackupConsts.REPLICA_VM_NAME, vmName);
+							res.put(GeneralFalConsts.REPLICA_VM_NAME, vmName);
 						}
 
 					}

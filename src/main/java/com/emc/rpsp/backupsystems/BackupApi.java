@@ -144,10 +144,10 @@ public class BackupApi extends BaseServiceImpl {
         Map<String, Object> replicaInfo = vmsInfo.get(productionVmId);
         if (replicaInfo != null) {
             backupImageAccessParams = new BackupImageAccessParams(
-                Long.parseLong(replicaInfo.get(BackupConsts.REPLICA_GROUP_ID).toString()),
-                Long.parseLong(replicaInfo.get(BackupConsts.REPLICA_CLUSTER_ID).toString()),
-                Integer.parseInt(replicaInfo.get(BackupConsts.REPLICA_COPY_ID).toString()),
-                replicaInfo.get(BackupConsts.REPLICA_VM_NAME).toString());
+                Long.parseLong(replicaInfo.get(GeneralFalConsts.REPLICA_GROUP_ID).toString()),
+                Long.parseLong(replicaInfo.get(GeneralFalConsts.REPLICA_CLUSTER_ID).toString()),
+                Integer.parseInt(replicaInfo.get(GeneralFalConsts.REPLICA_COPY_ID).toString()),
+                replicaInfo.get(GeneralFalConsts.REPLICA_VM_NAME).toString());
         }
         return backupImageAccessParams;
     }
