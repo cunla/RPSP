@@ -6,6 +6,7 @@ import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.exceptions.RpspBackupSystemNotSetException;
 import com.emc.rpsp.exceptions.RpspParamsException;
 import com.emc.rpsp.fal.Client;
+import com.emc.rpsp.fal.GeneralFalConsts;
 import com.emc.rpsp.vmstructure.domain.VmDefinition;
 import com.emc.rpsp.vmwal.VSphereApi;
 
@@ -81,7 +82,8 @@ public class BackupApi extends BaseServiceImpl {
             throw new RpspBackupSystemNotSetException();
         }
         BackupSystem system = backupSystems.get(0);
-        VmBackup backup = new VmBackup(system, vmId, vmName, schedule);
+        Client client = getClient();
+        VmBackup backup = new VmBackup(system, client.getSystemSettings(), vmId, vmName, schedule);
         vmBackupRepo.saveAndFlush(backup);
     }
 
@@ -89,10 +91,10 @@ public class BackupApi extends BaseServiceImpl {
     public void backupVm(VmBackup vm) {
 //        VmBackup vm = repository.findVmByName(vmName);
         String vmName = vm.getVmName();
-        Client client = getClient();
+        Client client = new Client(vm.getSystemSettings());
         BackupImageAccessParams params = getImageAccessParams(client, vm.getVmId());
         client.enableLatestImageAccess(params.getClusterId(), params.getGroupId(), params.getCopyId());
-//////////Wait until enabled..
+        client.verifyCopyImageAccessActivation(params.getClusterId(), params.getGroupId(), params.getCopyId(), GeneralFalConsts.IMAGE_ACCESS_STATUS_RETRY_ATTEMPTS);
         String vmDrTestName = params.getReplicaName();
         BackupSystem system = vm.getBackupSystem();
         VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
@@ -149,6 +151,8 @@ public class BackupApi extends BaseServiceImpl {
         }
         return backupImageAccessParams;
     }
+    
+   
 
 
     private String accessBackupName(String backup) {
