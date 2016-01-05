@@ -174,7 +174,7 @@ public class VSphereApi {
 
     public void cloneVM(String vmName, String folderName, String cloneName, String datastoreName, Boolean powerOn) throws Exception {
 //        this.si = new ServiceInstance(new URL(vcenter), uname, pwd, true);
-        rootFolder = si.getRootFolder();
+//        rootFolder = si.getRootFolder();
         InventoryNavigator inventoryNavigator = new InventoryNavigator(rootFolder);
         vm = (VirtualMachine) inventoryNavigator.searchManagedEntity("VirtualMachine", vmName);
         if (vm == null) {

@@ -98,6 +98,15 @@ public class BackupApi extends BaseServiceImpl {
         String vmDrTestName = params.getReplicaName();
         BackupSystem system = vm.getBackupSystem();
         VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
+        for (int i = 0; i < 5; ++i) {
+            try {
+                Thread.sleep(60000);
+            } catch (InterruptedException e) {
+            }
+            if (vSphereApi.vmNames().contains(vmDrTestName)) {
+                break;
+            }
+        }
         try {
             vSphereApi.cloneVM(vmDrTestName, system.getBackupFolder(), currentBackupName(vmName), system.getBackupDatastore(), false);
         } catch (Exception e) {
