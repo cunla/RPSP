@@ -34,8 +34,8 @@ public class BackupWorker implements Runnable {
         while (tasks.size() > 0) {
             running = true;
             Task t = tasks.poll();
-            t.run();
             log.info("Started working on task {} : {}", t.getId(), t.toString());
+            t.run();
         }
         running = false;
     }
