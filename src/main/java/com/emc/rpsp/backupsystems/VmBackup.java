@@ -28,6 +28,8 @@ public class VmBackup {
     private String schedule;
     @Column
     private Date lastBackup;
+    @Column
+    private boolean hasTask;
 
     public VmBackup() {
     }
@@ -76,7 +78,19 @@ public class VmBackup {
         return lastBackup;
     }
 
+    public String getSchedule() {
+        return schedule;
+    }
+
     public void setLastBackup(Date lastBackup) {
         this.lastBackup = lastBackup;
+    }
+
+    public boolean getHasTask() {
+        return hasTask;
+    }
+
+    public void setHasTask(boolean hasTask) {
+        this.hasTask = hasTask;
     }
 }

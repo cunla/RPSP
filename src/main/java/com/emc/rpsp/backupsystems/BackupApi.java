@@ -44,8 +44,12 @@ public class BackupApi extends BaseServiceImpl {
         log.info("Adding tasks from DB");
         List<VmBackup> backups = vmBackupRepo.findAll();
         for (VmBackup backup : backups) {
-            GenerateBackupTask task = new GenerateBackupTask(this, backup);
-            BackupWorker.addTask(task);
+            if(!backup.getHasTask()) {
+                backup.setHasTask(true);
+                vmBackupRepo.save(backup);
+                GenerateBackupTask task = new GenerateBackupTask(this, backup, vmBackupRepo);
+                BackupWorker.addTask(task);
+            }
         }
 
     }
