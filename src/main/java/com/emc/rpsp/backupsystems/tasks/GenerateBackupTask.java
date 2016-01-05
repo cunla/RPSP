@@ -25,9 +25,12 @@ public class GenerateBackupTask extends Task {
         super.run();
         try {
             Date lastBackup = backup.getLastBackup();
-            Date now = new Date();
-            long delta = now.getTime()-lastBackup.getTime();
-            if(delta>milisForPackage()) {
+            long delta = Long.MAX_VALUE;
+            if (null == lastBackup) {
+                Date now = new Date();
+                delta = now.getTime() - lastBackup.getTime();
+            }
+            if (delta > milisForPackage()) {
                 backupApi.backupVm(backup);
                 backup.setLastBackup(new Date());
                 repo.save(backup);
@@ -39,7 +42,7 @@ public class GenerateBackupTask extends Task {
     }
 
     private long milisForPackage() {
-        return 1000*60*60*24*7;//WEEK
+        return 1000 * 60 * 60 * 24 * 7;//WEEK
     }
 
     @Override
