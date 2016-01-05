@@ -15,7 +15,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.emc.rpsp.backupsystems.VmBackup;
 import com.emc.rpsp.config.Consts;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
@@ -80,6 +82,10 @@ public class SystemSettings {
 	@Column
 	@OneToMany(mappedBy = "systemSettings", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<PackageDefinition> packages;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "systemSettings")
+    private List<VmBackup> vms;
 
 
     public static enum TestResult {

@@ -2,7 +2,12 @@ package com.emc.rpsp.backupsystems;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+
+
+import com.emc.rpsp.rpsystems.SystemSettings;
+
 import javax.persistence.*;
+
 import java.util.Date;
 
 /**
@@ -18,6 +23,12 @@ public class VmBackup {
 
     @ManyToOne
     private BackupSystem backupSystem;
+    
+    @ManyToOne
+    private SystemSettings systemSettings;
+    
+    
+    
     @Column
     private String vmName;
     @Column
@@ -34,7 +45,8 @@ public class VmBackup {
     public VmBackup() {
     }
 
-    public VmBackup(BackupSystem system, String vmId, String vmName, String schedule) {
+    public VmBackup(BackupSystem system, SystemSettings systemSettings, String vmId, String vmName, String schedule) {
+    	this.systemSettings = systemSettings;
         this.backupSystem = system;
         this.vmName = vmName;
         this.vmId = vmId;
@@ -93,4 +105,26 @@ public class VmBackup {
     public void setHasTask(boolean hasTask) {
         this.hasTask = hasTask;
     }
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public SystemSettings getSystemSettings() {
+		return systemSettings;
+	}
+
+	public void setSystemSettings(SystemSettings systemSettings) {
+		this.systemSettings = systemSettings;
+	}
+
+	public void setSchedule(String schedule) {
+		this.schedule = schedule;
+	}
+    
+    
 }
