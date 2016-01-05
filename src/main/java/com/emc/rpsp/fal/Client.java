@@ -8,7 +8,6 @@ import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
-
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -18,9 +17,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
 
 /**
  * Created by morand3 on 1/14/2015.
@@ -36,7 +32,7 @@ public class Client {
     }
 
     public Client(SystemSettings systemSettings,
-    SystemConnectionInfoRepository systemConnectionInfoRepository) {
+                  SystemConnectionInfoRepository systemConnectionInfoRepository) {
         this(systemSettings);
         this.systemsRepo = systemConnectionInfoRepository;
     }
@@ -69,7 +65,7 @@ public class Client {
      */
     public Map<String, String> getVmNamesInCluster(long clusterId) {
         ClusterVirtualInfrastructuresState state = connector
-        .getVirtualInfrastructuresStateFromCluster(clusterId);
+            .getVirtualInfrastructuresStateFromCluster(clusterId);
         List<VmState> vmStateList = state.getVirtualInfrastructuresState().getVmsState();
         Map<String, String> res = new HashMap<>();
         for (VmState vmState : vmStateList) {
@@ -87,7 +83,7 @@ public class Client {
      */
     public Map<Long, Map<String, String>> getVmNamesAllClusters() {
         ClusterVirtualInfrastructuresStateSet stateSet = connector
-        .getVirtualInfrastructuresStateFromAllCluster();
+            .getVirtualInfrastructuresStateFromAllCluster();
         return getVmNames(stateSet);
     }
 
@@ -99,27 +95,27 @@ public class Client {
         systemSettings.setTestResult(true);
         return getClusterNames(rpClusters);
     }
-    
-    
+
+
     public Map<Long, String> getGroupNames() {
-    	ConsistencyGroupSettingsSet consistencyGroupSettingsSet = connector.getAllGroupsSettings();
-    	Map<Long, String> groupIdToNameMap = new HashMap<Long, String>();
-    	for(ConsistencyGroupSettings consistencyGroupSettings : consistencyGroupSettingsSet.getInnerSet()){
-    		groupIdToNameMap.put(consistencyGroupSettings.getGroupUID().getId(), consistencyGroupSettings.getName());
-    	}
-    	return groupIdToNameMap;
+        ConsistencyGroupSettingsSet consistencyGroupSettingsSet = connector.getAllGroupsSettings();
+        Map<Long, String> groupIdToNameMap = new HashMap<Long, String>();
+        for (ConsistencyGroupSettings consistencyGroupSettings : consistencyGroupSettingsSet.getInnerSet()) {
+            groupIdToNameMap.put(consistencyGroupSettings.getGroupUID().getId(), consistencyGroupSettings.getName());
+        }
+        return groupIdToNameMap;
     }
-    
-    
+
+
     public Map<Long, String> getGroupSetNames() {
-    	ConsistencyGroupSetSettingsSet consistencyGroupSetSettingsSet = connector.getAllGroupSetsSettings();
-    	Map<Long, String> groupSetIdToNameMap = new HashMap<Long, String>();
-    	for(ConsistencyGroupSetSettings consistencyGroupSetSettings : consistencyGroupSetSettingsSet.getInnerSet()){
-    		groupSetIdToNameMap.put(consistencyGroupSetSettings.getSetUID().getId(), consistencyGroupSetSettings.getName());
-    	}
-    	return groupSetIdToNameMap;
+        ConsistencyGroupSetSettingsSet consistencyGroupSetSettingsSet = connector.getAllGroupSetsSettings();
+        Map<Long, String> groupSetIdToNameMap = new HashMap<Long, String>();
+        for (ConsistencyGroupSetSettings consistencyGroupSetSettings : consistencyGroupSetSettingsSet.getInnerSet()) {
+            groupSetIdToNameMap.put(consistencyGroupSetSettings.getSetUID().getId(), consistencyGroupSetSettings.getName());
+        }
+        return groupSetIdToNameMap;
     }
-    
+
 
     private Map<Long, String> getClusterNames(RecoverPointClustersInformation rpClusters) {
         Map<Long, String> res = new HashMap<>();
@@ -130,7 +126,7 @@ public class Client {
     }
 
     private Map<Long, Map<String, String>> getVmNames(
-    ClusterVirtualInfrastructuresStateSet stateSet) {
+        ClusterVirtualInfrastructuresStateSet stateSet) {
         Map<Long, Map<String, String>> res = new HashMap<>();
         for (ClusterVirtualInfrastructuresState state : stateSet.getInnerSet()) {
             List<VmState> vmStateList = state.getVirtualInfrastructuresState().getVmsState();
@@ -189,7 +185,7 @@ public class Client {
 
     public ConsistencyGroupVolumesStateSet getConsistencyGroupVolumesStateSet() {
         ConsistencyGroupVolumesStateSet consistencyGroupVolumesStateSet = connector
-        .getConsistencyGroupVolumesStateSet();
+            .getConsistencyGroupVolumesStateSet();
         return consistencyGroupVolumesStateSet;
     }
 
@@ -203,24 +199,24 @@ public class Client {
         Long startTime = null;
         Long endTime = null;
         ConsistencyGroupSnapshots consistencyGroupSnapshots = connector
-        .getGroupSnapshots(groupId, startTime, endTime);
+            .getGroupSnapshots(groupId, startTime, endTime);
         return consistencyGroupSnapshots;
     }
 
     public void enableSnapshotImageAccess(Long clusterId, Long groupId, int copyId,
-    CopySnapshot copySnapshot) {
+                                          CopySnapshot copySnapshot) {
         EnableImageAccessParams enableImageAccessParams = new EnableImageAccessParams();
         enableImageAccessParams.setScenario(ImageAccessScenario.TEST_REPLICA);
         enableImageAccessParams.setMode(ImageAccessMode.LOGGED_ACCESS);
         Snapshot snapshot = new Snapshot();
         snapshot.setSnapshotUID(new SnapshotUID(copySnapshot.getId()));
         snapshot
-        .setClosingTimeStamp(new RecoverPointTimeStamp(copySnapshot.getOriginalClosingTimeStamp()));
+            .setClosingTimeStamp(new RecoverPointTimeStamp(copySnapshot.getOriginalClosingTimeStamp()));
         snapshot.setDescription("");
         enableImageAccessParams.setSnapshot(snapshot);
         try {
             connector
-            .enableSnapshotImageAccess(clusterId, groupId, copyId, enableImageAccessParams);
+                .enableSnapshotImageAccess(clusterId, groupId, copyId, enableImageAccessParams);
         } catch (Throwable e) {
             if (!isEOFCause(e)) {
                 throw e;
@@ -233,17 +229,17 @@ public class Client {
     public void addVmToCG(String vmId, Long groupId, List<PackageConfig> accountConfig) {
 
         ConsistencyGroupCopySettingsSet consistencyGroupCopySettingsSet = connector
-        .getAllGroupCopies(groupId);
+            .getAllGroupCopies(groupId);
         List<ConsistencyGroupCopySettings> consistencyGroupCopySettingsList = consistencyGroupCopySettingsSet
-        .getInnerSet();
+            .getInnerSet();
         Long productionClusterId = 0L;
         int productionCopyId = 0;
         for (ConsistencyGroupCopySettings currConsistencyGroupCopySettings : consistencyGroupCopySettingsList) {
             if (currConsistencyGroupCopySettings.getRoleInfo().getSourceCopyUID() == null) {
                 productionClusterId = currConsistencyGroupCopySettings.getCopyUID()
-                .getGlobalCopyUID().getClusterUID().getId();
+                    .getGlobalCopyUID().getClusterUID().getId();
                 productionCopyId = currConsistencyGroupCopySettings.getCopyUID().getGlobalCopyUID()
-                .getCopyUID();
+                    .getCopyUID();
             }
         }
 
@@ -266,7 +262,7 @@ public class Client {
                 sourceVmParam.setClusterUID(new ClusterUID(productionClusterId));
 
                 GlobalCopyUID globalCopyUID = new GlobalCopyUID(new ClusterUID(productionClusterId),
-                productionCopyId);
+                    productionCopyId);
 
                 sourceReplicatedVMParam.setVmParam(sourceVmParam);
                 sourceReplicatedVMParam.setCopyUID(globalCopyUID);
@@ -277,17 +273,17 @@ public class Client {
                 ReplicatedVMParams targetReplicatedVMParam = new ReplicatedVMParams();
                 CreateVMParam createVMParam = new CreateVMParam();
                 GlobalCopyUID targetGlobalCopyUID = currConsistencyGroupCopySettings.getCopyUID()
-                .getGlobalCopyUID();
+                    .getGlobalCopyUID();
                 String replicaVcId = accountConfigsMap
-                .get(targetGlobalCopyUID.getClusterUID().getId()).getVcId();
+                    .get(targetGlobalCopyUID.getClusterUID().getId()).getVcId();
                 String replicaDataStoreId = accountConfigsMap
-                .get(targetGlobalCopyUID.getClusterUID().getId()).getDatastoreId();
+                    .get(targetGlobalCopyUID.getClusterUID().getId()).getDatastoreId();
                 String replicaEsxId = accountConfigsMap
-                .get(targetGlobalCopyUID.getClusterUID().getId()).getEsxId();
+                    .get(targetGlobalCopyUID.getClusterUID().getId()).getEsxId();
                 createVMParam.setTargetVirtualCenterUID(new VirtualCenterUID(replicaVcId));
                 createVMParam.setTargetDatastoreUID(new DatastoreUID(replicaDataStoreId));
                 createVMParam.setTargetResourcePlacementParam(
-                new CreateTargetVMManualResourcePlacementParam(new EsxUID(replicaEsxId)));
+                    new CreateTargetVMManualResourcePlacementParam(new EsxUID(replicaEsxId)));
 
                 targetReplicatedVMParam.setVmParam(createVMParam);
                 targetReplicatedVMParam.setCopyUID(targetGlobalCopyUID);
@@ -299,13 +295,13 @@ public class Client {
         VirtualHardwareReplicationPolicy virtualHardwareReplicationPolicy = new VirtualHardwareReplicationPolicy();
         virtualHardwareReplicationPolicy.setProvisionPolicy(DiskProvisionPolicy.SAME_AS_SOURCE);
         virtualHardwareReplicationPolicy
-        .setHwChangesPolicy(HardwareChangesPolicy.REPLICATE_HW_CHANGES);
+            .setHwChangesPolicy(HardwareChangesPolicy.REPLICATE_HW_CHANGES);
 
         VirtualDisksReplicationPolicy virtualDisksReplicationPolicy = new VirtualDisksReplicationPolicy();
         virtualDisksReplicationPolicy.setAutoReplicateNewVirtualDisks(true);
 
         VMReplicationSetParam replicationSetParam = new VMReplicationSetParam(replicatedVmParams,
-        virtualHardwareReplicationPolicy, virtualDisksReplicationPolicy);
+            virtualHardwareReplicationPolicy, virtualDisksReplicationPolicy);
 
         List<VMReplicationSetParam> innerSet = new LinkedList<VMReplicationSetParam>();
         innerSet.add(replicationSetParam);
@@ -316,14 +312,14 @@ public class Client {
 
     @SuppressWarnings("static-access")
     public void changeVmsPowerUpSequence(String vmId, Long groupId, boolean isCritical,
-    int sequenceNumber) {
+                                         int sequenceNumber) {
         VmReplicationSetSettings vmReplicationSetSettings = getVmReplicationSettingsWithRetryOption(
-        vmId, 3);
+            vmId, 3);
         if (vmReplicationSetSettings != null) {
             VmPowerUpSequenceParamSet vmPowerUpSequenceParamSet = new VmPowerUpSequenceParamSet();
             VmPowerUpSequenceParam vmPowerUpSequenceParam = new VmPowerUpSequenceParam();
             vmPowerUpSequenceParam
-            .setVmReplicationSetUID(vmReplicationSetSettings.getVmReplicationSetUID());
+                .setVmReplicationSetUID(vmReplicationSetSettings.getVmReplicationSetUID());
             vmPowerUpSequenceParam.setIsCritical(isCritical);
             vmPowerUpSequenceParam.setPowerUpSequenceNumber(sequenceNumber);
             vmPowerUpSequenceParamSet.getInnerSet().add(vmPowerUpSequenceParam);
@@ -334,18 +330,21 @@ public class Client {
     public void removeVmsFromCG(String vmId, Long groupId, List<PackageConfig> accountConfig) {
 
         ConsistencyGroupCopySettingsSet consistencyGroupCopySettingsSet = connector
-        .getAllGroupCopies(groupId);
+            .getAllGroupCopies(groupId);
         List<ConsistencyGroupCopySettings> consistencyGroupCopySettingsList = consistencyGroupCopySettingsSet
-        .getInnerSet();
+            .getInnerSet();
         Long productionClusterId = 0L;
         for (ConsistencyGroupCopySettings currConsistencyGroupCopySettings : consistencyGroupCopySettingsList) {
             if (currConsistencyGroupCopySettings.getRoleInfo().getSourceCopyUID() == null) {
                 productionClusterId = currConsistencyGroupCopySettings.getCopyUID()
-                .getGlobalCopyUID().getClusterUID().getId();
+                    .getGlobalCopyUID().getClusterUID().getId();
             }
         }
-        String productionVcId = getAccountConfigsMap(accountConfig).get(productionClusterId)
-        .getVcId();
+        PackageConfig packageConfig = getAccountConfigsMap(accountConfig).get(productionClusterId);
+        if (null == packageConfig) {
+            throw new RpspException("No package defined");
+        }
+        String productionVcId = packageConfig.getVcId();
         VirtualCenterUID productionVirtualCenterUID = new VirtualCenterUID(productionVcId);
         VmUID vmUID = new VmUID(vmId, productionVirtualCenterUID);
         List<VmUID> innerSet = new LinkedList<VmUID>();
@@ -372,54 +371,54 @@ public class Client {
 
     @SuppressWarnings("unused")
     public void createGroupSetBookmark(Long groupSetId, String bookmarkName,
-    String consistencyType) {
+                                       String consistencyType) {
         CreateBookmarkForGroupSetSubSetParams createBookmarkForGroupSetSubSetParams = new CreateBookmarkForGroupSetSubSetParams();
         ConsistencyGroupSetSubset consistencyGroupSetSubset = new ConsistencyGroupSetSubset();
         consistencyGroupSetSubset.setGroupSetUID(new ConsistencyGroupSetUID(groupSetId));
         createBookmarkForGroupSetSubSetParams.setGroupSetSubset(consistencyGroupSetSubset);
         createBookmarkForGroupSetSubSetParams.getGroupSetSubset()
-        .setGroupSetUID(new ConsistencyGroupSetUID(groupSetId));
+            .setGroupSetUID(new ConsistencyGroupSetUID(groupSetId));
         createBookmarkForGroupSetSubSetParams.setBookmarkName(bookmarkName);
         createBookmarkForGroupSetSubSetParams
-        .setConsistencyType(SnapshotConsistencyType.APPLICATION_CONSISTENT);
-   		/*if(consistencyType.equals(GeneralFalConsts.APPLICATION_CONSISTENCY_TYPE)){
-   			createBookmarkForGroupSetSubSetParams.setConsistencyType(SnapshotConsistencyType.APPLICATION_CONSISTENT);
+            .setConsistencyType(SnapshotConsistencyType.APPLICATION_CONSISTENT);
+           /*if(consistencyType.equals(GeneralFalConsts.APPLICATION_CONSISTENCY_TYPE)){
+               createBookmarkForGroupSetSubSetParams.setConsistencyType(SnapshotConsistencyType.APPLICATION_CONSISTENT);
        	}
        	else{
        		createBookmarkForGroupSetSubSetParams.setConsistencyType(SnapshotConsistencyType.UNKNOWN);
        	}*/
         createBookmarkForGroupSetSubSetParams
-        .setConsolidationPolicy(BookmarkConsolidationPolicy.NEVER_CONSOLIDATE);
+            .setConsolidationPolicy(BookmarkConsolidationPolicy.NEVER_CONSOLIDATE);
         Response response = connector.createGroupSetBookmark(createBookmarkForGroupSetSubSetParams);
 
     }
 
     public ConsistencyGroupStatisticsSet getGroupStatistics() {
         ConsistencyGroupStatisticsSet consistencyGroupStatisticsSet = connector
-        .getGroupStatistics();
+            .getGroupStatistics();
         return consistencyGroupStatisticsSet;
     }
 
     public void failOver(Long clusterId, Long groupId, int copyId) {
 
         ConsistencyGroupCopySettingsSet consistencyGroupCopySettingsSet = connector
-        .getAllGroupCopies(groupId);
+            .getAllGroupCopies(groupId);
         ConsistencyGroupLinkPolicy localDefaultLinkPolicy = connector
-        .getDefaultLocalGroupLinkPolicy();
+            .getDefaultLocalGroupLinkPolicy();
         ConsistencyGroupLinkPolicy remoteDefaultLinkPolicy = connector
-        .getDefaultRemoteGroupLinkPolicy();
+            .getDefaultRemoteGroupLinkPolicy();
         GlobalCopyUID globalCopyUIDParam = new GlobalCopyUID(new ClusterUID(clusterId), copyId);
 
         List<ConsistencyGroupCopySettings> consistencyGroupCopySettingsList = consistencyGroupCopySettingsSet
-        .getInnerSet();
+            .getInnerSet();
         ConsistencyGroupTopologyParams consistencyGroupTopologyParams = new ConsistencyGroupTopologyParams();
         for (ConsistencyGroupCopySettings currConsistencyGroupCopySettings : consistencyGroupCopySettingsList) {
             GlobalCopyUID currGlobalCopy = currConsistencyGroupCopySettings.getCopyUID()
-            .getGlobalCopyUID();
+                .getGlobalCopyUID();
             //it is not the the failover target copy
             if (!currGlobalCopy.equals(globalCopyUIDParam)
-            //it is not the current(!) production copy for which the link is created automatically
-            && currConsistencyGroupCopySettings.getRoleInfo().getSourceCopyUID() != null) {
+                //it is not the current(!) production copy for which the link is created automatically
+                && currConsistencyGroupCopySettings.getRoleInfo().getSourceCopyUID() != null) {
                 ConsistencyGroupLinkSettings consistencyGroupLinkSettings = new ConsistencyGroupLinkSettings();
                 ConsistencyGroupLinkUID consistencyGroupLinkUID = new ConsistencyGroupLinkUID();
                 consistencyGroupLinkUID.setGroupUID(new ConsistencyGroupUID(groupId));
@@ -437,10 +436,10 @@ public class Client {
         }
 
         if (consistencyGroupTopologyParams.getLinksToAdd() != null
-        && !consistencyGroupTopologyParams.getLinksToAdd().isEmpty()) {
+            && !consistencyGroupTopologyParams.getLinksToAdd().isEmpty()) {
             connector.failOver(clusterId, groupId, copyId, false);
             connector.setConsistencyGroupTopology(clusterId, groupId, copyId,
-            consistencyGroupTopologyParams);
+                consistencyGroupTopologyParams);
         } else {
             connector.failOver(clusterId, groupId, copyId, true);
         }
@@ -453,20 +452,20 @@ public class Client {
 
     public ClusterVirtualInfraConfiguration getClusterVirtualInfraConfiguration(Long clusterId) {
         ClusterVirtualInfraConfiguration clusterVirtualInfraConfiguration = connector
-        .getClusterVirtualInfraConfiguration(clusterId);
+            .getClusterVirtualInfraConfiguration(clusterId);
         return clusterVirtualInfraConfiguration;
     }
 
     public VmEntitiesInformationSet getAvailableVMsForReplication(Long clusterId, String vcUID,
-    String dcUID, String esxClusterUID) {
+                                                                  String dcUID, String esxClusterUID) {
         VmEntitiesInformationSet vmEntitiesInformationSet = connector
-        .getAvailableVMsForReplication(clusterId, vcUID, dcUID, esxClusterUID);
+            .getAvailableVMsForReplication(clusterId, vcUID, dcUID, esxClusterUID);
         return vmEntitiesInformationSet;
     }
 
     @SuppressWarnings("unused")
     public void enableImageAccessForGroupSetSubset(Long clusterId, Long groupSetId,
-    CopySnapshot copySnapshot) {
+                                                   CopySnapshot copySnapshot) {
         EnableImageAccessForGroupSetsSubsetParams params = new EnableImageAccessForGroupSetsSubsetParams();
 
         ConsistencyGroupSetSubset groupSetSubset = new ConsistencyGroupSetSubset();
@@ -478,7 +477,7 @@ public class Client {
         ImageAccessParameters imageAccessParams = new ImageAccessParameters();
         imageAccessParams.setMode(ImageAccessMode.LOGGED_ACCESS);
         imageAccessParams
-        .setTimeStamp(new RecoverPointTimeStamp(copySnapshot.getOriginalClosingTimeStamp()));
+            .setTimeStamp(new RecoverPointTimeStamp(copySnapshot.getOriginalClosingTimeStamp()));
         params.setParams(imageAccessParams);
 
         Response response = connector.enableImageAccessForGroupSetSubset(clusterId, params);
@@ -490,7 +489,7 @@ public class Client {
         ConsistencyGroupSetSubset groupSetSubset = new ConsistencyGroupSetSubset();
         groupSetSubset.setGroupSetUID(new ConsistencyGroupSetUID(groupSetId));
         Response response = connector
-        .disableImageAccessForGroupSetSubset(clusterId, groupSetSubset, true);
+            .disableImageAccessForGroupSetSubset(clusterId, groupSetSubset, true);
     }
 
 
@@ -505,7 +504,7 @@ public class Client {
     @SuppressWarnings("unused")
     public void failoverGroupSetSubset(Long clusterId, Long groupSetId) {
         ConsistencyGroupSetSettings consistencyGroupSetSettings = connector
-        .getGroupSetSettings(groupSetId);
+            .getGroupSetSettings(groupSetId);
         List<ConsistencyGroupUID> groupsUIDs = consistencyGroupSetSettings.getGroupsUIDs();
         for (ConsistencyGroupUID consistencyGroupUID : groupsUIDs) {
             failOver(clusterId, consistencyGroupUID.getId(), 0);
@@ -523,7 +522,7 @@ public class Client {
 
     public void recoverProductionForGroupSetSubset(Long clusterId, Long groupSetId) {
         ConsistencyGroupSetSettings consistencyGroupSetSettings = connector
-        .getGroupSetSettings(groupSetId);
+            .getGroupSetSettings(groupSetId);
         List<ConsistencyGroupUID> groupsUIDs = consistencyGroupSetSettings.getGroupsUIDs();
         for (ConsistencyGroupUID consistencyGroupUID : groupsUIDs) {
             recoverProduction(clusterId, consistencyGroupUID.getId(), 0);
@@ -531,7 +530,7 @@ public class Client {
     }
 
     public long createConsistencyGroup(String cgName, List<String> vmIds,
-    List<PackageConfig> accountConfigList, int rpo, boolean startReplication) {
+                                       List<PackageConfig> accountConfigList, int rpo, boolean startReplication) {
         Map<Long, PackageConfig> accountConfigsMap = getAccountConfigsMap(accountConfigList);
         ReplicateVmsParam replicateVmsParam = new ReplicateVmsParam();
 
@@ -586,17 +585,17 @@ public class Client {
                     ReplicatedVMParams targetReplicatedVMParam = new ReplicatedVMParams();
                     CreateVMParam createVMParam = new CreateVMParam();
                     GlobalCopyUID targetGlobalCopyUID = new GlobalCopyUID(
-                    new ClusterUID(accountConfig.getClusterId()), 0);
+                        new ClusterUID(accountConfig.getClusterId()), 0);
                     String replicaVcId = accountConfigsMap
-                    .get(targetGlobalCopyUID.getClusterUID().getId()).getVcId();
+                        .get(targetGlobalCopyUID.getClusterUID().getId()).getVcId();
                     String replicaDataStoreId = accountConfigsMap
-                    .get(targetGlobalCopyUID.getClusterUID().getId()).getDatastoreId();
+                        .get(targetGlobalCopyUID.getClusterUID().getId()).getDatastoreId();
                     String replicaEsxId = accountConfigsMap
-                    .get(targetGlobalCopyUID.getClusterUID().getId()).getEsxId();
+                        .get(targetGlobalCopyUID.getClusterUID().getId()).getEsxId();
                     createVMParam.setTargetVirtualCenterUID(new VirtualCenterUID(replicaVcId));
                     createVMParam.setTargetDatastoreUID(new DatastoreUID(replicaDataStoreId));
                     createVMParam.setTargetResourcePlacementParam(
-                    new CreateTargetVMManualResourcePlacementParam(new EsxUID(replicaEsxId)));
+                        new CreateTargetVMManualResourcePlacementParam(new EsxUID(replicaEsxId)));
 
                     targetReplicatedVMParam.setVmParam(createVMParam);
                     targetReplicatedVMParam.setCopyUID(targetGlobalCopyUID);
@@ -608,14 +607,14 @@ public class Client {
             VirtualHardwareReplicationPolicy virtualHardwareReplicationPolicy = new VirtualHardwareReplicationPolicy();
             virtualHardwareReplicationPolicy.setProvisionPolicy(DiskProvisionPolicy.SAME_AS_SOURCE);
             virtualHardwareReplicationPolicy
-            .setHwChangesPolicy(HardwareChangesPolicy.REPLICATE_HW_CHANGES);
+                .setHwChangesPolicy(HardwareChangesPolicy.REPLICATE_HW_CHANGES);
 
             VirtualDisksReplicationPolicy virtualDisksReplicationPolicy = new VirtualDisksReplicationPolicy();
             virtualDisksReplicationPolicy.setAutoReplicateNewVirtualDisks(true);
 
             //create and add new replication set
             VMReplicationSetParam replicationSetParam = new VMReplicationSetParam(
-            replicatedVmParams, virtualHardwareReplicationPolicy, virtualDisksReplicationPolicy);
+                replicatedVmParams, virtualHardwareReplicationPolicy, virtualDisksReplicationPolicy);
             vmReplicationSets.add(replicationSetParam);
 
         }
@@ -624,7 +623,7 @@ public class Client {
         List<ConsistencyGroupCopyParam> copiesList = replicateVmsParam.getCopies();
         for (PackageConfig accountConfig : accountConfigList) {
             GlobalCopyUID copyUID = new GlobalCopyUID(new ClusterUID(accountConfig.getClusterId()),
-            0);
+                0);
             ConsistencyGroupCopyParam consistencyGroupCopyParam = new ConsistencyGroupCopyParam();
             consistencyGroupCopyParam.setCopyUID(copyUID);
             consistencyGroupCopyParam.setCopyName(accountConfig.getClusterFriendlyName());
@@ -632,10 +631,10 @@ public class Client {
             ConsistencyGroupCopyVolumeCreationParams consistencyGroupCopyVolumeCreationParams = new ConsistencyGroupCopyVolumeCreationParams();
             VolumeCreationParams volumeCreationParams = new VolumeCreationParams();
 
-            volumeCreationParams.setVolumeSize(new VolumeSize(10l*1024l*1024l*1024l));
+            volumeCreationParams.setVolumeSize(new VolumeSize(10l * 1024l * 1024l * 1024l));
 
             ResourcePoolUID resourcePoolUID = getRelevantResourcePool(accountConfig.getClusterId(),
-            		accountConfig.getVcId(), accountConfig.getDatastoreId());
+                accountConfig.getVcId(), accountConfig.getDatastoreId());
 
             volumeCreationParams.setPoolUid(resourcePoolUID);
             volumeCreationParams.setResourcePoolType(ArrayResourcePoolType.VC_DATASTORE);
@@ -644,7 +643,7 @@ public class Client {
 
             consistencyGroupCopyVolumeCreationParams.getVolumeParams().add(volumeCreationParams);
             consistencyGroupCopyParam
-            .setVolumeCreationParams(consistencyGroupCopyVolumeCreationParams);
+                .setVolumeCreationParams(consistencyGroupCopyVolumeCreationParams);
             copiesList.add(consistencyGroupCopyParam);
 
         }
@@ -652,16 +651,16 @@ public class Client {
         //create links
         List<FullConsistencyGroupLinkPolicy> linkPoliciesList = replicateVmsParam.getLinks();
         ConsistencyGroupLinkPolicy remoteDefaultLinkPolicy = connector
-        .getDefaultRemoteGroupLinkPolicy();
+            .getDefaultRemoteGroupLinkPolicy();
         remoteDefaultLinkPolicy.getProtectionPolicy().getRpoPolicy()
-        .setMaximumAllowedLag(new Quantity(rpo, QuantityType.MINUTES));
+            .setMaximumAllowedLag(new Quantity(rpo, QuantityType.MINUTES));
         for (PackageConfig accountConfig : accountConfigList) {
             if (!accountConfig.getIsProductionCluster()) {
                 ConsistencyGroupLinkUID linkUID = new ConsistencyGroupLinkUID();
                 linkUID.setGroupUID(new ConsistencyGroupUID(0));
                 linkUID.setFirstCopy(productionCopy);
                 GlobalCopyUID copyUID = new GlobalCopyUID(
-                new ClusterUID(accountConfig.getClusterId()), 0);
+                    new ClusterUID(accountConfig.getClusterId()), 0);
                 linkUID.setSecondCopy(copyUID);
                 FullConsistencyGroupLinkPolicy fullConsistencyGroupLinkPolicy = new FullConsistencyGroupLinkPolicy();
                 fullConsistencyGroupLinkPolicy.setLinkPolicy(remoteDefaultLinkPolicy);
@@ -675,72 +674,69 @@ public class Client {
     }
 
 
-    
     public void setGroupPackage(Long groupId, Long packageId) {
-    	UserDefinedProperties userProps = connector.getUserProperties();
-    	Property property = new Property(groupId + "-pkg", packageId.toString());
-    	userProps.getProperties().add(property);
-    	connector.setUserProperties(userProps);
+        UserDefinedProperties userProps = connector.getUserProperties();
+        Property property = new Property(groupId + "-pkg", packageId.toString());
+        userProps.getProperties().add(property);
+        connector.setUserProperties(userProps);
     }
 
-    
+
     public Long getGroupPackage(Long groupId) {
-    	Long res = null;
-    	UserDefinedProperties userProps = connector.getUserProperties();
-    	for(Property prop : userProps.getProperties()){
-    		if(prop.getKey().equals(groupId + "-pkg")){
-    			res = Long.parseLong(prop.getValue());
-    		}
-    	}
-    	return res;
+        Long res = null;
+        UserDefinedProperties userProps = connector.getUserProperties();
+        for (Property prop : userProps.getProperties()) {
+            if (prop.getKey().equals(groupId + "-pkg")) {
+                res = Long.parseLong(prop.getValue());
+            }
+        }
+        return res;
     }
-    
-    
+
+
     public Map<String, String> getUserPropertiesMap() {
-    	Map<String, String> propsMap = new HashMap<String, String>();
-    	UserDefinedProperties userProps = connector.getUserProperties();
-    	for(Property prop : userProps.getProperties()){
-    		propsMap.put(prop.getKey(), prop.getValue());
-    	}
-    	return propsMap;
-    }
-    
-
-    public ResourcePoolUID getRelevantResourcePool(long clusterId, String vcId, String datastoreId){
-    	ResourcePoolUID res = null;
-    	ClusterSettings clusterSettings = getClusterSettings(clusterId);
-    	List<ArrayManagementProviderSettings> arrayManagementProviderSettings = clusterSettings.getAmpsSettings();
-    	for(ArrayManagementProviderSettings currProviderSettings : arrayManagementProviderSettings){
-    		if(currProviderSettings.getType().equals(ArrayManagementProviderType.VC)){
-    			List<ArraySettings> managedArrays = currProviderSettings.getManagedArrays();
-    			for(ArraySettings currArraySettings : managedArrays){
-    				String serialNumber = currArraySettings.getSerialNumber();
-    				if(vcId.equals(serialNumber)){
-    					List<ArrayResourcePoolSettings>  resourcePools = currArraySettings.getResourcePools();
-    					for(ArrayResourcePoolSettings currArrayResourcePoolSettings : resourcePools){
-    						ResourcePoolUID resourcePoolUid = currArrayResourcePoolSettings.getResourcePoolUID();
-    						if(resourcePoolUid.getStorageResourcePoolId().equals(datastoreId)){
-    							res =  resourcePoolUid;
-    						}
-    					}
-    				}
-    			}
-    		}
-    	}
-    	return res;
+        Map<String, String> propsMap = new HashMap<String, String>();
+        UserDefinedProperties userProps = connector.getUserProperties();
+        for (Property prop : userProps.getProperties()) {
+            propsMap.put(prop.getKey(), prop.getValue());
+        }
+        return propsMap;
     }
 
 
-	public ClusterSettings getClusterSettings(long clusterId){
-		ClusterSettings clusterSettings =  connector.getClusterSettings(clusterId);
-		return clusterSettings;
-	}
+    public ResourcePoolUID getRelevantResourcePool(long clusterId, String vcId, String datastoreId) {
+        ResourcePoolUID res = null;
+        ClusterSettings clusterSettings = getClusterSettings(clusterId);
+        List<ArrayManagementProviderSettings> arrayManagementProviderSettings = clusterSettings.getAmpsSettings();
+        for (ArrayManagementProviderSettings currProviderSettings : arrayManagementProviderSettings) {
+            if (currProviderSettings.getType().equals(ArrayManagementProviderType.VC)) {
+                List<ArraySettings> managedArrays = currProviderSettings.getManagedArrays();
+                for (ArraySettings currArraySettings : managedArrays) {
+                    String serialNumber = currArraySettings.getSerialNumber();
+                    if (vcId.equals(serialNumber)) {
+                        List<ArrayResourcePoolSettings> resourcePools = currArraySettings.getResourcePools();
+                        for (ArrayResourcePoolSettings currArrayResourcePoolSettings : resourcePools) {
+                            ResourcePoolUID resourcePoolUid = currArrayResourcePoolSettings.getResourcePoolUID();
+                            if (resourcePoolUid.getStorageResourcePoolId().equals(datastoreId)) {
+                                res = resourcePoolUid;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
 
 
+    public ClusterSettings getClusterSettings(long clusterId) {
+        ClusterSettings clusterSettings = connector.getClusterSettings(clusterId);
+        return clusterSettings;
+    }
 
 
     private VmReplicationSetSettings getVmReplicationSettingsWithRetryOption(String vmId,
-    int retryAttempts) {
+                                                                             int retryAttempts) {
         Map<String, VmReplicationSetSettings> vmToReplicationSetMap = getVmToReplicationSetSettingsMap();
         VmReplicationSetSettings vmReplicationSetSettings = vmToReplicationSetMap.get(vmId);
         if (vmReplicationSetSettings == null) {
@@ -767,19 +763,19 @@ public class Client {
         for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 
             List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
-            .getVmReplicationSetsSettings();
+                .getVmReplicationSetsSettings();
 
             for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {
 
                 List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
-                .getReplicatedVMs();
+                    .getReplicatedVMs();
 
                 for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
                     String vmId = vmReplication.getVmUID().getUuid();
                     ConsistencyGroupCopyUID copyId = vmReplication.getGroupCopyUID();
                     Long clusterId = copyId.getGlobalCopyUID().getClusterUID().getId();
                     List<ConsistencyGroupCopyUID> production = productionCopies
-                    .get(copyId.getGroupUID().getId());
+                        .get(copyId.getGroupUID().getId());
                     if (production.contains(copyId)) {
                         res.put(vmId, StatesConsts.STATE_SOURCE);
                     } else {
@@ -805,12 +801,12 @@ public class Client {
         for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 
             List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
-            .getVmReplicationSetsSettings();
+                .getVmReplicationSetsSettings();
 
             for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {
 
                 List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
-                .getReplicatedVMs();
+                    .getReplicatedVMs();
 
                 for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
                     String vmId = vmReplication.getVmUID().getUuid();
@@ -821,11 +817,10 @@ public class Client {
         }
         return res;
     }
-    
-    
-    
+
+
     public Map<String, Map<String, Object>> getVmInfoMap() {
-    	Map<String, Map<String, Object>> res = new HashMap<String, Map<String, Object>>();
+        Map<String, Map<String, Object>> res = new HashMap<String, Map<String, Object>>();
         FullRecoverPointSettings rpSettings = getFullRecoverPointSettings();
         Map<Long, Map<String, String>> vmNamesAllClusters = getVmNamesAllClusters();
 
@@ -833,99 +828,98 @@ public class Client {
         for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 
             List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
-            .getVmReplicationSetsSettings();
+                .getVmReplicationSetsSettings();
 
             for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {///
-	                List<VmReplicationSettings> vmReplicationSettingsList = 
-	                								vmReplicationSet.getReplicatedVMs();
-	                Map<String, Object> singleVmInfoMap = new HashMap<String, Object>();
-	                String productionVmId = null;
-	
-	                for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
-	                    String vmId = vmReplication.getVmUID().getUuid();
-	                    ConsistencyGroupCopyUID copyId = vmReplication.getGroupCopyUID();
-	                    Long clusterId = copyId.getGlobalCopyUID().getClusterUID().getId();
-	                    
-	                    List<ConsistencyGroupCopyUID> production = groupSettings
-	                            .getProductionCopiesUID();
-	                    if (production.contains(copyId)) {
-	                    	productionVmId = vmId;
-	                       	
-	                       	Map<String, String> vmNamesMap = vmNamesAllClusters.get(clusterId);
-                            String vmName = vmNamesMap.get(vmId);
-                            singleVmInfoMap.put(BackupConsts.PRODUCTION_VM_NAME, vmName);
-                        }
-	                    else{
-                        	 Map<String, String> vmNamesMap = vmNamesAllClusters.get(clusterId);
-                             String vmName = vmNamesMap.get(vmId);
-                             singleVmInfoMap.put(BackupConsts.REPLICA_CLUSTER_ID, clusterId);
-                             singleVmInfoMap.put(BackupConsts.REPLICA_GROUP_ID, copyId.getGroupUID().getId());
-                             singleVmInfoMap.put(BackupConsts.REPLICA_COPY_ID, copyId.getGlobalCopyUID().getCopyUID());
-                             singleVmInfoMap.put(BackupConsts.REPLICA_VM_NAME, vmName);
-	                    }
-	
-	                }
-	                
-	                
-	               res.put(productionVmId, singleVmInfoMap); 
-	                
+                List<VmReplicationSettings> vmReplicationSettingsList =
+                    vmReplicationSet.getReplicatedVMs();
+                Map<String, Object> singleVmInfoMap = new HashMap<String, Object>();
+                String productionVmId = null;
+
+                for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
+                    String vmId = vmReplication.getVmUID().getUuid();
+                    ConsistencyGroupCopyUID copyId = vmReplication.getGroupCopyUID();
+                    Long clusterId = copyId.getGlobalCopyUID().getClusterUID().getId();
+
+                    List<ConsistencyGroupCopyUID> production = groupSettings
+                        .getProductionCopiesUID();
+                    if (production.contains(copyId)) {
+                        productionVmId = vmId;
+
+                        Map<String, String> vmNamesMap = vmNamesAllClusters.get(clusterId);
+                        String vmName = vmNamesMap.get(vmId);
+                        singleVmInfoMap.put(BackupConsts.PRODUCTION_VM_NAME, vmName);
+                    } else {
+                        Map<String, String> vmNamesMap = vmNamesAllClusters.get(clusterId);
+                        String vmName = vmNamesMap.get(vmId);
+                        singleVmInfoMap.put(BackupConsts.REPLICA_CLUSTER_ID, clusterId);
+                        singleVmInfoMap.put(BackupConsts.REPLICA_GROUP_ID, copyId.getGroupUID().getId());
+                        singleVmInfoMap.put(BackupConsts.REPLICA_COPY_ID, copyId.getGlobalCopyUID().getCopyUID());
+                        singleVmInfoMap.put(BackupConsts.REPLICA_VM_NAME, vmName);
+                    }
+
+                }
+
+
+                res.put(productionVmId, singleVmInfoMap);
+
             }
         }
         return res;
     }
-    
-    
-    
+
+
     public Map<String, Object> getReplicaInfoByProductionVmId(String productionVmId) {
-    	Map<String, Object> res = null;new HashMap<String, Object>();
+        Map<String, Object> res = null;
+        new HashMap<String, Object>();
         FullRecoverPointSettings rpSettings = getFullRecoverPointSettings();
 
         List<ConsistencyGroupSettings> groupSettingsList = rpSettings.getGroupsSettings();
         for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
 
             List<VmReplicationSetSettings> vmReplicationSetSettingsList = groupSettings
-            .getVmReplicationSetsSettings();
+                .getVmReplicationSetsSettings();
 
             for (VmReplicationSetSettings vmReplicationSet : vmReplicationSetSettingsList) {
-            	if(isContainsVm(vmReplicationSet, productionVmId)){
-	                List<VmReplicationSettings> vmReplicationSettingsList = 
-	                								vmReplicationSet.getReplicatedVMs();
-	
-	                for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
-	                    String vmId = vmReplication.getVmUID().getUuid();
-	                    ConsistencyGroupCopyUID copyId = vmReplication.getGroupCopyUID();
-	                    Long clusterId = copyId.getGlobalCopyUID().getClusterUID().getId();
-	                    
-	                    List<ConsistencyGroupCopyUID> production = groupSettings
-	                            .getProductionCopiesUID();
-	                        if (!production.contains(copyId)) {
-	                        	 res = new HashMap<String, Object>();
-	                        	 Map<Long, Map<String, String>> vmNamesAllClusters = getVmNamesAllClusters();
-	                        	 Map<String, String> vmNamesMap = vmNamesAllClusters.get(clusterId);
-	                             String vmName = vmNamesMap.get(vmId);
-	                             res.put(BackupConsts.REPLICA_CLUSTER_ID, clusterId);
-	                             res.put(BackupConsts.REPLICA_GROUP_ID, copyId.getGroupUID().getId());
-	                             res.put(BackupConsts.REPLICA_COPY_ID, copyId.getGlobalCopyUID().getCopyUID());
-	                             res.put(BackupConsts.REPLICA_VM_NAME, vmName);
-	                        }
-	
-	                }
-            	}
+                if (isContainsVm(vmReplicationSet, productionVmId)) {
+                    List<VmReplicationSettings> vmReplicationSettingsList =
+                        vmReplicationSet.getReplicatedVMs();
+
+                    for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
+                        String vmId = vmReplication.getVmUID().getUuid();
+                        ConsistencyGroupCopyUID copyId = vmReplication.getGroupCopyUID();
+                        Long clusterId = copyId.getGlobalCopyUID().getClusterUID().getId();
+
+                        List<ConsistencyGroupCopyUID> production = groupSettings
+                            .getProductionCopiesUID();
+                        if (!production.contains(copyId)) {
+                            res = new HashMap<String, Object>();
+                            Map<Long, Map<String, String>> vmNamesAllClusters = getVmNamesAllClusters();
+                            Map<String, String> vmNamesMap = vmNamesAllClusters.get(clusterId);
+                            String vmName = vmNamesMap.get(vmId);
+                            res.put(BackupConsts.REPLICA_CLUSTER_ID, clusterId);
+                            res.put(BackupConsts.REPLICA_GROUP_ID, copyId.getGroupUID().getId());
+                            res.put(BackupConsts.REPLICA_COPY_ID, copyId.getGlobalCopyUID().getCopyUID());
+                            res.put(BackupConsts.REPLICA_VM_NAME, vmName);
+                        }
+
+                    }
+                }
             }
         }
         return res;
     }
-    
-    
-    private boolean isContainsVm(VmReplicationSetSettings vmReplicationSet , String vmId){
-    	boolean res = false;
-    	List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
-                .getReplicatedVMs();
+
+
+    private boolean isContainsVm(VmReplicationSetSettings vmReplicationSet, String vmId) {
+        boolean res = false;
+        List<VmReplicationSettings> vmReplicationSettingsList = vmReplicationSet
+            .getReplicatedVMs();
 
         for (VmReplicationSettings vmReplication : vmReplicationSettingsList) {
             String currVmId = vmReplication.getVmUID().getUuid();
-            if(currVmId.equals(vmId)){
-            	res = true;
+            if (currVmId.equals(vmId)) {
+                res = true;
             }
         }
         return res;
@@ -933,12 +927,12 @@ public class Client {
 
     // Propogate to data a map groupId --> Set of production copies
     private Map<Long, List<ConsistencyGroupCopyUID>> getProductionCopies(
-    FullRecoverPointSettings rpSettings) {
+        FullRecoverPointSettings rpSettings) {
         Map<Long, List<ConsistencyGroupCopyUID>> res = new HashMap<>();
         List<ConsistencyGroupSettings> groupSettingsList = rpSettings.getGroupsSettings();
         for (ConsistencyGroupSettings groupSettings : groupSettingsList) {
             List<ConsistencyGroupCopyUID> productionCopiesList = groupSettings
-            .getProductionCopiesUID();
+                .getProductionCopiesUID();
             res.put(groupSettings.getGroupUID().getId(), productionCopiesList);
 
         }
@@ -948,16 +942,16 @@ public class Client {
     private boolean isEOFCause(Throwable e) {
         boolean res = false;
         if (e.getCause() != null && e.getCause().getCause() != null && e.getCause()
-        .getCause() instanceof EOFException) {
+            .getCause() instanceof EOFException) {
             res = true;
         }
         return res;
     }
-    
+
     private Map<Long, PackageConfig> getAccountConfigsMap(List<PackageConfig> accountConfigs) {
         Map<Long, PackageConfig> accountConfigsMap = new HashMap<Long, PackageConfig>();
-        for(PackageConfig currPackageConfig : accountConfigs){
-        	accountConfigsMap.put(currPackageConfig.getClusterId(), currPackageConfig);
+        for (PackageConfig currPackageConfig : accountConfigs) {
+            accountConfigsMap.put(currPackageConfig.getClusterId(), currPackageConfig);
         }
         return accountConfigsMap;
     }

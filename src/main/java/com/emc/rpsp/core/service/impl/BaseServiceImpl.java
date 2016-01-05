@@ -1,5 +1,6 @@
 package com.emc.rpsp.core.service.impl;
 
+import com.emc.rpsp.RpspException;
 import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.core.service.BaseService;
 import com.emc.rpsp.fal.Client;
@@ -145,6 +146,9 @@ public class BaseServiceImpl implements BaseService {
     private List<PackageConfig> getPackageConfigs(PackageDefinition packageDefinition) {
         List<PackageConfig> res = new LinkedList<PackageConfig>();
 
+        if (null == packageDefinition) {
+            throw new RpspException("No package defined");
+        }
         PackageConfig prodConfig = new PackageConfig();
         prodConfig.setIsProductionCluster(true);
         prodConfig.setClusterId(packageDefinition.getSourceClusterId());

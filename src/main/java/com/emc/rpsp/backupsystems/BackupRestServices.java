@@ -72,4 +72,10 @@ public class BackupRestServices {
         return new ResponseEntity<Collection<Task>>(BackupWorker.getTasks(), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/backup/sampleBackupSystem",
+        method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<BackupSystem> sampleBackupSystem() {
+        return new ResponseEntity<>(new BackupSystem(), HttpStatus.OK);
+    }
 }
