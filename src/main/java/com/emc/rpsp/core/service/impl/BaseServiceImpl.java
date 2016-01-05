@@ -89,9 +89,12 @@ public class BaseServiceImpl implements BaseService {
 
     @Override
     public List<PackageConfig> findPackageConfigsByPackageId(Long id) {
-        List<PackageConfig> res = new LinkedList<PackageConfig>();
+        List<PackageConfig> res = null;
         PackageDefinition packageDefinition = packagesDataService.findPackageById(id);
-        res.addAll(getPackageConfigs(packageDefinition));
+        if(packageDefinition != null){
+        	res = new LinkedList<PackageConfig>();
+        	res.addAll(getPackageConfigs(packageDefinition));
+        }
         return res;
 
     }

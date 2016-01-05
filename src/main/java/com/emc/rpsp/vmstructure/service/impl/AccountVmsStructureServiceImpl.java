@@ -194,10 +194,15 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
                 if (groupPackages.get(groupId + "-pkg") != null) {
                     Long packageId = Long.parseLong(groupPackages.get(groupId + "-pkg"));
                     PackageDefinition groupPackage = findPackageById(packageId);
-                    consistencyGroup.setPackageId(packageId.toString());
                     if (null != groupPackage) {
+                    	consistencyGroup.setPackageId(packageId.toString());
                         consistencyGroup.setPackageName(groupPackage.getName());
                         consistencyGroup.setPackageDisplayName(groupPackage.getDisplayName());
+                    }
+                    else {
+                        consistencyGroup.setPackageId("-1");
+                        consistencyGroup.setPackageName("default");
+                        consistencyGroup.setPackageDisplayName("Default");
                     }
                 } else {
                     consistencyGroup.setPackageId("-1");

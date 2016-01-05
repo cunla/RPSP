@@ -60,8 +60,9 @@ public class GroupsProtectionServiceImpl extends BaseServiceImpl implements Grou
     		if(packageId != null){
     			packageConfigs = findPackageConfigsByPackageId(packageId);
     		}
+    		
     		//CG without specific package - fall back on account packages
-    		else{
+    		if(packageConfigs == null){
     			Account account = getCurrentUser().getAccount();
         		packageConfigs = findPackageConfigsByAccount(account);
     		}  		
