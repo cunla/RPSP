@@ -1,5 +1,6 @@
 package com.emc.rpsp.backupsystems;
 
+import com.emc.rpsp.backupsystems.tasks.BackupWorker;
 import com.emc.rpsp.backupsystems.tasks.GenerateBackupTask;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.exceptions.RpspBackupSystemNotSetException;
@@ -44,6 +45,7 @@ public class BackupApi extends BaseServiceImpl {
         List<VmBackup> backups = vmBackupRepo.findAll();
         for (VmBackup backup : backups) {
             GenerateBackupTask task = new GenerateBackupTask(this, backup);
+            BackupWorker.addTask(task);
         }
 
     }
@@ -62,7 +64,7 @@ public class BackupApi extends BaseServiceImpl {
         }
         return res;
     }
-    
+
     public void addVmsToBackupSchedule(List<VmDefinition> vmDefs, String schedule) {
     	for(VmDefinition currVmDef : vmDefs){
     		 addVmToBackupSchedule(currVmDef.getId(), currVmDef.getName(), schedule);
