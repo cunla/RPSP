@@ -1,5 +1,6 @@
 package com.emc.rpsp.vmwal;
 
+import com.emc.rpsp.exceptions.RpspBackupVmNotFoundException;
 import com.vmware.vim25.*;
 import com.vmware.vim25.mo.*;
 import com.vmware.vim25.mo.util.MorUtil;
@@ -172,11 +173,13 @@ public class VSphereApi {
     }
 
     public void cloneVM(String vmName, String folderName, String cloneName, String datastoreName, Boolean powerOn) throws Exception {
+//        this.si = new ServiceInstance(new URL(vcenter), uname, pwd, true);
+//        rootFolder = si.getRootFolder();
         InventoryNavigator inventoryNavigator = new InventoryNavigator(rootFolder);
         vm = (VirtualMachine) inventoryNavigator.searchManagedEntity("VirtualMachine", vmName);
         if (vm == null) {
             log.warn("No VM {} found", vmName);
-            return;
+            throw new RpspBackupVmNotFoundException(vmName);
         }
 //        if ("poweredOn".equals(vm.getRuntime().getPowerState().toString())) {
 //            log.warn("The VM cannot be in  poweredOn State");

@@ -2,6 +2,8 @@ package com.emc.rpsp.vmstructure.service.impl;
 
 import com.emc.fapi.jaxws.v4_3.*;
 import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.backupsystems.VmBackup;
+import com.emc.rpsp.backupsystems.VmBackupRepository;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.packages.domain.PackageConfig;
@@ -17,6 +19,7 @@ import com.emc.rpsp.vmstructure.service.AccountVmsStructureService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -28,6 +31,9 @@ import java.util.stream.Collectors;
 public class AccountVmsStructureServiceImpl extends BaseServiceImpl
     implements AccountVmsStructureService {
     private final Logger log = LoggerFactory.getLogger(AccountVmsStructureService.class);
+
+    @Autowired
+    private VmBackupRepository backupRepository;
 
     @Override
     public AccountVmsStructure getAccountVmsStrucure() {
@@ -195,11 +201,10 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
                     Long packageId = Long.parseLong(groupPackages.get(groupId + "-pkg"));
                     PackageDefinition groupPackage = findPackageById(packageId);
                     if (null != groupPackage) {
-                    	consistencyGroup.setPackageId(packageId.toString());
+                        consistencyGroup.setPackageId(packageId.toString());
                         consistencyGroup.setPackageName(groupPackage.getName());
                         consistencyGroup.setPackageDisplayName(groupPackage.getDisplayName());
-                    }
-                    else {
+                    } else {
                         consistencyGroup.setPackageId("-1");
                         consistencyGroup.setPackageName("default");
                         consistencyGroup.setPackageDisplayName("Default");
@@ -267,6 +272,7 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
                                 vmReplicationSet.getVmReplicationSetPolicy().isCritical());
                             currVm.setSequenceNumber(vmReplicationSet.getVmReplicationSetPolicy()
                                 .getPowerUpSequenceNumber());
+                            addBackupData(currVm);
                             vmsList.add(currVm);
                             productionCluster = new ClusterDefinition(clusterId.toString(),
                                 clusterName);
@@ -326,6 +332,14 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
         accountVmsStructure.setUnprotectedVms(unprotectedVms);
         setStrictModeIndicator(accountVmsStructure);
         return accountVmsStructure;
+    }
+
+    private void addBackupData(VmDefinition vm) {
+        VmBackup backup = backupRepository.findByName(vm.getName());
+        if (null != backup) {
+            vm.setBackupActive(true);
+            vm.setLastBackup(backup.getLastBackup());
+        }
     }
 
 

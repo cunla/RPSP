@@ -33,7 +33,6 @@ public class GenerateBackupTask extends Task {
             if (delta > milisForPackage()) {
                 backupApi.backupVm(backup);
                 backup.setLastBackup(new Date());
-
             }
             super.success();
         } catch (Exception e) {

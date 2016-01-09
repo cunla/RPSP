@@ -3,13 +3,13 @@ package com.emc.rpsp.backupsystems;
 import com.emc.rpsp.backupsystems.tasks.BackupWorker;
 import com.emc.rpsp.backupsystems.tasks.GenerateBackupTask;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
+import com.emc.rpsp.exceptions.RpspBackupFailedException;
 import com.emc.rpsp.exceptions.RpspBackupSystemNotSetException;
 import com.emc.rpsp.exceptions.RpspParamsException;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.fal.GeneralFalConsts;
 import com.emc.rpsp.vmstructure.domain.VmDefinition;
 import com.emc.rpsp.vmwal.VSphereApi;
-
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public class BackupApi extends BaseServiceImpl {
         log.info("Adding tasks from DB");
         List<VmBackup> backups = vmBackupRepo.findAll();
         for (VmBackup backup : backups) {
-            if(!backup.getHasTask()) {
+            if (!backup.getHasTask()) {
                 backup.setHasTask(true);
                 vmBackupRepo.save(backup);
                 GenerateBackupTask task = new GenerateBackupTask(this, backup, vmBackupRepo);
@@ -71,9 +71,9 @@ public class BackupApi extends BaseServiceImpl {
     }
 
     public void addVmsToBackupSchedule(List<VmDefinition> vmDefs, String schedule) {
-    	for(VmDefinition currVmDef : vmDefs){
-    		 addVmToBackupSchedule(currVmDef.getId(), currVmDef.getName(), schedule);
-    	}
+        for (VmDefinition currVmDef : vmDefs) {
+            addVmToBackupSchedule(currVmDef.getId(), currVmDef.getName(), schedule);
+        }
     }
 
     public void addVmToBackupSchedule(String vmId, String vmName, String schedule) {
@@ -98,12 +98,23 @@ public class BackupApi extends BaseServiceImpl {
         String vmDrTestName = params.getReplicaName();
         BackupSystem system = vm.getBackupSystem();
         VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
+        for (int i = 0; i < 5; ++i) {
+            try {
+                Thread.sleep(60000);
+            } catch (InterruptedException e) {
+            }
+            if (vSphereApi.vmNames().contains(vmDrTestName)) {
+                break;
+            }
+        }
         try {
             vSphereApi.cloneVM(vmDrTestName, system.getBackupFolder(), currentBackupName(vmName), system.getBackupDatastore(), false);
         } catch (Exception e) {
             log.warn("Failed to backup/clone VM {}", vmName);
+            throw new RpspBackupFailedException(vmName);
+        } finally {
+            client.disableImageAccess(params.getClusterId(), params.getGroupId(), params.getCopyId());
         }
-        client.disableImageAccess(params.getClusterId(), params.getGroupId(), params.getCopyId());
     }
 
     public void enableAccessBackup(BackupSystem system, String backupName) throws Exception {
@@ -151,8 +162,13 @@ public class BackupApi extends BaseServiceImpl {
         }
         return backupImageAccessParams;
     }
-    
-   
+
+    private String vmReplicaName(Client client, String productionVmId) {
+        BackupImageAccessParams backupImageAccessParams = null;
+        Map<String, Map<String, Object>> vmsInfo = client.getVmInfoMap();
+        Map<String, Object> replicaInfo = vmsInfo.get(productionVmId);
+        return (replicaInfo != null) ? replicaInfo.get(GeneralFalConsts.REPLICA_VM_NAME).toString() : null;
+    }
 
 
     private String accessBackupName(String backup) {
