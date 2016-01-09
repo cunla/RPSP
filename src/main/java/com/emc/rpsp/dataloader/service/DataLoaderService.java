@@ -1,12 +1,9 @@
 package com.emc.rpsp.dataloader.service;
 
-import com.emc.rpsp.rpsystems.SystemSettings;
-
-import java.util.List;
-import java.util.Map;
+import com.emc.rpsp.dataloader.domain.InternalData;
 
 public interface DataLoaderService {
-    List<SystemSettings> populateInternalData(List<Map<String, Object>> fullSettings);
-
+    public InternalData getInternalData();
+    public InternalData populateInternalData(InternalData internalData);
     public String getInternalDataTemplate();
 }

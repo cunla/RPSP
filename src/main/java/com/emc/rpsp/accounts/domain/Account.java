@@ -40,6 +40,10 @@ public class Account implements Serializable {
 	@JsonProperty
 	private List<Long> packageIds = new LinkedList<Long>();
 	
+	@Transient
+	@JsonProperty
+	private List<String> packageNames = new LinkedList<String>();
+	
 
 	@JsonIgnore
 	@JoinTable(name = "T_ACCOUNT_PACKAGES")
@@ -133,8 +137,16 @@ public class Account implements Serializable {
 
 	public void setPackageIds(List<Long> packageIds) {
 		this.packageIds = packageIds;
-	}
+	}	
 	
+	public List<String> getPackageNames() {
+		return packageNames;
+	}
+
+	public void setPackageNames(List<String> packageNames) {
+		this.packageNames = packageNames;
+	}
+
 	public void setAdditionalValues(){
 		if(packageDefinition != null){
 			for(PackageDefinition currPackagedDefinition : packageDefinition){

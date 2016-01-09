@@ -27,6 +27,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Transient
 	@JsonProperty
 	private Long tenantId;
+	
+	@Transient
+	@JsonProperty
+	private String tenantName;
 
 	@NotNull
 	@Size(min = 0, max = 50)
@@ -182,9 +186,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
 	public void setTenantId(Long tenantId) {
 		this.tenantId = tenantId;
+	}	
+	
+	public String getTenantName() {
+		return tenantName;
 	}
-	
-	
+
+	public void setTenantName(String tenantName) {
+		this.tenantName = tenantName;
+	}
+
 	public void setAdditionalValues(){
 		if(account != null){
 			tenantId = account.getId();

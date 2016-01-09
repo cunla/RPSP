@@ -27,6 +27,10 @@ public class PackageDefinition implements Serializable {
     @Transient
     @JsonProperty
     private Long systemId;
+    
+    @Transient
+    @JsonProperty
+    private String systemName;
 
     @Size(min = 0, max = 100)
     @Column(name = "name", length = 100)
@@ -253,6 +257,10 @@ public class PackageDefinition implements Serializable {
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
+    
+    public void addAccount(Account account) {
+        this.accounts.add(account);
+    }
 
     public SystemSettings getSystemSettings() {
         return systemSettings;
@@ -309,9 +317,17 @@ public class PackageDefinition implements Serializable {
 
     public void setSystemId(Long systemId) {
         this.systemId = systemId;
-    }
+    } 
 
-    @Override
+	public String getSystemName() {
+		return systemName;
+	}
+
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
+	}
+
+	@Override
     public String toString() {
         return "Account{" + "id='" + id + '\'' + ", name='" + name + '\''
             + ", label='" + displayName + "}";

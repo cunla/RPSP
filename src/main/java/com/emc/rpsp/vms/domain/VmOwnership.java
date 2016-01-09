@@ -25,6 +25,10 @@ public class VmOwnership {
 	@Transient
 	@JsonProperty
 	private Long tenantId;
+	
+	@Transient
+	@JsonProperty
+	private String tenantName;
 
 	@Column
 	private String vmId;
@@ -84,6 +88,14 @@ public class VmOwnership {
 		this.tenantId = tenantId;
 	}
 	
+	public String getTenantName() {
+		return tenantName;
+	}
+
+	public void setTenantName(String tenantName) {
+		this.tenantName = tenantName;
+	}
+
 	public void setAdditionalValues(){
 		tenantId = account.getId();
 	}

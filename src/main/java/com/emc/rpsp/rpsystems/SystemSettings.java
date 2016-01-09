@@ -84,7 +84,7 @@ public class SystemSettings {
 	private List<PackageDefinition> packages;
     
     @JsonIgnore
-    @OneToMany(mappedBy = "systemSettings")
+    @OneToMany(mappedBy = "systemSettings", cascade = CascadeType.ALL)
     private List<VmBackup> vms;
 
 
@@ -173,9 +173,13 @@ public class SystemSettings {
         return clusters;
     }
 
+    
 
+    public void setClusters(List<ClusterSettings> clusters) {
+		this.clusters = clusters;
+	}
 
-    public List<PackageDefinition> getPackages() {
+	public List<PackageDefinition> getPackages() {
 		return packages;
 	}
 

@@ -1,48 +1,101 @@
-[
-  {
-    "user": "admin",
-    "password": "admin",
-    "ip": "10.83.64.40",
-    "clusterFriendlyNames": {
-      "SFLDB-vrpa-cls01": "Springfield Bank",
-      "BDGT-HRZ-rp-cls01": "BDGT-HRZ"
-    },
-    "accounts": [
-      {
-        "name": "28652",
-        "label": "Springfield bank",
-        "isDrttc": true,
-        "users": [
-          {
+{
+    "systems": [
+        {
+            "name": "Test_System",
+            "user": "admin",
+            "password": "admin",
+            "isDrttc": true,
+            "isMultiTenanctEnabled": false,
+            "testResult": true,
+            "lastTested": 1451236381000,
+            "lastCollected": null,
+            "systemVersion": "4.3(c_adwance.0)",
+            "id": 1,
+            "ip": "10.64.125.131",
+            "clusters": [
+                {
+                    "country": null,
+                    "clusterId": 3794617345752338000,
+                    "clusterName": "bdg-stgA4rpCLS02",
+                    "friendlyName": "London"
+                },
+                {
+                    "country": null,
+                    "clusterId": 2398086092600946000,
+                    "clusterName": "bdg-stgA2rpCLS01",
+                    "friendlyName": "New York"
+                }
+            ]
+        }
+    ],
+    "packages": [
+        {
+            "systemName": "Test_System",
+            "name": "Spring_Gold",
+            "displayName": "Gold",
+            "description": "Gold package description",
+            "rpo": 15,
+            "sourceClusterId": 2398086092600946265,
+            "sourceVcId": "3E5FB03D-44F1-4557-B05E-60B4B1A60242",
+            "sourceDataCenterId": "datacenter-2",
+            "sourceEsxClusterId": "3E5FB03D-44F1-4557-B05E-60B4B1A60242:c7",
+            "sourceEsxId": "421cab79-9ffb-32d1-8b54-1288409617c0",
+            "sourceDatastoreId": "datastore-45",
+            "targetClusterId": 3794617345752337726,
+            "targetVcId": "70EBB7BE-CA55-4D1A-A29A-FE51A41827DE",
+            "targetDataCenterId": "datacenter-2",
+            "targetEsxClusterId": "70EBB7BE-CA55-4D1A-A29A-FE51A41827DE:c7",
+            "targetEsxId": "421c9554-f330-eda3-2b81-8f5dea2f4db2",
+            "targetDatastoreId": "datastore-30",
+            "testNetworkId": "Test Network"
+        },
+        {
+            "systemName": "Test_System",
+            "name": "Spring_Silver",
+            "displayName": "Silver",
+            "description": "Silver package description",
+            "rpo": 30,
+            "sourceClusterId": 2398086092600946265,
+            "sourceVcId": "3E5FB03D-44F1-4557-B05E-60B4B1A60242",
+            "sourceDataCenterId": "datacenter-2",
+            "sourceEsxClusterId": "3E5FB03D-44F1-4557-B05E-60B4B1A60242:c7",
+            "sourceEsxId": "421cab79-9ffb-32d1-8b54-1288409617c0",
+            "sourceDatastoreId": "datastore-45",
+            "targetClusterId": 3794617345752337726,
+            "targetVcId": "70EBB7BE-CA55-4D1A-A29A-FE51A41827DE",
+            "targetDataCenterId": "datacenter-2",
+            "targetEsxClusterId": "70EBB7BE-CA55-4D1A-A29A-FE51A41827DE:c7",
+            "targetEsxId": "421c9554-f330-eda3-2b81-8f5dea2f4db2",
+            "targetDatastoreId": "datastore-30",
+            "testNetworkId": "Test Network"
+        }
+    ],
+    "tenants": [
+        {
+            "name": "28652",
+            "label": "Springfield bank",
+            "packageNames": [
+                "Spring_Gold",
+                "Spring_Silver"
+            ]
+        }
+    ],
+    "users": [
+        {
+            "tenantName": "28652",
             "login": "john.smith@28652",
+			"password": "12345",
             "firstName": "John",
             "lastName": "Smith",
-            "password": "12345"
-          }
-        ],
-        "accountConfigs": [
-          {
-            "clusterId": "6430895962101652902",
-            "vcId": "0AB001D6-7A40-4A81-B542-1DE54CE361A2",
-            "esxId": "421c596e-f73c-6395-b616-2de99477a5c2",
-            "esxClusterId": "0AB001D6-7A40-4A81-B542-1DE54CE361A2:c38",
-            "datastoreId": "datastore-12",
-            "datacenterId": "datacenter-2",
-            "testNetworkId": "testNetworkId",
-            "isProdCluster": true
-          },
-          {
-            "clusterId": "2828594360186652947",
-            "vcId": "53BEAD6A-30E5-40E4-8F0A-EB03CCA8BBA1",
-            "esxId": "421c4f60-0a6e-3838-0a30-75564cf85a56",
-            "esxClusterId": "53BEAD6A-30E5-40E4-8F0A-EB03CCA8BBA1:s10",
-            "datastoreId": "datastore-15",
-            "datacenterId": "datacenter-2",
-            "testNetworkId": "testNetworkId",
-            "isProdCluster": false
-          }
-        ]
-      }
+            "email": null,
+            "fullName": "John Smith"
+        }
+    ],
+    "vms": [
+        {
+            "tenantName": "28652",
+            "vmId": "rekfjhreijf",
+            "vmName": "vm-1"
+        }
     ]
-  }
-]
+}
