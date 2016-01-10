@@ -17,5 +17,14 @@ import java.util.HashSet;
 public class ConsistencyGroupCopyVolumeCreationParams implements Validateable {
 
     private HashSet<BaseVolumeParams> volumeParams;
+    
+    
+    public HashSet<BaseVolumeParams> getVolumeParams()
+    {
+	    if (volumeParams == null) {
+	    	volumeParams = new HashSet<BaseVolumeParams>();
+	    }
+	    return volumeParams;
+    }
 
 }
