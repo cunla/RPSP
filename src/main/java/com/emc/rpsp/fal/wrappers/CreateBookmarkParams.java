@@ -16,7 +16,7 @@ import java.util.HashSet;
 @NoArgsConstructor
 @XmlRootElement
 public class CreateBookmarkParams {
-    private HashSet<ConsistencyGroupUID> groups;
+    private HashSet<ConsistencyGroupUID> groups = new HashSet<>();
     private String bookmarkName;
     private BookmarkConsolidationPolicy consolidationPolicy;
     private SnapshotConsistencyType consistencyType;
