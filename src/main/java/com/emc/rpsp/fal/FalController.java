@@ -1,6 +1,7 @@
 package com.emc.rpsp.fal;
 
-import com.emc.fapi.jaxws.v4_3.FullRecoverPointSettings;
+//import com.emc.fapi.jaxws.v4_3.FullRecoverPointSettings;
+import com.emc.rpsp.fal.commons.FullRecoverPointSettings;
 import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import org.slf4j.Logger;
