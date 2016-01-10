@@ -95,7 +95,7 @@ public class BackupApi extends BaseServiceImpl {
         BackupImageAccessParams params = getImageAccessParams(client, vm.getVmId());
         client.enableLatestImageAccess(params.getClusterId(), params.getGroupId(), params.getCopyId());
         client.verifyCopyImageAccessActivation(params.getClusterId(), params.getGroupId(), params.getCopyId(), GeneralFalConsts.IMAGE_ACCESS_STATUS_RETRY_ATTEMPTS);
-        String vmDrTestName = params.getReplicaName();
+        String vmDrTestName = vmReplicaName(client, vm.getVmId());
         BackupSystem system = vm.getBackupSystem();
         VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
         for (int i = 0; i < 5; ++i) {
