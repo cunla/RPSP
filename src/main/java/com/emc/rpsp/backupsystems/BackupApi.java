@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,12 +41,22 @@ public class BackupApi extends BaseServiceImpl {
         return vms;
     }
 
+    @PostConstruct
+    public void init() {
+        List<VmBackup> backups = vmBackupRepo.findAll();
+        for (VmBackup backup : backups) {
+            backup.setHasTask(false);
+        }
+        vmBackupRepo.save(backups);
+    }
+
     @Scheduled(cron = EVERY_MINUTE)
     public void addTasksFromDb() {
         log.info("Adding tasks from DB");
         List<VmBackup> backups = vmBackupRepo.findAll();
         for (VmBackup backup : backups) {
-            if (!backup.getHasTask()) {
+            boolean hasTask = backup.getHasTask();
+            if (!hasTask) {
                 backup.setHasTask(true);
                 vmBackupRepo.save(backup);
                 GenerateBackupTask task = new GenerateBackupTask(this, backup, vmBackupRepo);
@@ -107,8 +118,16 @@ public class BackupApi extends BaseServiceImpl {
                 break;
             }
         }
+        List<String> vmNames = vSphereApi.vmNames();
+        String backupVmName = currentBackupName(vmName);
+        if (!vmNames.contains(vmDrTestName)) {
+            throw new RpspBackupFailedException(vmName);
+        }
+        if (vmNames.contains(backupVmName)) {
+            backupVmName = backupVmName + "_2";
+        }
         try {
-            vSphereApi.cloneVM(vmDrTestName, system.getBackupFolder(), currentBackupName(vmName), system.getBackupDatastore(), false);
+            vSphereApi.cloneVM(vmDrTestName, system.getBackupFolder(), backupVmName, system.getBackupDatastore(), false);
         } catch (Exception e) {
             log.warn("Failed to backup/clone VM {}", vmName);
             throw new RpspBackupFailedException(vmName);
