@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class VmwMain {
     private static final Logger log = LoggerFactory.getLogger(VmwMain.class);
 
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
         String vcenter = "https://10.64.125.35/sdk";
         String uname = "administrator@vsphere.local";
         String pwd = "DmBU@EMC!2014";
@@ -50,5 +50,5 @@ public class VmwMain {
             e.printStackTrace();
         }
         System.out.println("Clone deleted");
-    }
+    }*/
 }
