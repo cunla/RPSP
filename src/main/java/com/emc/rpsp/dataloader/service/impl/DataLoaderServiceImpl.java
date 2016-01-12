@@ -116,10 +116,12 @@ public class DataLoaderServiceImpl implements DataLoaderService {
 		
 		//vms
 		List<VmOwnership> vms = internalData.getVms();
-		for(VmOwnership vmOwnership : vms){
-			Account tenant = accountsMap.get(vmOwnership.getTenantName());
-			vmOwnership.setAccount(tenant);
-			tenant.addVm(vmOwnership);
+		if(vms != null){
+			for(VmOwnership vmOwnership : vms){
+				Account tenant = accountsMap.get(vmOwnership.getTenantName());
+				vmOwnership.setAccount(tenant);
+				tenant.addVm(vmOwnership);
+			}
 		}
 		
 		//save new configuration
