@@ -28,9 +28,4 @@ public class ConsistencyGroupLinkPolicyTemplate extends BasePolicyTemplate {
         super(name);
         this.policy = policy;
     }
-
-    /*public static void main(String[] args) {
-        ConsistencyGroupLinkPolicyTemplate a = new ConsistencyGroupLinkPolicyTemplate("blat", new ConsistencyGroupLinkPolicy());
-        System.out.println(a);
-    }*/
 }
