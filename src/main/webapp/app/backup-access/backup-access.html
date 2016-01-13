@@ -6,6 +6,22 @@
 </div>
 <div class="modal-body">
 
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 radio" >
+            <label>
+                <input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess != 'Disabled'" value="snapshot">
+                {{'BACKUP-ACCESS.BACKUP-LIST' | translate}}
+                </input>
+            </label>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 margin-top">
+            <select ng-model="selectedBackup"
+                    ng-options="b for b in backups"
+                    ng-disabled="status != 'Disabled'"
+                    class="form-control">
+            </select>
+        </div>
+    </div>
 
 </div>
 <div class="modal-footer centered-text div-grey">

@@ -76,7 +76,7 @@ public class BackupApi extends BaseServiceImpl {
     public List<String> fetchVmBackupsList(List<String> backups, String vmName) {
         List<String> res = new LinkedList<>();
         for (String backup : backups) {
-            if (backup.startsWith(vmName))
+            if (backup.startsWith(vmName+"_"))
                 res.add(backup);
         }
         return res;

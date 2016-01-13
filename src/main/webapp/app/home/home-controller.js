@@ -60,7 +60,10 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
         modalInstance = $modal.open({
             templateUrl: 'app/backup-access/backup-access.html',
             controller: 'BackupAccess',
-            windowClass: 'backup-access-modal'
+            windowClass: 'backup-access-modal',
+            resolve: {
+                vmName: function(){return vmName;}
+            }
         });
 
         modalInstance.result.then(function () {

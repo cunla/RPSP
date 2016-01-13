@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by morand3 on 1/3/2016.
@@ -60,6 +61,16 @@ public class BackupRestServices {
         Task task = new DisableBackupAccessTask(backupApi, backup.getBackupSystem(), backupName);
         BackupWorker.addTask(task);
         return new ResponseEntity<Task>(task, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/backup/{vm}/list",
+        method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RpspAudited(action = AuditConsts.ENABLE_BACKUP_ACCESS)
+    @ResponseBody
+    public ResponseEntity<List<String>> listBackups(
+        @PathVariable("vm") @RpspAuditSubject(AuditConsts.BACKUP_NAME) String vmName) {
+        List<String> backupList = backupApi.getBackupsList(vmName);
+        return new ResponseEntity<>(backupList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/backup/tasks",

@@ -1,9 +1,15 @@
 (function () {
     angular.module('home')
-        .controller('BackupAccess', ['$scope', '$modal', '$modalInstance', 'backupSrv', BackupAccess]);
-    function BackupAccess($scope, $modal, $modalInstance, backupSrv) {
+        .controller('BackupAccess', ['$scope', '$modal', '$modalInstance', 'backupSrv', 'vmName', BackupAccess]);
+    function BackupAccess($scope, $modal, $modalInstance, backupSrv, vmName) {
+        $scope.vmName = vmName;
+        $scope.status = "Disabled";
 
-        $scope.cancel = function(){
+        backupSrv.backupsList(vmName).then(function (res) {
+            $scope.backups = res.data;
+        })
+
+        $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         }
     }

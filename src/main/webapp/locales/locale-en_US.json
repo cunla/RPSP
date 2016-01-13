@@ -104,6 +104,7 @@
     "BACKUP-ACCESS": {
         "MSG": "Backup Access",
         "ENABLE_MSG": "Enable",
-        "DISABLE_MSG": "Disable"
+        "DISABLE_MSG": "Disable",
+        "BACKUP-LIST":"List of backups"
     }
 }
