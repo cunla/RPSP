@@ -56,7 +56,8 @@ public class BackupApi extends BaseServiceImpl {
         List<VmBackup> backups = vmBackupRepo.findAll();
         for (VmBackup backup : backups) {
             boolean hasTask = backup.getHasTask();
-            if (!hasTask) {
+            boolean enabled = backup.getEnabled();
+            if (!hasTask && enabled) {
                 backup.setHasTask(true);
                 vmBackupRepo.save(backup);
                 GenerateBackupTask task = new GenerateBackupTask(this, backup, vmBackupRepo);
@@ -98,24 +99,26 @@ public class BackupApi extends BaseServiceImpl {
         vmBackupRepo.saveAndFlush(backup);
     }
 
-
     public void backupVm(VmBackup vm) {
-//        VmBackup vm = repository.findVmByName(vmName);
         String vmName = vm.getVmName();
         Client client = new Client(vm.getSystemSettings());
         BackupImageAccessParams params = getImageAccessParams(client, vm.getVmId());
+        log.debug("Enabling image access for CG {} to backup vm {}", params.getGroupId(), vm.getVmName());
         client.enableLatestImageAccess(params.getClusterId(), params.getGroupId(), params.getCopyId());
         client.verifyCopyImageAccessActivation(params.getClusterId(), params.getGroupId(), params.getCopyId(), GeneralFalConsts.IMAGE_ACCESS_STATUS_RETRY_ATTEMPTS);
         String vmDrTestName = vmReplicaName(client, vm.getVmId());
+        log.debug("Image access for CG {} enabled, cloning vm {}", params.getGroupId(), vmDrTestName);
         BackupSystem system = vm.getBackupSystem();
         VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
         for (int i = 0; i < 5; ++i) {
+            if (vSphereApi.vmNames().contains(vmDrTestName)) {
+                log.debug("Image access VM {} exists, proceeding to clone", vmDrTestName);
+                break;
+            }
             try {
+                log.debug("Image access VM {} does not exist, waiting...", vmDrTestName);
                 Thread.sleep(60000);
             } catch (InterruptedException e) {
-            }
-            if (vSphereApi.vmNames().contains(vmDrTestName)) {
-                break;
             }
         }
         List<String> vmNames = vSphereApi.vmNames();
@@ -127,7 +130,9 @@ public class BackupApi extends BaseServiceImpl {
             backupVmName = backupVmName + "_2";
         }
         try {
+            log.debug("Cloning VM {} to VM {}", vmDrTestName, backupVmName);
             vSphereApi.cloneVM(vmDrTestName, system.getBackupFolder(), backupVmName, system.getBackupDatastore(), false);
+            log.debug("Finished cloning VM {} to VM {}", vmDrTestName, backupVmName);
         } catch (Exception e) {
             log.warn("Failed to backup/clone VM {}", vmName);
             throw new RpspBackupFailedException(vmName);
