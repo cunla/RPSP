@@ -60,7 +60,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
         if (!vm.backupActive) {
             return;
         }
-        modalInstance = $modal.open({
+        var modalInstance = $modal.open({
             templateUrl: 'app/backup-access/backup-access.html',
             controller: 'BackupAccess',
             windowClass: 'backup-access-modal',
