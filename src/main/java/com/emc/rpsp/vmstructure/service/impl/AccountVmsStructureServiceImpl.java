@@ -2,6 +2,7 @@ package com.emc.rpsp.vmstructure.service.impl;
 
 //import com.emc.fapi.jaxws.v4_3.*;
 import com.emc.rpsp.accounts.domain.Account;
+import com.emc.rpsp.backupsystems.BackupSystemsRepository;
 import com.emc.rpsp.backupsystems.VmBackup;
 import com.emc.rpsp.backupsystems.VmBackupRepository;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
@@ -37,6 +38,9 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
     @Autowired
     private VmBackupRepository backupRepository;
 
+    @Autowired
+    private BackupSystemsRepository backupSystemsRepo;
+
     @Override
     public AccountVmsStructure getAccountVmsStrucure() {
 
@@ -49,7 +53,8 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
             Account account = getCurrentUser().getAccount();
             accountVmsStructure = getAccountData(account);
         }
-
+        Boolean backupSystemExists = !backupSystemsRepo.findAll().isEmpty();
+        accountVmsStructure.setBackupActive(backupSystemExists);
         return accountVmsStructure;
     }
 
