@@ -54,6 +54,20 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 
     $scope.getVmStructureData();
 
+    $scope.openBackupAccessModal=openBackupAccessModal;
+
+    function openBackupAccessModal(vmName){
+        modalInstance = $modal.open({
+            templateUrl: 'app/backup-access/backup-access.html',
+            controller: 'BackupAccess',
+            windowClass: 'backup-access-modal'
+        });
+
+        modalInstance.result.then(function () {
+            {
+            }
+        });
+    }
 
     $scope.openImageAccessModal = function () {
 

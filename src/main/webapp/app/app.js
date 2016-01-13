@@ -1,15 +1,19 @@
-var app = angular.module('home',
-    ['pascalprecht.translate', 'locale', 'ui.bootstrap', 'btorfs.multiselect','tableSort','ngRoute']);
-app.run(['localeService', function(localeService){
-	localeService.setLocale();
-}]);
+(function () {
+    var app = angular.module('home',
+        ['pascalprecht.translate', 'locale', 'ui.bootstrap', 'btorfs.multiselect', 'tableSort', 'ngRoute']);
+    angular.module('home')
+        .run(['localeService', function (localeService) {
+            localeService.setLocale();
+        }]);
 
 
-app.config(function ($translateProvider) {
+    angular.module('home')
+        .config(function ($translateProvider) {
 
-  $translateProvider.useStaticFilesLoader({
-    prefix: 'locales/locale-',
-    suffix: '.json'
-  });
-  $translateProvider.preferredLanguage('en_US');
-});
+            $translateProvider.useStaticFilesLoader({
+                prefix: 'locales/locale-',
+                suffix: '.json'
+            });
+            $translateProvider.preferredLanguage('en_US');
+        });
+})()
