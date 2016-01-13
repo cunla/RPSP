@@ -21,14 +21,14 @@ public class VmBackup {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private BackupSystem backupSystem;
-    
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private SystemSettings systemSettings;
-    
-    
-    
+
+
+
     @Column
     private String vmName;
     @Column
@@ -125,6 +125,6 @@ public class VmBackup {
 	public void setSchedule(String schedule) {
 		this.schedule = schedule;
 	}
-    
-    
+
+
 }
