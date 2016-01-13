@@ -65,7 +65,7 @@
                     <div class="msg-alert-info all-borders">
                         <div class="centered-text">{{'HOME.NEW_MESSAGES_MSG' | translate}} 2</div>
                         <div class="centered-text">
-                            <white-space>      </white-space>
+                            <white-space></white-space>
                         </div>
                     </div>
                 </div>
@@ -160,18 +160,6 @@
                                     <white-space>&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
                                     {{vm.name}}
                                 </div>
-                                <!--<div ng-if="row.id == 'new-section'">-->
-                                <!--<white-space>      </white-space>-->
-                                <!--</div>-->
-                                <!--<div ng-if="row.id == 'new-section'">-->
-                                <!--<white-space></white-space>-->
-                                <!--</div>-->
-                                <!--<div ng-if="row.id == 'new-section'">-->
-                                <!--<white-space></white-space>-->
-                                <!--</div>-->
-                                <!--<div ng-if="row.id == 'new-section'">-->
-                                <!--<white-space></white-space>-->
-                                <!--</div>-->
                             </td>
 
                             <td>{{row.productionCluster.name}}</td>
@@ -186,9 +174,13 @@
                                 {{getImageAccessIndicator(row.replicaClusters[0].groupCopySettings[0].imageAccess)}}
                             </td>
                             <td ng-show="backupActive">
-                                <div>.</div>
-                                <div ng-hide="row.hideChildren" ng-repeat="vm in row.vms" vmid="{{vm.id}}">
-                                    <i class="fa {{vm.backupActive ? 'fa-check':'fa-close'}}"></i>
+                                <div class="">.</div>
+                                <div ng-hide="row.hideChildren"
+                                     ng-repeat="vm in row.vms"
+                                     vmid="{{vm.id}}"
+                                >
+                                    <i class="fa {{vm.backupActive ? 'fa-check':'fa-close'}}"
+                                       ng-click="openBackupAccessModal(vm.name)"></i>
                                     <span ng-show="vm.backupActive">{{vm.lastBackup | date}}</span>
                                 </div>
                             </td>
@@ -268,5 +260,7 @@
 <script src="app/home/dnd-directives.js"></script>
 <script src="app/audit/audit-controller.js"></script>
 <script src="app/audit/audit-service.js"></script>
+<script src="app/backup-access/backup-access.service.js"></script>
+<script src="app/backup-access/backup-access.ctrl.js"></script>
 </body>
 </html>
