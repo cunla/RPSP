@@ -178,7 +178,7 @@
                                 <div ng-hide="row.hideChildren"
                                      ng-repeat="vm in row.vms"
                                      vmid="{{vm.id}}"
-                                     ng-click="openBackupAccessModal(vm.name)"
+                                     ng-click="openBackupAccessModal(vm)"
                                      title="Click to access backup"
                                 >
                                     <i class="fa {{vm.backupActive ? 'fa-check':'fa-close'}}"></i>

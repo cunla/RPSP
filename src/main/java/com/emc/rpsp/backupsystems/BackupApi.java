@@ -5,6 +5,7 @@ import com.emc.rpsp.backupsystems.tasks.GenerateBackupTask;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.exceptions.RpspBackupFailedException;
 import com.emc.rpsp.exceptions.RpspBackupSystemNotSetException;
+import com.emc.rpsp.exceptions.RpspBackupVmNotFoundException;
 import com.emc.rpsp.exceptions.RpspParamsException;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.fal.GeneralFalConsts;
@@ -69,6 +70,9 @@ public class BackupApi extends BaseServiceImpl {
 
     public List<String> getBackupsList(String vmName) {
         VmBackup vm = repository.findVmByName(vmName);
+        if (null == vm) {
+            throw new RpspBackupVmNotFoundException(vmName);
+        }
         List<String> vms = getBackupsList(vm.getBackupSystem());
         return fetchVmBackupsList(vms, vmName);
     }
@@ -76,7 +80,7 @@ public class BackupApi extends BaseServiceImpl {
     public List<String> fetchVmBackupsList(List<String> backups, String vmName) {
         List<String> res = new LinkedList<>();
         for (String backup : backups) {
-            if (backup.startsWith(vmName+"_"))
+            if (backup.startsWith(vmName + "_"))
                 res.add(backup);
         }
         return res;
