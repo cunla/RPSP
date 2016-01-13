@@ -61,7 +61,7 @@
         "DISABLE_MSG": "Stop DR Test"
     },
     "PROTECT-UNPROTECT": {
-        "BACKUP_TITLE":"Backup",
+        "BACKUP_TITLE": "Backup",
         "BACKUP_MSG": "Backup",
         "BACKUP_PACKAGES": "Schedule",
         "ADD_VM_MSG": "Add VM:",
@@ -100,5 +100,10 @@
         "ENTITY": "Entity",
         "STATUS": "Status",
         "DETAILS": "Details"
+    },
+    "BACKUP-ACCESS": {
+        "MSG": "Backup Access",
+        "ENABLE_MSG": "Enable",
+        "DISABLE_MSG": "Disable"
     }
 }
