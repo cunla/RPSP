@@ -13,6 +13,7 @@ import com.emc.rpsp.vms.domain.VmOwnership;
 
 public interface BaseService {
 	public Client getClient();
+	public Client getClient(SystemSettings systemSettings);
 	public AbstractCurrentUser getCurrentUser();	
 	public List<Account> findAllAccounts();
 	public List<SystemSettings> findAllSystems();

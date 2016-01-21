@@ -15,12 +15,15 @@ import com.emc.rpsp.rpsystems.ClusterSettings;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.service.UserService;
 import com.emc.rpsp.vms.domain.VmOwnership;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class BaseServiceImpl implements BaseService {
@@ -49,6 +52,13 @@ public class BaseServiceImpl implements BaseService {
             List<SystemSettings> systemSettings = findSystemsByAccount(account);
             client = new Client(systemSettings.get(0));
         }
+        return client;
+    }
+    
+    
+    @Override
+    public Client getClient(SystemSettings systemSettings) {
+        Client client = new Client(systemSettings);
         return client;
     }
 
@@ -112,6 +122,20 @@ public class BaseServiceImpl implements BaseService {
 
     public List<ClusterSettings> findClustersBySystem(SystemSettings systemSettings) {
         return systemsDataService.findClustersBySystem(systemSettings);
+    }
+    
+    public SystemSettings findSystemByCluster(Long clusterId) {
+    	List<SystemSettings> systems = systemsDataService.findAll();
+    	Stream<SystemSettings> systemsStream =  systems
+				    								.stream()
+				    								.filter(s -> s.getClusters()
+					    									.stream()
+					    									.map(ClusterSettings::getClusterId)
+					    									.collect(Collectors.toList())
+					    									.contains(clusterId));
+    	
+    	return systemsStream.collect(Collectors.toList()).get(0);
+    	
     }
 
     @Override
