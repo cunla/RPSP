@@ -37,20 +37,24 @@ public class SettingsResource {
 
 	@RpspAudited
 	@RequestMapping(value = "/rest/systems", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<SystemSettings>> findSystems() {
+	public ResponseEntity<List<SystemSettings>> findSystems(@RequestParam(value = "includeVirtualConfig", required=false, defaultValue = "false") Boolean includeVirtualConfig) {
 		List<SystemSettings> systemsSettings = systemConnectionInfoRepository
 				.findAll();
-		addVirtualConfigurationInfo(systemsSettings);
+		if(includeVirtualConfig){
+			addVirtualConfigurationInfo(systemsSettings);
+		}
 		return new ResponseEntity<>(systemsSettings, HttpStatus.OK);
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/rest/systems/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<SystemSettings> findSystem(@PathVariable("id") Long id) {
+	public ResponseEntity<SystemSettings> findSystem(@PathVariable("id") Long id, @RequestParam(value = "includeVirtualConfig", required=false, defaultValue = "false") Boolean includeVirtualConfig) {
 		log.debug("Testing systemSettings with id {}", id);
 		SystemSettings systemSettings = systemConnectionInfoRepository
 				.findOne(id);
-		addVirtualConfigurationInfo(systemSettings);
+		if(includeVirtualConfig){
+			addVirtualConfigurationInfo(systemSettings);
+		}
 		return new ResponseEntity<>(systemSettings, HttpStatus.OK);
 	}
 
