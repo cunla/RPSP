@@ -100,8 +100,10 @@ The RPSP Web client can be accessed in: http://hostname:9999/rpsp (9999 is the d
 The following methods are supported in the RPSP REST API, with base being http://*hostname*:*port*/rpsp
 
 1. RP systems API *(admin permissions only)*
-     - `GET /rest/systems` Get list of all RP4VM systems installed
-     - `GET /rest/systems/{id}` Get specific RP4VM system
+     - `GET /rest/systems` Get list of all RP4VM systems installed. Optional query parameter includeVirtualConfig is supported to return virtual configuration information for each cluster. 
+Possible values are true or false - default is false. 
+     - `GET /rest/systems/{id}` Get specific RP4VM system. Optional query parameter includeVirtualConfig is supported to return virtual configuration information for each cluster. 
+Possible values are true or false - default is false. 
      - `GET /rest/testSystem/{id}` Test connectivity to system with specific ID
      - `POST /rest/addSystem` Add RP4VM system with JSON structure
          
@@ -158,14 +160,17 @@ The following methods are supported in the RPSP REST API, with base being http:/
      - `POST /vmownership/{id}`  Update specific vm 
      - `DELETE /vmownership/{id}` Delete specific vm 
      
-5. VMs API *(admin permissions only)*
+5. Internal data API *(admin permissions only)*
      - `GET /internal-data/template` Get RPSP full configuration template. The response body serves as example 
 of which data should be sent to configure RPSP in a single REST call. 
      - `POST /internal-data`  Configures RPSP in a single REST call. The body structure should be the same as return
 from /internal-data/template. 
      - `GET /internal-data` Returns the current RPSP configuration. 
+     
+6. Virtual configuration API *(admin permissions only)*
+     - `GET /virtualconfig/clusters/{id}` Get virtual configuration for the cluster specified by cluster id.     
 
-6. User actions
+7. User actions
     - `POST /login-action` Login with user
         Headers: `Content-Type: application/x-www-form-urlencoded`
         Body example: `username=user@account&password=xxxx`
