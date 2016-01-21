@@ -157,8 +157,15 @@ The following methods are supported in the RPSP REST API, with base being http:/
      - `POST /vmownership?accountId =”your-account-id”` Create vm under specific account 
      - `POST /vmownership/{id}`  Update specific vm 
      - `DELETE /vmownership/{id}` Delete specific vm 
+     
+5. VMs API *(admin permissions only)*
+     - `GET /internal-data/template` Get RPSP full configuration template. The response body serves as example 
+of which data should be sent to configure RPSP in a single REST call. 
+     - `POST /internal-data`  Configures RPSP in a single REST call. The body structure should be the same as return
+from /internal-data/template. 
+     - `GET /internal-data` Returns the current RPSP configuration. 
 
-5. User actions
+6. User actions
     - `POST /login-action` Login with user
         Headers: `Content-Type: application/x-www-form-urlencoded`
         Body example: `username=user@account&password=xxxx`
