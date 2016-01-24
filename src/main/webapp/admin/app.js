@@ -1,5 +1,5 @@
 'use strict';
-
+(function(){
 /**
  * @ngdoc overview
  * @name ngmaterialApp
@@ -57,7 +57,7 @@ var app = angular
                     views: {
                         'menuContent': {
                             templateUrl: "views/packages/packages.html",
-                            controller: 'MainCtrl'
+                            controller: 'Packages'
                         }
                     }
                 })
@@ -117,3 +117,4 @@ app.controller('MainCtrl', ['$scope', '$location',
     function ($scope, $location) {
 
     }]);
+})()

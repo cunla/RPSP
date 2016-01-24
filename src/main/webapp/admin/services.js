@@ -1,4 +1,5 @@
-app.service('RPSP', ['$http', '$q',
+angular.module('adminApp')
+    .service('RPSP', ['$http', '$q',
     function ($http, $q) {
         return {
             settings: function () {
