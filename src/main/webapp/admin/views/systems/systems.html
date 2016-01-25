@@ -10,20 +10,15 @@
         </md-button>
     </section>
     <section layout="column">
-        <div>
             <h3>Disaster Recovery <b>to</b> the cloud</h3>
-        </div>
-        <div>
+
             <mdt-table>
-                <!--<thead>-->
                 <mdt-header-row>
                     <mdt-column align-rule="left">System Name</mdt-column>
                     <mdt-column align-rule="left">RP Cluster IP address</mdt-column>
                     <mdt-column align-rule="left">RP Cluster User</mdt-column>
-                    <mdt-column align-rule="left" width="50%">RP Clusters</mdt-column>
+                    <mdt-column align-rule="left" flex>RP Clusters</mdt-column>
                 </mdt-header-row>
-                <!--</thead>-->
-                <!--<tbody>-->
                 <mdt-row ng-repeat="system in config.systems">
                     <mdt-cell>{{system.name}}</mdt-cell>
 
@@ -31,10 +26,7 @@
                     <mdt-cell>{{system.user}}</mdt-cell>
                     <mdt-cell>xxx</mdt-cell>
                 </mdt-row>
-                <!--</md-row>-->
-                <!--</tbody>-->
             </mdt-table>
-        </div>
     </section>
     <section layout="column">
         <div layout="row">
