@@ -2,67 +2,81 @@
     <md-progress-circular md-mode="indeterminate" ng-show="loading"></md-progress-circular>
 </div>
 <div layout="column" layout-align="center center" ng-hide="loading">
-    <h2>List of RecoverPoint systems connected to the Self-Service Portal</h2>
-    <md-data-table-container>
-        <h3>Disaster Recovery <b>to</b> the cloud</h3>
-        <table md-data-table md-progress="deferred">
-            <thead md-order="query.order" md-trigger="onOrderChange">
-            <tr>
-                <th name="System Name" unit="" order-by="name"></th>
-                <th name="RP Cluster IP address"></th>
-                <th name="RP Cluster User"></th>
-                <th name="RP Clusters" width="50%"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr md-auto-select ng-repeat="system in config.systems">
-                <td>{{system.name}}</td>
+    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
 
-                <td>{{system.ip}}</td>
-                <td>{{system.user}}</td>
-                <td>xxx</td>
-            </tr>
-            </md-row>
-            </tbody>
-        </table>
+        <h2>List of RecoverPoint systems connected to the Self-Service Portal</h2>
+        <md-button class="md-fab" aria-label="New system" ng-click="showDialog()">
+            <md-icon md-svg-src="img/icons/cake.svg"></md-icon>
+        </md-button>
+    </section>
+    <section layout="column">
+        <div>
+            <h3>Disaster Recovery <b>to</b> the cloud</h3>
+        </div>
+        <div>
+            <table>
+                <thead>
+                <tr>
+                    <th name="System Name" unit="" order-by="name"></th>
+                    <th name="RP Cluster IP address"></th>
+                    <th name="RP Cluster User"></th>
+                    <th name="RP Clusters" width="50%"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="system in config.systems">
+                    <td>{{system.name}}</td>
 
-        <h3>Dissaster Recovery <b>in</b> the cloud</h3>
-        <table md-data-table md-progress="deferred">
-            <thead md-order="query.order" md-trigger="onOrderChange">
-            <tr>
-                <th name="System Name" unit="" order-by="name"></th>
+                    <td>{{system.ip}}</td>
+                    <td>{{system.user}}</td>
+                    <td>xxx</td>
+                </tr>
+                </md-row>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section layout="column">
+        <div layout="row">
+            <h3>Dissaster Recovery <b>in</b> the cloud</h3>
+        </div>
+        <div layout="row">
+            <table>
+                <thead md-trigger="onOrderChange">
+                <tr>
+                    <th name="System Name" unit="" order-by="name"></th>
 
-                <th name="MT" title="Multi Tenancy"></th>
-                <th name="RP Cluster IP address"></th>
-                <th name="RP Cluster User"></th>
-                <th name="RP Clusters" width="50%"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr md-auto-select ng-repeat="system in config.systems">
-                <td>{{system.name}}</td>
+                    <th name="MT" title="Multi Tenancy"></th>
+                    <th name="RP Cluster IP address"></th>
+                    <th name="RP Cluster User"></th>
+                    <th name="RP Clusters" width="50%"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="system in config.systems">
+                    <td>{{system.name}}</td>
 
-                <td>{{system.multitenancy}}</td>
-                <td>{{system.ip}}</td>
-                <td>{{system.user}}</td>
-                <td>
-                    <div class="row" ng-repeat="cluster in system.clusters">
-                        <!--<span class="col-sm-4">{{cluster.clusterId}}</span>-->
-                        <span class="col-sm-4">{{cluster.clusterName}}</span>
+                    <td>{{system.multitenancy}}</td>
+                    <td>{{system.ip}}</td>
+                    <td>{{system.user}}</td>
+                    <td>
+                        <div class="row" ng-repeat="cluster in system.clusters">
+                            <!--<span class="col-sm-4">{{cluster.clusterId}}</span>-->
+                            <span class="col-sm-4">{{cluster.clusterName}}</span>
                     <span class="col-sm-4">
                        {{cluster.friendlyName|| 'Add name'}}</span>
                     <span class="col-sm-4">
                         <a href="#"
                            title="Define the billing entity for this cluster. The country can be configured per vRPA cluster"
                            onaftersave="updateCluster(system.id,cluster)">{{cluster.country ||'Set country'}}</a></span>
-                    </div>
-                </td>
-            </tr>
-            </md-row>
-            </tbody>
-        </table>
-
-    </md-data-table-container>
+                        </div>
+                    </td>
+                </tr>
+                </md-row>
+                </tbody>
+            </table>
+        </div>
+    </section>
     <pre>
             {{json | json:spacing}}
     </pre>
