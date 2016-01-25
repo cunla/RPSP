@@ -6,7 +6,7 @@
 
         <h2>List of RecoverPoint systems connected to the Self-Service Portal</h2>
         <md-button class="md-fab" aria-label="New system" ng-click="showDialog()">
-            <md-icon md-svg-src="img/icons/cake.svg"></md-icon>
+            <ng-md-icon icon="more_vert" style="fill:white"></ng-md-icon>
         </md-button>
     </section>
     <section layout="column">
@@ -14,26 +14,26 @@
             <h3>Disaster Recovery <b>to</b> the cloud</h3>
         </div>
         <div>
-            <table>
-                <thead>
-                <tr>
-                    <th name="System Name" unit="" order-by="name"></th>
-                    <th name="RP Cluster IP address"></th>
-                    <th name="RP Cluster User"></th>
-                    <th name="RP Clusters" width="50%"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="system in config.systems">
-                    <td>{{system.name}}</td>
+            <mdt-table>
+                <!--<thead>-->
+                <mdt-header-row>
+                    <mdt-column align-rule="left">System Name</mdt-column>
+                    <mdt-column align-rule="left">RP Cluster IP address</mdt-column>
+                    <mdt-column align-rule="left">RP Cluster User</mdt-column>
+                    <mdt-column align-rule="left" width="50%">RP Clusters</mdt-column>
+                </mdt-header-row>
+                <!--</thead>-->
+                <!--<tbody>-->
+                <mdt-row ng-repeat="system in config.systems">
+                    <mdt-cell>{{system.name}}</mdt-cell>
 
-                    <td>{{system.ip}}</td>
-                    <td>{{system.user}}</td>
-                    <td>xxx</td>
-                </tr>
-                </md-row>
-                </tbody>
-            </table>
+                    <mdt-cell>{{system.ip}}</mdt-cell>
+                    <mdt-cell>{{system.user}}</mdt-cell>
+                    <mdt-cell>xxx</mdt-cell>
+                </mdt-row>
+                <!--</md-row>-->
+                <!--</tbody>-->
+            </mdt-table>
         </div>
     </section>
     <section layout="column">

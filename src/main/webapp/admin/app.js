@@ -17,8 +17,7 @@ var app = angular
         'ngResource',
         'ngRoute',
         'ngSanitize',
-        'ngTouch',
-        'ngMaterial', 'ui.router', 'ngMdIcons'
+        'ngMaterial', 'ui.router', 'ngMdIcons','mdDataTable'
     ])
     .config(
         function ($stateProvider, $urlRouterProvider) {

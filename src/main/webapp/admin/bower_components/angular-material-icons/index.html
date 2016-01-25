@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Angular Material Icons</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
     <script src="angular-material-icons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/SVG-Morpheus/0.1.8/svg-morpheus.js"></script>
     <script src="demo.js"></script>
@@ -15,6 +15,16 @@
         @import url(https://fonts.googleapis.com/css?family=RobotoDraft&lang=en);
         ng-md-icon {
             fill: white;
+            -webkit-transition: fill 750ms ease-in-out;
+            -moz-transition: fill 750ms ease-in-out;
+            -o-transition: fill 750ms ease-in-out;
+            transition: fill 750ms ease-in-out;
+        }
+        ng-md-icon > svg {
+            -webkit-transition: width 750ms ease-in-out, height 750ms ease-in-out;
+            -moz-transition: width 750ms ease-in-out, height 750ms ease-in-out;
+            -o-transition: width 750ms ease-in-out, height 750ms ease-in-out;
+            transition: width 750ms ease-in-out, height 750ms ease-in-out;
         }
         body {
             font-family: 'RobotoDraft', Arial, sans-serif;
@@ -53,16 +63,17 @@
     </style>
 </head>
 
-<body ng-app="demoapp" ng-controller="democtrl">
+<body ng-app="demoapp" ng-controller="democtrl" ng-strict-di>
 
     <!-- GitHub ribbon -->
     <a href="https://github.com/klarsys/angular-material-icons"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
 
-    <h1>Angular Material Icons v0.4.0</h1>
+    <h1>Angular Material Icons v0.6.0</h1>
     AngularJS directive to use Material Design icons with custom fill-color and size.
     <ul>
         <li>For production, use minified version directly from CDN:
-            <br><code>&lt;script src="//cdn.jsdelivr.net/angular-material-icons/0.4.0/angular-material-icons.min.js"&gt;&lt;/script&gt;</code>
+            <!-- https://www.cdnperf.com/#cdnjs,jsdelivr/https/90 -->
+            <br><code>&lt;script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.6.0/angular-material-icons.min.js"&gt;&lt;/script&gt;</code>
             <br>
             <br>
             For other purposes, project files are available via <a href="#" ng-click="command='bower install angular-material-icons';">bower</a> / <a href="#" ng-click="command='npm install angular-material-icons';">npm</a> or can be cloned directly from <a href="#" ng-click="command='git clone https://github.com/klarsys/angular-material-icons.git';">github</a>.
@@ -77,30 +88,64 @@
             <br>
             <div><ng-md-icon icon="send"></ng-md-icon><br>icon="send"</div>
             <div><ng-md-icon icon="send" style="fill: pink"></ng-md-icon><br>icon="send"<br>style="fill: pink"</div>
-            <div><ng-md-icon icon="{{icon}}" style="fill: {{fill}}"></ng-md-icon><br>icon="{{icon}}"<br>style="fill: {{fill}}"</div>
+            <div><ng-md-icon icon="{{icon}}" ng-attr-style="fill: {{fill}}"></ng-md-icon><br>icon="{{icon}}"<br>style="fill: {{fill}}"</div>
             <div><ng-md-icon icon="send" style="fill: #abcdef"></ng-md-icon><br>icon="send"<br>style="fill: #abcdef"</div>
             <br>
-            <div><ng-md-icon icon="{{icon}}" style="fill: {{fill}}" size="20"></ng-md-icon><br>size="20"</div>
-            <div><ng-md-icon icon="{{icon}}" style="fill: {{fill}}"></ng-md-icon><br>-- no size --<br>(default is 24)</div>
-            <div><ng-md-icon icon="{{icon}}" style="fill: {{fill}}" size="{{size}}"></ng-md-icon><br>size="{{size}}"</div>
-            <div><ng-md-icon icon="{{icon}}" style="fill: {{fill}}" size="64"></ng-md-icon><br>size="64"</div>
+            <div><ng-md-icon icon="{{icon}}" ng-attr-style="fill: {{fill}}" size="20"></ng-md-icon><br>size="20"</div>
+            <div><ng-md-icon icon="{{icon}}" ng-attr-style="fill: {{fill}}"></ng-md-icon><br>-- no size --<br>(default is 24)</div>
+            <div><ng-md-icon icon="{{icon}}" ng-attr-style="fill: {{fill}}" size="{{size}}"></ng-md-icon><br>size="{{size}}"</div>
+            <div><ng-md-icon icon="{{icon}}" ng-attr-style="fill: {{fill}}" size="64"></ng-md-icon><br>size="64"</div>
             <br>
         </li>
-        <li>Optional: Include <a href="https://github.com/alexk111/SVG-Morpheus" target="_blank">SVG-Morpheus</a> in your project and changes to icon will go through delightful morphing as seen above.
+        <li>This directive is tested on Chrome, Firefox, Safari and Edge.
+            <br>For IE, use <code>ng-attr-style</code> instead of <code>style</code>. Also refer AngularJS documentation on <a href="https://docs.angularjs.org/guide/ie" target="_blank">IE Compatibility</a>.
+        </li>
+        <li>Optional: Include <a href="https://github.com/alexk111/SVG-Morpheus" target="_blank">SVG-Morpheus</a> in your project and changes to <code>icon</code> attribute that you do through your controller will go through delightful morphing as seen above.
+            <br>Refer code for this page (index.html and demo.js) for details.
             <br><code>&lt;script src="//cdnjs.cloudflare.com/ajax/libs/SVG-Morpheus/0.1.8/svg-morpheus.js"&gt;&lt;/script&gt;</code>
             <br>
             <br>When SVG-Morpheus is included, you can use <code>options</code> attribute to control <a href="https://github.com/alexk111/SVG-Morpheus#options" target="_blank">morphing options</a>.
             <br>
             <br>
-            <div><ng-md-icon icon="{{icon}}" style="fill: {{fill}}" size="48" options='{"duration": 375}'></ng-md-icon><br>options=<br>'{"duration": 375}'<br>(default is 750)</div>
-            <div><ng-md-icon icon="{{icon}}" style="fill: {{fill}}" size="48" options='{"rotation": "none"}'></ng-md-icon><br>options=<br>'{"rotation": "none"}'<br>(default is clock)</div>
-            <div><ng-md-icon icon="{{icon}}" style="fill: {{fill}}" size="48" options='{"rotation": "counterclock"}'></ng-md-icon><br>options=<br>'{"rotation": "counterclock"}'</div>
+            <div><ng-md-icon icon="{{icon}}" ng-attr-style="fill: {{fill}}" size="48" options='{"duration": 375}'></ng-md-icon><br>options=<br>'{"duration": 375}'<br>(default is 750)</div>
+            <div><ng-md-icon icon="{{icon}}" ng-attr-style="fill: {{fill}}" size="48" options='{"rotation": "none"}'></ng-md-icon><br>options=<br>'{"rotation": "none"}'<br>(default is clock)</div>
+            <div><ng-md-icon icon="{{icon}}" ng-attr-style="fill: {{fill}}" size="48" options='{"rotation": "counterclock"}'></ng-md-icon><br>options=<br>'{"rotation": "counterclock"}'</div>
+            <div><ng-md-icon icon="{{clickIcon}}" ng-attr-style="fill: {{fill}}" size="48" options='{"duration": 375, "rotation": "none"}' ng-click="clickIconMorph()"></ng-md-icon><br>Example:<br>Morph on ng-click</div>
             <br>
             <br>Note that <code>options</code> attribute is a JSON parse-able string so surround keys with double-quotes.
+        </li>
+        <li>Advanced: Refer <a href="https://github.com/klarsys/angular-material-icons/blob/master/demo.js" target="_blank">demo.js</a> to register custom icons for your project or to access default icon shapes from a controller or another service.
+            <br>
+            <div><ng-md-icon icon="standby" ng-attr-style="fill: {{fill}}" size="48"></ng-md-icon><br>standby</div>
+            <div><ng-md-icon icon="custom-delete" ng-attr-style="fill: {{fill}}" size="48"></ng-md-icon><br>custom-delete</div>
+            <div><ng-md-icon icon="marker" ng-attr-style="fill: {{fill}}" size="48"></ng-md-icon><br>marker</div>
+            <div><ng-md-icon icon="live_circle" ng-attr-style="fill: {{fill}}" size="48"></ng-md-icon><br>live_circle</div>
         </li>
     </ul>
 
     <h1>Full list of icons:</h1>
+
+    <h2>From <a href="http://materialdesignicons.com" target="_blank">MaterialDesignIcons.com</a></h2>
+    <div><ng-md-icon icon="amazon" size="48"></ng-md-icon><br>amazon</div>
+    <div><ng-md-icon icon="apple" size="48"></ng-md-icon><br>apple</div>
+    <div><ng-md-icon icon="facebook-box" size="48"></ng-md-icon><br>facebook-box</div>
+    <div><ng-md-icon icon="facebook-messenger" size="48"></ng-md-icon><br>facebook-messenger</div>
+    <div><ng-md-icon icon="facebook" size="48"></ng-md-icon><br>facebook</div>
+    <div><ng-md-icon icon="github-box" size="48"></ng-md-icon><br>github-box</div>
+    <div><ng-md-icon icon="github-circle" size="48"></ng-md-icon><br>github-circle</div>
+    <div><ng-md-icon icon="google-plus-box" size="48"></ng-md-icon><br>google-plus-box</div>
+    <div><ng-md-icon icon="google-plus" size="48"></ng-md-icon><br>google-plus</div>
+    <div><ng-md-icon icon="hangouts" size="48"></ng-md-icon><br>hangouts</div>
+    <div><ng-md-icon icon="linkedin-box" size="48"></ng-md-icon><br>linkedin-box</div>
+    <div><ng-md-icon icon="linkedin" size="48"></ng-md-icon><br>linkedin</div>
+    <div><ng-md-icon icon="login" size="48"></ng-md-icon><br>login</div>
+    <div><ng-md-icon icon="logout" size="48"></ng-md-icon><br>logout</div>
+    <div><ng-md-icon icon="office" size="48"></ng-md-icon><br>office</div>
+    <div><ng-md-icon icon="twitter" size="48"></ng-md-icon><br>twitter</div>
+    <div><ng-md-icon icon="whatsapp" size="48"></ng-md-icon><br>whatsapp</div>
+    <div><ng-md-icon icon="windows" size="48"></ng-md-icon><br>windows</div>
+
+    <h2>From <a href="https://github.com/google/material-design-icons" target="_blank">Material Design icons by Google</a></h2>
     <h2>action</h2>
     <div><ng-md-icon icon="3d_rotation" size="48"></ng-md-icon><br>3d_rotation</div>
     <div><ng-md-icon icon="accessibility" size="48"></ng-md-icon><br>accessibility</div>
@@ -268,7 +313,7 @@
     <h2>alert</h2>
     <div><ng-md-icon icon="error" size="48"></ng-md-icon><br>error</div>
     <div><ng-md-icon icon="warning" size="48"></ng-md-icon><br>warning</div>
-    <h2>av</h2>
+    <h2>AV</h2>
     <div><ng-md-icon icon="album" size="48"></ng-md-icon><br>album</div>
     <div><ng-md-icon icon="av_timer" size="48"></ng-md-icon><br>av_timer</div>
     <div><ng-md-icon icon="closed_caption" size="48"></ng-md-icon><br>closed_caption</div>
