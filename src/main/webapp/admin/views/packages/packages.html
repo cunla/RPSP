@@ -1,0 +1,37 @@
+<div layout="column" layout-align="center center" ng-hide="loading">
+    <section layout="column">
+            <mdt-table>
+                <mdt-header-row>
+                    <mdt-column align-rule="left">Package Name</mdt-column>
+                    <mdt-column align-rule="left">Display Name</mdt-column>
+                    <mdt-column align-rule="left">RP System</mdt-column>
+                    <mdt-column align-rule="left" flex>Production Cluster</mdt-column>
+                    <mdt-column align-rule="left">Source ESX Cluster</mdt-column>
+                    <mdt-column align-rule="left">Source Datastore</mdt-column>
+                    <mdt-column align-rule="left" flex>Replica Cluster</mdt-column>
+                    <mdt-column align-rule="left" flex>Target ESX</mdt-column>
+                    <mdt-column align-rule="left">Target Datastore</mdt-column>
+                    <mdt-column align-rule="left" flex>RPO</mdt-column>
+                    <mdt-column align-rule="left" flex>Description</mdt-column>
+                </mdt-header-row>
+                <mdt-row ng-repeat="package in config.packages">
+                    <mdt-cell>{{package.name}}</mdt-cell>
+                    <mdt-cell>{{package.displayName}}</mdt-cell>
+                    <mdt-cell>{{package.systemName}}</mdt-cell>
+                    
+                    <mdt-cell>{{package.sourceClusterName}}</mdt-cell>
+                    <mdt-cell>{{package.sourceEsxClusterName}}</mdt-cell>
+                    <mdt-cell>{{package.sourceDatastoreName}}</mdt-cell>
+                    
+                    <mdt-cell>{{package.targetClusterName}}</mdt-cell>
+                    <mdt-cell>{{package.targetEsxName}}</mdt-cell>
+                    <mdt-cell>{{package.targetDatastoreName}}</mdt-cell>
+                    
+                    <mdt-cell>{{package.rpo}}</mdt-cell>
+                    <mdt-cell>{{package.description}}</mdt-cell>
+                </mdt-row>
+            </mdt-table>
+    </section>
+</div>
+
+
