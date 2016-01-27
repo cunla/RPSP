@@ -7,17 +7,18 @@
 <div class="modal-body">
 
     <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 radio" >
+        <div class="col-xs-4 col-sm-4 col-md-4 radio">
             <label>
-                <input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess != 'Disabled'" value="snapshot">
+                <!--<input type="radio" ng-disabled="selectedCopy.imageAccess != 'Disabled'"-->
+                <!--value="snapshot">-->
                 {{'BACKUP-ACCESS.BACKUP-LIST' | translate}}
-                </input>
+                <!--</input>-->
             </label>
         </div>
         <div class="col-xs-8 col-sm-8 col-md-8 margin-top">
             <select ng-model="selectedBackup"
                     ng-options="b for b in backups"
-                    ng-disabled="status != 'Disabled'"
+                    ng-disabled="enabled"
                     class="form-control">
             </select>
         </div>
@@ -25,8 +26,8 @@
 
 </div>
 <div class="modal-footer centered-text div-grey">
-    <button type="button" class="btn btn-primary" ng-click="imageAccess()">
-        {{status == 'Disabled' ? ('BACKUP-ACCESS.ENABLE_MSG'|translate):('BACKUP-ACCESS.DISABLE_MSG'|translate)}}
+    <button type="button" class="btn btn-primary {{selectedBackup==''?'disabled':'active'}}" ng-click="imageAccess()">
+        {{enabled ? ('BACKUP-ACCESS.DISABLE_MSG'|translate):('BACKUP-ACCESS.ENABLE_MSG'|translate)}}
     </button>
 </div>
 

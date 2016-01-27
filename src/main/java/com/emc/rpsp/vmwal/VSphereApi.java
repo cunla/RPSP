@@ -192,6 +192,10 @@ public class VSphereApi {
             return;
         }
         Folder folder = (Folder) inventoryNavigator.searchManagedEntity("Folder", folderName);
+        if (null == folder) {
+            log.warn("No folder {} found", folderName);
+            return;
+        }
         ManagedObjectReference[] mor = MorUtil.createMORs(new Datastore[]{datastore});
         VirtualMachineCloneSpec cloneSpec = new VirtualMachineCloneSpec();
         VirtualMachineRelocateSpec location = new VirtualMachineRelocateSpec();

@@ -13,11 +13,11 @@
         }
 
         function enableBackup(vmName, backupName) {
-            return $http.get("/backup/" + vmName + "/disable/" + backupName);
+            return $http.get("backup/" + vmName + "/enable/" + backupName);
         }
 
         function disableBackup(vmName, backupName) {
-            return $http.get("/backup/" + vmName + "/disable/" + backupName);
+            return $http.get("backup/" + vmName + "/disable/" + backupName);
         }
     }
 })()
