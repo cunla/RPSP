@@ -194,6 +194,7 @@ public class BackupApi extends BaseServiceImpl {
         }
         try {
             VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
+            vSphereApi.powerOffVM(accessBackupName(backupName));
             vSphereApi.removeVM(accessBackupName(backupName));
         } catch (Exception e) {
             log.warn("Failed to disable backup access VM {}", backupName);
