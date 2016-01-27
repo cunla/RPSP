@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -71,6 +72,19 @@ public class BackupRestServices {
         @PathVariable("vm") @RpspAuditSubject(AuditConsts.BACKUP_NAME) String vmName) {
         List<String> backupList = backupApi.getBackupsList(vmName);
         return new ResponseEntity<>(backupList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/backup/{vm}/status",
+        method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<List<String>> vmBackupStatus(
+        @PathVariable("vm") String vmName) {
+        String accessedBackup = backupApi.getVmBackupStatus(vmName);
+        List<String> res=null;
+        if(null!=accessedBackup){
+            res=Arrays.asList(accessedBackup);
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/backup/tasks",

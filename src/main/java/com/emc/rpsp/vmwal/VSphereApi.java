@@ -63,7 +63,7 @@ public class VSphereApi {
     public Boolean removeVM(String vmName) throws Exception {
         vm = (VirtualMachine) new InventoryNavigator(rootFolder)
             .searchManagedEntity("VirtualMachine", vmName);
-        if (vmName == null) {
+        if (vm == null) {
             log.warn("{} Not Found.", vmName);
             return false;
         }
@@ -192,6 +192,10 @@ public class VSphereApi {
             return;
         }
         Folder folder = (Folder) inventoryNavigator.searchManagedEntity("Folder", folderName);
+        if (null == folder) {
+            log.warn("No folder {} found", folderName);
+            return;
+        }
         ManagedObjectReference[] mor = MorUtil.createMORs(new Datastore[]{datastore});
         VirtualMachineCloneSpec cloneSpec = new VirtualMachineCloneSpec();
         VirtualMachineRelocateSpec location = new VirtualMachineRelocateSpec();

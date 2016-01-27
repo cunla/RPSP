@@ -39,7 +39,31 @@ public class BackupApi extends BaseServiceImpl {
     public List<String> getBackupsList(BackupSystem system) {
         VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
         List<String> vms = vSphereApi.vmsInFolder(system.getBackupFolder());
+        List<String> accessed = new LinkedList<>();
+        for (String vm : vms) {
+            if (vm.contains("_restore")) {
+                accessed.add(vm);
+            }
+        }
+        vms.removeAll(accessed);
         return vms;
+    }
+
+
+    public String getVmBackupStatus(String vmName) {
+        VmBackup vm = repository.findVmByName(vmName);
+        if (null == vm) {
+            throw new RpspBackupVmNotFoundException(vmName);
+        }
+        BackupSystem system = vm.getBackupSystem();
+        VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
+        List<String> vms = vSphereApi.vmsInFolder(system.getAccessBackupFolder());
+        for (String _vm : vms) {
+            if (_vm.contains(vmName) && _vm.contains("_restore")) {
+                return _vm;
+            }
+        }
+        return null;
     }
 
     @PostConstruct
@@ -170,6 +194,7 @@ public class BackupApi extends BaseServiceImpl {
         }
         try {
             VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
+            vSphereApi.powerOffVM(accessBackupName(backupName));
             vSphereApi.removeVM(accessBackupName(backupName));
         } catch (Exception e) {
             log.warn("Failed to disable backup access VM {}", backupName);
