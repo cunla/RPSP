@@ -56,7 +56,7 @@ var app = angular
                     views: {
                         'menuContent': {
                             templateUrl: "views/packages/packages.html",
-                            controller: 'Packages'
+                            controller: 'PackagesCtrl'
                         }
                     }
                 })

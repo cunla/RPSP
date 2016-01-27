@@ -1,4 +1,12 @@
 <div layout="column" layout-align="center center" ng-hide="loading">
+
+	<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+        <h2>List of Packages</h2>
+        <md-button class="md-fab" aria-label="New package" ng-click="showDialog()">
+            <ng-md-icon icon="more_vert" style="fill:white"></ng-md-icon>
+        </md-button>
+    </section>
+    
     <section layout="column">
             <mdt-table>
                 <mdt-header-row>
