@@ -5,7 +5,12 @@
         return {
             backupsList: backupsList,
             enableBackup: enableBackup,
-            disableBackup: disableBackup
+            disableBackup: disableBackup,
+            vmStatus: vmStatus
+        }
+
+        function vmStatus(vmName) {
+            return $http.get("backup/" + vmName + "/status");
         }
 
         function backupsList(vmName) {

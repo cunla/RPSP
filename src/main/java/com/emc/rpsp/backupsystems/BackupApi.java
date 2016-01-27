@@ -49,6 +49,23 @@ public class BackupApi extends BaseServiceImpl {
         return vms;
     }
 
+
+    public String getVmBackupStatus(String vmName) {
+        VmBackup vm = repository.findVmByName(vmName);
+        if (null == vm) {
+            throw new RpspBackupVmNotFoundException(vmName);
+        }
+        BackupSystem system = vm.getBackupSystem();
+        VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
+        List<String> vms = vSphereApi.vmsInFolder(system.getAccessBackupFolder());
+        for (String _vm : vms) {
+            if (_vm.contains(vmName) && _vm.contains("_restore")) {
+                return _vm;
+            }
+        }
+        return null;
+    }
+
     @PostConstruct
     public void init() {
         List<VmBackup> backups = vmBackupRepo.findAll();

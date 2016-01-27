@@ -10,6 +10,13 @@
             $scope.backups = res.data;
         })
 
+        backupSrv.vmStatus(vmName).then(function (res) {
+            if (res.data.length > 0) {
+                $scope.enabled = true;
+                $scope.selectedBackup = res.data[0].replace("_restore", "");
+            }
+        })
+
         $scope.imageAccess = imageAccess;
         $scope.cancel = cancel;
 
