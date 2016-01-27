@@ -5,7 +5,7 @@
     function Packages($scope, RPSP) {
         $scope.loading = true;
         RPSP.settings().then(function (res) {
-            $scope.config = res.data.config;
+            $scope.config = res.data;
             $scope.loading = false;
         })
 
