@@ -39,6 +39,13 @@ public class BackupApi extends BaseServiceImpl {
     public List<String> getBackupsList(BackupSystem system) {
         VSphereApi vSphereApi = new VSphereApi(system.getVcenterUrl(), system.getUsername(), system.getRealPassword());
         List<String> vms = vSphereApi.vmsInFolder(system.getBackupFolder());
+        List<String> accessed = new LinkedList<>();
+        for (String vm : vms) {
+            if (vm.contains("_restore")) {
+                accessed.add(vm);
+            }
+        }
+        vms.removeAll(accessed);
         return vms;
     }
 
