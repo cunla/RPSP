@@ -123,7 +123,15 @@ public class BackupApi extends BaseServiceImpl {
         }
         BackupSystem system = backupSystems.get(0);
         Client client = getClient();
-        VmBackup backup = new VmBackup(system, client.getSystemSettings(), vmId, vmName, schedule);
+        VmBackup backup = vmBackupRepo.findByName(vmName);
+        if (null == backup) {
+            backup = new VmBackup(system, client.getSystemSettings(), vmId, vmName, schedule);
+        } else {
+            backup.setBackupSystem(system);
+            backup.setSystemSettings(client.getSystemSettings());
+            backup.setSchedule(schedule);
+            backup.setVmId(vmId);
+        }
         vmBackupRepo.saveAndFlush(backup);
     }
 
