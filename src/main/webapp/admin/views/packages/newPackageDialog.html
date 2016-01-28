@@ -1,130 +1,77 @@
 <md-dialog aria-label="List dialog">
     <md-dialog-content>
-        <!-- <md-list>
-            <md-list-item ng-repeat="item in items">
-                <p>Number {{item}}</p>
-            </md-list-item>
-        </md-list> -->
- 
- 
- 
-<!--  <div flex layout="row" layout-align="center center">
-    <div flex-sm="100" flex-gt-sm="90" flex-gt-md="70" flex-gt-lg="50" class="md-whiteframe-z2">
-        <md-content class="md-padding">
-            <div flex-sm="100" flex-gt-sm="80" layout="column" layout-gt-md="column">
-                <form name="contactForm" data-ng-submit="sendMail()">
-                    <md-input-container>
-                        <label>Package Name:</label>
-                        <input ng-model="contactName" required>
-                    </md-input-container>
-                    
-                    <md-input-container flex>
-                        <label>Display Name:</label>
-                        <input type="email" ng-model="contactEmail" required>
-                    </md-input-container>
- 
-                    <md-input-container flex>
-                        <label>System:</label>
-                        <input type="email" ng-model="contactEmail" required>
-                    </md-input-container>
- 
-                    <md-button type="submit" class="md-primary"
-                               ng-class="{'md-raised md-hue-1': (contactForm.$dirty && contactForm.$valid) }"
-                               aria-label="Save Project">Send</md-button>
-                </form>
-            </div>
-        </md-content>
-    </div>
-</div> -->
- 
-        
- 
- 
-<div flex layout="row" layout-align="center center">
-    <div flex="100" class="md-whiteframe-z2">
-        <md-content class="md-padding">
-            <div flex="90" layout="column">
-	            	<div layout="row" layout-wrap>
-	                    <md-input-container flex="33">
-	                        <label>Package Name:</label>
-	                        <input ng-model="packageName" required>
-	                    </md-input-container>                    
-	                    <md-input-container flex="33">
-	                        <label>Display Name:</label>
-	                        <input ng-model="displayName" required>
-	                    </md-input-container>	                    
-	                    <md-input-container flex="33">
-	                        <label>System:</label>
-	                        <md-select ng-model="selectedItem">
-							    <md-option ng-value="item" ng-repeat="item in items">{{ item.name }}</md-option>
-							 </md-select>
-                    	</md-input-container>	
-                    	
-                    	
-                    	<md-input-container flex="25">
-	                        <label>Production Cluster:</label>
-	                        <input ng-model="productionCluster" required>
-                    	</md-input-container>
-                    	<md-input-container flex="25">
-	                        <label>Source Data Center:</label>
-	                        <input ng-model="sourceDataCenter" required>
-                    	</md-input-container>    
-                    	<md-input-container flex="25">
-	                        <label>Source ESX Cluster:</label>
-	                        <input ng-model="sourceEsxCluster" required>
-                    	</md-input-container>
-                    	<md-input-container flex="25">
-	                        <label>Source Datastore:</label>
-	                        <input ng-model="sourceDatastore" required>
-                    	</md-input-container>
-                    	
-                    	
-                    	<md-input-container flex="25">
-	                        <label>Replica Cluster:</label>
-	                        <input ng-model="replicaCluster" required>
-                    	</md-input-container>
-                    	<md-input-container flex="25">
-	                        <label>Target Data Center:</label>
-	                        <input ng-model="targetDataCenter" required>
-                    	</md-input-container>    
-                    	<md-input-container flex="25">
-	                        <label>Target ESX:</label>
-	                        <input ng-model="tarhetEsx" required>
-                    	</md-input-container>
-                    	<md-input-container flex="25">
-	                        <label>Target Datastore:</label>
-	                        <input ng-model="targetDatastore" required>
-                    	</md-input-container>
-                    	
-                    	
-                    	<md-input-container flex="20">
-	                        <label>RPO (Min):</label>
-	                        <input ng-model="rpo" required>
-                    	</md-input-container>    
-                    	<md-input-container flex="80">
-	                        <label>Desctiption (Free Text):</label>
-	                        <input ng-model="description" required>
-                    	</md-input-container>
-                    	                
-	                </div>
- 
-            </div>
-        </md-content>
-    </div>
-</div>
- 
- 
- 
-        <!-- <section layout="column">
-            <md-input-container>
-			    <label>Package Name</label>
-			    <input name="packageName" ng-model="packageName">
-			 </md-input-container>
-			 <md-input-container>
-			    <label>Display Name</label>
-			    <input name="displayName" ng-model="displayName">
-			 </md-input-container>
-    	</section> -->
+		<div flex layout="row" layout-align="center center">
+		    <div flex="100" class="md-whiteframe-z2">
+		        <md-content class="md-padding">
+		            <div flex="90" layout="column">
+			            	<div layout="row" layout-wrap>
+			                    <md-input-container flex="33">
+			                        <label>Package Name:</label>
+			                        <input ng-model="packageName" required>
+			                    </md-input-container>                    
+			                    <md-input-container flex="33">
+			                        <label>Display Name:</label>
+			                        <input ng-model="displayName" required>
+			                    </md-input-container>	                    
+			                    <md-input-container flex="33">
+			                        <label>System:</label>
+			                        <md-select ng-model="selectedItem">
+									    <md-option ng-value="item" ng-repeat="item in items">{{ item.name }}</md-option>
+									 </md-select>
+		                    	</md-input-container>	
+		                    	
+		                    	
+		                    	<md-input-container flex="25">
+			                        <label>Production Cluster:</label>
+			                        <input ng-model="productionCluster" required>
+		                    	</md-input-container>
+		                    	<md-input-container flex="25">
+			                        <label>Source Data Center:</label>
+			                        <input ng-model="sourceDataCenter" required>
+		                    	</md-input-container>    
+		                    	<md-input-container flex="25">
+			                        <label>Source ESX Cluster:</label>
+			                        <input ng-model="sourceEsxCluster" required>
+		                    	</md-input-container>
+		                    	<md-input-container flex="25">
+			                        <label>Source Datastore:</label>
+			                        <input ng-model="sourceDatastore" required>
+		                    	</md-input-container>
+		                    	
+		                    	
+		                    	<md-input-container flex="25">
+			                        <label>Replica Cluster:</label>
+			                        <input ng-model="replicaCluster" required>
+		                    	</md-input-container>
+		                    	<md-input-container flex="25">
+			                        <label>Target Data Center:</label>
+			                        <input ng-model="targetDataCenter" required>
+		                    	</md-input-container>    
+		                    	<md-input-container flex="25">
+			                        <label>Target ESX:</label>
+			                        <input ng-model="tarhetEsx" required>
+		                    	</md-input-container>
+		                    	<md-input-container flex="25">
+			                        <label>Target Datastore:</label>
+			                        <input ng-model="targetDatastore" required>
+		                    	</md-input-container>
+		                    	
+		                    	
+		                    	<md-input-container flex="20">
+			                        <label>RPO (Min):</label>
+			                        <input ng-model="rpo" required>
+		                    	</md-input-container>    
+		                    	<md-input-container flex="80">
+			                        <label>Desctiption (Free Text):</label>
+			                        <input ng-model="description" required>
+		                    	</md-input-container>
+		                    	                
+			                </div>
+		 
+		            </div>
+		        </md-content>
+		    </div>
+		</div>
     </md-dialog-content>
     <md-dialog-actions>
         <md-button ng-click="closeDialog()" class="md-primary">
