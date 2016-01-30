@@ -156,6 +156,163 @@
                     }
                 }
             ]
+        },
+		 {
+            "name": "Test_System__2",
+            "user": "admin",
+            "password": "*****",
+            "isDrttc": true,
+            "isMultiTenanctEnabled": false,
+            "testResult": true,
+            "lastTested": 1453833634000,
+            "lastCollected": null,
+            "systemVersion": "4.3(c_adwance.0)",
+            "id": 17,
+            "ip": "10.64.125.44",
+            "clusters": [
+                {
+                    "id": 9,
+                    "country": null,
+                    "clusterId": 5699401079977061000,
+                    "clusterName": "bdg-devA2rpCLS01",
+                    "friendlyName": "New York",
+                    "vcenterConfig": {
+                        "id": "68CBEF3F-6EF9-4E41-A2C3-393F122E12C7",
+                        "name": "bdg-devA2vc01.dmbubdg.emc",
+                        "relatedDatacenters": [
+                            {
+                                "id": "datacenter-21",
+                                "name": "DevA2",
+                                "esxClustersConfig": [
+                                    {
+                                        "id": "68CBEF3F-6EF9-4E41-A2C3-393F122E12C7:c26",
+                                        "name": "DC01-CLS01",
+                                        "esxConfigs": [
+                                            {
+                                                "id": "421c6f11-63b4-1bcb-23e7-2edbc81e39fd",
+                                                "name": "bdg-deva2esx01.dmbubdg.emc",
+                                                "relatedDatastores": [
+                                                    {
+                                                        "id": "datastore-61",
+                                                        "name": "DevA2-DS05-ESX01-Local"
+                                                    },
+                                                    {
+                                                        "id": "datastore-45",
+                                                        "name": "DevA2-DS04-NFS02"
+                                                    },
+                                                    {
+                                                        "id": "datastore-96",
+                                                        "name": "DDVE-2_backup2"
+                                                    },
+                                                    {
+                                                        "id": "datastore-44",
+                                                        "name": "DevA2-DS03-NFS02"
+                                                    },
+                                                    {
+                                                        "id": "datastore-33",
+                                                        "name": "DevA2-DS01-ESX01-Local"
+                                                    },
+                                                    {
+                                                        "id": "datastore-77",
+                                                        "name": "DDVE-2_backup"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "421c0a8f-14f7-aa59-a11f-b8e93155671a",
+                                                "name": "bdg-deva2esx02.dmbubdg.emc",
+                                                "relatedDatastores": [
+                                                    {
+                                                        "id": "datastore-45",
+                                                        "name": "DevA2-DS04-NFS02"
+                                                    },
+                                                    {
+                                                        "id": "datastore-96",
+                                                        "name": "DDVE-2_backup2"
+                                                    },
+                                                    {
+                                                        "id": "datastore-44",
+                                                        "name": "DevA2-DS03-NFS02"
+                                                    },
+                                                    {
+                                                        "id": "datastore-77",
+                                                        "name": "DDVE-2_backup"
+                                                    },
+                                                    {
+                                                        "id": "datastore-34",
+                                                        "name": "DevA2-DS02-ESX02-Local"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": 10,
+                    "country": null,
+                    "clusterId": 4519337416125614000,
+                    "clusterName": "bdg-devA1rpCLS01",
+                    "friendlyName": "London",
+                    "vcenterConfig": {
+                        "id": "C5AF5339-0AF0-40FA-BB56-5BCBB55E5590",
+                        "name": "bdg-devA1vc01.dmbubdg.emc",
+                        "relatedDatacenters": [
+                            {
+                                "id": "datacenter-2",
+                                "name": "DevA1",
+                                "esxClustersConfig": [
+                                    {
+                                        "id": "C5AF5339-0AF0-40FA-BB56-5BCBB55E5590:c7",
+                                        "name": "DC01-CLS01",
+                                        "esxConfigs": [
+                                            {
+                                                "id": "421c3aa2-c757-407a-3877-c1f5b83bab28",
+                                                "name": "bdg-deva1esx01.dmbubdg.emc",
+                                                "relatedDatastores": [
+                                                    {
+                                                        "id": "datastore-27",
+                                                        "name": "DevA1-DS04-NFS01"
+                                                    },
+                                                    {
+                                                        "id": "datastore-24",
+                                                        "name": "DevA1-DS01-ESX01-Local"
+                                                    },
+                                                    {
+                                                        "id": "datastore-26",
+                                                        "name": "DevA1-DS03-NFS01"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": "421c4be9-5be5-125e-3d43-53d12b7ad810",
+                                                "name": "bdg-deva1esx02.dmbubdg.emc",
+                                                "relatedDatastores": [
+                                                    {
+                                                        "id": "datastore-27",
+                                                        "name": "DevA1-DS04-NFS01"
+                                                    },
+                                                    {
+                                                        "id": "datastore-26",
+                                                        "name": "DevA1-DS03-NFS01"
+                                                    },
+                                                    {
+                                                        "id": "datastore-25",
+                                                        "name": "DevA1-DS02-ESX02-Local"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
         }
     ],
     "packages": [
