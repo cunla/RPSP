@@ -5,7 +5,7 @@
             "user": "admin",
             "password": "*****",
             "isDrttc": true,
-            "isMultiTenanctEnabled": false,
+            "multiTenancy": false,
             "testResult": true,
             "lastTested": 1453833634000,
             "lastCollected": null,
@@ -161,8 +161,8 @@
             "name": "Test_System__2",
             "user": "admin",
             "password": "*****",
-            "isDrttc": true,
-            "isMultiTenanctEnabled": false,
+            "isDrttc": false,
+            "multiTenancy": true,
             "testResult": true,
             "lastTested": 1453833634000,
             "lastCollected": null,
@@ -172,7 +172,7 @@
             "clusters": [
                 {
                     "id": 9,
-                    "country": null,
+                    "country": "Israel",
                     "clusterId": 5699401079977061000,
                     "clusterName": "bdg-devA2rpCLS01",
                     "friendlyName": "New York",
