@@ -163,7 +163,7 @@
             "password": "*****",
             "isDrttc": false,
             "multiTenancy": true,
-            "testResult": true,
+            "testResult": false,
             "lastTested": 1453833634000,
             "lastCollected": null,
             "systemVersion": "4.3(c_adwance.0)",
