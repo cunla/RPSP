@@ -5,7 +5,24 @@
         var json = {};
         return {
             settings: settings,
-            current: current
+            current: current,
+            testSystem: testSystem,
+            save: save
+        }
+
+        function save(json) {
+            return;
+        }
+
+        function testSystem(systemId) {
+            return $q(function (resolve, reject) {
+                setTimeout(function () {
+                    $http.get('data/settings.json').then(function (res) {
+                        json = res.data;
+                        resolve(res);
+                    });
+                }, 1000);
+            });
         }
 
         function settings() {
