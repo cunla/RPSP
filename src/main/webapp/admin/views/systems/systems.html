@@ -5,9 +5,8 @@
     <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
 
         <h2>List of RecoverPoint systems connected to the Self-Service Portal</h2>
-        <md-button class="md-fab" aria-label="New system" ng-click="showDialog()">
-            <ng-md-icon icon="more_vert" style="fill:white"></ng-md-icon>
-        </md-button>
+        <ng-md-icon icon="add" style="fill:blue" ng-click="showDialog()"></ng-md-icon>
+        <ng-md-icon icon="save" ng-click="save()"></ng-md-icon>
     </section>
     <md-card style="margin:0px">
         <md-subheader>Filter by search</md-subheader>
@@ -26,30 +25,46 @@
 
         <mdt-table sortable-columns="true" animate-sort-icon="true">
             <mdt-header-row>
+                <mdt-column>Actions</mdt-column>
                 <mdt-column align-rule="left">System Name</mdt-column>
                 <mdt-column align-rule="left">RP Cluster IP address</mdt-column>
                 <mdt-column align-rule="left">RP Cluster User</mdt-column>
                 <mdt-column align-rule="left">RP Clusters</mdt-column>
             </mdt-header-row>
-            <mdt-row ng-repeat="system in config.systems">
+            <mdt-row ng-repeat="system in config.systems"
+                     ng-click="showDialog(system)">
+                <mdt-cell html-content="true">
+                    <ng-md-icon icon="mode_edit" style="fill:cyan"
+                                ng-click="showDialog(system)"></ng-md-icon>
+                    <ng-md-icon icon="{{system.testing? 'refresh':'link'}}"
+                                style="fill: {{system.testResult ? 'green':'red'}}"
+                                ng-click="testSystem(system)"></ng-md-icon>
+                </mdt-cell>
                 <mdt-cell>{{system.name}}</mdt-cell>
 
                 <mdt-cell>{{system.ip}}</mdt-cell>
                 <mdt-cell>{{system.user}}</mdt-cell>
-                <mdt-cell html-content="true">sdadaxxx</mdt-cell>
+                <div ng-repeat="cluster in system.clusters">
+                    <mdt-cell html-content="true">
+                        {{cluster.clusterName}}
+                        <br/>{{cluster.friendlyName}}
+                        <br/>{{cluster.country}}
+                    </mdt-cell>
+
+                </div>
             </mdt-row>
         </mdt-table>
     </section>
     <section layout="column">
         <div layout="row">
-            <h3>Dissaster Recovery <b>in</b> the cloud</h3>
+            <h3>Dissaster Recovery <b><i>in</i></b> the cloud</h3>
         </div>
 
         <mdt-table sortable-columns="true" animate-sort-icon="true">
             <mdt-header-row>
-                <mdt-column unit="" order-by="name">System Name</mdt-column>
-
-                <mdt-column title="Multi Tenancy">MT</mdt-column>
+                <mdt-column>Actions</mdt-column>
+                <mdt-column>System Name</mdt-column>
+                <mdt-column column-definition="Multi Tenancy">MT</mdt-column>
                 <mdt-column>RP Cluster IP address</mdt-column>
                 <mdt-column>RP Cluster User</mdt-column>
                 <mdt-column width="50%">RP Clusters</mdt-column>
@@ -57,28 +72,32 @@
             </mdt-header-row>
 
             <mdt-row ng-repeat="system in config.systems">
+                <mdt-cell html-content="true">
+                    <ng-md-icon icon="mode_edit" style="fill:cyan"
+                                ng-click="showDialog(system)"></ng-md-icon>
+                    <ng-md-icon icon="{{system.testing? 'refresh':'link'}}"
+                                style="fill: {{system.testResult ? 'green':'red'}}"
+                                ng-click="testSystem(system)"></ng-md-icon>
+                </mdt-cell>
                 <mdt-cell>{{system.name}}</mdt-cell>
 
-                <mdt-cell>
-                    {{system.multiTenancy? 'YES': 'NO'}}
-                    <!--<md-checkbox ng-model="" aria-label="Multi Tenancy">-->
-                        <!--s-->
-                    <!--</md-checkbox>-->
+                <mdt-cell html-content="true">
+                    <md-checkbox ng-model="system.multiTenancy"
+                                 aria-label="Multi Tenancy"
+                                 ng-disabled="true"
+                    >
+                    </md-checkbox>
                 </mdt-cell>
                 <mdt-cell>{{system.ip}}</mdt-cell>
                 <mdt-cell>{{system.user}}</mdt-cell>
-                <mdt-cell html-content="true">
-                    <div class="row" ng-repeat="cluster in system.clusters">
-                        <!--<span class="col-sm-4">{{cluster.clusterId}}</span>-->
-                        <span class="col-sm-4">{{cluster.clusterName}}</span>
-                        <span class="col-sm-4">
-                           {{cluster.friendlyName}}</span>
-                        <span class="col-sm-4">
-                        <a href="#"
-                           title="Define the billing entity for this cluster. The country can be configured per vRPA cluster"
-                           ng-click="updateCluster(system.id,cluster)">{{cluster.country}}</a></span>
-                    </div>
-                </mdt-cell>
+                <div ng-repeat="cluster in system.clusters">
+                    <mdt-cell html-content="true">
+                        {{cluster.clusterName}}
+                        <br/>{{cluster.friendlyName}}
+                        <br/>{{cluster.country}}
+                    </mdt-cell>
+
+                </div>
             </mdt-row>
 
 
