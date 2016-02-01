@@ -1,9 +1,20 @@
-<md-dialog aria-label="List dialog">
+<md-dialog aria-label="List dialog" flex="65">
+
+
+	<md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>New Package</h2>
+        <span flex></span>
+        	<md-button class="md-icon-button" ng-click="closeDialog()">x
+        	</md-button>
+      </div>
+    </md-toolbar>
+
     <md-dialog-content>
 		<div flex layout="row" layout-align="center center">
 		    <div flex="100" class="md-whiteframe-z2">
 		        <md-content class="md-padding">
-		            <div flex="90" layout="column">
+		            <div flex="100" layout="column">
 			            	<div layout="row" layout-wrap>
 			                    <md-input-container flex="33">
 			                        <label>Package Name:</label>
@@ -15,45 +26,61 @@
 			                    </md-input-container>	                    
 			                    <md-input-container flex="33">
 			                        <label>System:</label>
-			                        <md-select ng-model="selectedItem">
-									    <md-option ng-value="item" ng-repeat="item in items">{{ item.name }}</md-option>
+			                        <md-select ng-model="selectedSystem">
+									    <md-option ng-value="system" ng-repeat="system in config.systems">{{ system.name }}</md-option>
 									 </md-select>
 		                    	</md-input-container>	
 		                    	
 		                    	
 		                    	<md-input-container flex="25">
 			                        <label>Production Cluster:</label>
-			                        <input ng-model="productionCluster" required>
+			                        <md-select ng-model="selectedProdCluster">
+									    <md-option ng-value="prodCluster" ng-repeat="prodCluster in selectedSystem.clusters">{{ prodCluster.friendlyName }}</md-option>
+									 </md-select>
 		                    	</md-input-container>
 		                    	<md-input-container flex="25">
 			                        <label>Source Data Center:</label>
-			                        <input ng-model="sourceDataCenter" required>
+			                        <md-select ng-model="selectedSourceDataCenter">
+									    <md-option ng-value="sourceDataCenter" ng-repeat="sourceDataCenter in selectedProdCluster.vcenterConfig.relatedDatacenters">{{ sourceDataCenter.name }}</md-option>
+									 </md-select>
 		                    	</md-input-container>    
 		                    	<md-input-container flex="25">
 			                        <label>Source ESX Cluster:</label>
-			                        <input ng-model="sourceEsxCluster" required>
+			                        <md-select ng-model="selectedSourceEsxCluster">
+									    <md-option ng-value="sourceEsxCluster" ng-repeat="sourceEsxCluster in selectedSourceDataCenter.esxClustersConfig">{{ sourceEsxCluster.name }}</md-option>
+									 </md-select>
 		                    	</md-input-container>
 		                    	<md-input-container flex="25">
 			                        <label>Source Datastore:</label>
-			                        <input ng-model="sourceDatastore" required>
+			                        <md-select ng-model="selectedSourceDatastore">
+									    <md-option ng-value="sourceDatastore" ng-repeat="sourceDatastore in selectedSourceDataCenter.esxClustersConfig[0].esxConfigs[0].relatedDatastores">{{ sourceDatastore.name }}</md-option>
+									 </md-select>
 		                    	</md-input-container>
 		                    	
 		                    	
 		                    	<md-input-container flex="25">
 			                        <label>Replica Cluster:</label>
-			                        <input ng-model="replicaCluster" required>
+			                         <md-select ng-model="selectedReplicaCluster">
+									    <md-option ng-value="replicaCluster" ng-repeat="replicaCluster in selectedSystem.clusters">{{ replicaCluster.friendlyName }}</md-option>
+									 </md-select>
 		                    	</md-input-container>
 		                    	<md-input-container flex="25">
 			                        <label>Target Data Center:</label>
-			                        <input ng-model="targetDataCenter" required>
+			                        <md-select ng-model="selectedTargetDataCenter">
+									    <md-option ng-value="targetDataCenter" ng-repeat="targetDataCenter in selectedReplicaCluster.vcenterConfig.relatedDatacenters">{{ targetDataCenter.name }}</md-option>
+									 </md-select>
 		                    	</md-input-container>    
 		                    	<md-input-container flex="25">
 			                        <label>Target ESX:</label>
-			                        <input ng-model="tarhetEsx" required>
+			                        <md-select ng-model="selectedTargetEsx">
+									    <md-option ng-value="targetEsx" ng-repeat="targetEsx in selectedTargetDataCenter.esxClustersConfig[0].esxConfigs">{{ targetEsx.name }}</md-option>
+									 </md-select>
 		                    	</md-input-container>
 		                    	<md-input-container flex="25">
 			                        <label>Target Datastore:</label>
-			                        <input ng-model="targetDatastore" required>
+			                          <md-select ng-model="selectedTargetDatastore">
+									    <md-option ng-value="targetDatastore" ng-repeat="targetDatastore in selectedTargetEsx.relatedDatastores">{{ targetDatastore.name }}</md-option>
+									 </md-select>
 		                    	</md-input-container>
 		                    	
 		                    	
@@ -74,8 +101,8 @@
 		</div>
     </md-dialog-content>
     <md-dialog-actions>
-        <md-button ng-click="closeDialog()" class="md-primary">
-            Save
+        <md-button ng-click="addPackage()" class="md-primary">
+            Add
         </md-button>
         <md-button ng-click="closeDialog()" class="md-primary">
             Close

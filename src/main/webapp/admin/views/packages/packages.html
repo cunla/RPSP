@@ -1,15 +1,16 @@
 <div layout="column" layout-align="center center" ng-hide="loading">
 
 	<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-        <h2>List of Packages</h2>
-        <md-button class="md-fab" aria-label="New package" ng-click="showDialog()">
-            <ng-md-icon icon="more_vert" style="fill:white"></ng-md-icon>
-        </md-button>
+	 <h2>List of Packages</h2>
+        <ng-md-icon icon="add" style="fill:blue" ng-click="showDialog()"></ng-md-icon>
+        <ng-md-icon icon="save" ng-click="save()"></ng-md-icon>
+        
     </section>
     
     <section layout="column">
             <mdt-table>
                 <mdt-header-row>
+                	<mdt-column>Actions</mdt-column>
                     <mdt-column align-rule="left">Package Name</mdt-column>
                     <mdt-column align-rule="left">Display Name</mdt-column>
                     <mdt-column align-rule="left">RP System</mdt-column>
@@ -23,6 +24,10 @@
                     <mdt-column align-rule="left" flex>Description</mdt-column>
                 </mdt-header-row>
                 <mdt-row ng-repeat="package in config.packages">
+	                <mdt-cell html-content="true">
+	                    <ng-md-icon icon="mode_edit" style="fill:cyan"
+	                                ng-click="showDialog()"></ng-md-icon>
+	                </mdt-cell>
                     <mdt-cell>{{package.name}}</mdt-cell>
                     <mdt-cell>{{package.displayName}}</mdt-cell>
                     <mdt-cell>{{package.systemName}}</mdt-cell>
