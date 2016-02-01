@@ -73,10 +73,103 @@ It is recommended to configure RPSP to run as a Windows Service as explained in 
 ###Getting started
 After running the app make sure that accessing the port brings a login screen.
 The initial account/user/password to work with are: system/admin/123.
+> Replace localhost:9999 with the host you are running on
 
-In order to add your first RP system and its relevant data, a support REST API was created
-`GET /rpsp/data-loader/internal-data/template`
-There is a template for an array of RP system configurations.
+You can login using POST action on http://localhost:9999/rpsp/login-action
+with headers `Content-Type=application/x-www-form-urlencoded` and body:
+> username=admin@system&password=123
+
+After logging in, in order to add your first RP system and its relevant data, a support REST API was created
+`GET /rpsp/internal-data/template`
+There is a template for an array of RP system configurations. The answer you get should be similar to the json below. 
+1. Edit the system IP, user, password, isDrttc fields in the systems section. 
+2. Edit the packages section according to the instructions below. 
+3. Add tenants and user accordingly
+4. After the json is ready, use `POST /rpsp/internal-data` with the json body to submit the configuration to the RPSP system.
+
+    {
+        "systems": [
+            {
+                "name": "Test_System",
+                "user": "admin", ////SHOULD BE EDITED
+                "password": "admin", ////SHOULD BE EDITED
+                "isDrttc": true, ////SHOULD BE EDITED
+                 "ip": "10.64.125.131", ////SHOULD BE EDITED
+                "isMultiTenanctEnabled": false,
+                "testResult": true,
+                "lastTested": 1451236381000,
+                "lastCollected": null,
+                "systemVersion": "4.3(c_adwance.0)",
+                "id": 1,
+                "clusters": [
+                    {
+                        "country": null,
+                        "clusterId": 3794617345752338000,
+                        "clusterName": "bdg-stgA4rpCLS02",
+                        "friendlyName": "London"
+                    },
+                    {
+                        "country": null,
+                        "clusterId": 2398086092600946000,
+                        "clusterName": "bdg-stgA2rpCLS01",
+                        "friendlyName": "New York"
+                    }
+                ]
+            }
+        ],
+        "packages": [
+            {
+                "systemName": "Test_System",
+                "name": "Spring_Gold",
+                "displayName": "Gold",
+                "description": "Gold package description",
+                "rpo": 15, ////SHOULD BE EDITED
+                "sourceClusterId": 2398086092600946265, ////SHOULD BE EDITED
+                "sourceVcId": "3E5FB03D-44F1-4557-B05E-60B4B1A60242", ////SHOULD BE EDITED
+                "sourceDataCenterId": "datacenter-2", ////SHOULD BE EDITED
+                "sourceEsxClusterId": "3E5FB03D-44F1-4557-B05E-60B4B1A60242:c7", ////SHOULD BE EDITED
+                "sourceEsxId": "421cab79-9ffb-32d1-8b54-1288409617c0", ////SHOULD BE EDITED
+                "sourceDatastoreId": "datastore-45", ////SHOULD BE EDITED
+                "targetClusterId": 3794617345752337726, ////SHOULD BE EDITED
+                "targetVcId": "70EBB7BE-CA55-4D1A-A29A-FE51A41827DE", ////SHOULD BE EDITED
+                "targetDataCenterId": "datacenter-2", ////SHOULD BE EDITED
+                "targetEsxClusterId": "70EBB7BE-CA55-4D1A-A29A-FE51A41827DE:c7", ////SHOULD BE EDITED
+                "targetEsxId": "421c9554-f330-eda3-2b81-8f5dea2f4db2", ////SHOULD BE EDITED
+                "targetDatastoreId": "datastore-30", ////SHOULD BE EDITED
+                "testNetworkId": "Test Network"
+            }
+        ],
+        "tenants": [
+            {
+                "name": "28652",
+                "label": "Springfield bank",
+                "packageNames": [
+                    "Spring_Gold",
+                    "Spring_Silver"
+                ]
+            }
+        ],
+        "users": [
+            {
+                "tenantName": "28652",
+                "login": "john.smith@28652",
+    			"password": "12345",
+                "firstName": "John",
+                "lastName": "Smith",
+                "email": null,
+                "fullName": "John Smith"
+            }
+        ],
+        "vms": [
+            {
+                "tenantName": "28652",
+                "vmId": "rekfjhreijf",
+                "vmName": "vm-1"
+            }
+        ]
+    }
+
+
 Each RP system as its clusters and its accounts.
 Each account has a list of all its virtual machines registered as their vSphere ID when using DR **in** the cloud template.
 When a RP system is set as DR **to** the cloud the available virtual machines for replication are found using the RP4VM REST API.
