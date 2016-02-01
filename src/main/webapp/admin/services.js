@@ -7,7 +7,13 @@
             settings: settings,
             current: current,
             testSystem: testSystem,
-            save: save
+            save: save,
+            addSystem: addSystem
+        }
+
+
+        function addSystem(system) {
+            json.systems.push(system);
         }
 
         function save(json) {

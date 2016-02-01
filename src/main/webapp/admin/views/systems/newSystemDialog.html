@@ -1,13 +1,46 @@
 <md-dialog aria-label="List dialog">
-    <md-dialog-content>
-        <md-list>
-            <md-list-item ng-repeat="item in items">
-                <p>Number {{item}}</p>
+    <md-dialog-content layout-padding>
+        <div layout-gt-sm="row">
+            <md-input-container class="md-block">
+                <label>RP4VM System name</label>
+                <input ng-model="system.name">
+            </md-input-container>
+        </div>
+        <md-input-container class="md-block">
+            <label>RP4VM System IP (cluster IP on PS side)</label>
+            <input ng-model="system.ip">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>User</label>
+            <input ng-model="system.user">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Password</label>
+            <input ng-model="system.password" type="password">
+        </md-input-container>
+        <div layout="row" ng-repeat="cluster in system.clusters">
+            <md-input-container>
+                <label>Cluster real name</label>
+                <input ng-model="cluster.clusterName" disabled>
+            </md-input-container>
+            <md-input-container>
+                <label>Cluster business name</label>
+                <input ng-model="cluster.friendlyName">
+            </md-input-container>
+            <md-input-container>
+                <label>Cluster country</label>
+                <input ng-model="cluster.country">
+            </md-input-container>
+        </div>
 
-            </md-list-item>
-        </md-list>
     </md-dialog-content>
     <md-dialog-actions>
+        <md-button ng-click="testSystem()" class="md-primary">
+            Test
+        </md-button>
+        <md-button ng-click="addSystem()" class="md-primary">
+            Save
+        </md-button>
         <md-button ng-click="closeDialog()" class="md-primary">
             Close Dialog
         </md-button>
