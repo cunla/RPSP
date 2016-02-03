@@ -6,4 +6,5 @@ public interface DataLoaderService {
     public InternalData getInternalData();
     public InternalData populateInternalData(InternalData internalData);
     public String getInternalDataTemplate();
+    public void deleteInternalData();
 }

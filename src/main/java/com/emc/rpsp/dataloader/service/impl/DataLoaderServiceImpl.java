@@ -150,6 +150,13 @@ public class DataLoaderServiceImpl implements DataLoaderService {
 	}
 	
 	
+	@Override
+	public void deleteInternalData() {
+		//clean the configuration
+		systemConnectionInfoRepository.deleteAll();
+		
+	}
+
 	
 	
 	private void propagateClusterData(SystemSettings systemSettings) {
@@ -173,5 +180,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
 
         }
     }
+
+
 
 }
