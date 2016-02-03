@@ -57,6 +57,17 @@ public class Client {
                 + systemSettings.getSystemIp());
         }
     }
+    
+    
+    public long getSystemTimeStateless() {
+        try {
+            long res = connector.getSystemTime().getTimeInMicroSeconds() / 1000;
+            return res;
+        } catch (RetrofitError e) {
+            throw new RpspException("Couldn't access host "
+                + systemSettings.getSystemIp());
+        }
+    }
 
     /**
      * @return Map of vmId => vmName in the cluster

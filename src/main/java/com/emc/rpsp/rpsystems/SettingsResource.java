@@ -89,6 +89,23 @@ public class SettingsResource {
 						HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
+	
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value = "/rest/testSystem", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SystemSettings> testSystem(
+			@RequestBody SystemSettings systemSettings) {
+		log.debug("Testing system {}", systemSettings);
+		validateNewSystem(systemSettings);
+		validateSystemData(systemSettings);
+		propagateClusterData(systemSettings, true);
+		validateNewClusters(systemSettings);
+
+		log.debug("Returning list of all clusters");
+		return new ResponseEntity<>(systemSettings, HttpStatus.OK);
+	}
+	
+	
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/rest/addSystem", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -97,7 +114,7 @@ public class SettingsResource {
 		log.debug("Adding new systemSettings to the system {}", systemSettings);
 		validateNewSystem(systemSettings);
 		validateSystemData(systemSettings);
-		propagateClusterData(systemSettings);
+		propagateClusterData(systemSettings, false);
 		validateNewClusters(systemSettings);
 
 		systemConnectionInfoRepository.saveAndFlush(systemSettings);
@@ -126,18 +143,26 @@ public class SettingsResource {
 		}
 	}
 
-	private void propagateClusterData(SystemSettings systemSettings) {
+	private void propagateClusterData(SystemSettings systemSettings, boolean stateless) {
 		Client client = new Client(systemSettings,
 				systemConnectionInfoRepository);
-		client.getSystemTime();
+		if(stateless){
+			client.getSystemTimeStateless();
+		}
+		else{
+			client.getSystemTime();
+		}
 		Map<Long, String> clusters = client.getClusterNames();
 		for (Map.Entry<Long, String> entry : clusters.entrySet()) {
 			ClusterSettings cluster = new ClusterSettings(entry.getKey(),
 					entry.getValue(), systemSettings);
-			cluster.setFriendlyName(entry.getValue());
+			//cluster.setFriendlyName(entry.getValue());
 			systemSettings.addCluster(cluster);
 		}
 	}
+	
+	
+	
 
 	/*
 	 * private void propagateClusterData(SystemSettings systemSettings) {
