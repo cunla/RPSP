@@ -8,16 +8,25 @@
             current: current,
             testSystem: testSystem,
             save: save,
-            addSystem: addSystem
+            addSystem: addSystem,
+            addPackage: addPackage
         }
 
 
         function addSystem(system) {
             json.systems.push(system);
         }
+        
+        function addPackage(pckg) {
+            json.packages.push(pckg);
+        }
 
-        function save(json) {
-            return;
+        function save() {
+        	var url = '/rpsp/internal-data';
+        	return $http.post(url, json).then(function (response) {
+                var status = response.status;
+                return status;
+            });
         }
 
         function testSystem(systemId) {

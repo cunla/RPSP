@@ -6,6 +6,7 @@
         $scope.loading = true;
         $scope.showDialog=showDialog;        
         $scope.config = {};
+        $scope.showError = {};
               
         
         RPSP.settings().then(function (res) {
@@ -15,11 +16,12 @@
         
         
         $scope.save = function() {
-        	var url = '/rpsp/internal-data';
-        	var data = $scope.config;
-        	/*$http.post(url, data).
-	        success(function (data, status, headers, config) {
-	        });*/
+        	RPSP.save().then(function(response){	
+        		
+    		})
+    		.catch(function(response){	
+    			$scope.showError = true;
+    		});
         }
         
         
@@ -28,11 +30,12 @@
             $mdDialog.show({
                 templateUrl: 'views/packages/newPackageDialog.html',
                 locals: {
-                    config: $scope.config
+                    config: $scope.config,
+                    RPSP : RPSP
                 },
                 controller: DialogController
             });
-            function DialogController($scope, $mdDialog, config) {
+            function DialogController($scope, $mdDialog, config, RPSP) {
                 $scope.config = config;
                 $scope.selectedSystem = $scope.config.systems[0];
                 $scope.closeDialog = function () {
@@ -72,10 +75,12 @@
                     newPackage.targetDatastoreName = $scope.selectedTargetDatastore.name;
                     newPackage.testNetworkId = 'Test Network';
                     
-                    if($scope.config.packages == undefined){
+                    /*if($scope.config.packages == undefined){
                     	$scope.config.packages = new Array();
-                    }
-                    $scope.config.packages.push(newPackage);
+                    }*/
+                    
+                    /*$scope.config.packages.push(newPackage);*/
+                    RPSP.addPackage(newPackage);
                 }
             }
         }
