@@ -46,7 +46,8 @@ public class DataLoaderController {
 	@RequestMapping(value = "/internal-data", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<InternalData> populateInternalData(
 			@RequestBody InternalData internalData) {
-		InternalData res = dataLoaderService.populateInternalData(internalData);	
+		InternalData res = dataLoaderService.populateInternalData(internalData);
+		addVirtualConfigurationInfo(res.getSystems());
 		
 		return new ResponseEntity<>(res, HttpStatus.CREATED);
 	}

@@ -105,13 +105,15 @@ public class DataLoaderServiceImpl implements DataLoaderService {
 		//users
 		List<User> users = internalData.getUsers();
 		for(User user : users){
-			user.setCreatedBy("admin");
-            user.setCreatedDate(new DateTime());
-            user.setPermission("USER");
-            user.setEncodedPassword(user.getPassword());
-			Account tenant = accountsMap.get(user.getTenantName());
-			user.setAccount(tenant);
-			tenant.addUser(user);
+			if(user.getId() == null){
+				user.setCreatedBy("admin");
+	            user.setCreatedDate(new DateTime());
+	            user.setPermission("USER");
+	            user.setEncodedPassword(user.getPassword());
+				Account tenant = accountsMap.get(user.getTenantName());
+				user.setAccount(tenant);
+				tenant.addUser(user);
+			}
 		}
 		
 		//vms
