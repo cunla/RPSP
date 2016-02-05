@@ -24,8 +24,12 @@
         function save() {
         	var url = '/rpsp/internal-data';
         	return $http.post(url, json).then(function (response) {
-                var status = response.status;
-                return status;
+        		var status = response.status;
+        		if(status == 201){
+        			json = response.data;
+        		}
+                
+                return response;
             });
         }
 

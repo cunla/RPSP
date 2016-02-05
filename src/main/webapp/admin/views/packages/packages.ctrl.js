@@ -17,7 +17,7 @@
         
         $scope.save = function() {
         	RPSP.save().then(function(response){	
-        		
+        		$scope.config = response.data;
     		})
     		.catch(function(response){	
     			$scope.showError = true;
