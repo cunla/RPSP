@@ -77,6 +77,10 @@ public class BackupApi extends BaseServiceImpl {
 
     @Scheduled(cron = EVERY_MINUTE)
     public void addTasksFromDb() {
+        List<BackupSystem> systems = repository.findAll();
+        if(systems.isEmpty()){
+            return;
+        }
         log.info("Adding tasks from DB");
         List<VmBackup> backups = vmBackupRepo.findAll();
         for (VmBackup backup : backups) {
