@@ -5,7 +5,19 @@
                 <label>Cluster System Name</label>
                 <input ng-model="system.name">
             </md-input-container>
+            <div layout-gt-sm="column">
+                <md-checkbox ng-model="system.isDrttc"
+                             aria-label="Select if system is for DR to the cloud">
+                    Disaster Recovery to the Cloud
+                </md-checkbox>
+                <md-checkbox ng-model="system.multiTenancy"
+                             ng-disabled="system.isDrttc"
+                             aria-label="Check if system is for multiple tenants">
+                    Multi Tenancy
+                </md-checkbox>
+            </div>
         </div>
+
         <md-input-container class="md-block">
             <label>RP4VM System IP (cluster IP on PS side)</label>
             <input ng-model="system.ip">
@@ -18,19 +30,24 @@
             <label>Password</label>
             <input ng-model="system.password" type="password">
         </md-input-container>
-        <div layout="row" ng-repeat="cluster in system.clusters">
-            <md-input-container>
-                <label>Cluster real name</label>
-                <input ng-model="cluster.clusterName" disabled>
-            </md-input-container>
-            <md-input-container>
-                <label>Cluster User-Assigned Name</label>
-                <input ng-model="cluster.friendlyName">
-            </md-input-container>
-            <md-input-container>
-                <label>Cluster country</label>
-                <input ng-model="cluster.country">
-            </md-input-container>
+        <div ng-repeat="cluster in system.clusters">
+            <div layout="column">
+                <md-input-container>
+                    <label>Cluster real name</label>
+                    <input ng-model="cluster.clusterName" disabled>
+                </md-input-container>
+                <div layout-padding layout="column">
+                    <md-input-container>
+                        <label>Cluster User-Assigned Name</label>
+                        <input ng-model="cluster.friendlyName">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Cluster country</label>
+                        <input ng-model="cluster.country">
+                    </md-input-container>
+                </div>
+            </div>
+
         </div>
 
     </md-dialog-content>
@@ -42,7 +59,7 @@
             Save
         </md-button>
         <md-button ng-click="closeDialog()" class="md-primary">
-            Close Dialog
+            Cancel
         </md-button>
     </md-dialog-actions>
 </md-dialog>
