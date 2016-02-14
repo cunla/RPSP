@@ -1,0 +1,48 @@
+<div layout="row" layout-sm="column" layout-align="space-around">
+    <md-progress-circular md-mode="indeterminate" ng-show="loading"></md-progress-circular>
+</div>
+<div layout="column" ng-hide="loading">
+    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+
+        <h2>List of tenants</h2>
+        <div>
+            <ng-md-icon icon="add" style="fill:blue" ng-click="showDialog()"></ng-md-icon>
+            <ng-md-icon icon="save" ng-click="save()"></ng-md-icon>
+        </div>
+    </section>
+    <section layout="column">
+        <h3>Disaster Recovery <b><i>to</i></b> the Cloud</h3>
+
+        <mdt-table sortable-columns="true" animate-sort-icon="true">
+            <mdt-header-row>
+                <mdt-column>Actions</mdt-column>
+                <mdt-column align-rule="left">Tenant ID</mdt-column>
+                <mdt-column align-rule="left">Tenant Label</mdt-column>
+                <mdt-column align-rule="left">Tenant Packages</mdt-column>
+                <!--<mdt-column align-rule="left">RP Clusters</mdt-column>-->
+            </mdt-header-row>
+            <mdt-row ng-repeat="tenant in config.tenants"
+                     ng-click="addDialog(tenant)">
+                <mdt-cell html-content="true">
+                    <ng-md-icon icon="mode_edit" style="fill:cyan"
+                                ng-click="showDialog(tenant)"></ng-md-icon>
+                    <ng-md-icon icon="block"
+                                style="fill: {{system.testResult ? 'green':'red'}}"
+                                ng-click="deleteTenant(tenant)"></ng-md-icon>
+                </mdt-cell>
+                <mdt-cell>{{tenant.name}}</mdt-cell>
+
+                <mdt-cell>{{tenant.label}}</mdt-cell>
+                <mdt-cell>{{tenant.packageNames.join(", ")}}</mdt-cell>
+                <div ng-repeat="cluster in system.clusters">
+                    <mdt-cell html-content="true">
+                        {{cluster.clusterName}}
+                        <br/>{{cluster.friendlyName}}
+                        <br/>{{cluster.country}}
+                    </mdt-cell>
+
+                </div>
+            </mdt-row>
+        </mdt-table>
+    </section>
+</div>

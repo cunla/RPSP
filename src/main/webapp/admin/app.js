@@ -65,7 +65,7 @@ var app = angular
                     views: {
                         'menuContent': {
                             templateUrl: "views/tenants/tenants.html",
-                            controller: 'MainCtrl'
+                            controller: 'Tenants'
                         }
                     }
                 })
