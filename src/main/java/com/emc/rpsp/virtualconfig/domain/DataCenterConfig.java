@@ -8,6 +8,7 @@ public class DataCenterConfig {
 	private String id;
 	private String name;
 	private List<EsxClusterConfig> esxClustersConfig = new ArrayList<EsxClusterConfig>();
+	private List<DataStoreConfig> datastores = new ArrayList<DataStoreConfig>();
 	
 	public DataCenterConfig() {
 		super();
@@ -52,6 +53,20 @@ public class DataCenterConfig {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+	public List<DataStoreConfig> getDatastores() {
+		return datastores;
+	}
+
+
+	public void setDatastores(List<DataStoreConfig> datastores) {
+		this.datastores = datastores;
+	}
+	
+	public void addDatastore(DataStoreConfig dataStoreConfig){
+		this.datastores.add(dataStoreConfig);
 	}
 
 
