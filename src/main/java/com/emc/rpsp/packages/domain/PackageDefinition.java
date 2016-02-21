@@ -57,29 +57,52 @@ public class PackageDefinition implements Serializable {
     @Size(min = 0, max = 100)
     @Column(name = "source_vc_id", length = 100)
     private String sourceVcId;
+    
+    @Size(min = 0, max = 100)
+    @Column(name = "source_vc_name", length = 100)
+    private String sourceVcName;
 
 
     //Datacenter to access for DR2C
     @Size(min = 0, max = 100)
     @Column(name = "source_datacenter_id", length = 100)
     private String sourceDataCenterId;
+    
+    
+    @Size(min = 0, max = 100)
+    @Column(name = "source_datacenter_name", length = 100)
+    private String sourceDataCenterName;
 
 
     //Used with DR2C - ESX cluster under data center
     @Size(min = 0, max = 100)
     @Column(name = "source_esx_cluster_id", length = 100)
     private String sourceEsxClusterId;
+    
+    
+    @Size(min = 0, max = 100)
+    @Column(name = "source_esx_cluster_name", length = 100)
+    private String sourceEsxClusterName;
 
 
     //ESX the generated VM on protect operation will be created on
     @Size(min = 0, max = 100)
     @Column(name = "source_esx_id", length = 100)
     private String sourceEsxId;
+    
+    
+    @Size(min = 0, max = 100)
+    @Column(name = "source_esx_name", length = 100)
+    private String sourceEsxName;
 
     //Datastore the generated VM on protect operation will be created on
     @Size(min = 0, max = 100)
     @Column(name = "source_datastore_id", length = 100)
     private String sourceDatastoreId;
+    
+    @Size(min = 0, max = 100)
+    @Column(name = "source_datastore_name", length = 100)
+    private String sourceDatastoreName;
 
     //cluster
     @Column(name = "target_cluster_id")
@@ -89,30 +112,51 @@ public class PackageDefinition implements Serializable {
     @Size(min = 0, max = 100)
     @Column(name = "target_vc_id", length = 100)
     private String targetVcId;
+    
+    @Size(min = 0, max = 100)
+    @Column(name = "target_vc_name", length = 100)
+    private String targetVcName;
 
 
     //Datacenter to access for DR2C
     @Size(min = 0, max = 100)
     @Column(name = "target_datacenter_id", length = 100)
     private String targetDataCenterId;
+    
+    @Size(min = 0, max = 100)
+    @Column(name = "target_datacenter_name", length = 100)
+    private String targetDataCenterName;
 
 
     //Used with DR2C - ESX cluster under data center
     @Size(min = 0, max = 100)
     @Column(name = "target_esx_cluster_id", length = 100)
     private String targetEsxClusterId;
+    
+    @Size(min = 0, max = 100)
+    @Column(name = "target_esx_cluster_name", length = 100)
+    private String targetEsxClusterName;
 
 
     //ESX the generated VM on protect operation will be created on
     @Size(min = 0, max = 100)
     @Column(name = "target_esx_id", length = 100)
     private String targetEsxId;
+    
+    @Size(min = 0, max = 100)
+    @Column(name = "target_esx_name", length = 100)
+    private String targetEsxName;
 
 
     //Datastore the generated VM on protect operation will be created on
     @Size(min = 0, max = 100)
     @Column(name = "target_datastore_id", length = 100)
     private String targetDatastoreId;
+    
+    
+    @Size(min = 0, max = 100)
+    @Column(name = "target_datastore_name", length = 100)
+    private String targetDatastoreName;
 
 
     //Not used at the moment
@@ -325,6 +369,90 @@ public class PackageDefinition implements Serializable {
 
 	public void setSystemName(String systemName) {
 		this.systemName = systemName;
+	}
+	
+	
+	
+	
+
+	public String getSourceVcName() {
+		return sourceVcName;
+	}
+
+	public void setSourceVcName(String sourceVcName) {
+		this.sourceVcName = sourceVcName;
+	}
+
+	public String getSourceDataCenterName() {
+		return sourceDataCenterName;
+	}
+
+	public void setSourceDataCenterName(String sourceDataCenterName) {
+		this.sourceDataCenterName = sourceDataCenterName;
+	}
+
+	public String getSourceEsxClusterName() {
+		return sourceEsxClusterName;
+	}
+
+	public void setSourceEsxClusterName(String sourceEsxClusterName) {
+		this.sourceEsxClusterName = sourceEsxClusterName;
+	}
+
+	public String getSourceEsxName() {
+		return sourceEsxName;
+	}
+
+	public void setSourceEsxName(String sourceEsxName) {
+		this.sourceEsxName = sourceEsxName;
+	}
+
+	public String getSourceDatastoreName() {
+		return sourceDatastoreName;
+	}
+
+	public void setSourceDatastoreName(String sourceDatastoreName) {
+		this.sourceDatastoreName = sourceDatastoreName;
+	}
+
+	public String getTargetVcName() {
+		return targetVcName;
+	}
+
+	public void setTargetVcName(String targetVcName) {
+		this.targetVcName = targetVcName;
+	}
+
+	public String getTargetDataCenterName() {
+		return targetDataCenterName;
+	}
+
+	public void setTargetDataCenterName(String targetDataCenterName) {
+		this.targetDataCenterName = targetDataCenterName;
+	}
+
+	public String getTargetEsxClusterName() {
+		return targetEsxClusterName;
+	}
+
+	public void setTargetEsxClusterName(String targetEsxClusterName) {
+		this.targetEsxClusterName = targetEsxClusterName;
+	}
+
+	public String getTargetEsxName() {
+		return targetEsxName;
+	}
+
+	public void setTargetEsxName(String targetEsxName) {
+		this.targetEsxName = targetEsxName;
+	}
+
+	public String getTargetDatastoreName() {
+		return targetDatastoreName;
+	}
+
+	public void setTargetDatastoreName(String targetDatastoreName) {
+		this.targetDatastoreName = targetDatastoreName;
 	}
 
 	@Override

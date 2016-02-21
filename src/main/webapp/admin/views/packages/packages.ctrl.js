@@ -56,19 +56,25 @@
                     
                     newPackage.sourceClusterId = $scope.selectedProdCluster.id;
                     newPackage.sourceClusterName = $scope.selectedProdCluster.friendlyName;
-                    newPackage.sourceVcId = $scope.selectedProdCluster.vcenterConfig.name;
+                    newPackage.sourceVcId = $scope.selectedProdCluster.vcenterConfig.id;
+                    newPackage.sourceVcName = $scope.selectedProdCluster.vcenterConfig.name;
                     newPackage.sourceDataCenterId = $scope.selectedSourceDataCenter.id;
+                    newPackage.sourceDataCenterName = $scope.selectedSourceDataCenter.name;
                     newPackage.sourceEsxClusterId = $scope.selectedSourceEsxCluster.id;
                     newPackage.sourceEsxClusterName = $scope.selectedSourceEsxCluster.name;
                     newPackage.sourceEsxId = $scope.selectedSourceEsxCluster.esxConfigs[0].id;
+                    newPackage.sourceEsxName = $scope.selectedSourceEsxCluster.esxConfigs[0].name;
                     newPackage.sourceDatastoreId = $scope.selectedSourceDatastore.id;
                     newPackage.sourceDatastoreName = $scope.selectedSourceDatastore.name;
                     
                     newPackage.targetClusterId = $scope.selectedReplicaCluster.id;
                     newPackage.targetClusterName = $scope.selectedReplicaCluster.friendlyName;
-                    newPackage.targetVcId = $scope.selectedReplicaCluster.vcenterConfig.name;
+                    newPackage.targetVcId = $scope.selectedReplicaCluster.vcenterConfig.id;
+                    newPackage.targetVcName = $scope.selectedReplicaCluster.vcenterConfig.name;
                     newPackage.targetDataCenterId = $scope.selectedTargetDataCenter.id;
+                    newPackage.targetDataCenterName = $scope.selectedTargetDataCenter.name;
                     newPackage.targetEsxClusterId = $scope.selectedTargetDataCenter.esxClustersConfig[0].id;
+                    newPackage.targetEsxClusterName = $scope.selectedTargetDataCenter.esxClustersConfig[0].name;
                     newPackage.targetEsxId = $scope.selectedTargetEsx.id;
                     newPackage.targetEsxName = $scope.selectedTargetEsx.name;
                     newPackage.targetDatastoreId = $scope.selectedTargetDatastore.id;
