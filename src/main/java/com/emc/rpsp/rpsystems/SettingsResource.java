@@ -31,7 +31,7 @@ public class SettingsResource {
 
 	@Inject
 	private SystemConnectionInfoRepository systemConnectionInfoRepository;
-	
+
 	@Inject
 	private VirtualConfigurationService virtualConfigurationService;
 
@@ -60,7 +60,7 @@ public class SettingsResource {
 
 	/*
 	 * @PreAuthorize("hasAuthority('ADMIN')")
-	 * 
+	 *
 	 * @RequestMapping(value = "/rest/systems/{id}", method = RequestMethod.GET,
 	 * produces = MediaType.APPLICATION_JSON_VALUE) public
 	 * ResponseEntity<SystemSettings> findSystem(@PathVariable("id") Long id) {
@@ -89,23 +89,23 @@ public class SettingsResource {
 						HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
-	
-	
+
+
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/rest/testSystem", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SystemSettings> testSystem(
 			@RequestBody SystemSettings systemSettings) {
 		log.debug("Testing system {}", systemSettings);
-		validateNewSystem(systemSettings);
-		validateSystemData(systemSettings);
+//		validateNewSystem(systemSettings);
+//		validateSystemData(systemSettings);
 		propagateClusterData(systemSettings, true);
 		validateNewClusters(systemSettings);
 
 		log.debug("Returning list of all clusters");
 		return new ResponseEntity<>(systemSettings, HttpStatus.OK);
 	}
-	
-	
+
+
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/rest/addSystem", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -160,16 +160,16 @@ public class SettingsResource {
 			systemSettings.addCluster(cluster);
 		}
 	}
-	
-	
-	
+
+
+
 
 	/*
 	 * private void propagateClusterData(SystemSettings systemSettings) {
-	 * 
+	 *
 	 * ClusterSettings cluster = new ClusterSettings(2398086092600946265l,
 	 * "NY-orig-name", systemSettings); systemSettings.addCluster(cluster);
-	 * 
+	 *
 	 * cluster = new ClusterSettings(3794617345752337726l, "London-orig-name",
 	 * systemSettings); systemSettings.addCluster(cluster); }
 	 */
@@ -194,13 +194,13 @@ public class SettingsResource {
 			}
 		}
 	}
-	
+
 	private void addVirtualConfigurationInfo(List<SystemSettings> systemSettingsList){
 		for(SystemSettings systemSettings : systemSettingsList){
 			addVirtualConfigurationInfo(systemSettings);
 		}
 	}
-	
+
 	private void addVirtualConfigurationInfo(SystemSettings systemSettings){
 		List<ClusterSettings> clusters = systemSettings.getClusters();
 		for(ClusterSettings cluster : clusters){

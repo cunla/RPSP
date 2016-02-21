@@ -41,20 +41,26 @@
             });
             function DialogController($scope, $mdDialog, items, system) {
                 $scope.system = system;
+                $scope.system.isDrttc = ($scope.system.isDrttc == true);
                 $scope.items = items;
                 $scope.closeDialog = closeDialog;
                 $scope.testSystem = testSys;
                 $scope.addSystem = addSystem;
                 function addSystem() {
-                    if (!system.id) {
-                        RPSP.addSystem(system);
-                    }
+                    RPSP.addSystem(system);
+                    $mdDialog.hide();
                 }
 
                 function testSys() {
-                    RPSP.testSystem(system.id).then(function (data) {
-                        system.testing = false;
+                    $scope.system.testing = true;
+                    RPSP.testNewSystem(system).then(function (res) {
+                        $scope.system = res.data;
+                        $scope.system.testing = false;
+                    }, function error(res) {
+                        alert("Couldn't access system " + system.ip);
+                        $scope.system.testing = false;
                     })
+
                 }
 
                 function closeDialog() {
@@ -65,9 +71,17 @@
 
         function testSystem(system) {
             system.testing = true;
-            RPSP.testSystem(system.id).then(function (data) {
-                system.testing = false;
-            })
+            if (system.id) {
+                RPSP.testSystem(system.id).then(function (res) {
+                    system = res.data;
+                    system.testing = false;
+                });
+            } else {
+                RPSP.testNewSystem(system).then(function (res) {
+                    system = res.data;
+                    system.testing = false;
+                });
+            }
         }
     }
 })()

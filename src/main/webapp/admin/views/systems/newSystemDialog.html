@@ -1,5 +1,8 @@
 <md-dialog aria-label="List dialog">
     <md-dialog-content layout-padding>
+        <div layout="row" layout-sm="column" layout-align="space-around">
+            <md-progress-circular md-mode="indeterminate" ng-show="system.testing"></md-progress-circular>
+        </div>
         <div layout-gt-sm="row">
             <md-input-container class="md-block">
                 <label>Cluster System Name</label>
@@ -56,7 +59,7 @@
             Test
         </md-button>
         <md-button ng-click="addSystem()" class="md-primary">
-            OK
+            Add
         </md-button>
         <md-button ng-click="closeDialog()" class="md-primary">
             Cancel

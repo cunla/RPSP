@@ -10,7 +10,8 @@
             save: save,
             addSystem: addSystem,
             addPackage: addPackage,
-            addTenant: addTenant
+            addTenant: addTenant,
+            testNewSystem: testNewSystem
         }
 
         function addTenant(tenant) {
@@ -19,6 +20,7 @@
 
         function addSystem(system) {
             json.systems.push(system);
+
         }
 
         function addPackage(pckg) {
@@ -38,24 +40,30 @@
         }
 
         function testSystem(systemId) {
-            return $q(function (resolve, reject) {
-                setTimeout(function () {
-                    $http.get('data/settings.json').then(function (res) {
-                        json = res.data;
-                        resolve(res);
-                    });
-                }, 1000);
-            });
+            var url = '/rpsp/internal-data';
+            return $http.get(url);
+            //return $q(function (resolve, reject) {
+            //    setTimeout(function () {
+            //        $http.get('data/settings.json').then(function (res) {
+            //            json = res.data;
+            //            resolve(res);
+            //        });
+            //    }, 1000);
+            //});
+        }
+
+        function testNewSystem(system) {
+            var url = '/rpsp/app/rest/testSystem';
+            return $http.post(url, system);
         }
 
         function settings() {
+            var url = '/rpsp/internal-data';
             return $q(function (resolve, reject) {
-                setTimeout(function () {
-                    $http.get('data/settings.json').then(function (res) {
-                        json = res.data;
-                        resolve(res);
-                    });
-                }, 1);
+                $http.get(url).then(function (res) {
+                    json = res.data;
+                    resolve(res);
+                });
             });
         }
 
