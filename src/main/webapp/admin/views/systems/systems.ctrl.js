@@ -47,7 +47,7 @@
                 $scope.testSystem = testSys;
                 $scope.addSystem = addSystem;
                 function addSystem() {
-                    RPSP.addSystem(system);
+                    RPSP.addSystem($scope.system);
                     $mdDialog.hide();
                 }
 
