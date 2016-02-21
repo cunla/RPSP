@@ -1,4 +1,4 @@
-<md-dialog aria-label="List dialog" flex="65">
+<md-dialog aria-label="List dialog" flex="40" class="dialog-height">
 
 
 	<md-toolbar>
@@ -16,67 +16,75 @@
 		        <md-content class="md-padding">
 		            <div flex="100" layout="column">
 			            	<div layout="row" layout-wrap>
-			                    <md-input-container flex="33">
+			                    <md-input-container  flex="100">
 			                        <label>Package Name:</label>
-			                        <input ng-model="packageName" required>
-			                    </md-input-container>                    
-			                    <md-input-container flex="33">
+			                        <input ng-model="packageName">
+			                    </md-input-container>                   
+			                    <md-input-container flex="100">
 			                        <label>Display Name:</label>
-			                        <input ng-model="displayName" required>
+			                        <input ng-model="displayName">
 			                    </md-input-container>	                    
-			                    <md-input-container flex="33">
+			                    <md-input-container flex="100">
 			                        <label>System:</label>
 			                        <md-select ng-model="selectedSystem">
 									    <md-option ng-value="system" ng-repeat="system in config.systems">{{ system.name }}</md-option>
 									 </md-select>
-		                    	</md-input-container>	
+		                    	</md-input-container>
+		                    	<!-- <div flex="30"></div> -->	
 		                    	
 		                    	
-		                    	<md-input-container flex="25">
+		                    	<div flex="5"></div>
+		                    	<md-input-container flex="95">
 			                        <label>Production Cluster:</label>
 			                        <md-select ng-model="selectedProdCluster">
 									    <md-option ng-value="prodCluster" ng-repeat="prodCluster in selectedSystem.clusters">{{ prodCluster.friendlyName }}</md-option>
 									 </md-select>
 		                    	</md-input-container>
-		                    	<md-input-container flex="25">
+		                    	<div flex="10"></div>
+		                    	<md-input-container flex="90">
 			                        <label>Source Data Center:</label>
 			                        <md-select ng-model="selectedSourceDataCenter">
 									    <md-option ng-value="sourceDataCenter" ng-repeat="sourceDataCenter in selectedProdCluster.vcenterConfig.relatedDatacenters">{{ sourceDataCenter.name }}</md-option>
 									 </md-select>
-		                    	</md-input-container>    
-		                    	<md-input-container flex="25">
+		                    	</md-input-container>  
+		                    	<div flex="10"></div> 
+		                    	<md-input-container flex="90">
 			                        <label>Source ESX Cluster:</label>
 			                        <md-select ng-model="selectedSourceEsxCluster">
 									    <md-option ng-value="sourceEsxCluster" ng-repeat="sourceEsxCluster in selectedSourceDataCenter.esxClustersConfig">{{ sourceEsxCluster.name }}</md-option>
 									 </md-select>
 		                    	</md-input-container>
-		                    	<md-input-container flex="25">
+		                    	<div flex="10"></div>
+		                    	<md-input-container flex="90">
 			                        <label>Source Datastore:</label>
 			                        <md-select ng-model="selectedSourceDatastore">
 									    <md-option ng-value="sourceDatastore" ng-repeat="sourceDatastore in selectedSourceDataCenter.esxClustersConfig[0].esxConfigs[0].relatedDatastores">{{ sourceDatastore.name }}</md-option>
 									 </md-select>
 		                    	</md-input-container>
 		                    	
-		                    	
-		                    	<md-input-container flex="25">
+		                    	<div flex="5"></div>
+		                    	<md-input-container flex="95">
 			                        <label>Replica Cluster:</label>
 			                         <md-select ng-model="selectedReplicaCluster">
 									    <md-option ng-value="replicaCluster" ng-repeat="replicaCluster in selectedSystem.clusters">{{ replicaCluster.friendlyName }}</md-option>
 									 </md-select>
 		                    	</md-input-container>
-		                    	<md-input-container flex="25">
+		                    	<div flex="10"></div>
+		                    	<md-input-container flex="90">
 			                        <label>Target Data Center:</label>
 			                        <md-select ng-model="selectedTargetDataCenter">
 									    <md-option ng-value="targetDataCenter" ng-repeat="targetDataCenter in selectedReplicaCluster.vcenterConfig.relatedDatacenters">{{ targetDataCenter.name }}</md-option>
 									 </md-select>
-		                    	</md-input-container>    
-		                    	<md-input-container flex="25">
+		                    	</md-input-container>  
+		                    	<div flex="10"></div>
+		                    	<md-input-container flex="90">
 			                        <label>Target ESX:</label>
 			                        <md-select ng-model="selectedTargetEsx">
 									    <md-option ng-value="targetEsx" ng-repeat="targetEsx in selectedTargetDataCenter.esxClustersConfig[0].esxConfigs">{{ targetEsx.name }}</md-option>
 									 </md-select>
 		                    	</md-input-container>
-		                    	<md-input-container flex="25">
+		                    	<div flex="10"></div>
+		                    	<md-input-container flex="90">
 			                        <label>Target Datastore:</label>
 			                          <md-select ng-model="selectedTargetDatastore">
 									    <md-option ng-value="targetDatastore" ng-repeat="targetDatastore in selectedTargetEsx.relatedDatastores">{{ targetDatastore.name }}</md-option>
@@ -84,11 +92,11 @@
 		                    	</md-input-container>
 		                    	
 		                    	
-		                    	<md-input-container flex="20">
+		                    	<md-input-container flex="100">
 			                        <label>RPO (Min):</label>
 			                        <input ng-model="rpo" required>
 		                    	</md-input-container>    
-		                    	<md-input-container flex="80">
+		                    	<md-input-container flex="100">
 			                        <label>Desctiption (Free Text):</label>
 			                        <input ng-model="description" required>
 		                    	</md-input-container>

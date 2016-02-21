@@ -33,7 +33,7 @@ public class DataLoaderController {
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/internal-data", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<InternalData> getInternalData(@RequestParam(value = "includeVirtualConfig", required=false, defaultValue = "false") Boolean includeVirtualConfig) {
+	public ResponseEntity<InternalData> getInternalData(@RequestParam(value = "includeVirtualConfig", required=false, defaultValue = "true") Boolean includeVirtualConfig) {
 		InternalData internalData = dataLoaderService.getInternalData();
 		if(includeVirtualConfig){
 			addVirtualConfigurationInfo(internalData.getSystems());
