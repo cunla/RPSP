@@ -54,7 +54,7 @@
                     newPackage.description = $scope.description;
                     newPackage.rpo = $scope.rpo;
                     
-                    newPackage.sourceClusterId = $scope.selectedProdCluster.id;
+                    newPackage.sourceClusterId = $scope.selectedProdCluster.clusterId;
                     newPackage.sourceClusterName = $scope.selectedProdCluster.friendlyName;
                     newPackage.sourceVcId = $scope.selectedProdCluster.vcenterConfig.id;
                     newPackage.sourceVcName = $scope.selectedProdCluster.vcenterConfig.name;
@@ -67,7 +67,7 @@
                     newPackage.sourceDatastoreId = $scope.selectedSourceDatastore.id;
                     newPackage.sourceDatastoreName = $scope.selectedSourceDatastore.name;
                     
-                    newPackage.targetClusterId = $scope.selectedReplicaCluster.id;
+                    newPackage.targetClusterId = $scope.selectedReplicaCluster.clusterId;
                     newPackage.targetClusterName = $scope.selectedReplicaCluster.friendlyName;
                     newPackage.targetVcId = $scope.selectedReplicaCluster.vcenterConfig.id;
                     newPackage.targetVcName = $scope.selectedReplicaCluster.vcenterConfig.name;

@@ -55,6 +55,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         internalData.setTenants(accountService.findAll());
         internalData.setUsers(userService.findUsers());
         internalData.setVms(vmOwnershipService.findAll());
+        setPackageClustersData(internalData);
         return internalData;
     }
 
@@ -161,7 +162,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         systemSettings.setClusters(new LinkedList<>());
         Client client = new Client(systemSettings, systemConnectionInfoRepository);
         try {
-            client.getSystemTime();
+            client.getSystemTimeStateless();
         } catch (Exception e) {
             throw new RpspException("Couldn't access system " + systemSettings.getSystemIp());
         }
@@ -177,6 +178,25 @@ public class DataLoaderServiceImpl implements DataLoaderService {
             }
 
         }
+    }
+    
+    
+    private void setPackageClustersData(InternalData internalData){
+    	List<SystemSettings> systems = internalData.getSystems();
+    	List<PackageDefinition> packages = internalData.getPackages();
+    	
+    	for(PackageDefinition currPackage : packages){
+    		for(SystemSettings currSystem : systems){
+    			for(ClusterSettings currCluster : currSystem.getClusters()){
+    				if(currPackage.getSourceClusterId().equals(currCluster.getClusterId())){
+    					currPackage.setSourceClusterName(currCluster.getFriendlyName());
+    				}
+    				if(currPackage.getTargetClusterId().equals(currCluster.getClusterId())){
+    					currPackage.setTargetClusterName(currCluster.getFriendlyName());
+    				}
+    			}
+    		}
+    	}
     }
 
 

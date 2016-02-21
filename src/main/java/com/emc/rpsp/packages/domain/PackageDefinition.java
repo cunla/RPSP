@@ -51,6 +51,10 @@ public class PackageDefinition implements Serializable {
     //cluster
     @Column(name = "source_cluster_id")
     private Long sourceClusterId;
+    
+    @Transient
+    @JsonProperty
+    private String sourceClusterName;
 
 
     //vCenter ID the cluster is on
@@ -107,6 +111,10 @@ public class PackageDefinition implements Serializable {
     //cluster
     @Column(name = "target_cluster_id")
     private Long targetClusterId;
+    
+    @Transient
+    @JsonProperty
+    private String targetClusterName;
 
     //vCenter ID the cluster is on
     @Size(min = 0, max = 100)
@@ -454,6 +462,24 @@ public class PackageDefinition implements Serializable {
 
 	public void setTargetDatastoreName(String targetDatastoreName) {
 		this.targetDatastoreName = targetDatastoreName;
+	}
+	
+	
+
+	public String getSourceClusterName() {
+		return sourceClusterName;
+	}
+
+	public void setSourceClusterName(String sourceClusterName) {
+		this.sourceClusterName = sourceClusterName;
+	}
+
+	public String getTargetClusterName() {
+		return targetClusterName;
+	}
+
+	public void setTargetClusterName(String targetClusterName) {
+		this.targetClusterName = targetClusterName;
 	}
 
 	@Override
