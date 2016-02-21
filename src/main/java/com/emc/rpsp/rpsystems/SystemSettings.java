@@ -125,7 +125,7 @@ public class SystemSettings {
     }
 
     public String getPassword() {
-        return "*****";
+        return getRealPassword();
     }
 
     public Boolean getTestResult() {
