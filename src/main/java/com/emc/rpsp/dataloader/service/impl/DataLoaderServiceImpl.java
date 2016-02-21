@@ -81,6 +81,8 @@ public class DataLoaderServiceImpl implements DataLoaderService {
             SystemSettings currSystem = systemsMap.get(packageDefinition.getSystemName());
             packageDefinition.setSystemSettings(currSystem);
             currSystem.addPackage(packageDefinition);
+            packageDefinition.setSourceClusterId(Long.parseLong(packageDefinition.getSourceClusterIdStr()));
+            packageDefinition.setTargetClusterId(Long.parseLong(packageDefinition.getTargetClusterIdStr()));
 
         }
 

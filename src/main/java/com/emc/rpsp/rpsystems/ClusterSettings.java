@@ -22,10 +22,17 @@ public class ClusterSettings {
 
 	@Column
 	private String country;
+	
 	@Column
 	private Long clusterId;
+	
+    @Transient
+    @JsonProperty
+    private String clusterIdStr;
+	
 	@Column
 	private String clusterName;
+	
 	@Column
 	private String friendlyName;
 	
@@ -101,6 +108,14 @@ public class ClusterSettings {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getClusterIdStr() {
+		return clusterId.toString();
+	}
+
+	public void setClusterIdStr(String clusterIdStr) {
+		this.clusterIdStr = clusterIdStr;
 	}
 	
 	

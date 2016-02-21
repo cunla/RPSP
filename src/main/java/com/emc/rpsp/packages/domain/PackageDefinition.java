@@ -54,6 +54,10 @@ public class PackageDefinition implements Serializable {
     
     @Transient
     @JsonProperty
+    private String sourceClusterIdStr;
+    
+    @Transient
+    @JsonProperty
     private String sourceClusterName;
 
 
@@ -111,6 +115,10 @@ public class PackageDefinition implements Serializable {
     //cluster
     @Column(name = "target_cluster_id")
     private Long targetClusterId;
+    
+    @Transient
+    @JsonProperty
+    private String targetClusterIdStr;
     
     @Transient
     @JsonProperty
@@ -358,6 +366,8 @@ public class PackageDefinition implements Serializable {
         if (null != systemSettings) {
             systemId = systemSettings.getId();
             systemName = systemSettings.getName();
+            sourceClusterIdStr = sourceClusterId.toString();
+            targetClusterIdStr = targetClusterId.toString();
         } else {
             log.warn("System not defined for package");
         }
@@ -480,6 +490,24 @@ public class PackageDefinition implements Serializable {
 
 	public void setTargetClusterName(String targetClusterName) {
 		this.targetClusterName = targetClusterName;
+	}
+
+
+	public String getSourceClusterIdStr() {
+		return sourceClusterIdStr;
+	}
+
+	public void setSourceClusterIdStr(String sourceClusterIdStr) {
+		this.sourceClusterIdStr = sourceClusterIdStr;
+	}
+	
+
+	public String getTargetClusterIdStr() {
+		return targetClusterIdStr;
+	}
+
+	public void setTargetClusterIdStr(String targetClusterIdStr) {
+		this.targetClusterIdStr = targetClusterIdStr;
 	}
 
 	@Override
