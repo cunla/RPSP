@@ -349,6 +349,7 @@ public class PackageDefinition implements Serializable {
     public void setAdditionalValues() {
         if (null != systemSettings) {
             systemId = systemSettings.getId();
+            systemName = systemSettings.getName();
         } else {
             log.warn("System not defined for package");
         }

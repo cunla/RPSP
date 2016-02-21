@@ -151,6 +151,7 @@ public class Account implements Serializable {
 		if(packageDefinition != null){
 			for(PackageDefinition currPackagedDefinition : packageDefinition){
 				packageIds.add(currPackagedDefinition.getId());
+				packageNames.add(currPackagedDefinition.getName());
 			}
 		}
 	}

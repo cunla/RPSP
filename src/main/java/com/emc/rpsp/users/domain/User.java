@@ -199,6 +199,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	public void setAdditionalValues(){
 		if(account != null){
 			tenantId = account.getId();
+			tenantName = account.getName();
 		}
 	}
 
