@@ -58,7 +58,7 @@
 		                    	<md-input-container flex="90">
 			                        <label>Source Datastore:</label>
 			                        <md-select ng-model="selectedSourceDatastore">
-									    <md-option ng-value="sourceDatastore" ng-repeat="sourceDatastore in selectedSourceDataCenter.esxClustersConfig[0].esxConfigs[0].relatedDatastores">{{ sourceDatastore.name }}</md-option>
+									    <md-option ng-value="sourceDatastore" ng-repeat="sourceDatastore in selectedSourceDataCenter.datastores">{{ sourceDatastore.name }}</md-option>
 									 </md-select>
 		                    	</md-input-container>
 		                    	
