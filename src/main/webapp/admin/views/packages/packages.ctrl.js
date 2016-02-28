@@ -73,8 +73,8 @@
                     newPackage.targetVcName = $scope.selectedReplicaCluster.vcenterConfig.name;
                     newPackage.targetDataCenterId = $scope.selectedTargetDataCenter.id;
                     newPackage.targetDataCenterName = $scope.selectedTargetDataCenter.name;
-                    newPackage.targetEsxClusterId = $scope.selectedTargetDataCenter.esxClustersConfig[0].id;
-                    newPackage.targetEsxClusterName = $scope.selectedTargetDataCenter.esxClustersConfig[0].name;
+                    newPackage.targetEsxClusterId = $scope.selectedTargetEsxCluster.id;
+                    newPackage.targetEsxClusterName = $scope.selectedTargetEsxCluster.name;
                     newPackage.targetEsxId = $scope.selectedTargetEsx.id;
                     newPackage.targetEsxName = $scope.selectedTargetEsx.name;
                     newPackage.targetDatastoreId = $scope.selectedTargetDatastore.id;

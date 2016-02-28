@@ -75,12 +75,19 @@
 			                        <md-select ng-model="selectedTargetDataCenter">
 									    <md-option ng-value="targetDataCenter" ng-repeat="targetDataCenter in selectedReplicaCluster.vcenterConfig.relatedDatacenters">{{ targetDataCenter.name }}</md-option>
 									 </md-select>
-		                    	</md-input-container>  
+		                    	</md-input-container> 
+		                    	<div flex="10"></div>
+		                    	<md-input-container flex="90">
+			                        <label>Target ESX Cluster:</label>
+			                        <md-select ng-model="selectedTargetEsxCluster">
+									    <md-option ng-value="targetEsxCluster" ng-repeat="targetEsxCluster in selectedTargetDataCenter.esxClustersConfig">{{ targetEsxCluster.name }}</md-option>
+									 </md-select>
+		                    	</md-input-container> 
 		                    	<div flex="10"></div>
 		                    	<md-input-container flex="90">
 			                        <label>Target ESX:</label>
 			                        <md-select ng-model="selectedTargetEsx">
-									    <md-option ng-value="targetEsx" ng-repeat="targetEsx in selectedTargetDataCenter.esxClustersConfig[0].esxConfigs">{{ targetEsx.name }}</md-option>
+									    <md-option ng-value="targetEsx" ng-repeat="targetEsx in selectedTargetEsxCluster.esxConfigs">{{ targetEsx.name }}</md-option>
 									 </md-select>
 		                    	</md-input-container>
 		                    	<div flex="10"></div>
