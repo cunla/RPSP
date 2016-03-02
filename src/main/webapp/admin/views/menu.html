@@ -16,28 +16,28 @@
 <main>
     <md-tabs md-dynamic-height md-border-bottom>
         <md-tab>
-            <md-button flex ng-click="goSystems()">Systems</md-button>
+            <md-button flex ng-click="go('/app/systems')">Systems</md-button>
         </md-tab>
         <md-divider></md-divider>
         <md-tab>
-            <md-button flex ng-click="goPackages()">Packages</md-button>
+            <md-button flex ng-click="go('/app/packages')">Packages</md-button>
 
         </md-tab>
         <md-divider></md-divider>
         <md-tab>
-            <md-button flex ng-click="goTenants()">Tenants</md-button>
+            <md-button flex ng-click="go('/app/tenants')">Tenants</md-button>
         </md-tab>
         <md-divider></md-divider>
         <md-tab>
-            <md-button flex ng-click="goUsers()">Users</md-button>
+            <md-button flex ng-click="go('/app/users')">Users</md-button>
         </md-tab>
         <md-divider></md-divider>
         <md-tab>
-            <md-button flex ng-click="goVms()">Virtual Machines</md-button>
+            <md-button flex ng-click="go('/app/vms')">Virtual Machines</md-button>
         </md-tab>
         <md-divider></md-divider>
         <md-tab>
-            <md-button flex ng-click="goTools()">Tools</md-button>
+            <md-button flex ng-click="go('/app/tools')">Tools</md-button>
         </md-tab>
     </md-tabs>
 

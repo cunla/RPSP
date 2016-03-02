@@ -3,6 +3,7 @@
         .service('RPSP', ['$http', '$q', RPSP]);
     function RPSP($http, $q) {
         var json = {};
+        var changed = false;
         return {
             settings: settings,
             current: current,
@@ -11,19 +12,22 @@
             addSystem: addSystem,
             addPackage: addPackage,
             addTenant: addTenant,
-            testNewSystem: testNewSystem
+            testNewSystem: testNewSystem,
+            changed: changed
         }
 
         function addTenant(tenant) {
+            changed = true;
             json.tenants.push(tenant);
         }
 
         function addSystem(system) {
+            changed = true;
             json.systems.push(system);
-
         }
 
         function addPackage(pckg) {
+            changed = true;
             json.packages.push(pckg);
         }
 
@@ -33,8 +37,8 @@
                 var status = response.status;
                 if (status == 201) {
                     json = response.data;
+                    changed = false;
                 }
-
                 return response;
             });
         }
@@ -62,6 +66,7 @@
             return $q(function (resolve, reject) {
                 $http.get(url).then(function (res) {
                     json = res.data;
+                    changed = false;
                     resolve(res);
                 });
             });
