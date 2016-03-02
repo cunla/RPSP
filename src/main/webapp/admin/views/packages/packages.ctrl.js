@@ -25,7 +25,10 @@
         }
         
         
-        function showDialog($event) {
+        function showDialog(currPackage) {
+    	    if (!currPackage) {
+    		    currPackage = {};
+            }
             var parentEl = angular.element(document.body);
             $mdDialog.show({
                 templateUrl: 'views/packages/newPackageDialog.html',
@@ -38,6 +41,25 @@
             function DialogController($scope, $mdDialog, config, RPSP) {
                 $scope.config = config;
                 $scope.selectedSystem = $scope.config.systems[0];
+                
+                $scope.packageName = currPackage.name;                
+                $scope.displayName = currPackage.displayName;
+                
+                $scope.selectedSystem = currPackage.name;
+                $scope.selectedProdCluster = currPackage.name;
+                $scope.selectedSourceDataCenter = currPackage.name;
+                $scope.selectedSourceEsxCluster = currPackage.name;
+                $scope.selectedSourceDatastore = currPackage.name;
+                
+                $scope.selectedReplicaCluster = currPackage.name;
+                $scope.selectedTargetDataCenter = currPackage.name;
+                $scope.selectedTargetEsxCluster = currPackage.name;
+                $scope.selectedTargetEsx = currPackage.name;
+                $scope.selectedTargetDatastore = currPackage.name;
+                
+                $scope.rpo = currPackage.rpo;
+                $scope.description = currPackage.description;
+
                 $scope.closeDialog = function () {
                     $mdDialog.hide();
                 }
@@ -81,11 +103,7 @@
                     newPackage.targetDatastoreName = $scope.selectedTargetDatastore.name;
                     newPackage.testNetworkId = 'Test Network';
                     
-                    /*if($scope.config.packages == undefined){
-                    	$scope.config.packages = new Array();
-                    }*/
-                    
-                    /*$scope.config.packages.push(newPackage);*/
+
                     RPSP.addPackage(newPackage);
                 }
             }

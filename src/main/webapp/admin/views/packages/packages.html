@@ -26,7 +26,7 @@
                 <mdt-row ng-repeat="package in config.packages track by $index">
 	                <mdt-cell html-content="true">
 	                    <ng-md-icon icon="mode_edit" style="fill:cyan"
-	                                ng-click="showDialog()"></ng-md-icon>
+	                                ng-click="showDialog(package)"></ng-md-icon>
 	                </mdt-cell>
                     <mdt-cell>{{package.name}}</mdt-cell>
                     <mdt-cell>{{package.displayName}}</mdt-cell>
