@@ -45,7 +45,7 @@
                 $scope.packageName = currPackage.name;                
                 $scope.displayName = currPackage.displayName;
                 
-                $scope.selectedSystem = currPackage.name;
+                /*$scope.selectedSystem = currPackage.name;
                 $scope.selectedProdCluster = currPackage.name;
                 $scope.selectedSourceDataCenter = currPackage.name;
                 $scope.selectedSourceEsxCluster = currPackage.name;
@@ -55,7 +55,7 @@
                 $scope.selectedTargetDataCenter = currPackage.name;
                 $scope.selectedTargetEsxCluster = currPackage.name;
                 $scope.selectedTargetEsx = currPackage.name;
-                $scope.selectedTargetDatastore = currPackage.name;
+                $scope.selectedTargetDatastore = currPackage.name;*/
                 
                 $scope.rpo = currPackage.rpo;
                 $scope.description = currPackage.description;
