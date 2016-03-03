@@ -294,21 +294,21 @@ from /internal-data/template.
 	   
 	   
 	- `POST /groups` - Creates a consistency group with specified vms.
-	The following values are passed in the HTTP body - the name of the CG, its VMs, enable replication parameter and RPO. 
+	The following values are passed in the HTTP body - the name of the CG, its VMs, enable replication parameter and service package. 
 
 	   `{
                 "groupName": "group_A",
                 "vms": ["502ffe14-9b74-cb6c-8485-8f6e5cd66b94"],
                 "enableReplication": true,
-                "rpo": 15
+                "packageId": 13
 	   }`
 	   
    
 	- `POST /groups/{groupId}/vms` - Adds VM to the specific consistency group that is 	identified by {groupId}.
-	The following values are passed in the HTTP body - the id of the VM, its order in the 	boot sequence (sequenceNumber) and if it is critical or not. 
+	The following values are passed in the HTTP body - the id of the VM,its name, its order in the 	boot sequence (sequenceNumber) and if it is critical or not. 
 
 	   `{
-		"id": "5005e38f-efe0-5e16-f1bc-eac6ba19f503",
+		"id": "5005e38f-efe0-5e16-f1bc-eac6ba19f503", "name": "vm-1",
 		"isCritical": true,
 		"sequenceNumber": 3
 	   }`
