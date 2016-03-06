@@ -1,6 +1,6 @@
 (function () {
     angular.module('adminApp')
-        .controller('LoginCtrl', ['$scope', '$mdSidenav', '$location', '$mdDialog', 'RPSP', LoginCtrl]);
+        .controller('LoginCtrl', ['$scope', '$mdSidenav', '$location', '$mdDialog', 'RPSP',  LoginCtrl]);
     function LoginCtrl($scope, $mdSidenav, $location, $mdDialog, RPSP) {
         $scope.user = {};
         var alert;
@@ -12,7 +12,7 @@
             if ($scope.loginForm.$valid) {
                 RPSP.login(user.email, user.password).then(function (res) {
                     if (res.status == 200) {
-                        window.location.href = '/rpsp/admin/index.html';
+                        $scope.goHome();
                     }
                 }, function (res) {
                     showAlert();

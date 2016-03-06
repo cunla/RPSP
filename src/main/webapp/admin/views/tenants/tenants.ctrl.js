@@ -26,21 +26,25 @@
             if (!tenant) {
                 tenant = {};
             }
-            var parentEl = angular.element(document.body);
+            //var parentEl = angular.element(document.body);
             $mdDialog.show({
                 templateUrl: 'views/tenants/editTenantDialog.html',
                 locals: {
                     items: $scope.items,
+                    packages: $scope.json.packages,
                     tenant: tenant
                 },
                 controller: DialogController
             });
-            function DialogController($scope, $mdDialog, items, tenant) {
+            function DialogController($scope, $mdDialog, items, tenant, packages) {
                 $scope.tenant = tenant;
                 $scope.items = items;
+                $scope.packages = packages;
                 $scope.closeDialog = closeDialog;
                 $scope.addTenant = addTenant;
                 function addTenant() {
+                    $mdDialog.hide();
+                    RPSP.changed = true;
                     if (!tenant.id) {
                         RPSP.addTenant(tenant);
                     }
