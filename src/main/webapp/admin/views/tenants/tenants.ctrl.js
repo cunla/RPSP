@@ -5,6 +5,7 @@
         $scope.showDialog = showDialog;
         $scope.loading = true;
         $scope.changed = false;
+        $scope.save = save;
         refresh();
 
         function save() {
