@@ -13,8 +13,24 @@
             addPackage: addPackage,
             addTenant: addTenant,
             testNewSystem: testNewSystem,
+            login: login,
             changed: changed
         }
+
+        function login(username, password) {
+            var encodedString = 'username=' +
+                encodeURIComponent(username) +
+                    //'@' +
+                    //encodeURIComponent(this.inputData.account) +
+                '&password=' +
+                encodeURIComponent(password);
+            return $http({
+                method: 'POST',
+                url: '../login-action',
+                data: encodedString,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
+        };
 
         function addTenant(tenant) {
             changed = true;
