@@ -30,7 +30,8 @@
                                 ng-click="showDialog(user)"></ng-md-icon>
                     <ng-md-icon icon="block"
                                 style="fill: {{system.testResult ? 'green':'red'}}"
-                                ng-click="deleteTenant(user)"></ng-md-icon>
+                                ng-show="user.role!='ADMIN'"
+                                ng-click="deleteUser(user)"></ng-md-icon>
                 </mdt-cell>
                 <mdt-cell>{{user.login}}</mdt-cell>
                 <mdt-cell>{{user.tenantName}}</mdt-cell>

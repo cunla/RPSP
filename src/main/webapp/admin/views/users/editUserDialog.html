@@ -2,20 +2,31 @@
     <md-dialog-content layout-padding>
         <div layout-gt-sm="row">
             <md-input-container class="md-block">
-                <label>Tenant ID</label>
-                <input ng-model="tenant.name">
+                <label>Login</label>
+                <input ng-model="user.username">
             </md-input-container>
-            <md-input-container class="md-block">
-                <label>Tenant label</label>
-                <input ng-model="tenant.label">
+            <md-input-container>
+                <md-select ng-model="user.tenantName" placeholder="please select">
+                    <md-option ng-repeat="a in tenants" value="{{a.name}}">{{a.label}}</md-option>
+                </md-select>
             </md-input-container>
         </div>
-        <md-input-container>
-            <md-select multiple ng-model="tenant.packageNames" placeholder="please select">
-                <md-option ng-repeat="a in packages" value="{{a.name}}">{{a.name}}</md-option>
-            </md-select>
-        </md-input-container>
-
+        <div layout-gt-sm="row">
+            <md-input-container class="md-block">
+                <label>First name</label>
+                <input ng-model="user.firstName">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Last name</label>
+                <input ng-model="user.lastName">
+            </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+            <md-input-container class="md-block">
+                <label>email</label>
+                <input ng-model="user.email">
+            </md-input-container>
+        </div>
 
     </md-dialog-content>
     <md-dialog-actions>

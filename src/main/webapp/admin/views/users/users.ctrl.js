@@ -14,19 +14,20 @@
                 user = {};
             }
             $mdDialog.show({
-                templateUrl: 'views/tenants/editUserDialog.html',
+                templateUrl: 'views/users/editUserDialog.html',
                 locals: {
                     tenants: $scope.json.tenants,
                 },
                 controller: DialogController
             });
             function DialogController($scope, $mdDialog, tenants) {
-                $scope.tenant = tenant;
-                $scope.items = items;
-                $scope.packages = packages;
+                user.username = user.login ? user.login.split('@')[0] : "";
+                $scope.user = user;
+                $scope.tenants = tenants;
                 $scope.closeDialog = closeDialog;
                 $scope.addUser = addUser;
                 function addUser() {
+                    user.login = user.username + "@" + user.tenantName;
                     $mdDialog.hide();
                     RPSP.changed = true;
                     if (!user.id) {

@@ -14,6 +14,7 @@
             addTenant: addTenant,
             testNewSystem: testNewSystem,
             login: login,
+            addUser: addUser,
             changed: changed
         }
 
@@ -31,6 +32,12 @@
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             });
         };
+
+
+        function addUser(user) {
+            changed = true;
+            json.users.push(user);
+        }
 
         function addTenant(tenant) {
             changed = true;
