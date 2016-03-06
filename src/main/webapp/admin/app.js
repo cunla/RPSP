@@ -74,7 +74,7 @@
                         views: {
                             'menuContent': {
                                 templateUrl: "views/users/users.html",
-                                controller: 'MainCtrl'
+                                controller: 'Users'
                             }
                         }
                     })

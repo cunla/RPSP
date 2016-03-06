@@ -1,0 +1,11 @@
+<div layout="row" layout-sm="column" layout-align="space-around">
+    <md-progress-circular md-mode="indeterminate" ng-show="loading"></md-progress-circular>
+</div>
+<div layout="column" ng-hide="loading">
+
+    <section>
+    <pre>
+            {{json | json:spacing}}
+    </pre>
+    </section>
+</div>
