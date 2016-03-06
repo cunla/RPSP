@@ -322,6 +322,8 @@ from /internal-data/template.
    - `PUT /groups/{groupId}/clusters/{clusterId}/copies/{copyId}/recover-production` - Executes  recover production for group that is 	identified by {groupId} to the specified cluster and copy.
    
    - `PUT /group-sets/{group-set-id}/clusters/{clusterId}/recover-production` - Executes recover production for group set that is identified by {group-set-id} in the specified cluster.
+ 
+   - `GET app/audit/log?page={page}&pageSize={pageSize}` - Get RPSP actions audit log for current tenant based on *page* and *pageSize* parameters
     
 ###CONTRIBUTION INSTRUCTIONS
 Create a fork of the project into your own repository. 
