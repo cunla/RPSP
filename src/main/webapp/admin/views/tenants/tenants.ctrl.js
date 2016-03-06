@@ -11,6 +11,7 @@
         function save() {
             RPSP.save($scope.json).then(function (res) {
                 $scope.changed = false;
+                RPSP.changed = false;
             })
         }
 
@@ -27,7 +28,6 @@
             if (!tenant) {
                 tenant = {};
             }
-            //var parentEl = angular.element(document.body);
             $mdDialog.show({
                 templateUrl: 'views/tenants/editTenantDialog.html',
                 locals: {

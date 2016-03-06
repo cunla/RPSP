@@ -3,7 +3,6 @@ package com.emc.rpsp.users.domain;
 import com.emc.rpsp.accounts.domain.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
@@ -12,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import java.io.Serializable;
 
 @Entity
@@ -20,218 +18,218 @@ import java.io.Serializable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractAuditingEntity implements Serializable {
 
-	@Id
-	@GeneratedValue
-	private Long id;
-	
-	@Transient
-	@JsonProperty
-	private Long tenantId;
-	
-	@Transient
-	@JsonProperty
-	private String tenantName;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	@NotNull
-	@Size(min = 0, max = 50)
-	@Column(length = 50)
-	private String login;
+    @Transient
+    @JsonProperty
+    private Long tenantId;
 
-	@JsonIgnore
-	@Size(min = 0, max = 100)
-	@Column(length = 100)
-	private String password;
+    @Transient
+    @JsonProperty
+    private String tenantName;
 
-	@Size(min = 0, max = 50)
-	@Column(name = "first_name", length = 50)
-	private String firstName;
+    @NotNull
+    @Size(min = 0, max = 50)
+    @Column(length = 50)
+    private String login;
 
-	@Size(min = 0, max = 50)
-	@Column(name = "last_name", length = 50)
-	private String lastName;
+    @JsonIgnore
+    @Size(min = 0, max = 100)
+    @Column(length = 100)
+    private String password;
 
-	@Email
-	@Size(min = 0, max = 100)
-	@Column(length = 100)
-	private String email;
+    @Size(min = 0, max = 50)
+    @Column(name = "first_name", length = 50)
+    private String firstName;
 
-	@JsonIgnore
-	private boolean activated = false;
+    @Size(min = 0, max = 50)
+    @Column(name = "last_name", length = 50)
+    private String lastName;
 
-	@JsonIgnore
-	@Size(min = 2, max = 5)
-	@Column(name = "lang_key", length = 5)
-	private String langKey;
+    @Email
+    @Size(min = 0, max = 100)
+    @Column(length = 100)
+    private String email;
 
-	@JsonIgnore
-	@Size(min = 0, max = 20)
-	@Column(name = "activation_key", length = 20)
-	private String activationKey;
+    @JsonProperty
+    private boolean status = true;
 
-	@JsonIgnore
-	@Size(min = 0, max = 100)
-	@Column(length = 100)
-	private String permission;
+    @JsonIgnore
+    @Size(min = 2, max = 5)
+    @Column(name = "lang_key", length = 5)
+    private String langKey;
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Account account;
+    @JsonIgnore
+    @Size(min = 0, max = 20)
+    @Column(name = "activation_key", length = 20)
+    private String activationKey;
 
-	public String getLogin() {
-		return login;
-	}
+    @JsonProperty("role")
+    @Size(min = 0, max = 100)
+    @Column(length = 100)
+    private String permission;
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Account account;
 
-	@JsonIgnore
-	public String getPassword() {
-		return password;
-	}
+    public String getLogin() {
+        return login;
+    }
 
-	@JsonProperty
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
-	public void setEncodedPassword(String password) {
-		this.password = new BCryptPasswordEncoder().encode(password);
-	}
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
 
-	public void encodePassword() {
-		this.password = new BCryptPasswordEncoder().encode(password);
-	}
+    @JsonProperty
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public void setEncodedPassword(String password) {
+        this.password = new BCryptPasswordEncoder().encode(password);
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	
+    public void encodePassword() {
+        this.password = new BCryptPasswordEncoder().encode(password);
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getEmail() {
-		return email;
-	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public boolean getActivated() {
-		return activated;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setActivated(boolean activated) {
-		this.activated = activated;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getActivationKey() {
-		return activationKey;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setActivationKey(String activationKey) {
-		this.activationKey = activationKey;
-	}
+    public boolean getStatus() {
+        return status;
+    }
 
-	public String getLangKey() {
-		return langKey;
-	}
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
-	public void setLangKey(String langKey) {
-		this.langKey = langKey;
-	}
+    public String getActivationKey() {
+        return activationKey;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setActivationKey(String activationKey) {
+        this.activationKey = activationKey;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public String getLangKey() {
+        return langKey;
+    }
 
-	public String getPermission() {
-		return permission;
-	}
+    public void setLangKey(String langKey) {
+        this.langKey = langKey;
+    }
 
-	public void setPermission(String permission) {
-		this.permission = permission;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Account getAccount() {
-		return account;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setAccount(Account account) {
-		this.account = account;
-	}
-	
-	public String getFullName(){
-		return firstName + " " + lastName;
-	}	
+    public String getPermission() {
+        return permission;
+    }
 
-	public Long getTenantId() {
-		return tenantId;
-	}
+    public void setPermission(String permission) {
+        this.permission = permission;
+    }
 
-	public void setTenantId(Long tenantId) {
-		this.tenantId = tenantId;
-	}	
-	
-	public String getTenantName() {
-		return tenantName;
-	}
+    public Account getAccount() {
+        return account;
+    }
 
-	public void setTenantName(String tenantName) {
-		this.tenantName = tenantName;
-	}
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 
-	public void setAdditionalValues(){
-		if(account != null){
-			tenantId = account.getId();
-			tenantName = account.getName();
-		}
-	}
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
+    public Long getTenantId() {
+        return tenantId;
+    }
 
-		User user = (User) o;
+    public void setTenantId(Long tenantId) {
+        this.tenantId = tenantId;
+    }
 
-		if (!login.equals(user.login)) {
-			return false;
-		}
+    public String getTenantName() {
+        return tenantName;
+    }
 
-		return true;
-	}
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
+    }
 
-	@Override
-	public int hashCode() {
-		return login.hashCode();
-	}
+    public void setAdditionalValues() {
+        if (account != null) {
+            tenantId = account.getId();
+            tenantName = account.getName();
+        }
+    }
 
-	@Override
-	public String toString() {
-		return "User{" + "login='" + login + '\'' + ", password='" + password
-				+ '\'' + ", firstName='" + firstName + '\'' + ", lastName='"
-				+ lastName + '\'' + ", email='" + email + '\''
-				+ ", activated='" + activated + '\'' + ", langKey='" + langKey
-				+ '\'' + ", activationKey='" + activationKey + '\'' + "}";
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        User user = (User) o;
+
+        if (!login.equals(user.login)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return login.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "login='" + login + '\'' + ", password='" + password
+            + '\'' + ", firstName='" + firstName + '\'' + ", lastName='"
+            + lastName + '\'' + ", email='" + email + '\''
+            + ", status='" + status + '\'' + ", langKey='" + langKey
+            + '\'' + ", activationKey='" + activationKey + '\'' + "}";
+    }
 }

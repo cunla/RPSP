@@ -2,7 +2,45 @@
     <md-progress-circular md-mode="indeterminate" ng-show="loading"></md-progress-circular>
 </div>
 <div layout="column" ng-hide="loading">
+    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
 
+        <h2>List of users</h2>
+        <div>
+            <ng-md-icon icon="add" style="fill:blue" ng-click="showDialog()"></ng-md-icon>
+            <ng-md-icon icon="save" ng-click="save()"></ng-md-icon>
+        </div>
+    </section>
+    <section layout="column">
+
+        <mdt-table sortable-columns="true" animate-sort-icon="true">
+            <mdt-header-row>
+                <mdt-column>Actions</mdt-column>
+                <mdt-column align-rule="left">Login</mdt-column>
+                <mdt-column align-rule="left">Tenant</mdt-column>
+                <mdt-column align-rule="left">Full name</mdt-column>
+                <mdt-column align-rule="left">email</mdt-column>
+                <mdt-column align-rule="left">Role</mdt-column>
+                <mdt-column align-rule="left">Status</mdt-column>
+                <!--<mdt-column align-rule="left">RP Clusters</mdt-column>-->
+            </mdt-header-row>
+            <mdt-row ng-repeat="user in config.users"
+                     ng-click="addDialog(tenant)">
+                <mdt-cell html-content="true">
+                    <ng-md-icon icon="mode_edit" style="fill:cyan"
+                                ng-click="showDialog(user)"></ng-md-icon>
+                    <ng-md-icon icon="block"
+                                style="fill: {{system.testResult ? 'green':'red'}}"
+                                ng-click="deleteTenant(user)"></ng-md-icon>
+                </mdt-cell>
+                <mdt-cell>{{user.login}}</mdt-cell>
+                <mdt-cell>{{user.tenantName}}</mdt-cell>
+                <mdt-cell>{{user.fullName}}</mdt-cell>
+                <mdt-cell>{{user.email}}</mdt-cell>
+                <mdt-cell>{{user.role}}</mdt-cell>
+                <mdt-cell>{{user.status}}</mdt-cell>
+            </mdt-row>
+        </mdt-table>
+    </section>
     <section>
     <pre>
             {{json | json:spacing}}

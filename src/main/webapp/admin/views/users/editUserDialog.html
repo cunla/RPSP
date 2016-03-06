@@ -1,0 +1,29 @@
+<md-dialog aria-label="List dialog">
+    <md-dialog-content layout-padding>
+        <div layout-gt-sm="row">
+            <md-input-container class="md-block">
+                <label>Tenant ID</label>
+                <input ng-model="tenant.name">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Tenant label</label>
+                <input ng-model="tenant.label">
+            </md-input-container>
+        </div>
+        <md-input-container>
+            <md-select multiple ng-model="tenant.packageNames" placeholder="please select">
+                <md-option ng-repeat="a in packages" value="{{a.name}}">{{a.name}}</md-option>
+            </md-select>
+        </md-input-container>
+
+
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="addTenant()" class="md-primary">
+            OK
+        </md-button>
+        <md-button ng-click="closeDialog()" class="md-primary">
+            Cancel
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>
