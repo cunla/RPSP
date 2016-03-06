@@ -72,6 +72,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         Map<String, SystemSettings> systemsMap = systems.stream().collect(Collectors.toMap(SystemSettings::getName, (p) -> p));
         for (SystemSettings systemSettings : systems) {
             propagateClusterData(systemSettings);
+            systemSettings.setId(null);
         }
 
         //packages
@@ -90,7 +91,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
             	packageDefinition.setTargetClusterId(Long.parseLong(packageDefinition.getTargetClusterIdStr()));
             }
 
-
+            packageDefinition.setId(null);
         }
 
         //accounts
@@ -102,6 +103,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
                 tenant.addPackage(currPackage);
                 currPackage.addAccount(tenant);
             }
+            tenant.setId(null);
         }
 
         //users
