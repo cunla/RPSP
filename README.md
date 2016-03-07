@@ -268,7 +268,18 @@ from /internal-data/template.
 			"timestamp": 1439908537855236
 	   }`
 	   
+	 - `PUT /group-sets/{groupSetId}/clusters/{clusterId}/image-access/enable` -  	Enable image access to specific bookmark or specific snapshot for all the groups in a groupset for specific cluster. Bookmark or snapshot is identified by the following properties in HTTP body:
+    
+	   `{
+			"snapshotId": 86726505317,
+			"timestamp": 1439908537855236
+	   }`
+	   
     - `PUT /groups/{groupId}/clusters/{clusterId}/copies/{copyId}/image-access/disable` - 	Disables the image image access to specific copy
+    
+        - `PUT /group-sets/{groupSetId}/clusters/{clusterId}/image-access/disable` - 	Disables the image image access to specific groupset in a cluster
+        
+        
     - `POST /groups/{groupId}/bookmarks` - Creates a bookmark for the specific group. Name of 	the bookamrk and its consistency type are passed in HTTP body.
     
 	   `{
