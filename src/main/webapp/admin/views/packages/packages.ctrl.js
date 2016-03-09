@@ -26,9 +26,14 @@
         
         
         function showDialog(currPackage) {
+        	
+        	var editMode = true;
+        	
     	    if (!currPackage) {
     		    currPackage = {};
+    		    editMode = false;
             }
+    	    
             var parentEl = angular.element(document.body);
             $mdDialog.show({
                 templateUrl: 'views/packages/newPackageDialog.html',
@@ -38,27 +43,85 @@
                 },
                 controller: DialogController
             });
+            
+         
+            
+            
             function DialogController($scope, $mdDialog, config, RPSP) {
-                $scope.config = config;
-                $scope.selectedSystem = $scope.config.systems[0];
                 
-                $scope.packageName = currPackage.name;                
-                $scope.displayName = currPackage.displayName;
+                $scope.locateEntry = function (type, val, parentElem) {
+                	var res = {};
+                    if(type == 'system'){
+                    	for(var i = 0; i < parentElem.length; i++){
+                    		if(parentElem[i].name == val){
+                    			res = parentElem[i];
+                    		}
+                    	}
+                    }
+                    else if(type == 'cluster'){
+                    	for(var i = 0; i < parentElem.length; i++){
+                    		if(parentElem[i].clusterIdStr == val){
+                    			res = parentElem[i];
+                    		}
+                    	}
+                    }
+                    else if(type == 'datacenter' || type == 'esxCluster' 
+                    			|| type == 'datastore' || type == 'esx'){
+                    	for(var i = 0; i < parentElem.length; i++){
+                    		if(parentElem[i].id == val){
+                    			res = parentElem[i];
+                    		}
+                    	}
+                    }
+                  
+                    return res;
+                }
                 
-                /*$scope.selectedSystem = currPackage.name;
-                $scope.selectedProdCluster = currPackage.name;
-                $scope.selectedSourceDataCenter = currPackage.name;
-                $scope.selectedSourceEsxCluster = currPackage.name;
-                $scope.selectedSourceDatastore = currPackage.name;
+                $scope.config = config;  
+                if (editMode) {
+                		                             
+	                $scope.packageName = currPackage.name;                
+	                $scope.displayName = currPackage.displayName;
+	                $scope.selectedSystem = $scope.locateEntry('system', currPackage.systemName, $scope.config.systems);
+	                
+	                //source
+	                $scope.selectedProdCluster = $scope.locateEntry('cluster', currPackage.sourceClusterIdStr, 
+	                		                                 $scope.selectedSystem.clusters);
+	                
+	                $scope.selectedSourceDataCenter = $scope.locateEntry('datacenter', currPackage.sourceDataCenterId, 
+	                		                                 $scope.selectedProdCluster.vcenterConfig.relatedDatacenters);
+	                
+	                
+	                $scope.selectedSourceEsxCluster = $scope.locateEntry('esxCluster', currPackage.sourceEsxClusterId, 
+                            $scope.selectedSourceDataCenter.esxClustersConfig);
+	                
+	                $scope.selectedSourceDatastore = $scope.locateEntry('datastore', currPackage.sourceDatastoreId, 
+                            $scope.selectedSourceDataCenter.datastores);
+	                
+	                
+	                
+	                //target
+	                $scope.selectedReplicaCluster = $scope.locateEntry('cluster', currPackage.targetClusterIdStr, 
+                            $scope.selectedSystem.clusters);
+	                
+	                $scope.selectedTargetDataCenter = $scope.locateEntry('datacenter', currPackage.targetDataCenterId, 
+                            $scope.selectedReplicaCluster.vcenterConfig.relatedDatacenters);
+	                
+	                $scope.selectedTargetEsxCluster = $scope.locateEntry('esxCluster', currPackage.targetEsxClusterId, 
+                            $scope.selectedTargetDataCenter.esxClustersConfig);
+	                
+	                $scope.selectedTargetEsx = $scope.locateEntry('esx', currPackage.targetEsxId, 
+                            $scope.selectedTargetEsxCluster.esxConfigs);
+	                
+	                $scope.selectedTargetDatastore = $scope.locateEntry('esx', currPackage.targetDatastoreId, 
+                            $scope.selectedTargetEsx.relatedDatastores);
+	                
+	                $scope.rpo = currPackage.rpo;
+	                $scope.description = currPackage.description;
+                }
                 
-                $scope.selectedReplicaCluster = currPackage.name;
-                $scope.selectedTargetDataCenter = currPackage.name;
-                $scope.selectedTargetEsxCluster = currPackage.name;
-                $scope.selectedTargetEsx = currPackage.name;
-                $scope.selectedTargetDatastore = currPackage.name;*/
-                
-                $scope.rpo = currPackage.rpo;
-                $scope.description = currPackage.description;
+             
+            
 
                 $scope.closeDialog = function () {
                     $mdDialog.hide();
@@ -66,45 +129,45 @@
                 
                 $scope.addPackage = function () {
                     $mdDialog.hide();
-                    var newPackage = {};
                     
-                    newPackage.systemId = $scope.selectedSystem.id;
-                    newPackage.systemName = $scope.selectedSystem.name;
-                    newPackage.name = $scope.packageName;
-                    newPackage.displayName = $scope.displayName;
+                    currPackage.systemId = $scope.selectedSystem.id;
+                    currPackage.systemName = $scope.selectedSystem.name;
+                    currPackage.name = $scope.packageName;
+                    currPackage.displayName = $scope.displayName;
                     
-                    newPackage.description = $scope.description;
-                    newPackage.rpo = $scope.rpo;
+                    currPackage.description = $scope.description;
+                    currPackage.rpo = $scope.rpo;
                     
-                    newPackage.sourceClusterIdStr = $scope.selectedProdCluster.clusterIdStr;
-                    newPackage.sourceClusterName = $scope.selectedProdCluster.friendlyName;
-                    newPackage.sourceVcId = $scope.selectedProdCluster.vcenterConfig.id;
-                    newPackage.sourceVcName = $scope.selectedProdCluster.vcenterConfig.name;
-                    newPackage.sourceDataCenterId = $scope.selectedSourceDataCenter.id;
-                    newPackage.sourceDataCenterName = $scope.selectedSourceDataCenter.name;
-                    newPackage.sourceEsxClusterId = $scope.selectedSourceEsxCluster.id;
-                    newPackage.sourceEsxClusterName = $scope.selectedSourceEsxCluster.name;
-                    newPackage.sourceEsxId = $scope.selectedSourceEsxCluster.esxConfigs[0].id;
-                    newPackage.sourceEsxName = $scope.selectedSourceEsxCluster.esxConfigs[0].name;
-                    newPackage.sourceDatastoreId = $scope.selectedSourceDatastore.id;
-                    newPackage.sourceDatastoreName = $scope.selectedSourceDatastore.name;
+                    currPackage.sourceClusterIdStr = $scope.selectedProdCluster.clusterIdStr;
+                    currPackage.sourceClusterName = $scope.selectedProdCluster.friendlyName;
+                    currPackage.sourceVcId = $scope.selectedProdCluster.vcenterConfig.id;
+                    currPackage.sourceVcName = $scope.selectedProdCluster.vcenterConfig.name;
+                    currPackage.sourceDataCenterId = $scope.selectedSourceDataCenter.id;
+                    currPackage.sourceDataCenterName = $scope.selectedSourceDataCenter.name;
+                    currPackage.sourceEsxClusterId = $scope.selectedSourceEsxCluster.id;
+                    currPackage.sourceEsxClusterName = $scope.selectedSourceEsxCluster.name;
+                    currPackage.sourceEsxId = $scope.selectedSourceEsxCluster.esxConfigs[0].id;
+                    currPackage.sourceEsxName = $scope.selectedSourceEsxCluster.esxConfigs[0].name;
+                    currPackage.sourceDatastoreId = $scope.selectedSourceDatastore.id;
+                    currPackage.sourceDatastoreName = $scope.selectedSourceDatastore.name;
                     
-                    newPackage.targetClusterIdStr = $scope.selectedReplicaCluster.clusterIdStr;
-                    newPackage.targetClusterName = $scope.selectedReplicaCluster.friendlyName;
-                    newPackage.targetVcId = $scope.selectedReplicaCluster.vcenterConfig.id;
-                    newPackage.targetVcName = $scope.selectedReplicaCluster.vcenterConfig.name;
-                    newPackage.targetDataCenterId = $scope.selectedTargetDataCenter.id;
-                    newPackage.targetDataCenterName = $scope.selectedTargetDataCenter.name;
-                    newPackage.targetEsxClusterId = $scope.selectedTargetEsxCluster.id;
-                    newPackage.targetEsxClusterName = $scope.selectedTargetEsxCluster.name;
-                    newPackage.targetEsxId = $scope.selectedTargetEsx.id;
-                    newPackage.targetEsxName = $scope.selectedTargetEsx.name;
-                    newPackage.targetDatastoreId = $scope.selectedTargetDatastore.id;
-                    newPackage.targetDatastoreName = $scope.selectedTargetDatastore.name;
-                    newPackage.testNetworkId = 'Test Network';
+                    currPackage.targetClusterIdStr = $scope.selectedReplicaCluster.clusterIdStr;
+                    currPackage.targetClusterName = $scope.selectedReplicaCluster.friendlyName;
+                    currPackage.targetVcId = $scope.selectedReplicaCluster.vcenterConfig.id;
+                    currPackage.targetVcName = $scope.selectedReplicaCluster.vcenterConfig.name;
+                    currPackage.targetDataCenterId = $scope.selectedTargetDataCenter.id;
+                    currPackage.targetDataCenterName = $scope.selectedTargetDataCenter.name;
+                    currPackage.targetEsxClusterId = $scope.selectedTargetEsxCluster.id;
+                    currPackage.targetEsxClusterName = $scope.selectedTargetEsxCluster.name;
+                    currPackage.targetEsxId = $scope.selectedTargetEsx.id;
+                    currPackage.targetEsxName = $scope.selectedTargetEsx.name;
+                    currPackage.targetDatastoreId = $scope.selectedTargetDatastore.id;
+                    currPackage.targetDatastoreName = $scope.selectedTargetDatastore.name;
+                    currPackage.testNetworkId = 'Test Network';
                     
-
-                    RPSP.addPackage(newPackage);
+                    if (!editMode) {
+                    	RPSP.addPackage(currPackage);
+                    }
                 }
             }
         }

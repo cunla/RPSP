@@ -28,20 +28,20 @@
 	                    <ng-md-icon icon="mode_edit" style="fill:cyan"
 	                                ng-click="showDialog(package)"></ng-md-icon>
 	                </mdt-cell>
-                    <mdt-cell>{{package.name}}</mdt-cell>
-                    <mdt-cell>{{package.displayName}}</mdt-cell>
-                    <mdt-cell>{{package.systemName}}</mdt-cell>
+                    <mdt-cell html-content="true">{{package.name}}</mdt-cell>
+                    <mdt-cell html-content="true">{{package.displayName}}</mdt-cell>
+                    <mdt-cell html-content="true">{{package.systemName}}</mdt-cell>
                     
-                    <mdt-cell>{{package.sourceClusterName}}</mdt-cell>
-                    <mdt-cell>{{package.sourceEsxClusterName}}</mdt-cell>
-                    <mdt-cell>{{package.sourceDatastoreName}}</mdt-cell>
+                    <mdt-cell html-content="true">{{package.sourceClusterName}}</mdt-cell>
+                    <mdt-cell html-content="true">{{package.sourceEsxClusterName}}</mdt-cell>
+                    <mdt-cell html-content="true">{{package.sourceDatastoreName}}</mdt-cell>
                     
-                    <mdt-cell>{{package.targetClusterName}}</mdt-cell>
-                    <mdt-cell>{{package.targetEsxName}}</mdt-cell>
-                    <mdt-cell>{{package.targetDatastoreName}}</mdt-cell>
+                    <mdt-cell html-content="true">{{package.targetClusterName}}</mdt-cell>
+                    <mdt-cell html-content="true">{{package.targetEsxName}}</mdt-cell>
+                    <mdt-cell html-content="true">{{package.targetDatastoreName}}</mdt-cell>
                     
-                    <mdt-cell>{{package.rpo}}</mdt-cell>
-                    <mdt-cell>{{package.description}}</mdt-cell>
+                    <mdt-cell html-content="true">{{package.rpo}}</mdt-cell>
+                    <mdt-cell html-content="true">{{package.description}}</mdt-cell>
                 </mdt-row>
             </mdt-table>
     </section>
