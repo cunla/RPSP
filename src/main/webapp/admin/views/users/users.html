@@ -33,12 +33,12 @@
                                 ng-show="user.role!='ADMIN'"
                                 ng-click="deleteUser(user)"></ng-md-icon>
                 </mdt-cell>
-                <mdt-cell>{{user.login}}</mdt-cell>
-                <mdt-cell>{{user.tenantName}}</mdt-cell>
-                <mdt-cell>{{user.fullName}}</mdt-cell>
-                <mdt-cell>{{user.email}}</mdt-cell>
-                <mdt-cell>{{user.role}}</mdt-cell>
-                <mdt-cell>{{user.status}}</mdt-cell>
+                <mdt-cell html-content="true">{{user.login}}</mdt-cell>
+                <mdt-cell html-content="true">{{user.tenantName}}</mdt-cell>
+                <mdt-cell html-content="true">{{user.fullName}}</mdt-cell>
+                <mdt-cell html-content="true">{{user.email}}</mdt-cell>
+                <mdt-cell html-content="true">{{user.role}}</mdt-cell>
+                <mdt-cell html-content="true">{{user.status}}</mdt-cell>
             </mdt-row>
         </mdt-table>
     </section>

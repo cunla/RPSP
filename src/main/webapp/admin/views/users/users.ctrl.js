@@ -28,6 +28,7 @@
                 $scope.addUser = addUser;
                 function addUser() {
                     user.login = user.username + "@" + user.tenantName;
+                    user.fullName = user.firstName + ' '  + user.lastName;
                     $mdDialog.hide();
                     RPSP.changed = true;
                     if (!user.id) {
