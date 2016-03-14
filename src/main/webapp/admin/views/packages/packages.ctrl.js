@@ -116,6 +116,7 @@
 	                $scope.selectedTargetDatastore = $scope.locateEntry('esx', currPackage.targetDatastoreId, 
                             $scope.selectedTargetEsx.relatedDatastores);
 	                
+	                $scope.testNetworkId = currPackage.testNetworkId;
 	                $scope.rpo = currPackage.rpo;
 	                $scope.description = currPackage.description;
                 }
@@ -137,6 +138,7 @@
                     
                     currPackage.description = $scope.description;
                     currPackage.rpo = $scope.rpo;
+                    currPackage.testNetworkId = $scope.testNetworkId;
                     
                     currPackage.sourceClusterIdStr = $scope.selectedProdCluster.clusterIdStr;
                     currPackage.sourceClusterName = $scope.selectedProdCluster.friendlyName;
@@ -163,7 +165,7 @@
                     currPackage.targetEsxName = $scope.selectedTargetEsx.name;
                     currPackage.targetDatastoreId = $scope.selectedTargetDatastore.id;
                     currPackage.targetDatastoreName = $scope.selectedTargetDatastore.name;
-                    currPackage.testNetworkId = 'Test Network';
+                    
                     
                     if (!editMode) {
                     	RPSP.addPackage(currPackage);
