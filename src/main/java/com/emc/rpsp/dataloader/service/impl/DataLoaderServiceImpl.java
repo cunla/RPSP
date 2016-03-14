@@ -15,8 +15,13 @@ import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.users.service.UserService;
 import com.emc.rpsp.vms.domain.VmOwnership;
 import com.emc.rpsp.vms.service.VmOwnershipService;
+import com.emc.rpsp.vmstructure.service.AccountVmsStructureService;
+
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -46,6 +51,8 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     private UserService userService;
     @Autowired
     private ResourcePatternResolver resourceLoader = null;
+    
+    private final Logger log = LoggerFactory.getLogger(DataLoaderServiceImpl.class);
 
     @Override
     public InternalData getInternalData() {
@@ -63,9 +70,18 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     @Override
     @Transactional("transactionManager")
     public InternalData populateInternalData(InternalData internalData) {
+    	
+    	//load existing users
+    	List<User> existingUsers = userService.findUsers();
+    	Map<String, User> existingUsersMap = new HashMap<String, User>();
+    	if(existingUsers != null){
+    		existingUsersMap = existingUsers.stream()
+							.collect(Collectors.toMap(User::getLogin, u -> u));
+    	}
 
         //clean the configuration
         systemConnectionInfoRepository.deleteAll();
+      
 
         //systems
         List<SystemSettings> systems = internalData.getSystems();
@@ -109,16 +125,32 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         //users
         List<User> users = internalData.getUsers();
         for (User user : users) {
-            if (user.getId() == null) {
-                user.setCreatedBy("admin");
-                user.setCreatedDate(new DateTime());
-                user.setPermission("USER");
-                user.setEncodedPassword(user.getPassword());
-                Account tenant = accountsMap.get(user.getTenantName());
-                user.setAccount(tenant);
-                tenant.addUser(user);
+        	//existing user user - no password is passed
+        	if(StringUtils.isEmpty(user.getPassword())){
+        		User existingUser = existingUsersMap.get(user.getLogin());
+        		if(existingUser == null){
+        			throw new RpspException("No password for user " + user.getLogin());
+        		}
+        		user.setPassword(existingUser.getPassword());
+        	}
+        	else{
+        		 user.setEncodedPassword(user.getPassword());
+        	}
+            user.setCreatedBy("admin");
+            user.setCreatedDate(new DateTime());
+            user.setPermission("USER");
+           
+            Account tenant = accountsMap.get(user.getTenantName());
+            
+            //regular user - not admin
+            if(tenant != null){
+	            user.setAccount(tenant);
+	            tenant.addUser(user);
             }
+            
+            user.setId(null);
         }
+        
 
         //vms
         List<VmOwnership> vms = internalData.getVms();
