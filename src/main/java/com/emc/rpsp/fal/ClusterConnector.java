@@ -172,5 +172,12 @@ public interface ClusterConnector {
         @Path("groupId") long groupId,
         @Query("startTransfer") boolean state
     );
+    
+    @PUT(BASE_URL + "groups/{groupId}/set_link_policy")
+    public Response setLinkPolicy(@Path("groupId") long groupId, @Body SetConsistencyGroupLinkPolicyParams setConsistencyGroupLinkPolicyParams); 
+     
+     
+     
+     
 
 }
