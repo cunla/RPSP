@@ -1,17 +1,15 @@
-<div layout="column" layout-align="center start">
-    <h1>About</h1>
-    <h3>Built by BDG</h3>
-</div>
-
 <div layout="column" layout-align="center center">
+    <h2>RPSP settings</h2>
+    <section layout="row" layout-align="center center">
+        <md-button class="md-raised" ng-click="export()">
+            <ng-md-icon icon="get_app"></ng-md-icon>
+            Export
+        </md-button>
+        <md-button class="md-raised" ng-click="import()">
+            <ng-md-icon icon="file_upload"></ng-md-icon>
+            Import
+        </md-button>
+    </section>
 
-    <md-list>
-        <md-subheader class="md-no-sticky"></md-subheader>
-        <md-list-item ng-repeat="item in awesomeThings">
-            <p> {{ item }} </p>
-
-        </md-list-item>
-
-    </md-list>
 </div>
 
