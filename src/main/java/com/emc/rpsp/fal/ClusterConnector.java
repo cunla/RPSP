@@ -88,46 +88,36 @@ public interface ClusterConnector {
     public Response createGroupSetBookmark(
         @Body CreateBookmarkForGroupSetSubSetParams createBookmarkForGroupSetSubSetParams);
 
-
     @GET(BASE_URL + "groups/statistics")
     public ConsistencyGroupStatisticsSet getGroupStatistics();
 
-
     @PUT(BASE_URL + "groups/{groupId}/virtual_machines/powerup_sequence")
     public Response changeVmsPowerUpSequence(@Path("groupId") long groupId, @Body VmPowerUpSequenceParamSet vmPowerUpSequenceParamSet);
-
 
     @PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/failover")
     public Response failOver(@Path("clusterId") long clusterId, @Path("groupId") long groupId,
                              @Path("copyId") int copyId, @Query("startTransfer") boolean startTransfer);
 
-
     @PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/set_production_copy?startTransfer=true")
     public Response setProductionCopy(@Path("clusterId") long clusterId, @Path("groupId") long groupId,
                                       @Path("copyId") int copyId);
 
-
     @GET(BASE_URL + "settings/defaults/group_link_policy/local")
     public ConsistencyGroupLinkPolicy getDefaultLocalGroupLinkPolicy();
 
-
     @GET(BASE_URL + "settings/defaults/group_link_policy/remote")
     public ConsistencyGroupLinkPolicy getDefaultRemoteGroupLinkPolicy();
-
 
     @PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/topology?startTransfer=true")
     public ConsistencyGroupLinkPolicy setConsistencyGroupTopology(@Path("clusterId") long clusterId, @Path("groupId") long groupId,
                                                                   @Path("copyId") int copyId, @Body ConsistencyGroupTopologyParams consistencyGroupTopologyParams);
 
-
     @PUT(BASE_URL + "groups/{groupId}/clusters/{clusterId}/copies/{copyId}/recover_production")
     public Response recoverProduction(@Path("clusterId") long clusterId, @Path("groupId") long groupId,
                                       @Path("copyId") int copyId, @Query("startTransfer") boolean startTransfer);
 
-
     @GET(BASE_URL + "clusters/{clusterId}/virtual_infra_configuration")
     public ClusterVirtualInfraConfiguration getClusterVirtualInfraConfiguration(@Path("clusterId") long clusterId);
-
 
     @GET(BASE_URL + "clusters/{clusterId}/vcenter_servers/{vcUID}/{dcUID}/{esxClusterUID}/available_vms_for_replication")
     public VmEntitiesInformationSet getAvailableVMsForReplication(@Path("clusterId") long clusterId,
@@ -135,58 +125,52 @@ public interface ClusterConnector {
                                                                   @Path("dcUID") String dcUID,
                                                                   @Path("esxClusterUID") String esxClusterUID);
 
-
     @PUT(BASE_URL
         + "group_sets/subsets/clusters/{clusterId}/image_access/enable")
     public Response enableImageAccessForGroupSetSubset(
         @Path("clusterId") long clusterId, @Body EnableImageAccessForGroupSetsSubsetParams params);
-
 
     @PUT(BASE_URL
         + "group_sets/subsets/clusters/{clusterId}/image_access/disable")
     public Response disableImageAccessForGroupSetSubset(
         @Path("clusterId") long clusterId, @Body ConsistencyGroupSetSubset params, @Query("startTransfer") boolean startTransfer);
 
-
     @PUT(BASE_URL
         + "group_sets/subsets/clusters/{clusterId}/failover")
     public Response failoverGroupSetSubset(
         @Path("clusterId") long clusterId, @Body ConsistencyGroupSetSubset params, @Query("startTransfer") boolean startTransfer);
-
 
     @PUT(BASE_URL
         + "group_sets/subsets/clusters/{clusterId}/recover_production")
     public Response recoverProductionForGroupSetSubset(
         @Path("clusterId") long clusterId, @Body ConsistencyGroupSetSubset params, @Query("startTransfer") boolean startTransfer);
 
-
     @GET(BASE_URL + "group_sets/{groupSetId}")
     public ConsistencyGroupSetSettings getGroupSetSettings(@Path("groupSetId") long groupSetId);
-
 
     @POST(BASE_URL
         + "groups/virtual_machines/replicate")
     public ConsistencyGroupUID replicateVms(@Body ReplicateVmsParam params, @Query("startTransfer") boolean startTransfer);
 
-
     @GET(BASE_URL + "clusters/{clusterId}/settings")
     public ClusterSettings getClusterSettings(@Path("clusterId") long clusterId);
-
 
     @GET(BASE_URL + "groups/settings")
     public ConsistencyGroupSettingsSet getAllGroupsSettings();
 
-
     @GET(BASE_URL + "group_sets")
     public ConsistencyGroupSetSettingsSet getAllGroupSetsSettings();
-
 
     @GET(BASE_URL + "system/user_properties")
     public UserDefinedProperties getUserProperties();
 
-
     @PUT(BASE_URL + "system/user_properties")
     public Response setUserProperties(@Body UserDefinedProperties userDefinedProperties);
 
+    @PUT(BASE_URL + "groups/{groupId}/enable")
+    public Response setCgProtectionState(
+        @Path("groupId") long groupId,
+        @Query("startTransfer") boolean state
+    );
 
 }
