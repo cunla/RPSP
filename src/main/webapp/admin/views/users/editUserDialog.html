@@ -14,8 +14,13 @@
         <div layout-gt-sm="row">
             <md-input-container class="md-block">
                 <label>Password</label>
-                <input ng-model="user.password">
+                <input type="password" ng-model="user.password">
             </md-input-container>
+            <md-input-container class="md-block">
+                <label>Confirm password</label>
+                <input type="password" ng-model="password2">
+            </md-input-container>
+
         </div>
         <div layout-gt-sm="row">
             <md-input-container class="md-block">
@@ -36,8 +41,11 @@
 
     </md-dialog-content>
     <md-dialog-actions>
-        <md-button ng-click="addUser()" class="md-primary">
-            OK
+        <md-button
+            ng-click="addUser()"
+            class="md-primary"
+            ng-disabled="password2!=user.password">
+            Add
         </md-button>
         <md-button ng-click="closeDialog()" class="md-primary">
             Cancel
