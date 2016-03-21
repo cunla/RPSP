@@ -38,7 +38,7 @@
                         views: {
                             'menuContent': {
                                 templateUrl: "views/tools/tools.html",
-                                controller: 'MainCtrl'
+                                controller: 'ToolsCtrl'
                             }
                         }
                     })
