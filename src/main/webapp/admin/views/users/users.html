@@ -5,10 +5,16 @@
     <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
 
         <h2>List of users</h2>
-        <div>
-            <ng-md-icon icon="add" style="fill:blue" ng-click="showDialog()"></ng-md-icon>
-            <ng-md-icon icon="save" ng-click="save()"></ng-md-icon>
-        </div>
+    </section>
+    <section layout="row" layout-align="center center">
+        <md-button class="md-raised" ng-click="showDialog()">
+            <ng-md-icon icon="add"></ng-md-icon>
+            New
+        </md-button>
+        <md-button class="md-raised" ng-click="save()">
+            <ng-md-icon icon="save"></ng-md-icon>
+            Save
+        </md-button>
     </section>
     <section layout="column">
 

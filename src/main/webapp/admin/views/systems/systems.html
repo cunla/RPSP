@@ -5,20 +5,28 @@
     <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
 
         <h2>List of RecoverPoint for VM Systems Connected to the Self-Service Portal</h2>
-        <ng-md-icon icon="add" style="fill:blue" ng-click="showDialog()"></ng-md-icon>
-        <ng-md-icon icon="save" ng-click="save()"></ng-md-icon>
+    </section>
+    <section layout="row" layout-align="center center">
+        <md-button class="md-raised" ng-click="showDialog()">
+            <ng-md-icon icon="add"></ng-md-icon>
+            New
+        </md-button>
+        <md-button class="md-raised" ng-click="save()">
+            <ng-md-icon icon="save"></ng-md-icon>
+            Save
+        </md-button>
     </section>
     <!--<md-card style="margin:0px">-->
-        <!--<md-subheader>Filter by search</md-subheader>-->
+    <!--<md-subheader>Filter by search</md-subheader>-->
 
-        <!--<md-input-container style="margin:15px;">-->
-            <!--<label>Search</label>-->
-            <!--<input type="text" ng-model="filterName">-->
-        <!--</md-input-container>-->
+    <!--<md-input-container style="margin:15px;">-->
+    <!--<label>Search</label>-->
+    <!--<input type="text" ng-model="filterName">-->
+    <!--</md-input-container>-->
 
-        <!--<div ng-hide="true">-->
-            <!--{{(filteredItems = (nutritionList | filter: filterName))}}-->
-        <!--</div>-->
+    <!--<div ng-hide="true">-->
+    <!--{{(filteredItems = (nutritionList | filter: filterName))}}-->
+    <!--</div>-->
     <!--</md-card>-->
     <section layout="column">
         <h3>Disaster Recovery <b><i>to</i></b> the Cloud</h3>
