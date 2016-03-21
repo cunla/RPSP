@@ -1,6 +1,6 @@
 (function () {
     angular.module('adminApp')
-        .service('RPSP', ['$http', '$q', RPSP]);
+        .factory('RPSP', ['$http', '$q', RPSP]);
     function RPSP($http, $q) {
         var json = {};
         var changed = false;
