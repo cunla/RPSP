@@ -15,8 +15,9 @@
                 // pre-Angularv1.2 use urlSanizationWhitelist()
             }
         ])
-        .controller('ToolsCtrl', ['RPSP', '$scope', ToolsCtrl]);
-    function ToolsCtrl(RPSP, $scope) {
+        .controller('ToolsCtrl', ['RPSP', '$scope', 'fileUpload', ToolsCtrl]);
+
+    function ToolsCtrl(RPSP, $scope, fileUpload) {
         RPSP.settings().then(function (res) {
             $scope.json = RPSP.current();
             var jsonStr = JSON.stringify($scope.settings);
@@ -28,7 +29,13 @@
         $scope.import = doImport;
 
         function doImport() {
+            var file = $scope.myFile;
 
+            console.log('file is ');
+            console.dir(file);
+
+            var uploadUrl = "/fileUpload";
+            fileUpload.uploadFileToUrl(file, uploadUrl);
         }
     }
 })()
