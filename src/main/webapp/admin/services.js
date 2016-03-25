@@ -15,7 +15,8 @@
             testNewSystem: testNewSystem,
             login: login,
             addUser: addUser,
-            changed: changed
+            changed: changed,
+            getCurrentUser : getCurrentUser
         }
 
         function login(username, password) {
@@ -77,6 +78,11 @@
             //        });
             //    }, 1000);
             //});
+        }
+        
+        function getCurrentUser(systemId) {
+            var url = '/rpsp/users/current-user';
+            return $http.get(url);
         }
 
         function testNewSystem(system) {
