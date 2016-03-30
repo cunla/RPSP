@@ -104,11 +104,18 @@
 			                        <label>Test Network:</label>
 			                        <input ng-model="testNetworkId" required>
 		                    	</md-input-container> 
+		                    	
+		                    	<div flex="15" layout layout-align="center center"><label>RPO (Min):</label></div>
+								<div flex="75"><md-slider class="md-primary" md-discrete ng-model="rpo" step="5" min="0" max="60"></md-slider></div> 
+								<div flex="10" layout layout-align="center center">
+								 <input flex type="number" ng-model="rpo" step="5" min="0" max="60">
+								</div>
+								<div flex="100"> . </div>
 		                    	          	
-		                    	<md-input-container flex="100">
+		                    	<!-- <md-input-container flex="100">
 			                        <label>RPO (Min):</label>
 			                        <input ng-model="rpo" required>
-		                    	</md-input-container>    
+		                    	</md-input-container>   -->  
 		                    	<md-input-container flex="100">
 			                        <label>Desctiption (Free Text):</label>
 			                        <input ng-model="description" required>
