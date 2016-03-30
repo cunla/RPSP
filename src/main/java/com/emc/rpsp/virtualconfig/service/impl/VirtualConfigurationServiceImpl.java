@@ -70,6 +70,10 @@ public class VirtualConfigurationServiceImpl extends BaseServiceImpl implements
 				DataStoreConfig dataStoreConfig = new DataStoreConfig();
 				dataStoreConfig.setId(datastoreConfiguration.getDatastoreUID().getUuid());
 				dataStoreConfig.setName(datastoreConfiguration.getName());
+				Long capacityGB = datastoreConfiguration.getCapacity()/1000/1000/1000; 
+				dataStoreConfig.setCapacity(capacityGB);
+				Long freeSpaceGB = datastoreConfiguration.getFreeSpace()/1000/1000/1000;
+				dataStoreConfig.setFreeSpace(freeSpaceGB);
 				dataCenterConfig.addDatastore(dataStoreConfig);
 				for(EsxUID esxUID : datastoreConfiguration.getRelevantEsxsUuids()){
 					EsxConfig esxConfig = idToEsxMap.get(esxUID.getUuid());

@@ -4,6 +4,8 @@ public class DataStoreConfig {
 	
 	private String id;
 	private String name;
+	private Long freeSpace;
+	private Long capacity;
 	
 	public DataStoreConfig() {
 		super();
@@ -23,6 +25,22 @@ public class DataStoreConfig {
 
 	public void setName(String name) {
 		this.name = name;
+	}	
+
+	public Long getFreeSpace() {
+		return freeSpace;
+	}
+
+	public void setFreeSpace(Long freeSpace) {
+		this.freeSpace = freeSpace;
+	}
+
+	public Long getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(Long capacity) {
+		this.capacity = capacity;
 	}
 
 	@Override

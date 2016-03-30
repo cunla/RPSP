@@ -58,7 +58,8 @@
 		                    	<md-input-container flex="90">
 			                        <label>Source Datastore:</label>
 			                        <md-select ng-model="selectedSourceDatastore">
-									    <md-option ng-value="sourceDatastore" ng-repeat="sourceDatastore in selectedSourceDataCenter.datastores">{{ sourceDatastore.name }}</md-option>
+									    <md-option ng-value="sourceDatastore" ng-repeat="sourceDatastore in selectedSourceDataCenter.datastores">
+									    				{{ sourceDatastore.name + '  (' + sourceDatastore.freeSpace + ' GB free out of ' + sourceDatastore.capacity + ' GB)'}}</md-option>
 									 </md-select>
 		                    	</md-input-container>
 		                    	
@@ -94,14 +95,16 @@
 		                    	<md-input-container flex="90">
 			                        <label>Target Datastore:</label>
 			                          <md-select ng-model="selectedTargetDatastore">
-									    <md-option ng-value="targetDatastore" ng-repeat="targetDatastore in selectedTargetEsx.relatedDatastores">{{ targetDatastore.name }}</md-option>
+									    <md-option ng-value="targetDatastore" ng-repeat="targetDatastore in selectedTargetEsx.relatedDatastores">
+									    {{ targetDatastore.name + '  (' + targetDatastore.freeSpace + ' GB free out of ' + targetDatastore.capacity + ' GB)'}}</md-option>
 									 </md-select>
 		                    	</md-input-container>
 		                    	
 		                    	<md-input-container flex="100">
 			                        <label>Test Network:</label>
 			                        <input ng-model="testNetworkId" required>
-		                    	</md-input-container>                	
+		                    	</md-input-container> 
+		                    	          	
 		                    	<md-input-container flex="100">
 			                        <label>RPO (Min):</label>
 			                        <input ng-model="rpo" required>
