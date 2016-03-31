@@ -114,8 +114,8 @@
             $mdDialog.show(confirm).then(function () {
                 RPSP.save();
                 $location.path(path);
-            }, function () {
-
+            }, function () {//Cancel
+                RPSP.settings();
             });
         };
     };
