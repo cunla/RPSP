@@ -96,9 +96,8 @@
     function menuCtrl($scope, $location, $mdDialog, RPSP) {
         $scope.go = go;
         function go(path) {
-            if (RPSP.changed) {
+            if (RPSP.changed()) {
                 showConfirm();
-                $location.path(path);
             } else {
                 $location.path(path);
             }
@@ -114,6 +113,7 @@
                 .cancel('Forget changes');
             $mdDialog.show(confirm).then(function () {
                 RPSP.save();
+                $location.path(path);
             }, function () {
 
             });

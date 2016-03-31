@@ -7,13 +7,12 @@
         $scope.testSystem = testSystem;
         $scope.save = save;
         $scope.loading = true;
-        //$scope.changed = false;
         refresh();
 
 
         function save() {
             RPSP.save($scope.json).then(function (res) {
-                $scope.changed = RPSP.changed;
+             
             })
         }
 
@@ -26,8 +25,6 @@
         }
 
         function showDialog(system) {
-            RPSP.changed = true;
-            $scope.changed = true;
             if (!system) {
                 system = {};
             }

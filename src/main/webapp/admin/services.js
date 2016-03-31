@@ -15,10 +15,14 @@
             testNewSystem: testNewSystem,
             login: login,
             addUser: addUser,
-            changed: changed,
+            changed: getChanged,
             getCurrentUser : getCurrentUser
         }
 
+        function getChanged() {
+            return changed;
+        }
+        
         function login(username, password) {
             var encodedString = 'username=' +
                 encodeURIComponent(username) +

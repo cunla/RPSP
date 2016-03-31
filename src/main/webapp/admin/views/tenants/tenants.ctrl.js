@@ -10,8 +10,6 @@
 
         function save() {
             RPSP.save($scope.json).then(function (res) {
-                $scope.changed = false;
-                RPSP.changed = false;
             })
         }
 
@@ -45,7 +43,6 @@
                 $scope.addTenant = addTenant;
                 function addTenant() {
                     $mdDialog.hide();
-                    RPSP.changed = true;
                     if (!tenant.id) {
                         RPSP.addTenant(tenant);
                     }

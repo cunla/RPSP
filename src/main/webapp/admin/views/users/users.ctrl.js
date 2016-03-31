@@ -30,7 +30,6 @@
                     user.login = user.username + "@" + user.tenantName;
                     user.fullName = user.firstName + ' '  + user.lastName;
                     $mdDialog.hide();
-                    RPSP.changed = true;
                     if (!user.id) {
                         RPSP.addUser(user);
                     }
@@ -44,7 +43,6 @@
 
         function save() {
             RPSP.save($scope.json).then(function (res) {
-                $scope.changed = false;
             })
         }
 
