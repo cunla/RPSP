@@ -15,28 +15,27 @@
 </md-toolbar>
 <main>
     <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab>
+        <md-tab md-active="activeState=='app.systems'">
             <md-button flex ng-click="go('/app/systems')">Systems</md-button>
         </md-tab>
         <md-divider></md-divider>
-        <md-tab>
+        <md-tab  md-active="activeState=='app.packages'">
             <md-button flex ng-click="go('/app/packages')">Packages</md-button>
-
         </md-tab>
         <md-divider></md-divider>
-        <md-tab>
+        <md-tab md-active="activeState=='app.tenants'">
             <md-button flex ng-click="go('/app/tenants')">Tenants</md-button>
         </md-tab>
         <md-divider></md-divider>
-        <md-tab>
+        <md-tab md-active="activeState=='app.users'">
             <md-button flex ng-click="go('/app/users')">Users</md-button>
         </md-tab>
         <md-divider></md-divider>
-        <md-tab>
+        <md-tab md-active="activeState=='app.vms'">
             <md-button flex ng-click="go('/app/vms')">Virtual Machines</md-button>
         </md-tab>
         <md-divider></md-divider>
-        <md-tab>
+        <md-tab md-active="activeState=='app.tools'">
             <md-button flex ng-click="go('/app/tools')">Tools</md-button>
         </md-tab>
     </md-tabs>

@@ -91,9 +91,10 @@
                 $urlRouterProvider.otherwise("/login");
             });
 
-    app.controller('MenuCtrl', ['$scope', '$location', '$mdDialog', 'RPSP', menuCtrl]);
+    app.controller('MenuCtrl', ['$scope', '$location', '$mdDialog', 'RPSP','$state', menuCtrl]);
 
-    function menuCtrl($scope, $location, $mdDialog, RPSP) {
+    function menuCtrl($scope, $location, $mdDialog, RPSP, $state) {
+        $scope.activeState = $state.current.name;
         $scope.go = go;
         function go(path) {
             if (RPSP.changed()) {
