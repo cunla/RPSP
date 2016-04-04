@@ -8,13 +8,21 @@
                 <label>Cluster System Name</label>
                 <input ng-model="system.name">
             </md-input-container>
-            <div layout-gt-sm="column">
-                <md-checkbox ng-model="system.isDrttc"
-                             aria-label="Select if system is for DR to the cloud">
-                    Disaster Recovery to the Cloud
-                </md-checkbox>
+        </div>
+        <div layout-gt-sm="column">
+            <div layout-gt-sm="row">
+                <md-select name="drttc" ng-model="system.isDrttc" required>
+                    <md-option value="true">Disaster Recovery <b>to</b> the Cloud</md-option>
+                    <md-option value="false">Disaster Recovery <b>in</b> the Cloud</md-option>
+                </md-select>
+            </div>
+            {{system.isDrttc}}
+            <!--<md-checkbox ng-model="system.isDrttc"-->
+            <!--aria-label="Select if system is for DR to the cloud">-->
+            <!--Disaster Recovery to the Cloud-->
+            <!--</md-checkbox>-->
+            <div layout="row" >
                 <md-checkbox ng-model="system.multiTenancy"
-                             ng-disabled="system.isDrttc"
                              aria-label="Check if system is for multiple tenants">
                     Multi Tenancy
                 </md-checkbox>
