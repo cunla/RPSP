@@ -1,6 +1,7 @@
 package com.emc.rpsp.vmstructure.service.impl;
 
 //import com.emc.fapi.jaxws.v4_3.*;
+
 import com.emc.rpsp.accounts.domain.Account;
 import com.emc.rpsp.backupsystems.BackupSystemsRepository;
 import com.emc.rpsp.backupsystems.VmBackup;
@@ -8,7 +9,10 @@ import com.emc.rpsp.backupsystems.VmBackupRepository;
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.fal.Client;
 import com.emc.rpsp.fal.commons.*;
-import com.emc.rpsp.fal.wrappers.*;
+import com.emc.rpsp.fal.wrappers.ConsistencyGroupStateSet;
+import com.emc.rpsp.fal.wrappers.ConsistencyGroupStatisticsSet;
+import com.emc.rpsp.fal.wrappers.ConsistencyGroupVolumesStateSet;
+import com.emc.rpsp.fal.wrappers.VmEntitiesInformationSet;
 import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.packages.domain.PackageDefinition;
 import com.emc.rpsp.rpsystems.ClusterSettings;
@@ -45,8 +49,7 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
     public AccountVmsStructure getAccountVmsStrucure() {
 
         AccountVmsStructure accountVmsStructure = null;
-        boolean isAdmin = getCurrentUser().getUser().getPermission().equals("ADMIN");
-        accountVmsStructure.setAdmin(isAdmin);
+
         if (isNotImpersonatedAdmin()) {
             List<Account> accounts = findAllAccounts();
             accountVmsStructure = getAllAccountsData(accounts);
@@ -57,6 +60,8 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
         }
         Boolean backupSystemExists = !backupSystemsRepo.findAll().isEmpty();
         accountVmsStructure.setBackupActive(backupSystemExists);
+        boolean isAdmin = getCurrentUser().getUser().getPermission().equals("ADMIN");
+        accountVmsStructure.setAdmin(isAdmin);
         return accountVmsStructure;
     }
 
@@ -227,7 +232,7 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
 
             Collection<VmReplicationSetSettings> vmReplicationSetSettingsList =
                 groupSettings
-                .getVmReplicationSetsSettings();
+                    .getVmReplicationSetsSettings();
 
             ClusterDefinition productionCluster = null;
             List<ClusterDefinition> replicaClusters = new LinkedList<ClusterDefinition>();

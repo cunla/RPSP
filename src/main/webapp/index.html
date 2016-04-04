@@ -40,6 +40,7 @@
                     <!-- <li><a> {{ 'HOME.WELCOME_MSG' | translate }}, {{currentUser.login}}</a></li> -->
                     <li><a> {{'HOME.WELCOME_MSG' | translate}}, {{welcomeData}}</a></li>
                     <li><a href="/rpsp/logout-action">{{'HOME.LOGOUT_MSG' | translate}}</a></li>
+                    <li ng-show="isAdmin"><a href="/rpsp/admin/index.html#/app/systems">Admin console</a></li>
                 </ul>
             </div>
         </nav>

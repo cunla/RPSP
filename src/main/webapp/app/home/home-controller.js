@@ -41,6 +41,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 
     $scope.getVmStructureData = function () {
         vmStructureService.getVmStructureData().then(function (allData) {
+                $scope.isAdmin=allData.isAdmin;
                 $scope.backupActive = allData.backupActive;
                 $scope.vmStructureData = allData.vmStructureData;
                 $scope.vmGsAndCgFlatData = allData.vmGsAndCgFlatData;

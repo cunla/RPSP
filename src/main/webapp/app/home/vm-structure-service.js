@@ -76,6 +76,7 @@ app.service('vmStructureService', ['$http', function ($http) {
                 protectedVms = protectedVmsCount;
 
                 allData.vmStructureData = vmStructureData;
+                allData.isAdmin = vmStructureData.admin;
                 allData.backupActive = vmStructureData.backupActive;
                 allData.vmGsAndCgFlatData = vmGsAndCgFlatData;
                 allData.totalVms = totalVms;
