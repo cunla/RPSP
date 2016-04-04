@@ -45,6 +45,8 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
     public AccountVmsStructure getAccountVmsStrucure() {
 
         AccountVmsStructure accountVmsStructure = null;
+        boolean isAdmin = getCurrentUser().getUser().getPermission().equals("ADMIN");
+        accountVmsStructure.setAdmin(isAdmin);
         if (isNotImpersonatedAdmin()) {
             List<Account> accounts = findAllAccounts();
             accountVmsStructure = getAllAccountsData(accounts);

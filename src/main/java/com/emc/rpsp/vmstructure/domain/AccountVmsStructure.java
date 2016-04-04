@@ -8,6 +8,7 @@ public class AccountVmsStructure {
     private String id;
     private String name;
     private Boolean backupActive = true;
+    private Boolean isAdmin = false;
     private SystemInfo systemInfo;
     private List<VmDefinition> unprotectedVms;
     private List<VmContainer> protectedVms;
@@ -73,5 +74,13 @@ public class AccountVmsStructure {
 
     public void setBackupActive(Boolean backupActive) {
         this.backupActive = backupActive;
+    }
+
+    public Boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
     }
 }
