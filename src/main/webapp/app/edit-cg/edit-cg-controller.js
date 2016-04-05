@@ -10,6 +10,7 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 	$scope.initData = function(){
 		$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
 		$scope.protectedSelectedIndex = vmStructureService.getProtectedSelectedIndex();
+		$scope.cgVms = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].vms;
 		$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
 		$scope.imageAccessType = 'latest';
 		

@@ -182,7 +182,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
         modalInstance = $modal.open({
             templateUrl: 'app/edit-cg/edit-cg-modal.html',
             controller: 'editCgController',
-            windowClass: 'image-access-modal'
+            windowClass: 'edit-cg-modal'
         });
 
         modalInstance.result.then(function () {
