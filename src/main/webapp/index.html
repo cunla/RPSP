@@ -96,7 +96,7 @@
             {{'HOME.AUDIT_LOG' | translate}}
         </button>
         <button type="button" class="btn btn-primary margin-top"
-                ng-class="{'disabled' : !isActionApplicable()}">{{'HOME.EDIT_MSG' | translate}}
+                ng-class="{'disabled' : !isActionApplicable()}" ng-click="openEditCgModal()">{{'HOME.EDIT_MSG' | translate}}
         </button>
         <button type="button" class="btn btn-primary margin-top"
                 ng-class="{'disabled' : !isActionApplicable()}" ng-click="openBookmarksModal()">
@@ -253,6 +253,7 @@
 <script src="app/protect/protect-controller.js"></script>
 <script src="app/protect/protect-create-cg-controller.js"></script>
 <script src="app/unprotect/unprotect-controller.js"></script>
+<script src="app/edit-cg/edit-cg-controller.js"></script>
 <script src="app/bookmarks/bookmarks-controller.js"></script>
 <script src="app/failover/failover-controller.js"></script>
 <script src="app/failover/group-set-failover-controller.js"></script>

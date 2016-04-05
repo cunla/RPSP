@@ -171,6 +171,25 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
             }
         });
     };
+    
+    
+    $scope.openEditCgModal = function () {
+
+      
+        var modalInstance = {};
+
+
+        modalInstance = $modal.open({
+            templateUrl: 'app/edit-cg/edit-cg-modal.html',
+            controller: 'editCgController',
+            windowClass: 'image-access-modal'
+        });
+
+        modalInstance.result.then(function () {
+            {
+            }
+        });
+    };
 
 
     $scope.openBookmarksModal = function () {
