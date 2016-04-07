@@ -1,13 +1,6 @@
 (function () {
     'use strict';
 
-    /**
-     * @ngdoc function
-     * @name ngmaterialApp.controller:AboutCtrl
-     * @description
-     * # AboutCtrl
-     * Controller of the ngmaterialApp
-     */
     angular.module('adminApp')
         .config(['$compileProvider',
             function ($compileProvider) {
@@ -15,9 +8,9 @@
                 // pre-Angularv1.2 use urlSanizationWhitelist()
             }
         ])
-        .controller('ToolsCtrl', ['RPSP', '$scope', 'fileUpload', ToolsCtrl]);
+        .controller('ToolsCtrl', ['RPSP', '$scope', ToolsCtrl]);
 
-    function ToolsCtrl(RPSP, $scope, fileUpload) {
+    function ToolsCtrl(RPSP, $scope) {
         RPSP.settings().then(function (res) {
             $scope.json = RPSP.current();
             var jsonStr = JSON.stringify($scope.settings);
@@ -27,15 +20,35 @@
         });
 
         $scope.import = doImport;
+        var fileInput = $('#files');
 
         function doImport() {
-            var file = $scope.myFile;
+            if (!window.FileReader) {
+                alert('Your browser is not supported');
+                return false;
+            }
+            var input = fileInput.get(0);
 
-            console.log('file is ');
-            console.dir(file);
+            // Create a reader object
+            var reader = new FileReader();
+            if (input.files.length) {
+                var textFile = input.files[0];
+                // Read the file
+                reader.readAsText(textFile);
+                // When it's loaded, process it
+                $(reader).on('load', function (e) {
+                    var file = e.target.result;
+                    if (file && file.length) {
+                        console.log(file);
+                        RPSP.setJson(file);
+                        $scope.json = RPSP.current();
+                        RPSP.save();
+                    }
+                });
+            } else {
+                alert('Please upload a file before continuing')
+            }
 
-            var uploadUrl = "/fileUpload";
-            fileUpload.uploadFileToUrl(file, uploadUrl);
         }
     }
 })()

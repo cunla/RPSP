@@ -1,6 +1,6 @@
-<div layout="column" layout-align="center center">
+<div layout="column">
     <h2>RPSP settings</h2>
-    <section layout="row" layout-align="center center">
+    <section layout="row" layout-align="start center">
         <a class="md-button md-raised"
            download="settings.json"
            href="{{settingsLink}}">
@@ -9,18 +9,17 @@
         </a>
 
     </section>
-    <section layout="row" layout-align="center center">
-
-        <input type="file" file-model="myFile"/>
+    <section layout="row" layout-align="start center">
         <md-button class="md-raised" ng-click="import()">
             <ng-md-icon icon="file_upload"></ng-md-icon>
             Import
         </md-button>
+        <input type="file" id="files"/>
     </section>
-    <!--<section>-->
-    <!--<pre>-->
-            <!--{{json | json:spacing}}-->
-    <!--</pre>-->
-    <!--</section>-->
+    <section layout="row" layout-align="start center">
+    <pre>
+            {{json | json:spacing}}
+    </pre>
+    </section>
 </div>
 

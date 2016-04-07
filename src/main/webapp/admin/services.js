@@ -16,18 +16,19 @@
             login: login,
             addUser: addUser,
             changed: getChanged,
-            getCurrentUser : getCurrentUser
+            getCurrentUser: getCurrentUser,
+            setJson: setJson
         }
 
         function getChanged() {
             return changed;
         }
-        
+
         function login(username, password) {
             var encodedString = 'username=' +
                 encodeURIComponent(username) +
-                    //'@' +
-                    //encodeURIComponent(this.inputData.account) +
+                //'@' +
+                //encodeURIComponent(this.inputData.account) +
                 '&password=' +
                 encodeURIComponent(password);
             return $http({
@@ -71,6 +72,10 @@
             });
         }
 
+        function setJson(newJson) {
+            json = JSON.parse(newJson);
+        }
+
         function testSystem(systemId) {
             var url = '/rpsp/internal-data';
             return $http.get(url);
@@ -83,7 +88,7 @@
             //    }, 1000);
             //});
         }
-        
+
         function getCurrentUser(systemId) {
             var url = '/rpsp/users/current-user';
             return $http.get(url);
