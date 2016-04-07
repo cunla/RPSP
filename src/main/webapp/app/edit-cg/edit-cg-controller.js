@@ -11,69 +11,37 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 		$scope.vmGsAndCgFlatData = vmStructureService.getCachedVmGsAndCgFlatData();
 		$scope.protectedSelectedIndex = vmStructureService.getProtectedSelectedIndex();
 		$scope.cgVms = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].vms;
-		$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
-		$scope.imageAccessType = 'latest';
 		
-		var isBookmarkImageAccessEnabled = false;
-		var isSnapshotImageAccessEnabled = false;
-		var bookmarks = $scope.selectedCopy.bookmarks;		
-		var length = bookmarks.length;
-				
-        for (var i = 0; i < length; i++) {
-            var currBookmark = bookmarks[i];
-            if(currBookmark.imageAccessEnabled == true){
-            	$scope.selectedBookmark = currBookmark;
-    	    	$scope.imageAccessType = 'bookmark';
-    	    	isBookmarkImageAccessEnabled = true;
-    	    	break;
-            }
-        }
-        
-        if(!isBookmarkImageAccessEnabled){
-        	$scope.selectedBookmark = $scope.selectedCopy.bookmarks[0];
-        }
-               
-        
-        if(!isBookmarkImageAccessEnabled){
-        	var snapshots = $scope.selectedCopy.snapshots;
-        	length = snapshots.length;
-			
-            for (var i = 0; i < length; i++) {
-                var currSnapshot = snapshots[i];
-                if(currSnapshot.imageAccessEnabled == true){
-                	$scope.selectedSnapshot = currSnapshot;
-        	    	$scope.imageAccessType = 'snapshot';
-        	    	isSnapshotImageAccessEnabled = true;
-        	    	break;
-                }
-            }
-        }
-        
-            
-        if(!isSnapshotImageAccessEnabled){
-        	$scope.selectedSnapshot = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0].snapshots[0];
-        }
+		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
+		$scope.unprotectedVms = $scope.vmStructureData.unprotectedVms;
+		
+		$scope.cgVmsJoinedCandidates = new Array();
+		$scope.selectedVms = new Array();
+		
+		for(i = 0; i < $scope.cgVms.length; i++){
+			var currVm = $scope.cgVms[i];
+			var currVmCloned = JSON.parse(JSON.stringify(currVm));
+			$scope.selectedVms.push(currVmCloned);
+			$scope.cgVmsJoinedCandidates.push(currVmCloned);
+		}
+		
+		for(i = 0; i < $scope.unprotectedVms.length; i++){
+			var currVm = $scope.unprotectedVms[i];
+			var currVmCloned = JSON.parse(JSON.stringify(currVm));
+			$scope.cgVmsJoinedCandidates.push(currVmCloned);
+		}
+		
+		$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
+		
 
 	};
 	   
 	$scope.initData();
 	
 	
-	$scope.imageAccess = function(){
-	    	vmStructureService.imageAccess($scope.selectedCopy, $scope.imageAccessType, $scope.selectedSnapshot, $scope.selectedBookmark);  
-	    	$scope.initData();
+	$scope.testClick = function(){
+		/*$scope.cgVms.push($scope.selectedVms[0]);*/
 	}
-	
-	
-/*	$scope.isActionApplicable = function(){
-    	var res = false;  
-    	
-    	if($scope.selectedCopy.imageAccess == 'Enabled' || Object.keys($scope.imageAccessType).length != 0){
-    		res = true; 
-    	}
-    	
-    	return res;
-    };*/
 	
 	
 	$scope.cancel = function(){

@@ -21,7 +21,7 @@
 	            </td>
 	            <td>
 	                <div class="row">
-	                    <div class="col-xs-8 col-sm-8 col-md-8 margin-top">
+	                    <div class="col-xs-6 col-sm-6 col-md-6 margin-top">
 	                        <input ng-model="cgName"
 	                               class="form-control" type="text"/>
 	
@@ -41,17 +41,45 @@
 	                </div>
 	            </td>
 	            <td>
-	                <div class="row">
-	                    <div class="col-xs-12 col-sm-12 col-md-12 margin-top">
-	                          <div ng-repeat="vm in cgVms">
-	                          	{{vm.name}}<white-space> </white-space>Critical: {{vm.critical}}
-	                          	           <white-space> </white-space>Priority: {{vm.sequenceNumber}}
-                              </div>
+	                   <div class="row" ng-repeat="vm in selectedVms">
+	                       		<div class="col-xs-4 col-sm-4 col-md-4 margin-top-lg">
+	                        		{{vm.name}}<white-space> </white-space>
+	                        	</div>
+	                        	<div class="col-xs-3 col-sm-3 col-md-3 margin-top-lg">
+		                         	<label class="checkbox-inline">
+								  		<input type="checkbox" id="criticalVmId" ng-model="vm.critical"> Critical
+									</label>
+								</div>
+		                        <div class="col-xs-5 col-sm-5 col-md-5 margin-top-lg">    
+			                        <div class="row">
+					                    <div class="col-xs-6 col-sm-6 col-md-6">
+					                        Priority
+					                    </div>
+					                    <div class="col-xs-6 col-sm-6 col-md-6">
+					                        <select class="form-control" ng-model="vm.sequenceNumber">
+					                            <option>1</option>
+					                            <option>2</option>
+					                            <option>3</option>
+					                            <option>4</option>
+					                            <option>5</option>
+					                        </select>
+					                    </div>
+					                </div>
+				                </div>
+				                
 	                        
 	                        
-	
-	                    </div>
-	                </div>
+	                   </div>								
+	                          
+	                   <br/>
+	                   <div class="row">
+	                       <div class="col-xs-6 col-sm-6 col-md-6 margin-top-lg">
+	                          <multiselect ng-model="selectedVms" options="cgVmsJoinedCandidates" id-prop="id"
+	                                   display-prop="name"></multiselect>
+	                        </div>
+	                        <div class="col-xs-6 col-sm-6 col-md-6 margin-top-lg">
+	                        </div>
+	                   </div>
 	
 	            </td>
 	        </tr>
