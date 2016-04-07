@@ -31,6 +31,7 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 			$scope.cgVmsJoinedCandidates.push(currVmCloned);
 		}
 		
+		$scope.priceSlider = 150;
 		$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
 		
 
