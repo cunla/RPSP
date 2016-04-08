@@ -16,8 +16,16 @@ public class VmDefinition {
     private Boolean backupActive;
     @JsonIgnore
     private Account account;
+    
+    
+    
 
-    public VmDefinition(String id, String name) {
+    public VmDefinition() {
+		super();
+	}
+
+
+	public VmDefinition(String id, String name) {
         super();
         this.id = id;
         this.name = name;

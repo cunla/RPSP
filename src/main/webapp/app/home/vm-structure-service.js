@@ -443,6 +443,16 @@ app.service('vmStructureService', ['$http', function ($http) {
         then(this.getVmStructureData());
 
     };
+    
+    
+    this.editCg = function (cgId, cgChanges) {
+        var url = '/rpsp/groups/' + cgId;
+
+        $http.put(url, cgChanges).
+        success(function (data, status, headers, config) {
+        });
+
+    };
 
 
 }]);

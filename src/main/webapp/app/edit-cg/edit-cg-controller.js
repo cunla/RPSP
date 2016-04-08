@@ -40,8 +40,26 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 	$scope.initData();
 	
 	
-	$scope.testClick = function(){
-		/*$scope.cgVms.push($scope.selectedVms[0]);*/
+	$scope.editCg = function(){
+		var currCg = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex];
+		
+		var currCgCloned = JSON.parse(JSON.stringify(currCg));
+		currCgCloned.replicaClusters[0].groupCopySettings[0].snapshots = [];
+    	
+    	var currCgModified = JSON.parse(JSON.stringify(currCgCloned));
+    	currCgModified.name = $scope.cgName;
+    	currCgModified.packageId = $scope.selectedPackage.id;
+    	currCgModified.packageName = $scope.selectedPackage.name;
+    	currCgModified.packageDisplayName = $scope.selectedPackage.displayName;
+    	currCgModified.vms = $scope.selectedVms;
+    	
+    	var cgId = currCg.id;
+    	var cgChanges = {};
+    	cgChanges.originalConsistencyGroup = currCgCloned;
+    	cgChanges.currentConsistencyGroup = currCgModified;
+    		
+    	vmStructureService.editCg(cgId, cgChanges);  
+    	/*$modalInstance.dismiss('cancel');*/
 	}
 	
 	
