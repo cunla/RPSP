@@ -168,16 +168,14 @@ public interface ClusterConnector {
     public Response setUserProperties(@Body UserDefinedProperties userDefinedProperties);
 
     @PUT(BASE_URL + "groups/{groupId}/enable")
-    public Response setCgProtectionState(
-        @Path("groupId") long groupId,
-        @Query("startTransfer") boolean state
-    );
+    public Response setCgProtectionState(@Path("groupId") long groupId, @Query("startTransfer") boolean state);
     
     @PUT(BASE_URL + "groups/{groupId}/set_link_policy")
     public Response setLinkPolicy(@Path("groupId") long groupId, @Body SetConsistencyGroupLinkPolicyParams setConsistencyGroupLinkPolicyParams); 
      
      
-     
+    @PUT(BASE_URL + "groups/{groupId}/name")
+    public Response renameGroup(@Path("groupId") long groupId, @Body String name);
      
 
 }

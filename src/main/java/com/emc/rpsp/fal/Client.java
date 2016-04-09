@@ -8,8 +8,11 @@ import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
+
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.http.Body;
+import retrofit.http.Path;
 
 import java.io.EOFException;
 import java.util.*;
@@ -1061,6 +1064,10 @@ public class Client {
             }
         }
         return res;
+    }
+    
+    public void renameGroup(long groupId, String name){
+    	connector.renameGroup(groupId, name);
     }
 
     private boolean isContainsVm(VmReplicationSetSettings vmReplicationSet,
