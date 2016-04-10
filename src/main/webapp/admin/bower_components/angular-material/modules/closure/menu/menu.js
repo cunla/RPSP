@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7
+ * v1.0.2
  */
 goog.provide('ng.material.components.menu');
 goog.require('ng.material.components.backdrop');
@@ -60,9 +60,6 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
     });
 
     $scope.$on('$destroy', this.disableHoverListener);
-    menuContainer.on('$destroy', function() {
-      $mdMenu.destroy();
-    });
   };
 
   var openMenuTimeout, menuItems, deregisterScopeListeners = [];
@@ -106,14 +103,12 @@ function MenuController($mdMenu, $attrs, $element, $scope, $mdUtil, $timeout, $r
       if (self.currentlyOpenMenu && self.currentlyOpenMenu != nestedMenu) {
         var closeTo = self.nestLevel + 1;
         self.currentlyOpenMenu.close(true, { closeTo: closeTo });
-        self.isAlreadyOpening = true;
-        nestedMenu.open();
       } else if (nestedMenu && !nestedMenu.isOpen && nestedMenu.open) {
         self.isAlreadyOpening = true;
         nestedMenu.open();
       }
     }, nestedMenu ? 100 : 250);
-    var focusableTarget = event.currentTarget.querySelector('.md-button:not([disabled])');
+    var focusableTarget = event.currentTarget.querySelector('button:not([disabled])');
     focusableTarget && focusableTarget.focus();
   };
 
@@ -533,7 +528,7 @@ function MenuProvider($$interimElementProvider) {
     }
 
     /**
-     * Removing the menu element from the DOM and remove all associated event listeners
+     * Removing the menu element from the DOM and remove all associated evetn listeners
      * and backdrop
      */
     function onRemove(scope, element, opts) {

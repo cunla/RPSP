@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7
+ * v1.0.2
  */
 goog.provide('ng.material.components.toast');
 goog.require('ng.material.components.button');
@@ -44,8 +44,6 @@ MdToastDirective.$inject = ["$mdToast"];
   * `$mdToast` is a service to build a toast notification on any position
   * on the screen with an optional duration, and provides a simple promise API.
   *
-  * The toast will be always positioned at the `bottom`, when the screen size is
-  * between `600px` and `959px` (`sm` breakpoint)
   *
   * ## Restrictions on custom toasts
   * - The toast's template must have an outer `<md-toast>` element.
@@ -186,7 +184,7 @@ MdToastDirective.$inject = ["$mdToast"];
   *     be used as names of values to inject into the controller. For example,
   *     `locals: {three: 3}` would inject `three` into the controller with the value
   *     of 3.
-  *   - `bindToController` - `bool`: bind the locals to the controller, instead of passing them in.
+  *   - `bindToController` - `bool`: bind the locals to the controller, instead of passing them in. These values will not be available until after initialization.
   *   - `resolve` - `{object=}`: Similar to locals, except it takes promises as values
   *     and the toast will not open until the promises resolve.
   *   - `controllerAs` - `{string=}`: An alias to assign the controller to on the scope.
@@ -302,22 +300,18 @@ function MdToastProvider($$interimElementProvider) {
           // Root element of template will be <md-toast>. We need to wrap all of its content inside of
           // of <div class="md-toast-content">. All templates provided here should be static, developer-controlled
           // content (meaning we're not attempting to guard against XSS).
-          var templateRoot = document.createElement('md-template');
-          templateRoot.innerHTML = template;
+          var parsedTemplate = angular.element(template);
+          var wrappedContent = '<div class="md-toast-content">' + parsedTemplate.html() + '</div>';
 
-          for (var i = 0; i < templateRoot.children.length; i++) {
-            if (templateRoot.children[i].nodeName === 'MD-TOAST') {
-              var wrapper = angular.element('<div class="md-toast-content">');
-              wrapper.append(templateRoot.children[i].children);
-              templateRoot.children[i].appendChild(wrapper[0]);
-            }
-          }
+          parsedTemplate.empty().append(wrappedContent);
 
-
-          return templateRoot.outerHTML;
+          // Underlying interimElement expects a template string.
+          return parsedTemplate[0].outerHTML;
         }
 
-        return template || '';
+        return shouldAddWrapper ?
+            '<div class="md-toast-content">' + template + '</div>' :
+            template || '';
       }
     };
 
@@ -327,8 +321,6 @@ function MdToastProvider($$interimElementProvider) {
       var isSmScreen = !$mdMedia('gt-sm');
 
       element = $mdUtil.extractElementByName(element, 'md-toast', true);
-      options.element = element;
-
       options.onSwipe = function(ev, gesture) {
         //Add the relevant swipe class to the element so it can animate correctly
         var swipe = ev.type.replace('$md.','');

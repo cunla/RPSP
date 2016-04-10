@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7
+ * v1.0.2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -83,8 +83,10 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
   // **********************************************************
 
   function compile (tElement, tAttrs) {
-    if (!tAttrs.tabindex) tElement.attr('tabindex', 0);
-    tElement.attr('role', 'slider');
+    tElement.attr({
+      tabIndex: 0,
+      role: 'slider'
+    });
 
     $mdAria.expect(tElement, 'aria-label');
 
@@ -105,12 +107,12 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       $viewChangeListeners: []
     };
 
-    var isDisabled = false;
-
-    attr.$observe('disabled', function (value) {
-      isDisabled = $mdUtil.parseAttributeBoolean(value, false);
-      updateAriaDisabled();
-    });
+    var isDisabledGetter = angular.noop;
+    if (attr.disabled != null) {
+      isDisabledGetter = function() { return true; };
+    } else if (attr.ngDisabled) {
+      isDisabledGetter = angular.bind(null, $parse(attr.ngDisabled), scope.$parent);
+    }
 
     var thumb = angular.element(element[0].querySelector('.md-thumb'));
     var thumbText = angular.element(element[0].querySelector('.md-thumb-text'));
@@ -124,6 +126,14 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     angular.isDefined(attr.min) ? attr.$observe('min', updateMin) : updateMin(0);
     angular.isDefined(attr.max) ? attr.$observe('max', updateMax) : updateMax(100);
     angular.isDefined(attr.step)? attr.$observe('step', updateStep) : updateStep(1);
+
+    // We have to manually stop the $watch on ngDisabled because it exists
+    // on the parent scope, and won't be automatically destroyed when
+    // the component is destroyed.
+    var stopDisabledWatch = angular.noop;
+    if (attr.ngDisabled) {
+      stopDisabledWatch = scope.$parent.$watch(attr.ngDisabled, updateAriaDisabled);
+    }
 
     $mdGesture.register(element, 'drag');
 
@@ -148,6 +158,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
 
     scope.$on('$destroy', function() {
       angular.element($window).off('resize', debouncedUpdateAll);
+      stopDisabledWatch();
     });
 
     ngModelCtrl.$render = ngModelRender;
@@ -175,7 +186,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       step = parseFloat(value);
       redrawTicks();
     }
-    function updateAriaDisabled() {
+    function updateAriaDisabled(isDisabled) {
       element.attr('aria-disabled', !!isDisabled);
     }
 
@@ -195,7 +206,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
 
       var numSteps = Math.floor( (max - min) / step );
       if (!tickCanvas) {
-        tickCanvas = angular.element('<canvas>').css('position', 'absolute');
+        tickCanvas = angular.element('<canvas style="position:absolute;">');
         tickContainer.append(tickCanvas);
 
         var trackTicksStyle = $window.getComputedStyle(tickContainer[0]);
@@ -232,7 +243,9 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
      * left/right arrow listener
      */
     function keydownListener(ev) {
-      if (isDisabled) return;
+      if(element[0].hasAttribute('disabled')) {
+        return;
+      }
 
       var changeAmount;
       if (ev.keyCode === $mdConstant.KEY_CODE.LEFT_ARROW) {
@@ -287,9 +300,6 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
      * @param percent 0-1
      */
     function setSliderPercent(percent) {
-
-        percent = clamp(percent);
-
         var percentStr = (percent * 100) + '%';
 
         activeTrack.css('width', percentStr);
@@ -307,7 +317,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
     var isDiscrete = angular.isDefined(attr.mdDiscrete);
 
     function onPressDown(ev) {
-      if (isDisabled) return;
+      if (isDisabledGetter()) return;
 
       element.addClass('md-active');
       element[0].focus();
@@ -321,7 +331,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       });
     }
     function onPressUp(ev) {
-      if (isDisabled) return;
+      if (isDisabledGetter()) return;
 
       element.removeClass('md-dragging md-active');
 
@@ -333,7 +343,7 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       });
     }
     function onDragStart(ev) {
-      if (isDisabled) return;
+      if (isDisabledGetter()) return;
       isDragging = true;
       ev.stopPropagation();
 
@@ -377,15 +387,6 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
       var closestVal = minMaxValidator( stepValidator(exactVal) );
       setSliderPercent( positionToPercent(x) );
       thumbText.text( closestVal );
-    }
-
-    /**
-    * Clamps the value to be between 0 and 1.
-    * @param {number} value The value to clamp.
-    * @returns {number}
-    */
-    function clamp(value) {
-      return Math.max(0, Math.min(value || 0, 1));
     }
 
     /**

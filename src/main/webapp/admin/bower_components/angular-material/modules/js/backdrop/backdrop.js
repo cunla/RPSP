@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7
+ * v1.0.2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -69,10 +69,7 @@ angular
           }
         }
 
-        // Only inherit the parent if the backdrop has a parent.
-        if (element.parent().length) {
-          $mdTheming.inherit(element, element.parent());
-        }
+        $mdTheming.inherit(element, element.parent());
       });
 
     }

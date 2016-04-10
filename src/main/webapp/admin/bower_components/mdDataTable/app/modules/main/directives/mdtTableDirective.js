@@ -41,6 +41,10 @@
      *      At default an array of the deleted row's data will be passed as the argument.
      *      When `table-row-id` set for the deleted row then that value will be passed.
      *
+     * @param {function(rows)=} selectedRowCallback callback function when selecting rows.
+     *      At default an array of the selected row's data will be passed as the argument.
+     *      When `table-row-id` set for the selected row then that value will be passed.
+     *
      * @param {boolean=} animateSortIcon sort icon will be animated on change
      * @param {boolean=} rippleEffect ripple effect will be applied on the columns when clicked (not implemented yet)
      * @param {boolean=} paginatedRows if set then basic pagination will applied to the bottom of the table.
@@ -103,6 +107,7 @@
                 alternateHeaders: '=',
                 sortableColumns: '=',
                 deleteRowCallback: '&',
+                selectedRowCallback: '&',
                 animateSortIcon: '=',
                 rippleEffect: '=',
                 paginatedRows: '=',
@@ -143,11 +148,18 @@
                 $scope.headerData = ctrl.tableDataStorageService.header;
                 $scope.isPaginationEnabled = isPaginationEnabled;
                 $scope.isAnyRowSelected = _.bind(ctrl.tableDataStorageService.isAnyRowSelected, ctrl.tableDataStorageService);
+                $scope.onCheckboxChange = onCheckboxChange;
 
                 injectContentIntoTemplate();
 
                 if(!_.isEmpty($scope.mdtRow)) {
                     processAttributeProvidedData();
+                }
+
+                function onCheckboxChange(){
+                    $scope.selectedRowCallback({
+                        rows: ctrl.tableDataStorageService.getSelectedRows()
+                    });
                 }
 
                 function processAttributeProvidedData(){

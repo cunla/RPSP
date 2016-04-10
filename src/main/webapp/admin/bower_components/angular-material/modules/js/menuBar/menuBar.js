@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.7
+ * v1.0.2
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -128,7 +128,7 @@ MenuBarController.prototype.disableOpenOnHover = function() {
   this.openOnHoverEnabled = false;
   var parentToolbar;
   if (parentToolbar = this.parentToolbar) {
-    parentToolbar.style.cssText = parentToolbar.dataset.mdRestoreStyle || '';
+    parentToolbar.setAttribute('style', parentToolbar.dataset.mdRestoreStyle || '');
   }
   angular
     .element(this.getMenus())
@@ -207,7 +207,7 @@ MenuBarController.prototype.focusMenu = function(direction) {
 
   var changed = false;
 
-  if (focusedIndex == -1) { focusedIndex = 0; changed = true; }
+  if (focusedIndex == -1) { focusedIndex = 0; }
   else if (
     direction < 0 && focusedIndex > 0 ||
     direction > 0 && focusedIndex < menus.length - direction
@@ -359,7 +359,10 @@ angular
   .module('material.components.menuBar')
   .directive('mdMenuBar', MenuBarDirective);
 
-/* ngInject */
+/**
+ *
+ * @ngInjdect
+ */
 function MenuBarDirective($mdUtil, $mdTheming) {
   return {
     restrict: 'E',
@@ -525,7 +528,10 @@ angular
   .module('material.components.menuBar')
   .directive('mdMenuItem', MenuItemDirective);
 
- /* ngInject */
+ /**
+  *
+  * @ngInjdect
+  */
 function MenuItemDirective() {
   return {
     require: ['mdMenuItem', '?ngModel'],
