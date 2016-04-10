@@ -29,8 +29,7 @@
                 <mdt-column align-rule="left">Status</mdt-column>
                 <!--<mdt-column align-rule="left">RP Clusters</mdt-column>-->
             </mdt-header-row>
-            <mdt-row ng-repeat="user in config.users"
-                     ng-click="addDialog(tenant)">
+            <mdt-row ng-repeat="user in config.users">
                 <mdt-cell html-content="true">
                     <ng-md-icon icon="mode_edit" style="fill:cyan"
                                 ng-click="showDialog(user)"></ng-md-icon>
@@ -39,7 +38,7 @@
                                 ng-show="user.role!='ADMIN'"
                                 ng-click="deleteUser(user)"></ng-md-icon>
                 </mdt-cell>
-                <mdt-cell html-content="true">{{user.login}}</mdt-cell>
+                <mdt-cell>{{user.login}}</mdt-cell>
                 <mdt-cell html-content="true">{{user.tenantName}}</mdt-cell>
                 <mdt-cell html-content="true">{{user.fullName}}</mdt-cell>
                 <mdt-cell html-content="true">{{user.email}}</mdt-cell>
@@ -50,7 +49,7 @@
     </section>
     <!--<section>-->
     <!--<pre>-->
-            <!--{{json | json:spacing}}-->
+    <!--{{json | json:spacing}}-->
     <!--</pre>-->
     <!--</section>-->
 </div>

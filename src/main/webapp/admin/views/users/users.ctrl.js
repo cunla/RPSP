@@ -5,8 +5,31 @@
         $scope.showDialog = showDialog;
         $scope.loading = true;
         $scope.changed = false;
+        $scope.config = {};
+        $scope.deleteUser = deleteUser;
         $scope.save = save;
         refresh();
+
+        function deleteUser(user) {
+            var confirm = $mdDialog.confirm()
+                .title('Would you like to delete user?')
+                .textContent('User ' + user.login + ' will be deleted.')
+                .ariaLabel('User deletion confirmation')
+                .ok('Delete!')
+                .cancel('Cancel');
+            $mdDialog.show(confirm).then(function () {
+                var i = 0;
+                for (; i < $scope.config.users.length; ++i) {
+                    if ($scope.config.users[i] == user) {
+                        break;
+                    }
+                }
+                console.log("delete user " + user.login + " with index " + i);
+                $scope.config.users.splice(i, 1);
+            }, function () {
+                console.log("Cancelled user deletion");
+            });
+        }
 
         function showDialog(user) {
             $scope.changed = true;
@@ -16,7 +39,7 @@
             $mdDialog.show({
                 templateUrl: 'views/users/editUserDialog.html',
                 locals: {
-                    tenants: $scope.json.tenants,
+                    tenants: $scope.config.tenants,
                 },
                 controller: DialogController
             });
@@ -28,7 +51,7 @@
                 $scope.addUser = addUser;
                 function addUser() {
                     user.login = user.username + "@" + user.tenantName;
-                    user.fullName = user.firstName + ' '  + user.lastName;
+                    user.fullName = user.firstName + ' ' + user.lastName;
                     $mdDialog.hide();
                     if (!user.id) {
                         RPSP.addUser(user);
@@ -42,7 +65,7 @@
         }
 
         function save() {
-            RPSP.save($scope.json).then(function (res) {
+            RPSP.save($scope.config).then(function (res) {
             })
         }
 
@@ -50,7 +73,7 @@
             RPSP.settings().then(function (res) {
                 $scope.config = RPSP.current();
                 $scope.loading = false;
-                $scope.json = RPSP.current();
+                // $scope.json = RPSP.current();
             });
         }
 
