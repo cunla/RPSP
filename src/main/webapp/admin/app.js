@@ -12,7 +12,7 @@
         .module('adminApp', [
             'ngAnimate',
             'ngAria',
-            'ngCookies',
+            // 'ngCookies',
             'ngMessages',
             'ngResource',
             'ngRoute',
