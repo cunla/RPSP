@@ -1,7 +1,7 @@
 (function () {
     angular.module('adminApp')
-        .controller('Users', ['$scope', 'RPSP', '$mdDialog', Users]);
-    function Users($scope, RPSP, $mdDialog) {
+        .controller('Users', ['$scope', 'RPSP', '$mdDialog', '$window', Users]);
+    function Users($scope, RPSP, $mdDialog, $window) {
         $scope.showDialog = showDialog;
         $scope.loading = true;
         $scope.changed = false;
@@ -26,6 +26,9 @@
                 }
                 console.log("delete user " + user.login + " with index " + i);
                 $scope.config.users.splice(i, 1);
+                RPSP.save($scope.config).then(function (res) {
+                    $window.location.reload();
+                });
             }, function () {
                 console.log("Cancelled user deletion");
             });
