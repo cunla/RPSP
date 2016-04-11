@@ -31,6 +31,14 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 			$scope.cgVmsJoinedCandidates.push(currVmCloned);
 		}
 		
+		$scope.selectedPackage = {};
+		for(i = 0; i < $scope.vmStructureData.systemInfo.packages.length; i++){
+			var currPackage = $scope.vmStructureData.systemInfo.packages[i];
+			if(currPackage.id == $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].packageId){
+				$scope.selectedPackage = currPackage;
+			}
+		}
+		
 		$scope.priceSlider = 150;
 		$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
 		
