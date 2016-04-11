@@ -13,10 +13,10 @@ import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.users.domain.User;
 import com.emc.rpsp.users.service.UserService;
+import com.emc.rpsp.virtualconfig.domain.VcenterConfig;
+import com.emc.rpsp.virtualconfig.service.VirtualConfigurationService;
 import com.emc.rpsp.vms.domain.VmOwnership;
 import com.emc.rpsp.vms.service.VmOwnershipService;
-import com.emc.rpsp.vmstructure.service.AccountVmsStructureService;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 public class DataLoaderServiceImpl implements DataLoaderService {
 
     private final String CLASSPATH_INTERNAL_DATA_EXPRESSION = "classpath:data-loader/internal-data.template";
+    private final Logger log = LoggerFactory.getLogger(DataLoaderServiceImpl.class);
     @Autowired
     private SystemConnectionInfoRepository systemConnectionInfoRepository;
     @Autowired
@@ -50,12 +51,12 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     @Autowired
     private UserService userService;
     @Autowired
+    private VirtualConfigurationService virtualConfigurationService;
+    @Autowired
     private ResourcePatternResolver resourceLoader = null;
-    
-    private final Logger log = LoggerFactory.getLogger(DataLoaderServiceImpl.class);
 
     @Override
-    public InternalData getInternalData() {
+    public InternalData getInternalData(Boolean includeVirtualConfig) {
         InternalData internalData = new InternalData();
         internalData.setSystems(systemConnectionInfoRepository.findAll());
         internalData.setPackages(packageDefService.findAll());
@@ -63,6 +64,9 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         internalData.setUsers(userService.findUsers());
         internalData.setVms(vmOwnershipService.findAll());
         setPackageClustersData(internalData);
+        if (includeVirtualConfig) {
+            addVirtualConfigurationInfo(internalData.getSystems());
+        }
         return internalData;
     }
 
@@ -70,18 +74,17 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     @Override
     @Transactional("transactionManager")
     public InternalData populateInternalData(InternalData internalData) {
-    	
-    	//load existing users
-    	List<User> existingUsers = userService.findUsers();
-    	Map<String, User> existingUsersMap = new HashMap<String, User>();
-    	if(existingUsers != null){
-    		existingUsersMap = existingUsers.stream()
-							.collect(Collectors.toMap(User::getLogin, u -> u));
-    	}
+        //load existing users
+        List<User> existingUsers = userService.findUsers();
+        Map<String, User> existingUsersMap = new HashMap<String, User>();
+        if (existingUsers != null) {
+            existingUsersMap = existingUsers.stream()
+                .collect(Collectors.toMap(User::getLogin, u -> u));
+        }
 
         //clean the configuration
         systemConnectionInfoRepository.deleteAll();
-      
+
 
         //systems
         List<SystemSettings> systems = internalData.getSystems();
@@ -98,13 +101,13 @@ public class DataLoaderServiceImpl implements DataLoaderService {
             SystemSettings currSystem = systemsMap.get(packageDefinition.getSystemName());
             packageDefinition.setSystemSettings(currSystem);
             currSystem.addPackage(packageDefinition);
-            
-            if(packageDefinition.getSourceClusterIdStr() != null){
-            	packageDefinition.setSourceClusterId(Long.parseLong(packageDefinition.getSourceClusterIdStr()));
+
+            if (packageDefinition.getSourceClusterIdStr() != null) {
+                packageDefinition.setSourceClusterId(Long.parseLong(packageDefinition.getSourceClusterIdStr()));
             }
 
-            if(packageDefinition.getTargetClusterIdStr() != null){
-            	packageDefinition.setTargetClusterId(Long.parseLong(packageDefinition.getTargetClusterIdStr()));
+            if (packageDefinition.getTargetClusterIdStr() != null) {
+                packageDefinition.setTargetClusterId(Long.parseLong(packageDefinition.getTargetClusterIdStr()));
             }
 
             packageDefinition.setId(null);
@@ -125,32 +128,31 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         //users
         List<User> users = internalData.getUsers();
         for (User user : users) {
-        	//existing user user - no password is passed
-        	if(StringUtils.isEmpty(user.getPassword())){
-        		User existingUser = existingUsersMap.get(user.getLogin());
-        		if(existingUser == null){
-        			throw new RpspException("No password for user " + user.getLogin());
-        		}
-        		user.setPassword(existingUser.getPassword());
-        	}
-        	else{
-        		 user.setEncodedPassword(user.getPassword());
-        	}
+            //existing user user - no password is passed
+            if (StringUtils.isEmpty(user.getPassword())) {
+                User existingUser = existingUsersMap.get(user.getLogin());
+                if (existingUser == null) {
+                    throw new RpspException("No password for user " + user.getLogin());
+                }
+                user.setPassword(existingUser.getPassword());
+            } else {
+                user.setEncodedPassword(user.getPassword());
+            }
             user.setCreatedBy("admin");
             user.setCreatedDate(new DateTime());
             user.setPermission("USER");
-           
+
             Account tenant = accountsMap.get(user.getTenantName());
-            
+
             //regular user - not admin
-            if(tenant != null){
-	            user.setAccount(tenant);
-	            tenant.addUser(user);
+            if (tenant != null) {
+                user.setAccount(tenant);
+                tenant.addUser(user);
             }
-            
+
             user.setId(null);
         }
-        
+
 
         //vms
         List<VmOwnership> vms = internalData.getVms();
@@ -166,7 +168,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         for (SystemSettings systemSettings : systems) {
             systemConnectionInfoRepository.saveAndFlush(systemSettings);
         }
-        InternalData res = getInternalData();
+        InternalData res = getInternalData(true);
         return res;
     }
 
@@ -195,6 +197,19 @@ public class DataLoaderServiceImpl implements DataLoaderService {
 
     }
 
+    private void addVirtualConfigurationInfo(List<SystemSettings> systemSettingsList) {
+        for (SystemSettings systemSettings : systemSettingsList) {
+            addVirtualConfigurationInfo(systemSettings);
+        }
+    }
+
+    private void addVirtualConfigurationInfo(SystemSettings systemSettings) {
+        List<ClusterSettings> clusters = systemSettings.getClusters();
+        for (ClusterSettings cluster : clusters) {
+            VcenterConfig vcenterConfig = virtualConfigurationService.getVirtualConfiguration(cluster.getClusterId());
+            cluster.setVcenterConfig(vcenterConfig);
+        }
+    }
 
     private void propagateClusterData(SystemSettings systemSettings) {
         Map<String, Object> clusterFriendlyNames = new HashMap<String, Object>();
@@ -222,24 +237,24 @@ public class DataLoaderServiceImpl implements DataLoaderService {
 
         }
     }
-    
-    
-    private void setPackageClustersData(InternalData internalData){
-    	List<SystemSettings> systems = internalData.getSystems();
-    	List<PackageDefinition> packages = internalData.getPackages();
-    	
-    	for(PackageDefinition currPackage : packages){
-    		for(SystemSettings currSystem : systems){
-    			for(ClusterSettings currCluster : currSystem.getClusters()){
-    				if(currPackage.getSourceClusterId().equals(currCluster.getClusterId())){
-    					currPackage.setSourceClusterName(currCluster.getFriendlyName());
-    				}
-    				if(currPackage.getTargetClusterId().equals(currCluster.getClusterId())){
-    					currPackage.setTargetClusterName(currCluster.getFriendlyName());
-    				}
-    			}
-    		}
-    	}
+
+
+    private void setPackageClustersData(InternalData internalData) {
+        List<SystemSettings> systems = internalData.getSystems();
+        List<PackageDefinition> packages = internalData.getPackages();
+
+        for (PackageDefinition currPackage : packages) {
+            for (SystemSettings currSystem : systems) {
+                for (ClusterSettings currCluster : currSystem.getClusters()) {
+                    if (currPackage.getSourceClusterId().equals(currCluster.getClusterId())) {
+                        currPackage.setSourceClusterName(currCluster.getFriendlyName());
+                    }
+                    if (currPackage.getTargetClusterId().equals(currCluster.getClusterId())) {
+                        currPackage.setTargetClusterName(currCluster.getFriendlyName());
+                    }
+                }
+            }
+        }
     }
 
 

@@ -26,32 +26,26 @@ public class DataLoaderController {
 
 	@Autowired
 	private DataLoaderService dataLoaderService;
-		
-	@Autowired
-	private VirtualConfigurationService virtualConfigurationService;
-	
+
+
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/internal-data", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<InternalData> getInternalData(@RequestParam(value = "includeVirtualConfig", required=false, defaultValue = "true") Boolean includeVirtualConfig) {
-		InternalData internalData = dataLoaderService.getInternalData();
-		if(includeVirtualConfig){
-			addVirtualConfigurationInfo(internalData.getSystems());
-		}
+		InternalData internalData = dataLoaderService.getInternalData(includeVirtualConfig);
 		return new ResponseEntity<>(internalData, HttpStatus.OK);
 	}
-	
-	
+
+
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/internal-data", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<InternalData> populateInternalData(
 			@RequestBody InternalData internalData) {
 		InternalData res = dataLoaderService.populateInternalData(internalData);
-		addVirtualConfigurationInfo(res.getSystems());
-		
+
 		return new ResponseEntity<>(res, HttpStatus.CREATED);
 	}
-	
+
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/internal-data/template", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -59,8 +53,8 @@ public class DataLoaderController {
 		String template = dataLoaderService.getInternalDataTemplate();
 		return new ResponseEntity<>(template, HttpStatus.OK);
 	}
-	
-	
+
+
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/internal-data", method = RequestMethod.DELETE)
 	@ResponseBody
@@ -68,22 +62,10 @@ public class DataLoaderController {
 		dataLoaderService.deleteInternalData();
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
-	
-	
-	private void addVirtualConfigurationInfo(List<SystemSettings> systemSettingsList){
-		for(SystemSettings systemSettings : systemSettingsList){
-			addVirtualConfigurationInfo(systemSettings);
-		}
-	}
-	
-	private void addVirtualConfigurationInfo(SystemSettings systemSettings){
-		List<ClusterSettings> clusters = systemSettings.getClusters();
-		for(ClusterSettings cluster : clusters){
-			VcenterConfig vcenterConfig = virtualConfigurationService.getVirtualConfiguration(cluster.getClusterId());
-			cluster.setVcenterConfig(vcenterConfig);
-		}
-	}
+
+
+
+
 
 
 }
