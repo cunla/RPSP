@@ -5,6 +5,7 @@ import com.emc.rpsp.StatesConsts;
 import com.emc.rpsp.fal.commons.*;
 import com.emc.rpsp.fal.wrappers.*;
 import com.emc.rpsp.packages.domain.PackageConfig;
+import com.emc.rpsp.packages.domain.PackageDefinition;
 import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
@@ -810,8 +811,10 @@ public class Client {
 
     public void setGroupPackage(Long groupId, Long packageId) {
         UserDefinedProperties userProps = connector.getUserProperties();
+        String key = groupId + "-pkg";
+        userProps.getProperties().removeIf(p -> p.getKey().equals(key));
         Property property = new Property(groupId + "-pkg", packageId.toString());
-        userProps.getProperties().add(property);
+        userProps.getProperties().add(property);        
         connector.setUserProperties(userProps);
     }
 
@@ -1069,6 +1072,33 @@ public class Client {
     public void renameGroup(long groupId, String name){
     	connector.renameGroup(groupId, name);
     }
+    
+    
+    public void setRpoPolicy(long groupId, int rpo, PackageDefinition packageDefinition){
+		
+		  SetConsistencyGroupLinkPolicyParams setConsistencyGroupLinkPolicyParams = 
+				                new SetConsistencyGroupLinkPolicyParams();
+		  
+		  GlobalCopyUID firstCopy = new GlobalCopyUID(); 
+		  firstCopy.setClusterUID(new ClusterUID(packageDefinition.getSourceClusterId())); 
+		  firstCopy.setCopyUID(0);
+		  
+		  GlobalCopyUID secondCopy = new GlobalCopyUID(); 
+		  secondCopy.setClusterUID(new ClusterUID(packageDefinition.getTargetClusterId())); 
+		  secondCopy.setCopyUID(0);
+		  
+		  setConsistencyGroupLinkPolicyParams.setFirstCopy(firstCopy);
+		  setConsistencyGroupLinkPolicyParams.setSecondCopy(secondCopy);
+		  
+		  ConsistencyGroupLinkPolicy remoteDefaultLinkPolicy = connector
+				  	.getDefaultRemoteGroupLinkPolicy();
+		  remoteDefaultLinkPolicy.getProtectionPolicy().getRpoPolicy()
+		  			.setMaximumAllowedLag(new Quantity(rpo, QuantityType.MINUTES));
+		  
+		  setConsistencyGroupLinkPolicyParams.setPolicy(remoteDefaultLinkPolicy);		  
+		  connector.setLinkPolicy(groupId, setConsistencyGroupLinkPolicyParams);
+    }
+    
 
     private boolean isContainsVm(VmReplicationSetSettings vmReplicationSet,
                                  String vmId) {
