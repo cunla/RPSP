@@ -38,14 +38,18 @@
                 <input ng-model="user.email">
             </md-input-container>
         </div>
-
+        <div layout-gt-sm="row">
+            <md-input-container class="md-block">
+                <md-switch ng-model="user.status">{{user.status? 'Active':'Inactive'}}</md-switch>
+            </md-input-container>
+        </div>
     </md-dialog-content>
     <md-dialog-actions>
         <md-button
             ng-click="addUser()"
             class="md-primary"
             ng-disabled="password2!=user.password">
-            Add
+            {{user.id?'Save':'Add'}}
         </md-button>
         <md-button ng-click="closeDialog()" class="md-primary">
             Cancel

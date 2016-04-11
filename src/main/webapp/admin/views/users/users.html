@@ -43,7 +43,7 @@
                 <mdt-cell html-content="true">{{user.fullName}}</mdt-cell>
                 <mdt-cell html-content="true">{{user.email}}</mdt-cell>
                 <mdt-cell html-content="true">{{user.role}}</mdt-cell>
-                <mdt-cell html-content="true">{{user.status}}</mdt-cell>
+                <mdt-cell html-content="true">{{user.status?'Active':'Inactive'}}</mdt-cell>
             </mdt-row>
         </mdt-table>
     </section>
