@@ -15,6 +15,8 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
 		$scope.unprotectedVms = $scope.vmStructureData.unprotectedVms;
 		
+		$scope.cgName = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].name;
+		
 		$scope.cgVmsJoinedCandidates = new Array();
 		$scope.selectedVms = new Array();
 		
