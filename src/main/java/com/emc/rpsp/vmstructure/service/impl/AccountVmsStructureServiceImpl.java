@@ -310,6 +310,15 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
                             GroupCopySettings groupCopySettings = getGroupCopySettings(copyId,
                                 groupSettings, transferStatesMap, copySnapshotsMap, copiesStatesMap,
                                 initCompletionPortionsMap);
+                            
+                            if(groupCopySettings.getReplication().equals(TransferState.PAUSED.value())){
+                            	consistencyGroup.setEnableProtection(false);
+                            }
+                            else{
+                            	consistencyGroup.setEnableProtection(true);
+                            }
+                            
+                            //groupSettings
                             // add the copy in case it wasn't added in context of
                             // another vm
                             if (!replicaCluster.isExistingCopy(groupCopySettings)) {

@@ -13,6 +13,7 @@ public class ConsistencyGroup implements VmContainer {
     private List<VmDefinition> vms;
     private ClusterDefinition productionCluster;
     private List<ClusterDefinition> replicaClusters;
+    private boolean enableProtection;
 
 
     public String getName() {
@@ -89,6 +90,14 @@ public class ConsistencyGroup implements VmContainer {
 
 	public void setPackageDisplayName(String packageDisplayName) {
 		this.packageDisplayName = packageDisplayName;
+	}
+
+	public boolean isEnableProtection() {
+		return enableProtection;
+	}
+
+	public void setEnableProtection(boolean enableProtection) {
+		this.enableProtection = enableProtection;
 	}
     
     
