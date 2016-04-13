@@ -15,6 +15,8 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
 		$scope.unprotectedVms = $scope.vmStructureData.unprotectedVms;
 		
+		$scope.cgName = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].name;
+		
 		$scope.cgVmsJoinedCandidates = new Array();
 		$scope.selectedVms = new Array();
 		
@@ -29,6 +31,14 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 			var currVm = $scope.unprotectedVms[i];
 			var currVmCloned = JSON.parse(JSON.stringify(currVm));
 			$scope.cgVmsJoinedCandidates.push(currVmCloned);
+		}
+		
+		$scope.selectedPackage = {};
+		for(i = 0; i < $scope.vmStructureData.systemInfo.packages.length; i++){
+			var currPackage = $scope.vmStructureData.systemInfo.packages[i];
+			if(currPackage.id == $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].packageId){
+				$scope.selectedPackage = currPackage;
+			}
 		}
 		
 		$scope.priceSlider = 150;
