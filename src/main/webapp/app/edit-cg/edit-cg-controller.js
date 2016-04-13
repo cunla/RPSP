@@ -41,6 +41,7 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 			}
 		}
 		
+		$scope.enableReplication = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].enableProtection;
 		$scope.priceSlider = 150;
 		$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
 		
@@ -62,6 +63,7 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
     	currCgModified.packageName = $scope.selectedPackage.name;
     	currCgModified.packageDisplayName = $scope.selectedPackage.displayName;
     	currCgModified.vms = $scope.selectedVms;
+    	currCgModified.enableProtection = $scope.enableReplication;
     	
     	var cgId = currCg.id;
     	var cgChanges = {};

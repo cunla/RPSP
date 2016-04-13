@@ -54,6 +54,9 @@ public class EditGroupServiceImpl extends BaseServiceImpl implements EditGroupSe
     				client.removeVmsFromCG(currVmDefinition.getId(), groupId, packageConfigs);
     			}
     		}
+    		if(origGroup.isEnableProtection() != modifiedGroup.isEnableProtection()){
+    			client.setCgProtectionState(groupId, modifiedGroup.isEnableProtection());
+    		}
     	}
 		
 	}
