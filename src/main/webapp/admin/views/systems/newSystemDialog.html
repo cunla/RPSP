@@ -21,7 +21,7 @@
             <!--aria-label="Select if system is for DR to the cloud">-->
             <!--Disaster Recovery to the Cloud-->
             <!--</md-checkbox>-->
-            <div layout="row" >
+            <div layout="row">
                 <md-checkbox ng-model="system.multiTenancy"
                              aria-label="Check if system is for multiple tenants">
                     Multi Tenancy
@@ -66,11 +66,12 @@
         <md-button ng-click="testSystem()" class="md-primary">
             Test
         </md-button>
-        <md-button ng-click="addSystem()" class="md-primary">
+        <md-button ng-click="addSystem()" class="md-primary" ng-hide="system.id">
             Add
         </md-button>
+
         <md-button ng-click="closeDialog()" class="md-primary">
-            Cancel
+            {{system.id? 'Save':'Cancel'}}
         </md-button>
     </md-dialog-actions>
 </md-dialog>
