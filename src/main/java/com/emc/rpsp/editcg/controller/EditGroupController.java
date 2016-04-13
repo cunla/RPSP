@@ -1,7 +1,5 @@
 package com.emc.rpsp.editcg.controller;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.emc.rpsp.editcg.domain.ConsistencyGroupChanges;
-import com.emc.rpsp.protect.service.GroupsProtectionService;
+import com.emc.rpsp.editcg.service.EditGroupService;
 
 @Controller
 public class EditGroupController {
 
 	@Autowired
-	private GroupsProtectionService groupsProtectionService;
+	private EditGroupService editGroupService;
 
 
 	@SuppressWarnings("unchecked")
@@ -28,8 +26,7 @@ public class EditGroupController {
     public
     ResponseEntity<HttpStatus> createConsistencyGroup(
         @RequestBody ConsistencyGroupChanges consistencyGroupChanges) {
-		
-
+		editGroupService.editConsistencyGroup(consistencyGroupChanges);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
