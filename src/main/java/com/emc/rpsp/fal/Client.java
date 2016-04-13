@@ -9,11 +9,8 @@ import com.emc.rpsp.packages.domain.PackageDefinition;
 import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
-
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.http.Body;
-import retrofit.http.Path;
 
 import java.io.EOFException;
 import java.util.*;
@@ -61,8 +58,8 @@ public class Client {
                 + systemSettings.getSystemIp());
         }
     }
-    
-    
+
+
     public long getSystemTimeStateless() {
         try {
             long res = connector.getSystemTime().getTimeInMicroSeconds() / 1000;
@@ -480,8 +477,8 @@ public class Client {
         createBookmarkForGroupSetSubSetParams.setBookmarkName(bookmarkName);
         createBookmarkForGroupSetSubSetParams
             .setConsistencyType(SnapshotConsistencyType.APPLICATION_CONSISTENT);
-		/*
-		 * if(consistencyType.equals(GeneralFalConsts.APPLICATION_CONSISTENCY_TYPE
+        /*
+         * if(consistencyType.equals(GeneralFalConsts.APPLICATION_CONSISTENCY_TYPE
 		 * )){ createBookmarkForGroupSetSubSetParams.setConsistencyType(
 		 * SnapshotConsistencyType.APPLICATION_CONSISTENT); } else{
 		 * createBookmarkForGroupSetSubSetParams
@@ -561,17 +558,26 @@ public class Client {
 
     public ClusterVirtualInfraConfiguration getClusterVirtualInfraConfiguration(
         Long clusterId) {
-        ClusterVirtualInfraConfiguration clusterVirtualInfraConfiguration = connector
-            .getClusterVirtualInfraConfiguration(clusterId);
-        return clusterVirtualInfraConfiguration;
+        try {
+            ClusterVirtualInfraConfiguration clusterVirtualInfraConfiguration = connector
+                .getClusterVirtualInfraConfiguration(clusterId);
+            return clusterVirtualInfraConfiguration;
+        } catch (RetrofitError e) {
+            throw new RpspException("Couldn't get ClusterVirtualInfraConfiguration for system " + systemSettings.getName());
+        }
     }
 
     public VmEntitiesInformationSet getAvailableVMsForReplication(
         Long clusterId, String vcUID, String dcUID, String esxClusterUID) {
-        VmEntitiesInformationSet vmEntitiesInformationSet = connector
-            .getAvailableVMsForReplication(clusterId, vcUID, dcUID,
-                esxClusterUID);
-        return vmEntitiesInformationSet;
+        try {
+            VmEntitiesInformationSet vmEntitiesInformationSet = connector
+                .getAvailableVMsForReplication(clusterId, vcUID, dcUID,
+                    esxClusterUID);
+
+            return vmEntitiesInformationSet;
+        } catch (RetrofitError e) {
+            throw new RpspException("Couldn't getAvailableVMsForReplication for system " + systemSettings.getName());
+        }
     }
 
     @SuppressWarnings("unused")
@@ -814,7 +820,7 @@ public class Client {
         String key = groupId + "-pkg";
         userProps.getProperties().removeIf(p -> p.getKey().equals(key));
         Property property = new Property(groupId + "-pkg", packageId.toString());
-        userProps.getProperties().add(property);        
+        userProps.getProperties().add(property);
         connector.setUserProperties(userProps);
     }
 
@@ -1068,37 +1074,37 @@ public class Client {
         }
         return res;
     }
-    
-    public void renameGroup(long groupId, String name){
-    	connector.renameGroup(groupId, name);
+
+    public void renameGroup(long groupId, String name) {
+        connector.renameGroup(groupId, name);
     }
-    
-    
-    public void setRpoPolicy(long groupId, int rpo, PackageDefinition packageDefinition){
-		
-		  SetConsistencyGroupLinkPolicyParams setConsistencyGroupLinkPolicyParams = 
-				                new SetConsistencyGroupLinkPolicyParams();
-		  
-		  GlobalCopyUID firstCopy = new GlobalCopyUID(); 
-		  firstCopy.setClusterUID(new ClusterUID(packageDefinition.getSourceClusterId())); 
-		  firstCopy.setCopyUID(0);
-		  
-		  GlobalCopyUID secondCopy = new GlobalCopyUID(); 
-		  secondCopy.setClusterUID(new ClusterUID(packageDefinition.getTargetClusterId())); 
-		  secondCopy.setCopyUID(0);
-		  
-		  setConsistencyGroupLinkPolicyParams.setFirstCopy(firstCopy);
-		  setConsistencyGroupLinkPolicyParams.setSecondCopy(secondCopy);
-		  
-		  ConsistencyGroupLinkPolicy remoteDefaultLinkPolicy = connector
-				  	.getDefaultRemoteGroupLinkPolicy();
-		  remoteDefaultLinkPolicy.getProtectionPolicy().getRpoPolicy()
-		  			.setMaximumAllowedLag(new Quantity(rpo, QuantityType.MINUTES));
-		  
-		  setConsistencyGroupLinkPolicyParams.setPolicy(remoteDefaultLinkPolicy);		  
-		  connector.setLinkPolicy(groupId, setConsistencyGroupLinkPolicyParams);
+
+
+    public void setRpoPolicy(long groupId, int rpo, PackageDefinition packageDefinition) {
+
+        SetConsistencyGroupLinkPolicyParams setConsistencyGroupLinkPolicyParams =
+            new SetConsistencyGroupLinkPolicyParams();
+
+        GlobalCopyUID firstCopy = new GlobalCopyUID();
+        firstCopy.setClusterUID(new ClusterUID(packageDefinition.getSourceClusterId()));
+        firstCopy.setCopyUID(0);
+
+        GlobalCopyUID secondCopy = new GlobalCopyUID();
+        secondCopy.setClusterUID(new ClusterUID(packageDefinition.getTargetClusterId()));
+        secondCopy.setCopyUID(0);
+
+        setConsistencyGroupLinkPolicyParams.setFirstCopy(firstCopy);
+        setConsistencyGroupLinkPolicyParams.setSecondCopy(secondCopy);
+
+        ConsistencyGroupLinkPolicy remoteDefaultLinkPolicy = connector
+            .getDefaultRemoteGroupLinkPolicy();
+        remoteDefaultLinkPolicy.getProtectionPolicy().getRpoPolicy()
+            .setMaximumAllowedLag(new Quantity(rpo, QuantityType.MINUTES));
+
+        setConsistencyGroupLinkPolicyParams.setPolicy(remoteDefaultLinkPolicy);
+        connector.setLinkPolicy(groupId, setConsistencyGroupLinkPolicyParams);
     }
-    
+
 
     private boolean isContainsVm(VmReplicationSetSettings vmReplicationSet,
                                  String vmId) {
