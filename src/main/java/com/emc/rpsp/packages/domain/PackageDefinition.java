@@ -27,7 +27,7 @@ public class PackageDefinition implements Serializable {
     @Transient
     @JsonProperty
     private Long systemId;
-    
+
     @Transient
     @JsonProperty
     private String systemName;
@@ -51,11 +51,11 @@ public class PackageDefinition implements Serializable {
     //cluster
     @Column(name = "source_cluster_id")
     private Long sourceClusterId;
-    
+
     @Transient
     @JsonProperty
     private String sourceClusterIdStr;
-    
+
     @Transient
     @JsonProperty
     private String sourceClusterName;
@@ -65,7 +65,7 @@ public class PackageDefinition implements Serializable {
     @Size(min = 0, max = 100)
     @Column(name = "source_vc_id", length = 100)
     private String sourceVcId;
-    
+
     @Size(min = 0, max = 100)
     @Column(name = "source_vc_name", length = 100)
     private String sourceVcName;
@@ -75,8 +75,8 @@ public class PackageDefinition implements Serializable {
     @Size(min = 0, max = 100)
     @Column(name = "source_datacenter_id", length = 100)
     private String sourceDataCenterId;
-    
-    
+
+
     @Size(min = 0, max = 100)
     @Column(name = "source_datacenter_name", length = 100)
     private String sourceDataCenterName;
@@ -86,8 +86,8 @@ public class PackageDefinition implements Serializable {
     @Size(min = 0, max = 100)
     @Column(name = "source_esx_cluster_id", length = 100)
     private String sourceEsxClusterId;
-    
-    
+
+
     @Size(min = 0, max = 100)
     @Column(name = "source_esx_cluster_name", length = 100)
     private String sourceEsxClusterName;
@@ -97,8 +97,8 @@ public class PackageDefinition implements Serializable {
     @Size(min = 0, max = 100)
     @Column(name = "source_esx_id", length = 100)
     private String sourceEsxId;
-    
-    
+
+
     @Size(min = 0, max = 100)
     @Column(name = "source_esx_name", length = 100)
     private String sourceEsxName;
@@ -107,7 +107,7 @@ public class PackageDefinition implements Serializable {
     @Size(min = 0, max = 100)
     @Column(name = "source_datastore_id", length = 100)
     private String sourceDatastoreId;
-    
+
     @Size(min = 0, max = 100)
     @Column(name = "source_datastore_name", length = 100)
     private String sourceDatastoreName;
@@ -115,11 +115,11 @@ public class PackageDefinition implements Serializable {
     //cluster
     @Column(name = "target_cluster_id")
     private Long targetClusterId;
-    
+
     @Transient
     @JsonProperty
     private String targetClusterIdStr;
-    
+
     @Transient
     @JsonProperty
     private String targetClusterName;
@@ -128,7 +128,7 @@ public class PackageDefinition implements Serializable {
     @Size(min = 0, max = 100)
     @Column(name = "target_vc_id", length = 100)
     private String targetVcId;
-    
+
     @Size(min = 0, max = 100)
     @Column(name = "target_vc_name", length = 100)
     private String targetVcName;
@@ -138,7 +138,7 @@ public class PackageDefinition implements Serializable {
     @Size(min = 0, max = 100)
     @Column(name = "target_datacenter_id", length = 100)
     private String targetDataCenterId;
-    
+
     @Size(min = 0, max = 100)
     @Column(name = "target_datacenter_name", length = 100)
     private String targetDataCenterName;
@@ -148,7 +148,7 @@ public class PackageDefinition implements Serializable {
     @Size(min = 0, max = 100)
     @Column(name = "target_esx_cluster_id", length = 100)
     private String targetEsxClusterId;
-    
+
     @Size(min = 0, max = 100)
     @Column(name = "target_esx_cluster_name", length = 100)
     private String targetEsxClusterName;
@@ -158,7 +158,7 @@ public class PackageDefinition implements Serializable {
     @Size(min = 0, max = 100)
     @Column(name = "target_esx_id", length = 100)
     private String targetEsxId;
-    
+
     @Size(min = 0, max = 100)
     @Column(name = "target_esx_name", length = 100)
     private String targetEsxName;
@@ -168,8 +168,8 @@ public class PackageDefinition implements Serializable {
     @Size(min = 0, max = 100)
     @Column(name = "target_datastore_id", length = 100)
     private String targetDatastoreId;
-    
-    
+
+
     @Size(min = 0, max = 100)
     @Column(name = "target_datastore_name", length = 100)
     private String targetDatastoreName;
@@ -184,7 +184,7 @@ public class PackageDefinition implements Serializable {
     @JsonIgnore
     @Column
     @ManyToMany(targetEntity = com.emc.rpsp.accounts.domain.Account.class, mappedBy = "packageDefinition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Account> accounts;
+    private List<Account> accounts = new LinkedList<>();
 
 
     @JsonIgnore
@@ -317,7 +317,7 @@ public class PackageDefinition implements Serializable {
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
-    
+
     public void addAccount(Account account) {
         this.accounts.add(account);
     }
@@ -380,7 +380,7 @@ public class PackageDefinition implements Serializable {
 
     public void setSystemId(Long systemId) {
         this.systemId = systemId;
-    } 
+    }
 
 	public String getSystemName() {
 		return systemName;
@@ -389,10 +389,10 @@ public class PackageDefinition implements Serializable {
 	public void setSystemName(String systemName) {
 		this.systemName = systemName;
 	}
-	
-	
-	
-	
+
+
+
+
 
 	public String getSourceVcName() {
 		return sourceVcName;
@@ -473,8 +473,8 @@ public class PackageDefinition implements Serializable {
 	public void setTargetDatastoreName(String targetDatastoreName) {
 		this.targetDatastoreName = targetDatastoreName;
 	}
-	
-	
+
+
 
 	public String getSourceClusterName() {
 		return sourceClusterName;
@@ -500,7 +500,7 @@ public class PackageDefinition implements Serializable {
 	public void setSourceClusterIdStr(String sourceClusterIdStr) {
 		this.sourceClusterIdStr = sourceClusterIdStr;
 	}
-	
+
 
 	public String getTargetClusterIdStr() {
 		return targetClusterIdStr;
