@@ -56,6 +56,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     private ResourcePatternResolver resourceLoader = null;
 
     @Override
+    @Transactional("transactionManager")
     public InternalData getInternalData(Boolean includeVirtualConfig) {
         InternalData internalData = new InternalData();
         internalData.setSystems(systemConnectionInfoRepository.findAll());
