@@ -9,6 +9,8 @@ spring:
     datasource:
         dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
         url: jdbc:mysql://localhost:3306/RPSP
+        validationQuery: SELECT 1
+        testWhileIdle: true
         databaseName:
         serverName:
         username: rpsp
@@ -18,6 +20,8 @@ spring:
     auditing:
         dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
         url: jdbc:mysql://localhost:3306/RPSPAudit
+        validationQuery: SELECT 1
+        testWhileIdle: true
         databaseName:
         serverName:
         username: rpsp
