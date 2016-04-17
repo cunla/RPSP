@@ -16,7 +16,7 @@ spring:
 
     auditing:
         dataSourceClassName: org.h2.jdbcx.JdbcDataSource
-        url: jdbc:h2:~/test2-audit.h2.db;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:~/test2.h2.db;DB_CLOSE_DELAY=-1
         databaseName:
         serverName:
         username:

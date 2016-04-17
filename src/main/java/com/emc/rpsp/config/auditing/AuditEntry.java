@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Created by morand3 on 11/16/2015.
  */
-@Entity @Table(name = "T_AUDIT", schema = "RpspAudit")
+@Entity @Table(name = "T_AUDIT")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE) public class AuditEntry {
     @JsonIgnore private static SimpleDateFormat dateFormat = new SimpleDateFormat(
     "yyyy.MM.dd @ HH:mm:ss z");
