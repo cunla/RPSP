@@ -38,6 +38,7 @@
             $scope.changed = true;
             if (!user) {
                 user = {};
+                user.status = true;
             }
             $mdDialog.show({
                 templateUrl: 'views/users/editUserDialog.html',

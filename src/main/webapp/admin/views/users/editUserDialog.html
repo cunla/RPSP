@@ -20,7 +20,9 @@
                 <label>Confirm password</label>
                 <input type="password" ng-model="password2">
             </md-input-container>
-
+        </div>
+        <div layout="row">
+            <span ng-show="user.password!=password2">Password do not match</span>
         </div>
         <div layout-gt-sm="row">
             <md-input-container class="md-block">
