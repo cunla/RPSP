@@ -13,7 +13,7 @@
         "WELCOME_MSG": "Welcome",
         "LOGOUT_MSG": "Logout",
         "RECOVER_POINT_FOR_VM_MSG": "RecoverPoint for Virtual Machines",
-        "DISASTER_RECOVERY_MSG": "Disaster Recovery Services in the Cloud",
+        "DISASTER_RECOVERY_MSG": "Cloud Disaster Recovery Services",
         "PROTECTED_VMS_MSG": "Protected VMs:",
         "TOTAL_VMS_MSG": "Total VMs:",
         "ERRORS_MSG": "Errors:",
