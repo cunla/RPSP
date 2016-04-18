@@ -1,6 +1,9 @@
 package com.emc.rpsp.editcg.service.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
@@ -54,6 +57,23 @@ public class EditGroupServiceImpl extends BaseServiceImpl implements EditGroupSe
     				client.removeVmsFromCG(currVmDefinition.getId(), groupId, packageConfigs);
     			}
     		}
+    		
+    		Map<String, VmDefinition> origVmsMap = origGroup
+    													.getVms()
+    													.stream()
+    													.collect(Collectors.toMap(VmDefinition::getId, v -> v));
+    		
+    		for(VmDefinition currVmDefinition : modifiedGroup.getVms()){
+    			VmDefinition origVm = origVmsMap.get(currVmDefinition.getId());
+    			if(origVm == null 
+    					|| origVm.isCritical() != currVmDefinition.isCritical()
+    							|| origVm.getSequenceNumber() != currVmDefinition.getSequenceNumber()){
+    				client.changeVmsPowerUpSequence(currVmDefinition.getId(), 
+    													groupId, currVmDefinition.isCritical(), 
+    															currVmDefinition.getSequenceNumber());
+    			}
+    		}
+    		
     		if(origGroup.isEnableProtection() != modifiedGroup.isEnableProtection()){
     			client.setCgProtectionState(groupId, modifiedGroup.isEnableProtection());
     		}
