@@ -1,4 +1,4 @@
-<md-dialog aria-label="List dialog">
+<md-dialog aria-label="List dialog" flex="40" class="dialog-height">
     <md-dialog-content layout-padding>
         <div layout="row" layout-sm="column" layout-align="space-around">
             <md-progress-circular md-mode="indeterminate" ng-show="system.testing"></md-progress-circular>
@@ -16,13 +16,13 @@
                     <md-option value="false">Disaster Recovery <b>in</b> the Cloud</md-option>
                 </md-select>
             </div>
-            {{system.isDrttc}}
             <!--<md-checkbox ng-model="system.isDrttc"-->
             <!--aria-label="Select if system is for DR to the cloud">-->
             <!--Disaster Recovery to the Cloud-->
             <!--</md-checkbox>-->
             <div layout="row">
                 <md-checkbox ng-model="system.multiTenancy"
+                             ng-disable="system.isDrttc"
                              aria-label="Check if system is for multiple tenants">
                     Multi Tenancy
                 </md-checkbox>
