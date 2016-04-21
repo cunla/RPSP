@@ -23,14 +23,16 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 		for(i = 0; i < $scope.cgVms.length; i++){
 			var currVm = $scope.cgVms[i];
 			var currVmCloned = JSON.parse(JSON.stringify(currVm));
-			$scope.selectedVms.push(currVmCloned);
+			$scope.selectedVms.push(currVmCloned);			
 			$scope.cgVmsJoinedCandidates.push(currVmCloned);
+			currVmCloned.sequenceNumber = currVmCloned.sequenceNumber + 1;
 		}
 		
 		for(i = 0; i < $scope.unprotectedVms.length; i++){
 			var currVm = $scope.unprotectedVms[i];
 			var currVmCloned = JSON.parse(JSON.stringify(currVm));
 			$scope.cgVmsJoinedCandidates.push(currVmCloned);
+			currVmCloned.sequenceNumber = 3;
 		}
 		
 		$scope.selectedPackage = {};
@@ -41,11 +43,10 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 			}
 		}
 		
+		$scope.sequenceNumbers = [1, 2, 3, 4, 5];
 		$scope.enableReplication = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].enableProtection;
-		$scope.priceSlider = 150;
+		$scope.priceSlider = 0;
 		$scope.selectedCopy = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].replicaClusters[0].groupCopySettings[0];
-		
-
 	};
 	   
 	$scope.initData();
@@ -63,6 +64,8 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
     	currCgModified.packageName = $scope.selectedPackage.name;
     	currCgModified.packageDisplayName = $scope.selectedPackage.displayName;
     	currCgModified.vms = $scope.selectedVms;
+    	currCgModified.vms = JSON.parse(JSON.stringify(currCgModified.vms));
+    	$scope.decreaseSequenceNumber(currCgModified.vms);
     	currCgModified.enableProtection = $scope.enableReplication;
     	
     	var cgId = currCg.id;
@@ -77,6 +80,14 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 	
 	$scope.cancel = function(){
 		$modalInstance.dismiss('cancel');
+	}
+	
+	
+	$scope.decreaseSequenceNumber = function(vms){
+		for(i = 0; i < vms.length; i++){
+			var currVm = vms[i];
+			currVm.sequenceNumber = currVm.sequenceNumber - 1;
+		}
 	}
 	   
     

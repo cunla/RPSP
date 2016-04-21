@@ -56,13 +56,23 @@
 					                        Priority
 					                    </div>
 					                    <div class="col-xs-7 col-sm-7 col-md-7">
-					                        <select class="form-control" ng-model="vm.sequenceNumber">
-					                            <option>1</option>
-					                            <option>2</option>
-					                            <option>3</option>
-					                            <option>4</option>
-					                            <option>5</option>
+					                    	<select class="form-control" ng-model="vm.sequenceNumber" 
+					                        		ng-options="selectedItem 
+					                        		                      for selectedItem in sequenceNumbers">
 					                        </select>
+					                        <!-- <select class="form-control" ng-model="sequenceNumbers[vm.sequenceNumber]" 
+					                        		ng-options="selectedItem 
+					                        		                      for selectedItem in sequenceNumbers">
+					                        </select> -->
+					                        <!-- {{vm.sequenceNumber}}
+					                        {{sequenceNumbers.indexOf(vm.sequenceNumber - 1)}} -->
+					                       <!--  <select class="form-control" ng-model="vm.sequenceNumber + ''">
+					                            <option value="0">1</option>
+					                            <option value="1">2</option>
+					                            <option value="2">3</option>
+					                            <option value="3">4</option>
+					                            <option value="4">5</option>
+					                        </select> -->
 					                    </div>
 					                </div>
 				                </div>
