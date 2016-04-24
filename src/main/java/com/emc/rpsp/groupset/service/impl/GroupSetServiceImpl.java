@@ -22,23 +22,31 @@ public class GroupSetServiceImpl extends BaseServiceImpl implements GroupSetServ
 	}
 
 	@Override
-	public void removeGroupSet(GroupSet groupSet) {
-		// TODO Auto-generated method stub
-		
+	public List<GroupSet> getAllGroupSets() {
+		List<GroupSet> res = null;
+		Client client = getClient();
+    	if(client != null){
+    		res = client.getAllGroupSets();
+    	}
+    	return res;
 	}
 
 	@Override
 	public void updateGroupSet(GroupSet groupSet) {
-		// TODO Auto-generated method stub
-		
+		Client client = getClient();
+    	if(client != null){
+    		client.updateGroupSet(groupSet);
+    	}			
 	}
 
 	@Override
-	public List<GroupSet> getGroupSets() {
-		// TODO Auto-generated method stub
-		return null;
+	public void removeGroupSet(String groupSetId) {
+		Client client = getClient();
+    	if(client != null){
+    		client.removeGroupSet(groupSetId);
+    	}	
+		
 	}
-	
 
 
 }
