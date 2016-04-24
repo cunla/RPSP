@@ -1,5 +1,6 @@
 package com.emc.rpsp.vmstructure.domain;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class AccountVmsStructure {
     private SystemInfo systemInfo;
     private List<VmDefinition> unprotectedVms;
     private List<VmContainer> protectedVms;
+    private List<GroupSet> groupSets = new ArrayList<GroupSet>();
 
     public AccountVmsStructure() {
         super();
@@ -83,4 +85,18 @@ public class AccountVmsStructure {
     public void setAdmin(Boolean admin) {
         isAdmin = admin;
     }
+
+	public List<GroupSet> getGroupSets() {
+		return groupSets;
+	}
+
+	public void setGroupSets(List<GroupSet> groupSets) {
+		this.groupSets = groupSets;
+	}
+	
+	public void add(GroupSet groupSet){
+		groupSets.add(groupSet);
+	}
+    
+    
 }

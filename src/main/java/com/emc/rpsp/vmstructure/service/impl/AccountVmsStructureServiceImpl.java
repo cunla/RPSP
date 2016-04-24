@@ -88,6 +88,7 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
             accountVmsStructure.getProtectedVms()
                 .addAll(currAccountVmsStructure.getProtectedVms());
             accountVmsStructure.setSystemInfo(currAccountVmsStructure.getSystemInfo());
+            accountVmsStructure.getGroupSets().addAll(currAccountVmsStructure.getGroupSets());
         }
         return accountVmsStructure;
     }
@@ -355,6 +356,7 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
         }
         accountVmsStructure.setUnprotectedVms(unprotectedVms);
         setStrictModeIndicator(accountVmsStructure);
+        setMainGroupSetInfo(accountVmsStructure);
         return accountVmsStructure;
     }
 
@@ -399,6 +401,20 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
                     }
                 }
                 currGroupSet.setStrictMode(strictMode);
+            }
+        }
+    }
+    
+    
+    private void setMainGroupSetInfo(AccountVmsStructure accountVmsStructure){
+    	List<VmContainer> vmContainers = accountVmsStructure.getProtectedVms();
+        for (VmContainer currVmContainer : vmContainers) {
+            if (currVmContainer instanceof GroupSet) {
+                GroupSet currGroupSet = (GroupSet) currVmContainer;
+                GroupSet groupSetMainInfo = new GroupSet();
+                groupSetMainInfo.setId(currGroupSet.getId());
+                groupSetMainInfo.setName(currGroupSet.getName());
+                accountVmsStructure.add(groupSetMainInfo);
             }
         }
     }
