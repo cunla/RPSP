@@ -24,6 +24,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by morand3 on 1/14/2015.
  */
+
+@SuppressWarnings("unused")
 public class Client {
     private SystemConnectionInfoRepository systemsRepo = null;
     private SystemSettings systemSettings;
@@ -886,6 +888,23 @@ public class Client {
         return clusterSettings;
     }
     
+    
+    public List<GroupSet> getAllGroupSets(){   	    	
+    	ConsistencyGroupSetSettingsSet consistencyGroupSetSettingsSet = connector.getAllGroupSetsSettings();
+    	List<GroupSet> groupSets = new ArrayList<GroupSet>();
+    	for(ConsistencyGroupSetSettings currConsistencyGroupSetSettings : consistencyGroupSetSettingsSet.getInnerSet()){
+    		GroupSet currGroupSet = new GroupSet();
+    		currGroupSet.setId(Long.toString(currConsistencyGroupSetSettings.getSetUID().getId()));
+    		currGroupSet.setName(currConsistencyGroupSetSettings.getName());
+    		List<String> groupIds = new LinkedList<String>();
+    		currConsistencyGroupSetSettings.getGroupsUIDs().forEach(id -> groupIds.add(Long.toString(id.getId())));
+    		currGroupSet.setGroupsIds(groupIds);
+    		groupSets.add(currGroupSet);
+    	}
+    	return groupSets;
+    }
+    
+    
     public long createGroupSet(GroupSet groupSet){
     	
     	ConsistencyGroupSetSettings consistencyGroupSetSettings = new ConsistencyGroupSetSettings();
@@ -898,6 +917,28 @@ public class Client {
     	ConsistencyGroupSetUID groupSetId = connector.createGroupSet(consistencyGroupSetSettings);
     	return groupSetId.getId();
     }
+       
+
+    public void updateGroupSet(GroupSet groupSet){
+    	
+    	ConsistencyGroupSetSettings consistencyGroupSetSettings = new ConsistencyGroupSetSettings();
+    	consistencyGroupSetSettings.setSetUID(new ConsistencyGroupSetUID(Long.parseLong(groupSet.getId())));
+    	consistencyGroupSetSettings.setName(groupSet.getName());
+    	
+    	HashSet<ConsistencyGroupUID> groupsUIDs = new HashSet<ConsistencyGroupUID>();
+    	groupSet.getGroupsIds().forEach(id -> groupsUIDs.add(new ConsistencyGroupUID(Long.parseLong(id))));
+    	consistencyGroupSetSettings.setGroupsUIDs(groupsUIDs);
+
+		Response response = connector.setGroupSetSettings(consistencyGroupSetSettings);
+    	return;
+    }
+    
+    
+    public void removeGroupSet(String groupSetId){
+		Response response = connector.removeGroupSet(Long.parseLong(groupSetId));
+    	return;
+    }
+    
 
     private VmReplicationSetSettings getVmReplicationSettingsWithRetryOption(
         String vmId, int retryAttempts) {
