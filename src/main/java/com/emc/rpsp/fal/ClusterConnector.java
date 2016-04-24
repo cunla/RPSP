@@ -160,6 +160,10 @@ public interface ClusterConnector {
 
     @GET(BASE_URL + "group_sets")
     public ConsistencyGroupSetSettingsSet getAllGroupSetsSettings();
+    
+    @POST(BASE_URL + "group_sets")
+    public ConsistencyGroupSetUID createGroupSet(@Body ConsistencyGroupSetSettings consistencyGroupSetSettings);
+
 
     @GET(BASE_URL + "system/user_properties")
     public UserDefinedProperties getUserProperties();

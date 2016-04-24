@@ -4,6 +4,7 @@ import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
 import com.emc.rpsp.fal.commons.*;
 import com.emc.rpsp.fal.wrappers.*;
+import com.emc.rpsp.groupset.domain.GroupSet;
 import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.packages.domain.PackageDefinition;
 import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
@@ -12,6 +13,7 @@ import com.emc.rpsp.vmstructure.domain.CopySnapshot;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.http.Body;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
@@ -882,6 +884,19 @@ public class Client {
         ClusterSettings clusterSettings = connector
             .getClusterSettings(clusterId);
         return clusterSettings;
+    }
+    
+    public long createGroupSet(GroupSet groupSet){
+    	
+    	ConsistencyGroupSetSettings consistencyGroupSetSettings = new ConsistencyGroupSetSettings();
+    	consistencyGroupSetSettings.setName(groupSet.getName());
+    	
+    	HashSet<ConsistencyGroupUID> groupsUIDs = new HashSet<ConsistencyGroupUID>();
+    	groupSet.getGroupsIds().forEach(id -> groupsUIDs.add(new ConsistencyGroupUID(Long.parseLong(id))));
+    	consistencyGroupSetSettings.setGroupsUIDs(groupsUIDs);
+    	
+    	ConsistencyGroupSetUID groupSetId = connector.createGroupSet(consistencyGroupSetSettings);
+    	return groupSetId.getId();
     }
 
     private VmReplicationSetSettings getVmReplicationSettingsWithRetryOption(
