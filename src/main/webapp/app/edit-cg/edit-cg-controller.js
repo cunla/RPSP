@@ -74,6 +74,7 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 	$scope.selectGroupSet = function(newValue, oldValue){
 		if($scope.selectedGroupSet.length > 0 && $scope.selectedGroupSet[0].id == 'newId'){
 			$scope.selectedGroupSet = null;
+			$scope.openAlertModal();
 		}
 	};
 	
@@ -115,6 +116,25 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 			currVm.sequenceNumber = currVm.sequenceNumber - 1;
 		}
 	}
+	
+	$scope.openAlertModal = function(){
+		var modalInstance = $modal.open({
+             templateUrl: 'app/group-set/group-set-modal.html',
+             controller:  'groupSetController',
+             windowClass: 'bookmarks-modal'
+         });
+		
+		modalInstance.result.then(function(result){
+			var newGs = {};
+			newGs.id = result;
+			newGs.name = result;
+			/*$scope.groupSets.push(newGs);*/
+			$scope.groupSets.splice(0, 0, newGs);
+			/*$scope.selectedGroupSet.pop();*/
+			$scope.selectedGroupSet.push(newGs);
+			$scope.apply();
+		});
+	};
 	   
     
 }]);
