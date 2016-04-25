@@ -13,9 +13,27 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 		$scope.cgVms = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].vms;
 		
 		$scope.vmStructureData = vmStructureService.getCachedVmStructureData();
+		
 		$scope.unprotectedVms = $scope.vmStructureData.unprotectedVms;
 		
 		$scope.cgName = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].name;
+		
+		$scope.groupSets = JSON.parse(JSON.stringify($scope.vmStructureData.groupSets));
+		
+		$scope.selectedGroupSet = new Array();
+		var cgParent = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].parent;
+		if(cgParent != null){
+			for(i = 0; i < $scope.groupSets.length; i++){
+				if($scope.groupSets[i].name == cgParent){
+					$scope.selectedGroupSet.push($scope.groupSets[i]);
+				}
+			}
+		}
+				
+		var newGs = {};
+		newGs.id = 'newId';
+		newGs.name = 'New ...';
+		$scope.groupSets.push(newGs);
 		
 		$scope.cgVmsJoinedCandidates = new Array();
 		$scope.selectedVms = new Array();
@@ -50,6 +68,14 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 	};
 	   
 	$scope.initData();
+	
+	
+	
+	$scope.selectGroupSet = function(newValue, oldValue){
+		if($scope.selectedGroupSet.length > 0 && $scope.selectedGroupSet[0].id == 'newId'){
+			$scope.selectedGroupSet = null;
+		}
+	};
 	
 	
 	$scope.editCg = function(){
