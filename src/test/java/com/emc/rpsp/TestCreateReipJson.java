@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
  * Created by morand3 on 4/18/2016.
@@ -49,8 +50,26 @@ public class TestCreateReipJson {
         VirtualCenterUID virtualCenterUID = new VirtualCenterUID("BB47075D-D75B-47B7-A41E-0D4EC03F4E35");
         VmUID vmUID = new VmUID("50022a9e-c266-51e0-92c8-b639bfd7144b", virtualCenterUID);
 
+
+        IPv4CustomizationPolicy ipV4Policy = new IPv4CustomizationPolicy();
+        ipV4Policy.setIp("1.1.1.1");
+        ipV4Policy.setSubnetMask("255.255.255.0");
+        LinkedList<String> gateways = new LinkedList<>();
+        gateways.add("1.1.1.11");
+        ipV4Policy.setGateways(gateways);
+
+        LinkedList<String> dnsServers = new LinkedList<>();
+        dnsServers.add("3.3.3.3");
+
+        NicCustomizationPolicy nicCustomizationPolicy = new NicCustomizationPolicy();
+        nicCustomizationPolicy.setAdapterId(1);
+        nicCustomizationPolicy.setDnsDomain("dnsDomain");
+        nicCustomizationPolicy.setDnsServers(dnsServers);
+        nicCustomizationPolicy.setPrimaryWINS("wins");
+        nicCustomizationPolicy.setNetBios(NetBiosMode.DISABLED);
+        nicCustomizationPolicy.setIpV4Policy(ipV4Policy);
+
         GlobalNetworkPolicy globalNetworkPolicy = null;
-        NicCustomizationPolicy nicCustomizationPolicy = null;
         HashSet<NicCustomizationPolicy> nicPolicies = new HashSet<>();
         nicPolicies.add(nicCustomizationPolicy);
         VmNetworkCustomizationPolicy vmNetworkCustomizationPolicy = new VmNetworkCustomizationPolicy(globalNetworkPolicy, nicPolicies);
