@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
 import com.emc.rpsp.fal.Client;
-import com.emc.rpsp.groupset.domain.GroupSet;
 import com.emc.rpsp.groupset.service.GroupSetService;
+import com.emc.rpsp.vmstructure.domain.GroupSet;
 
 @Service
 public class GroupSetServiceImpl extends BaseServiceImpl implements GroupSetService {

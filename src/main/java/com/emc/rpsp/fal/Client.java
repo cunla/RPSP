@@ -4,12 +4,14 @@ import com.emc.rpsp.RpspException;
 import com.emc.rpsp.StatesConsts;
 import com.emc.rpsp.fal.commons.*;
 import com.emc.rpsp.fal.wrappers.*;
-import com.emc.rpsp.groupset.domain.GroupSet;
 import com.emc.rpsp.packages.domain.PackageConfig;
 import com.emc.rpsp.packages.domain.PackageDefinition;
 import com.emc.rpsp.rpsystems.SystemConnectionInfoRepository;
 import com.emc.rpsp.rpsystems.SystemSettings;
+import com.emc.rpsp.vmstructure.domain.ConsistencyGroup;
 import com.emc.rpsp.vmstructure.domain.CopySnapshot;
+import com.emc.rpsp.vmstructure.domain.GroupSet;
+import com.emc.rpsp.vmstructure.domain.VmContainer;
 
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -896,9 +898,9 @@ public class Client {
     		GroupSet currGroupSet = new GroupSet();
     		currGroupSet.setId(Long.toString(currConsistencyGroupSetSettings.getSetUID().getId()));
     		currGroupSet.setName(currConsistencyGroupSetSettings.getName());
-    		List<String> groupIds = new LinkedList<String>();
-    		currConsistencyGroupSetSettings.getGroupsUIDs().forEach(id -> groupIds.add(Long.toString(id.getId())));
-    		currGroupSet.setGroupsIds(groupIds);
+    		List<VmContainer> groupIds = new LinkedList<VmContainer>();
+    		currConsistencyGroupSetSettings.getGroupsUIDs().forEach(id -> groupIds.add(new ConsistencyGroup(Long.toString(id.getId()))));
+    		currGroupSet.setConsistencyGroups(groupIds);
     		groupSets.add(currGroupSet);
     	}
     	return groupSets;
@@ -911,7 +913,7 @@ public class Client {
     	consistencyGroupSetSettings.setName(groupSet.getName());
     	
     	HashSet<ConsistencyGroupUID> groupsUIDs = new HashSet<ConsistencyGroupUID>();
-    	groupSet.getGroupsIds().forEach(id -> groupsUIDs.add(new ConsistencyGroupUID(Long.parseLong(id))));
+    	groupSet.getConsistencyGroups().forEach(id -> groupsUIDs.add(new ConsistencyGroupUID(Long.parseLong(((ConsistencyGroup)id).getId()))));
     	consistencyGroupSetSettings.setGroupsUIDs(groupsUIDs);
     	
     	ConsistencyGroupSetUID groupSetId = connector.createGroupSet(consistencyGroupSetSettings);
@@ -926,7 +928,7 @@ public class Client {
     	consistencyGroupSetSettings.setName(groupSet.getName());
     	
     	HashSet<ConsistencyGroupUID> groupsUIDs = new HashSet<ConsistencyGroupUID>();
-    	groupSet.getGroupsIds().forEach(id -> groupsUIDs.add(new ConsistencyGroupUID(Long.parseLong(id))));
+    	groupSet.getConsistencyGroups().forEach(id -> groupsUIDs.add(new ConsistencyGroupUID(Long.parseLong(((ConsistencyGroup)id).getId()))));
     	consistencyGroupSetSettings.setGroupsUIDs(groupsUIDs);
 
 		Response response = connector.setGroupSetSettings(consistencyGroupSetSettings);

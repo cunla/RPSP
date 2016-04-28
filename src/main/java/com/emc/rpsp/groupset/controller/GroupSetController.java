@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.emc.rpsp.groupset.domain.GroupSet;
 import com.emc.rpsp.groupset.service.GroupSetService;
+import com.emc.rpsp.vmstructure.domain.GroupSet;
 
 @Controller
 public class GroupSetController {

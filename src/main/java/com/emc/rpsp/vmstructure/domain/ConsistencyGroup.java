@@ -15,9 +15,20 @@ public class ConsistencyGroup implements VmContainer {
     private List<ClusterDefinition> replicaClusters;
     private boolean enableProtection;
     private GroupSet parentGroupSet;
+    
+
+    public ConsistencyGroup() {
+		super();
+	}
+    
+    
+	public ConsistencyGroup(String id) {
+		super();
+		this.id = id;
+	}
 
 
-    public String getName() {
+	public String getName() {
         return name;
     }
 

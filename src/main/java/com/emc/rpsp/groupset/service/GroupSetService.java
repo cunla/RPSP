@@ -2,7 +2,8 @@ package com.emc.rpsp.groupset.service;
 
 import java.util.List;
 
-import com.emc.rpsp.groupset.domain.GroupSet;
+import com.emc.rpsp.vmstructure.domain.GroupSet;
+
 
 
 
