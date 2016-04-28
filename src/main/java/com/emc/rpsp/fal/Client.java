@@ -931,7 +931,7 @@ public class Client {
     	groupSet.getConsistencyGroups().forEach(id -> groupsUIDs.add(new ConsistencyGroupUID(Long.parseLong(((ConsistencyGroup)id).getId()))));
     	consistencyGroupSetSettings.setGroupsUIDs(groupsUIDs);
 
-		Response response = connector.setGroupSetSettings(consistencyGroupSetSettings);
+		Response response = connector.setGroupSetSettings(Long.parseLong(groupSet.getId()), consistencyGroupSetSettings);
     	return;
     }
     

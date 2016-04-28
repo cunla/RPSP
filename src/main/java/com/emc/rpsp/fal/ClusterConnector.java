@@ -167,7 +167,7 @@ public interface ClusterConnector {
     public ConsistencyGroupSetUID createGroupSet(@Body ConsistencyGroupSetSettings consistencyGroupSetSettings);
     
     @PUT(BASE_URL + "group_sets/{groupSetId}/settings")
-    public Response setGroupSetSettings(@Body ConsistencyGroupSetSettings consistencyGroupSetSettings);
+    public Response setGroupSetSettings(@Path("groupSetId") long groupSetId, @Body ConsistencyGroupSetSettings consistencyGroupSetSettings);
     
     @DELETE(BASE_URL + "group_sets/{groupSetId}")
     public Response removeGroupSet(@Path("groupSetId") long groupSetId);   
