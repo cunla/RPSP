@@ -14,6 +14,7 @@ public class ConsistencyGroup implements VmContainer {
     private ClusterDefinition productionCluster;
     private List<ClusterDefinition> replicaClusters;
     private boolean enableProtection;
+    private GroupSet parentGroupSet;
 
 
     public String getName() {
@@ -98,6 +99,14 @@ public class ConsistencyGroup implements VmContainer {
 
 	public void setEnableProtection(boolean enableProtection) {
 		this.enableProtection = enableProtection;
+	}
+
+	public GroupSet getParentGroupSet() {
+		return parentGroupSet;
+	}
+
+	public void setParentGroupSet(GroupSet parentGroupSet) {
+		this.parentGroupSet = parentGroupSet;
 	}
     
     

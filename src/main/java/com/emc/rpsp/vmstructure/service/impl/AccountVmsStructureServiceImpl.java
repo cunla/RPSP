@@ -338,6 +338,10 @@ public class AccountVmsStructureServiceImpl extends BaseServiceImpl
                 if (groupIdToGroupSetMap.get(consistencyGroup.getId()) != null) {
                     GroupSet groupSet = groupIdToGroupSetMap.get(consistencyGroup.getId());
                     groupSet.addConsistencyGroup(consistencyGroup);
+                    GroupSet groupSetMainInfo = new GroupSet();
+                    groupSetMainInfo.setId(groupSet.getId());
+                    groupSetMainInfo.setName(groupSet.getName());
+                    consistencyGroup.setParentGroupSet(groupSetMainInfo);
                 } else {
                     protectedVms.add(consistencyGroup);
                 }
