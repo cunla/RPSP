@@ -7,7 +7,7 @@
             </md-input-container>
             <md-input-container>
                 <md-select ng-model="user.tenantName" placeholder="please select">
-                    <md-option ng-repeat="a in tenants" value="{{a.name}}">{{a.label}}</md-option>
+                    <md-option ng-repeat="a in tenants" value="{{a.name}}">{{a.label}} ({{a.name}})</md-option>
                 </md-select>
             </md-input-container>
         </div>
