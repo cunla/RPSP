@@ -20,12 +20,12 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 		
 		$scope.groupSets = JSON.parse(JSON.stringify($scope.vmStructureData.groupSets));
 		
-		$scope.selectedGroupSet = new Array();
+		$scope.selectedGroupSet = {};
 		var cgParent = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].parent;
 		if(cgParent != null){
 			for(i = 0; i < $scope.groupSets.length; i++){
 				if($scope.groupSets[i].name == cgParent){
-					$scope.selectedGroupSet.push($scope.groupSets[i]);
+					$scope.selectedGroupSet = $scope.groupSets[i];
 				}
 			}
 		}
@@ -71,8 +71,8 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 	
 	
 	
-	$scope.selectGroupSet = function(newValue, oldValue){
-		if($scope.selectedGroupSet.length > 0 && $scope.selectedGroupSet[0].id == 'newId'){
+	$scope.selectGroupSet = function(){
+		if($scope.selectedGroupSet.id == 'newId'){
 			$scope.selectedGroupSet = null;
 			$scope.openAlertModal();
 		}
@@ -84,9 +84,11 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 		
 		var currCgCloned = JSON.parse(JSON.stringify(currCg));
 		currCgCloned.replicaClusters[0].groupCopySettings[0].snapshots = [];
+		currCgCloned.replicaClusters[0].groupCopySettings[0].bookmarks = [];
     	
     	var currCgModified = JSON.parse(JSON.stringify(currCgCloned));
     	currCgModified.name = $scope.cgName;
+    	currCgModified.parentGroupSet = $scope.selectedGroupSet;
     	currCgModified.packageId = $scope.selectedPackage.id;
     	currCgModified.packageName = $scope.selectedPackage.name;
     	currCgModified.packageDisplayName = $scope.selectedPackage.displayName;
@@ -126,15 +128,13 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 		
 		modalInstance.result.then(function(result){
 			var newGs = {};
-			newGs.id = result;
+			newGs.id = null;
 			newGs.name = result;
-			/*$scope.groupSets.push(newGs);*/
 			$scope.groupSets.splice(0, 0, newGs);
-			/*$scope.selectedGroupSet.pop();*/
-			$scope.selectedGroupSet.push(newGs);
-			$scope.apply();
+			$scope.selectedGroupSet = newGs;
 		});
 	};
+	
 	   
     
 }]);

@@ -81,14 +81,19 @@ public class EditGroupServiceImpl extends BaseServiceImpl implements EditGroupSe
     			}
     		}
     		
+    		
+    		
     		if(origGroup.isEnableProtection() != modifiedGroup.isEnableProtection()){
     			client.setCgProtectionState(groupId, modifiedGroup.isEnableProtection());
     		}
+    		
+ 
     		
 
     	}
 		
 	}
-
+	
+	
 
 }

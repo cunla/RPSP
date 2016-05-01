@@ -43,16 +43,26 @@
 	            </td>
 	            <td>
 	                <div class="row">
-	                    <div class="col-xs-5 col-sm-5 col-md-5 margin-top">
+	                    <div class="col-xs-6 col-sm-6 col-md-6 margin-top">
 	                    
 	
 	 
-								<multiselect ng-model="selectedGroupSet" options="groupSets" id-prop="id"
+								<!-- <multiselect ng-model="selectedGroupSet" options="groupSets" id-prop="id"
 	                                   display-prop="name" selection-limit="1" 
-	                                   		ng-change="selectGroupSet(selectedGroupSet, oldValue)" ng-click="oldValue = selectedGroupSet"></multiselect>
+	                                   		ng-change="selectGroupSet(selectedGroupSet, oldValue)" ng-click="oldValue = selectedGroupSet"></multiselect> -->
+	                                   		
+	                            <select ng-model="selectedGroupSet"
+	                                ng-options="currGroupSet.name for currGroupSet in groupSets"
+	                                	ng-change="selectGroupSet(selectedGroupSet, oldValue)" ng-click="oldValue = selectedGroupSet"
+	                                class="form-control">	
+	                        	</select>
+	                                   		
+	                            <!--  <button type="button" class="btn btn-primary" ng-click="addNewGs()">
+								         New...
+								</button> -->
 	 
 	                    </div>
-	                    <div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+	                    <div class="col-xs-6 col-sm-6 col-md-6 margin-top">
 	                    </div>
 	                </div>
 	
