@@ -324,6 +324,64 @@ from /internal-data/template.
  
    - `GET app/audit/log?page={page}&pageSize={pageSize}` - Get RPSP actions audit log for current tenant based on *page* and *pageSize* parameters
     
+###Development Environment Setup Process
+In order to start working on a development environment we will install and configure the following applications.
+
+Download the following:
+1.	[Java JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+2.	[Maven 3.3.9](http://www-us.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip)
+3.	[Git](https://git-scm.com/download/win)
+4.	[IntelliJ ultimate edition](https://www.jetbrains.com/idea/?fromMenu#chooseYourEdition)
+5.	[mysql](http://dev.mysql.com/downloads/mysql/)
+
+Installations:
+
+All of the installations are pretty much simple -> next -> next till finish.
+
+1.	Create c:\Dev on your dev machine
+2.	Install Java (Default install – Next -> Next etc. . .)
+3.	Unzip Maven to c:\Dev (this will create C:\Dev\apache-maven-3.3.9)
+4.	Install Git (Default install – Next -> Next etc. . .)
+5.	Install IntelliJ Ultimate
+6.	Install mysql
+
+
+Configurations:
+
+Define ENV Variables
+1.	JAVA_HOME – with path to installed java JDK (C:\Program Files\Java\jdk1.8.0_91)
+2.	Define M2_HOME  - C:\Dev\apache-maven-3.3.9
+3.	Edit path variable and make sure %JAVA_HOME%\bin, %M2_HOME%\bin and C:\Program Files\Git\cmd are defined.
+
+
+
+Verification for installations:
+1.	Open cmd window
+2.	Run java and check java is defined
+3.	Run mvn and check maven is defined
+4.	Run git and check git is defined
+ 
+ Create directory projects - C:\Dev\projects
+ 
+Login to github with your github account and copy the repository address
+(https://github.com/emccode/RPSP.git)
+In cmd window - Cd to C:\Dev\projects
+1. Run git clone https://github.com/emccode/RPSP.git
+2. Run mvn package
+
+Mysql:
+1.	Open MySQL workbench
+2.	Create schema rpsp with utf8 default collation 
+3.	Create schema rpspaudit with utf8  default collation 
+4.	Under Users and privileges, Create account rpsp with password rpsp with limit host of %
+5.	Create account rpsp with password rpsp with limit host of localhost
+6.	Add all privileges for both users to both of the schemas.
+
+Intellij:
+1.	Open IntelliJ 
+2.	Import project -> locate file under C:\Dev\projects\RPSP\pom.xml and wait for it to finish.
+
+
 ###CONTRIBUTION INSTRUCTIONS
 Create a fork of the project into your own repository. 
 Make all your necessary changes and create a pull request with a description on what was added or removed and details explaining the changes in lines of code. If approved, project owners will merge it.
@@ -355,4 +413,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ###SUPPORT
 Please file bugs and issues at the Github issues page. For more general discussions you can contact the EMC Code team at [Google Groups](https://groups.google.com/forum/#!forum/emccode-users) or tagged with EMC on [Stackoverflow.com](https://stackoverflow.com/). The code and documentation are released with no warranties or SLAs and are intended to be supported through a community driven process.
+
 
