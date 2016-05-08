@@ -79,6 +79,11 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 	};
 	
 	
+	$scope.removeGroupSetMemebership = function(){
+			$scope.selectedGroupSet = null;
+	};
+	
+	
 	$scope.editCg = function(){
 		var currCg = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex];
 		
