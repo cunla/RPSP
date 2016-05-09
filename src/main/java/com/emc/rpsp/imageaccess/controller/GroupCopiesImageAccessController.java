@@ -46,6 +46,7 @@ import com.emc.rpsp.vmstructure.domain.CopySnapshot;
     		@RpspAuditObject(AuditConsts.CLUSTER) @PathVariable("clusterId") Long clusterId, @RpspAuditSubject(AuditConsts.CG) @PathVariable("groupId") Long groupId,
     @PathVariable("copyId") Integer copyId, @RequestBody Map<String, Long> params) {
         CopySnapshot copySnapshot = new CopySnapshot();
+        //xx
         copySnapshot.setId(params.get("snapshotId"));
         copySnapshot.setOriginalClosingTimeStamp(params.get("timestamp"));
         imageAccessService.enableSnapshotImageAccess(clusterId, groupId, copyId, copySnapshot);
