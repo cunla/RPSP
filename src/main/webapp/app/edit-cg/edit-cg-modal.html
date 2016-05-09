@@ -133,10 +133,16 @@
 	                    <div class="col-xs-5 col-sm-5 col-md-5 margin-top">
 	
 	
-	                        <select ng-model="selectedPackage"
+	                        <!-- <select ng-model="selectedPackage"
 	                                ng-options="package.displayName for package in vmStructureData.systemInfo.packages"
 	                                class="form-control">	
+	                        </select> -->
+	                        
+	                        <select ng-model="selectedPackage"
+	                                ng-options="package.displayName for package in relevantPackages"
+	                                class="form-control">	
 	                        </select>
+	                        
 	
 	                    </div>
 	                    <div class="col-xs-7 col-sm-7 col-md-7 margin-top">

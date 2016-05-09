@@ -53,12 +53,50 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 			currVmCloned.sequenceNumber = 3;
 		}
 		
-		$scope.selectedPackage = {};
+		$scope.selectedPackage = null;
 		for(i = 0; i < $scope.vmStructureData.systemInfo.packages.length; i++){
 			var currPackage = $scope.vmStructureData.systemInfo.packages[i];
 			if(currPackage.id == $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].packageId){
 				$scope.selectedPackage = currPackage;
 			}
+		}
+		
+		if($scope.selectedPackage != null){
+			$scope.relevantPackages = new Array();
+			for(i = 0; i < $scope.vmStructureData.systemInfo.packages.length; i++){
+				var currPackage = $scope.vmStructureData.systemInfo.packages[i];
+				
+				var isRelevant = true;
+				
+				if(currPackage.sourceClusterId != $scope.selectedPackage.sourceClusterId){
+					isRelevant = false;
+				}
+				if(currPackage.targetClusterId != $scope.selectedPackage.targetClusterId){
+					isRelevant = false;
+				}
+				
+				if(currPackage.sourceEsxClusterId != $scope.selectedPackage.sourceEsxClusterId){
+					isRelevant = false;
+				}
+				if(currPackage.targetEsxId != $scope.selectedPackage.targetEsxId){
+					isRelevant = false;
+				}
+				
+				if(currPackage.sourceDatastoreId != $scope.selectedPackage.sourceDatastoreId){
+					isRelevant = false;
+				}
+				if(currPackage.targetDatastoreId != $scope.selectedPackage.targetDatastoreId){
+					isRelevant = false;
+				}
+				
+				if(isRelevant){
+					$scope.relevantPackages.push(currPackage);
+				}
+			}
+		}
+		else{
+			$scope.relevantPackages = $scope.vmStructureData.systemInfo.packages;
+			$scope.selectedPackage = {};
 		}
 		
 		$scope.sequenceNumbers = [1, 2, 3, 4, 5];
@@ -123,6 +161,7 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 			currVm.sequenceNumber = currVm.sequenceNumber - 1;
 		}
 	}
+	
 	
 	$scope.openAlertModal = function(){
 		var modalInstance = $modal.open({
