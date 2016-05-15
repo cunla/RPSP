@@ -82,16 +82,67 @@ public class EditGroupServiceImpl extends BaseServiceImpl implements EditGroupSe
     		}
     		
     		
+    		handleGroupSetMembership(client, origGroup, modifiedGroup);
+    		
     		
     		if(origGroup.isEnableProtection() != modifiedGroup.isEnableProtection()){
     			client.setCgProtectionState(groupId, modifiedGroup.isEnableProtection());
     		}
     		
- 
+    		
     		
 
     	}
 		
+	}
+	
+	
+	private void handleGroupSetMembership(Client client, ConsistencyGroup origGroup, ConsistencyGroup modifiedGroup){
+		GroupSet origGroupsSet = origGroup.getParentGroupSet();
+		GroupSet modifiedGroupSet = modifiedGroup.getParentGroupSet();
+		if(origGroupsSet == null && modifiedGroupSet == null) {
+			return;
+		}
+		if((origGroupsSet != null && modifiedGroupSet != null)
+				&& (origGroupsSet.getId().equals(modifiedGroupSet.getId()))) {
+			return;
+		}
+		//handle source GS
+		if(origGroupsSet != null){
+			GroupSet groupSetToRemoveFrom = client.getAllGroupSets()
+														.stream()
+														.filter(gs -> gs.getId().equals(origGroupsSet.getId()))
+														.findFirst().get();
+			//last group of GS
+			if(groupSetToRemoveFrom.getConsistencyGroups().size() == 1){
+				client.removeGroupSet(groupSetToRemoveFrom.getId());
+			}
+			else
+			{
+				groupSetToRemoveFrom.getConsistencyGroups()
+						.removeIf(group -> ((ConsistencyGroup)group).getId().equals(origGroup.getId()));				
+				client.updateGroupSet(groupSetToRemoveFrom);
+			}
+		}
+		//handle target GS
+		if(modifiedGroupSet != null){
+			if(modifiedGroupSet.getId() == null){
+    			List<VmContainer> groups = new LinkedList<VmContainer>();
+    			groups.add(modifiedGroup);
+    			modifiedGroupSet.setConsistencyGroups(groups);
+    			groupSetService.createGroupSet(modifiedGroupSet);
+			}
+			else{
+				GroupSet groupSetToAddTo = client.getAllGroupSets()
+						.stream()
+						.filter(gs -> gs.getId().equals(modifiedGroupSet.getId()))
+						.findFirst().get();
+				List<VmContainer> groups = new LinkedList<VmContainer>();
+    			groups.add(modifiedGroup);
+    			groupSetToAddTo.getConsistencyGroups().add(modifiedGroup);
+    			client.updateGroupSet(groupSetToAddTo);
+			}
+		}
 	}
 	
 	
