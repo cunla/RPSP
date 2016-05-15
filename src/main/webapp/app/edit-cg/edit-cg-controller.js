@@ -20,7 +20,7 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
 		
 		$scope.groupSets = JSON.parse(JSON.stringify($scope.vmStructureData.groupSets));
 		
-		$scope.selectedGroupSet = {};
+		$scope.selectedGroupSet = null;
 		var cgParent = $scope.vmGsAndCgFlatData[$scope.protectedSelectedIndex].parent;
 		if(cgParent != null){
 			for(i = 0; i < $scope.groupSets.length; i++){
@@ -146,7 +146,7 @@ app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance
     	cgChanges.currentConsistencyGroup = currCgModified;
     		
     	vmStructureService.editCg(cgId, cgChanges);  
-    	/*$modalInstance.dismiss('cancel');*/
+    	$modalInstance.dismiss('cancel');
 	}
 	
 	
