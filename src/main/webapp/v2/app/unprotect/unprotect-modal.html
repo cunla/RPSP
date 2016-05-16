@@ -1,0 +1,96 @@
+<div class="modal-header modal-header-primary protect-modal">
+    <a class="close" ng-click="cancel()">x</a>
+	<h3 class="modal-title">
+		<div class="centered-text">{{'PROTECT-UNPROTECT.REMOVE_VM_MSG' | translate}} <b>{{vmName}}</b> 
+		                 {{'PROTECT-UNPROTECT.FROM_CONSIST_GROUP_MSG' | translate}} <b>{{cgName}}</b></div>
+	</h3>
+</div>
+<div class="modal-body">
+
+	<br/>
+	<table class="table table-condensed table-striped">
+		<thead>
+		</thead>
+		<tbody>
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								{{'PROTECT-UNPROTECT.TARGET_COPIES_MSG' | translate}}
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-5 col-sm-5 col-md-5 radio">
+								{{vmGsAndCgFlatData[protectedSelectedIndex].
+	                                          replicaClusters[0].groupCopySettings[0].name}}
+							</div>	
+							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+							</div>	
+						</div>
+				</td>
+			</tr>
+			<tr>						
+				<td>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Service Class:	
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-5 col-sm-5 col-md-5 radio">
+								{{vmGsAndCgFlatData[protectedSelectedIndex].packageDisplayName}}
+							</div>	
+							<div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+			<tr>					
+				<td>
+					<div class="margin-top-lg">
+							{{'PROTECT-UNPROTECT.BOOT_ORDER_MSG' | translate}}
+					</div>
+				</td>				
+				<td>
+					<div class="row">
+						<div class="col-xs-6 col-sm-6 col-md-6 margin-top margin-top-lg">
+						     {{'PROTECT-UNPROTECT.VM_PRIORITY_IN_CG_MSG' | translate}}
+						</div>
+						<div class="col-xs-3 col-sm-3 col-md-3 margin-top-lg">
+								{{selectedSequenceNumber}}
+						</div>
+						<div class="col-xs-3 col-sm-3 col-md-3">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5 col-sm-5 col-md-5 margin-top-10">
+						     <label class="checkbox-inline">
+							  	<input type="checkbox" id="criticalVmId" ng-model="isCriticalVm" ng-disabled="true"> {{'PROTECT-UNPROTECT.CRITICAL_VM_MSG' | translate}}
+							</label>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>					    
+	</table>
+	
+	<div class="centered-text">
+	     <label class="checkbox-inline">
+		  	<input type="checkbox" id="unprotectCheckboxId" ng-model="unprotectCheckbox"> <b>{{'PROTECT-UNPROTECT.PROCEED_TO_UNPROTECT_MSG' | translate}}</b>
+		</label>
+	</div>
+			
+</div>
+
+
+
+<div class="modal-footer centered-text div-grey">
+	<button type="button" class="btn btn-primary" ng-disabled="!unprotectCheckbox" ng-click="moveVm()">
+	         {{'PROTECT-UNPROTECT.UNPROTECT_VM_MSG' | translate}}
+	</button>
+</div>

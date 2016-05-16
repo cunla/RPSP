@@ -1,0 +1,42 @@
+.centered-text {
+    text-align: center;
+}
+
+
+
+
+
+
+.margin-top {
+    margin-top: 2px;
+}
+
+.margin-top-lg {
+    margin-top: 5px;
+}
+
+.margin-top-x-lg {
+    margin-top: 8px;
+}
+
+.margin-bottom {
+    margin-top: 2px;
+}
+
+.margin-bottom-lg {
+    margin-top: 5px;
+}
+
+.margin-bottom-x-lg {
+    margin-top: 8px;
+}
+
+.padding-top {
+    padding-top: 20px;
+}
+
+.padding-bottom {
+    padding-bottom: 20px;
+}
+
+white-space { white-space: pre; }

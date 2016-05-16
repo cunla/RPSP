@@ -1,0 +1,181 @@
+/*
+body {
+  background: url("../images/background.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+
+body.body-grey {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color: #F5F5F5;
+}
+
+
+*/
+.custom-border{
+    border:3px solid #000;
+    border-radius: 5px;
+    margin:20px;
+    padding:0px;
+}
+header .navbar{
+    border-top-left-radius:2px;
+    padding:10px;
+    border-top-right-radius:2px;
+    min-height:100px;
+    background-color:#d2ecf7;
+    filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#d2ecf7, endColorstr=#1b6385);
+    background-image:-moz-linear-gradient(top, #d2ecf7 0%, #1b6385 100%);
+    background-image:-webkit-linear-gradient(top, #d2ecf7 0%, #1b6385 100%);
+    background-image:-ms-linear-gradient(top, #d2ecf7 0%, #1b6385 100%);
+    background-image:linear-gradient(top, #d2ecf7 0%, #1b6385 100%);
+    background-image:-o-linear-gradient(top, #d2ecf7 0%, #1b6385 100%);
+    background-image:-webkit-gradient(linear, right top, right bottom, color-stop(0%,#d2ecf7), color-stop(100%,#1b6385));
+}
+*.icon-white {color: white}
+*.icon-silver {color: silver}
+
+div.image {
+    width: 142px;
+    height: 86px;
+    margin: 0 auto 20px;
+    display: block;
+    background-size:contain;
+    background-image:url("../images/login.png");
+}
+
+.title-user{
+    color:#fff;
+    font-size:14px;
+    font-family: Arial;
+    text-align: center;
+    width:200px;
+}
+.name-user{
+    color:#fff;
+    font-size:14px;
+    font-family: Arial;
+    text-align: left;
+
+}
+.logo-image {
+    width: 71px;
+    margin:0 auto;
+    height: 43px;
+    display: block;
+    background-size:contain;
+    background-image:url("../images/login.png");
+}
+.divider{
+    width: 1px;
+    height: 60px;
+    background-color: #fff;
+}
+.icon-border{
+    padding: 10px;
+    font-size:38px;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid blue;
+    color:#000;
+}
+.title-user{
+    font-size:16px;
+    font-family: Arial;
+}
+.title-user span{
+     color:yellow;
+ }
+.logoff-user a{
+    padding-top:5px;
+    color:#fff;
+    font-size:16px;
+}
+.logoff-user a i{
+    font-size:14px;
+}
+.vcenter{
+    vertical-align: top;
+}
+header .title-text{
+    font-size:50px;
+    color:#0039e6;
+    text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
+    font-style: italic;
+    line-height: 33px;
+    font-family: Calibri;
+    padding-bottom:10px;
+}
+.input-group-btn{
+    width:5%;
+}
+.padding-search{
+    padding-top:10px;
+}
+.text-red{
+     color:red;
+     font-size:16px;
+     font-family: Arial;
+ }
+.text-yellow{
+    color:yellow;
+    font-size:16px;
+    font-family: Arial;
+}
+.text-blue{
+    color:blue;
+    font-size:16px;
+    font-family: Arial;
+}
+.fa-envelope-o, .fa-bell-o, .fa-flag-o{
+    font-size:30px;
+    color:#fff;
+}
+header .nav>li>a{
+    padding:10px 5px;
+}
+header .label{
+    position: relative;
+    top:-20px;
+    left:-15px
+}
+header .nav > li > a:hover, .nav > li > a:active, .nav > li > a:focus{
+    background: transparent;
+}
+header .navbar-brand{
+    padding: 5px 15px 15px 15px;
+}
+header .padding-radius{
+    padding-left:10px;
+    padding-right:20px;
+}
+.buttons-custom{
+    float:none !important;
+    margin:0 auto;
+}
+.buttons-custom-text{
+    font-size:14px;
+    color:#000;
+    font-weight: bold;
+}
+.actionmenu .btn.disabled{
+    opacity: 0.35;
+}
+
+
+
+
+
+
+
+
+
+
+
+
