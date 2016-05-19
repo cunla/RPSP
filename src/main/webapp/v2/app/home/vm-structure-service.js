@@ -46,7 +46,7 @@ app.service('vmStructureService', ['$http', function ($http) {
                 //new area
                 var newCg = {};
                 newCg.id = 'new-section';
-                newCg.name = 'New ...';
+              //  newCg.name = 'New ...';
                 vmGsAndCgFlatDataArr.push(newCg);
                 vmGsAndCgFlatData = vmGsAndCgFlatDataArr;
                 //count protected vms
@@ -82,7 +82,6 @@ app.service('vmStructureService', ['$http', function ($http) {
                 return allData;
 
             },function errorCallback(response) {
-               // $scope.errorExp = response.statusText;
                 if(response.status !== "200")
                 {
                     allData.errorExp = true;

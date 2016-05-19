@@ -18,11 +18,16 @@ body.body-grey {
 
 
 */
+html, body
+{
+    height: 100%;
+}
 .custom-border{
     border:3px solid #000;
     border-radius: 5px;
     margin:20px;
     padding:0px;
+    min-height:95%;
 }
 header .navbar{
     border-top-left-radius:2px;
@@ -133,9 +138,24 @@ header .title-text{
     font-size:16px;
     font-family: Arial;
 }
-.fa-envelope-o, .fa-bell-o, .fa-flag-o{
+.fa-envelope-o, .fa-bell-o, .fa-flag-o, .fa-exclamation{
     font-size:30px;
     color:#fff;
+}
+.protected-line{
+    line-height: 30px;
+}
+.fa-database{
+    font-size:18px;
+}
+.box.box-solid.box-success-new{
+    border: 1px solid #205081;
+}
+.box.box-solid.box-success-new > .box-header {
+    color: #ffffff;
+
+    background: #205081;
+    background-color: #205081;
 }
 header .nav>li>a{
     padding:10px 5px;

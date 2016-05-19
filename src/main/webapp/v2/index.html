@@ -30,15 +30,15 @@
     <action-menu></action-menu>
     <div class="content">
         <div class="row">
-            <div class="col-md-9">
-                <div class="box box-success box-solid">
+            <div class="col-md-9 no-float" >
+                <div class="alert alert-danger fade in"  ng-if="errorExp">
+                    <strong>{{errorExpText}}</strong>
+                </div>
+                <div class="box box-success box-solid"  ng-if="!errorExp">
                     <div class="box-header with-border">
                         <h3 class="box-title centered-text"><strong>{{"HOME.PROTECTED" | translate}}</strong> (17 {{"HOME.VMS" | translate}})</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body table-responsive no-padding">
-                        <div class="alert alert-danger fade in"  ng-if="errorExp">
-                            <strong>{{errorExpText}}</strong>
-                        </div>
                         <table class="table table-striped">
                             <tr>
                                 <th style="width: 10px">Consistency Group</th>
@@ -60,17 +60,17 @@
                                 <td width="30%">
                                     <white-space ng-show="row.parent">&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
                                        <span ng-show=" row.id != 'new-section'">
-                                           <i class="fa {{row.hideChildren? 'fa-plus':'fa-minus'}} icon-silver"
+                                           <i class="fa fa-fw fa-database {{row.hideChildren? 'fa-plus':'fa-minus'}} icon-silver1"
                                               title="{{row.hideChildren? 'Expand':'Collapse'}}"
                                               ng-click="toggleRow(row)"></i>
                                      </span>
-                                     <span ng-class="isLastName(row.name)" title="{{isActionApplicable()?'':'Actions disabled because not all CGs are in the same state'}}">
+                                    <span class="protected-line" ng-class="isLastName(row.name)" title="{{isActionApplicable()?'':'Actions disabled because not all CGs are in the same state'}}">
                                         {{row.name}}
                                      </span>
                                     <div ng-hide="row.hideChildren" ng-repeat="vm in row.vms" draggable="true"
                                          vmid="{{vm.id}}">
-                                        <white-space ng-show="row.parent">&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
-                                        <white-space>&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-fw fa-desktop"></i>
+                                        <white-space>&nbsp;&nbsp;</white-space>
                                         {{vm.name}}
                                     </div>
                                 </td>
@@ -99,16 +99,16 @@
 
 
                             </tr>
-                        </table>
+                        </table >
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
             </div><!-- /.col -->
-            <div class="col-md-3">
-                <div class="box box-success box-solid">
+            <div class="col-md-3 no-float">
+                <div class="box box-success-new  box-solid">
                     <div class="box-header with-border">
                         <h3 class="box-title centered-text"><strong>{{'HOME.UNPROTECTED' | translate}}</strong> ({{vmStructureData.unprotectedVms.length}} {{"HOME.VMS" | translate}})</h3>
                     </div><!-- /.box-header -->
-                    <div class="box-body no-padding">
+                    <div class="box-body no-padding" droppable="true">
                         <table class="table table-striped">
                             <tr>
                                 <td colspan="3">
@@ -118,6 +118,7 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th></th>
                                 <th>{{'HOME.VM_NAME' | translate}}</th>
                                 <th>{{'HOME.IP_ADDRESS' | translate}}</th>
                                 <th style="width:30px;">&nbsp;</th>
@@ -127,6 +128,7 @@
                                 draggable="true" index="{{$index}}" vmid="{{row.id}}"
                                 ng-click="toggleSelect($index, false)"
                                 ng-class="{'selected' : unprotectedSelectedIndex == $index}">
+                                <td><i class="fa fa-fw fa-windows"></i></td>
                                 <td>{{row.name}}</td>
                                 <td>127.0.0.1:8000</td>
                                 <td><a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button" data-tooltip="Example for text text text" title="Example for text text text"><i class="fa fa-fw fa-info-circle"></i></a></td>
