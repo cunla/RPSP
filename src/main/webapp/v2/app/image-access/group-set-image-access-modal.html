@@ -1,6 +1,6 @@
 <div class="modal-header modal-header-primary">
     <a class="close" ng-click="cancel()">x</a>
-	<h3 class="modal-title">	
+	<h3 class="modal-title">
 		<div class="centered-text">{{'IMAGE-ACCESS.DR_TEST_MSG' | translate}} <b>{{vmGsAndCgFlatData[protectedSelectedIndex].name}}</b></div>
 	</h3>
 </div>
@@ -11,41 +11,41 @@
 		<thead>
 		</thead>
 		<tbody>
-			<tr>						
+			<tr>
 				<td margin-top>
 				    <div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								{{'IMAGE-ACCESS.SELECT_CLUSTER_MSG' | translate}}	
+								{{'IMAGE-ACCESS.SELECT_CLUSTER_MSG' | translate}}
 						</div>
-					</div>										
-				</td>			
+					</div>
+				</td>
 				<td>
 				        <div class="row">
 							<div class="col-xs-4 col-sm-4 col-md-4 margin-top">
-								<select ng-model="selectedCluster" 
+								<select ng-model="selectedCluster"
 	                                          ng-options="selectedCluster.name for selectedCluster in vmGsAndCgFlatData[protectedSelectedIndex].
-	                                                      consistencyGroups[0].replicaClusters" 
+	                                                      consistencyGroups[0].replicaClusters"
 	                                           ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled'"
 			                                              class="form-control">
 			                                                          <!-- <option value="" ng-if="false"></option> -->
-							
-								</select>								
-							</div>	
+
+								</select>
+							</div>
 							<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
-							</div>	
+							</div>
 						</div>
 
 				</td>
 			</tr>
-			<tr>				
+			<tr>
 				<td margin-top>
 				    <div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								{{'IMAGE-ACCESS.SELECT_IMAGE_MSG' | translate}}	
+								{{'IMAGE-ACCESS.SELECT_IMAGE_MSG' | translate}}
 						</div>
-					</div>										
-				</td>				
-				<td>	
+					</div>
+				</td>
+				<td>
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 radio">
 							<label>
@@ -63,31 +63,31 @@
 								</input>
 							</label>
 						</div>
-					
-						
+
+
 						<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
-								<select ng-model="selectedBookmark" 								         
+								<select ng-model="selectedBookmark"
 	                                        ng-options="bookmark.name + ' (AC)' + ' - ' + bookmark.closingTimestamp for bookmark in selectedCluster.groupCopySettings[0].bookmarks"
-	                                             ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled' || selectedClsuter.groupCopySettings[0].bookmarks.length == 0" 
-	                                                 class="form-control">											
+	                                             ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled' || selectedClsuter.groupCopySettings[0].bookmarks.length == 0"
+	                                                 class="form-control">
 								</select>
 						</div>
 					</div>
-	
-					
-					
-					
+
+
+
+
 				</td>
 			</tr>
-			<tr>					
+			<tr>
 				<td>
 						{{'IMAGE-ACCESS.TEST_NETWORK_MSG' | translate}}
-				</td>				
+				</td>
 				<td>
 						{{'IMAGE-ACCESS.TENANT_TESTING_MSG' | translate}}
 				</td>
 			</tr>
-		</tbody>					    
+		</tbody>
 	</table>
 </div>
 <div class="modal-footer centered-text div-grey">

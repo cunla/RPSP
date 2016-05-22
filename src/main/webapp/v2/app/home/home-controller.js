@@ -26,7 +26,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     $scope.vmGsAndCgFlatData = {};
     $scope.totalVms = {};
     $scope.protectedVms = {};
-//	$scope.finishedLoading = false;
+	$scope.finishedLoading = false;
 
     $scope.toggleRow = function (row) {
         if (row.type == 'gs') {
@@ -49,13 +49,13 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
                 $scope.totalVms = allData.totalVms;
                 $scope.protectedVms = allData.protectedVms;
 
-
                 $scope.errorExpText = allData.errorExpText;
                 $scope.errorExp = allData.errorExp;
             })
             .finally(function (res) {
+
                 $scope.finishedLoading = true;
-            })
+            });
     };
 
     $scope.getVmStructureData();

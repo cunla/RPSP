@@ -82,9 +82,9 @@ div.image {
     height: 60px;
     background-color: #fff;
 }
-.icon-border{
+header .icon-border{
     padding: 10px;
-    font-size:38px;
+    font-size:45px;
     text-align: center;
     background-color: #fff;
     border: 1px solid blue;
@@ -113,9 +113,10 @@ header .title-text{
     color:#0039e6;
     text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
     font-style: italic;
-    line-height: 33px;
+    line-height: normal;
     font-family: Calibri;
     padding-bottom:10px;
+    text-align: center;
 }
 .input-group-btn{
     width:5%;
@@ -174,6 +175,7 @@ header .navbar-brand{
 header .padding-radius{
     padding-left:10px;
     padding-right:20px;
+    padding-top:10px;
 }
 .buttons-custom{
     float:none !important;
@@ -186,6 +188,14 @@ header .padding-radius{
 }
 .actionmenu .btn.disabled{
     opacity: 0.35;
+}
+.minus-padding-left{
+    padding-left:0px;
+    padding-top:10px;
+}
+.close{
+    color:#fff;
+    opacity: 1;
 }
 
 

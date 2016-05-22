@@ -1,179 +1,79 @@
-<div class="modal-header modal-header-primary">
-    <a class="close" ng-click="cancel()">x</a>
-    <h3 class="modal-title">
-        <div class="centered-text">Create Consistency Group</b></div>
-    </h3>
-</div>
-<div class="modal-body">
-
-    <br/>
-    <table class="table table-condensed table-striped">
-        <thead>
-        </thead>
-        <tbody>
-        <tr>
-            <td margin-top>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
-                        Group Name:
-                    </div>
+<div class="modal-content modal-primary">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title"><b>Create Consistency Group</b></h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group">
+                <label for="cgName" class="col-xs-3 control-label"> Group Name:</label>
+                <div class="col-xs-9">
+                    <div class="form-group">
+                        <input ng-model="cgName" id="cgName"   class="form-control" type="text"/>
+                    </div><!-- /.form-group -->
                 </div>
-            </td>
-            <td>
-                <div class="row">
-                    <div class="col-xs-8 col-sm-8 col-md-8 margin-top">
-                        <input ng-model="cgName"
-                               class="form-control" type="text"/>
-
-                    </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 margin-top">
-                    </div>
+            </div>
+            <div class="clearfix form-group">
+                <label class="col-xs-3 control-label">Protect From:</label>
+                <div class="col-xs-9">
+                    <div class="form-group">
+                        <b>{{productionCluster.name}}</b>
+                    </div><!-- /.form-group -->
                 </div>
-
-            </td>
-        </tr>
-
-        <tr>
-            <td margin-top>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
-                        Protect from: <label for="inputdefault">{{productionCluster.name}}</label>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="row">
-                    <div class="col-xs-1 col-sm-1 col-md-1 margin-top-x-lg radio">To:</div>
-                    <div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+            </div>
+            <div class="clearfix form-group">
+                <label for="selectedReplicaCluster" class="col-xs-3 control-label">Protect To:</label>
+                <div class="col-xs-9">
+                    <div class="form-group">
                         <select ng-model="selectedReplicaCluster"
+                                id="selectedReplicaCluster"
                                 ng-options="cluster.name for cluster in vmStructureData.systemInfo.replicaClusters"
                                 class="form-control">
-                            <!-- <option value="" ng-if="false"></option> -->
-
                         </select>
-                    </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 margin-top">
-                    </div>
+                    </div><!-- /.form-group -->
                 </div>
-
-            </td>
-        </tr>
-        <tr>
-            <td margin-top>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
-                        Select VMs:
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="row">
-                    <div class="col-xs-9 col-sm-9 col-md-9 margin-top">
+            </div>
+            <div class="clearfix form-group">
+                <label class="col-xs-3 control-label">Select VMs:</label>
+                <div class="col-xs-9">
+                    <div class="form-group">
                         <multiselect ng-model="selectedVms" options="unprotectedVms" id-prop="id"
                                      display-prop="name"></multiselect>
-                    </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3 margin-top">
-                    </div>
+                    </div><!-- /.form-group -->
                 </div>
-
-            </td>
-        </tr>
-
-
-        <tr>
-            <td margin-top>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
-                        Service Class:
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="row">
-                    <div class="col-xs-5 col-sm-5 col-md-5 margin-top">
-
-
+            </div>
+            <div class="clearfix form-group">
+                <label class="col-xs-3 control-label">Service Class:</label>
+                <div class="col-xs-9">
+                    <div class="form-group">
                         <select ng-model="selectedPackage"
                                 ng-options="package.displayName for package in vmStructureData.systemInfo.packages"
                                 class="form-control">
-                            <!-- <option value="" ng-if="false"></option> -->
-
                         </select>
-
-                    </div>
-                    <div class="col-xs-7 col-sm-7 col-md-7 margin-top">
-                    </div>
+                    </div><!-- /.form-group -->
                 </div>
-
-            </td>
-        </tr>
-
-        <tr>
-            <td margin-top>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
-                        Description:
-                    </div>
+            </div>
+            <div class="clearfix form-group">
+                <label class="col-xs-3 control-label">Description:</label>
+                <div class="col-xs-9">
+                    <div class="form-group">
+                        <b>{{selectedPackage.description}}</b>
+                    </div><!-- /.form-group -->
                 </div>
-            </td>
-            <td>
-                <div class="row">
-                    <div class="col-xs-8 col-sm-8 col-md-8 margin-top-x-lg radio">
-                        {{selectedPackage.description}}
-                    </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 margin-top">
-                    </div>
+            </div>
+            <div class="clearfix form-group">
+                <label class="col-xs-3 control-label">Enable Replication:</label>
+                <div class="col-xs-9">
+                    <div class="form-group">
+                        <input type="checkbox" ng-model="enableReplication"/>
+                    </div><!-- /.form-group -->
                 </div>
-
-            </td>
-        </tr>
-
-
-        <tr>
-            <td margin-top>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
-                        Enable Replication: <label><input type="checkbox" ng-model="enableReplication"/></label>
-                    </div>
-                </div>
-            </td>
-            <td></td>
-        </tr>
-
-        <!--<tr>-->
-            <!--<td>-->
-                <!--<div class="margin-top-lg">-->
-                    <!--{{'PROTECT-UNPROTECT.BACKUP_TITLE' | translate}}-->
-                <!--</div>-->
-            <!--</td>-->
-            <!--<td>-->
-                <!--<div class="row">-->
-                    <!--<div class="col-xs-5 col-sm-5 col-md-5">-->
-                        <!--<label class="checkbox-inline">-->
-                            <!--<input type="checkbox" id="backupCheckbox" ng-model="backup" value="unchecked">-->
-                            <!--{{'PROTECT-UNPROTECT.BACKUP_MSG' | translate}}-->
-                        <!--</label>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="row">-->
-                    <!--<div class="col-xs-5 col-sm-5 col-md-5 margin-top-lg">-->
-                        <!--{{'PROTECT-UNPROTECT.BACKUP_PACKAGES' | translate}}-->
-                    <!--</div>-->
-                    <!--<div class="col-xs-6 col-sm-6 col-md-6 margin-top">-->
-                        <!--<select class="form-control" ng-model="schedule">-->
-                            <!--<option>Monthly</option>-->
-                            <!--<option>Weekly</option>-->
-                            <!--<option>Daily</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</td>-->
-        <!--</tr>-->
-        </tbody>
-    </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger  pull-left" ng-click="createCg()">Create</button>
+        <button type="button" class="btn btn-outline pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
+    </div>
 </div>
-<div class="modal-footer centered-text div-grey">
-    <button type="button" class="btn btn-primary" ng-click="createCg()">
-        Create
-    </button>
-</div>
+
