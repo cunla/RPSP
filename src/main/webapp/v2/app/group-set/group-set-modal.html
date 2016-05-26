@@ -1,0 +1,41 @@
+<div class="modal-header modal-header-primary">
+    <a class="close" ng-click="cancel()">x</a>
+	<h3 class="modal-title">
+		<div class="centered-text">Create Group Set</div>
+	</h3>
+</div>
+<div class="modal-body">
+
+	<br/>
+	<table class="table table-condensed table-striped">
+		<thead>
+		</thead>
+		<tbody>
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								Group Set Name:	
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-9 col-sm-9 col-md-9 margin-top">
+								 <input type="text" class="form-control" ng-model="groupSetName">
+							</div>	
+							<div class="col-xs-3 col-sm-3 col-md-3 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+		</tbody>					    
+	</table>
+</div>
+<div class="modal-footer centered-text div-grey">
+	<button type="button" class="btn btn-primary" ng-disabled="!groupSetName" ng-click="createGroupSet()">
+	         Create
+	</button>
+</div>
+

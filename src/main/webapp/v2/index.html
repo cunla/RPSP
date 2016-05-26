@@ -1,0 +1,221 @@
+<!doctype html>
+<html ng-app="home">
+
+<head>
+    <title>RPSP</title>
+    <link rel="stylesheet" href="assets/css/bootstrap/3.3.2/bootstrap.min.css"/>
+    <link rel="stylesheet" href="assets/css/font-awesome/4.4.0/font-awesome.min.css"/>
+
+    <link rel="stylesheet" href="assets/css/navbar.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/tablesort.css">
+    <link rel="stylesheet" type="text/css" href="assets/components/angularjs-slider/2.11.0/rzslider.css"></link>
+    <link rel="stylesheet" href="app/home/home.css">
+    <link rel="stylesheet" href="app/unprotect/unprotect.css">
+    <link rel="stylesheet" href="app/audit/audit.css">
+    <link rel="stylesheet" href="custom/css/custom.css">
+    <link rel="stylesheet" href="custom/css/AdminLTE.css">
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body ng-controller="vmStructureController" style="background-color: #ecf0f5">
+<div class="container-fluid custom-border ">
+    <div class="spinner-gif" ng-hide="finishedLoading"></div>
+    <app-header></app-header>
+    <action-menu></action-menu>
+    <div class="content">
+        <div class="row" >
+            <div class="col-md-9 no-float" >
+                <div class="alert alert-danger fade in"  ng-if="errorExp">
+                    <strong>{{errorExpText}}</strong>
+                </div>
+                <div class="box box-success box-solid"  ng-if="!errorExp">
+                    <div class="box-header with-border">
+                        <h3 class="box-title centered-text"><strong>{{"HOME.PROTECTED" | translate}}</strong> ({{protectedVms}} {{"HOME.VMS" | translate}})</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-striped">
+                            <tr>
+                                <td colspan="8">
+                                    <input class="form-control" type="search" ng-model="unprotect"
+                                           placeholder="filter VMs..."
+                                           aria-label="filter VMs"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width: 10px">Consistency Group</th>
+                                <th>{{'HOME.PRODUCTION_MSG' | translate}}</th>
+                                <th>{{'HOME.REPLICA_MSG' | translate}}</th>
+                                <th>{{'HOME.STATE_MSG' | translate}}</th>
+                                <th>{{'HOME.REPLICATION_MSG' | translate}}</th>
+                                <th>{{'HOME.SIZE_MSG' | translate}}</th>
+                                <th>{{'HOME.DR_TEST_MSG' | translate}}</th>
+                                <th ng-show="backupActive">{{'HOME.BACKUP_MSG'|translate}}</th>
+                            </tr>
+                            <tr ng-repeat="row in vmGsAndCgFlatData | filter:unprotect"
+                                droppable="true" index="{{$index}}"
+                                cgid="{{row.id}}"
+                                prod-cluster-id="{{row.productionCluster.id}}"
+                                replica-cluster-id="{{row.replicaClusters[0].id}}"
+                                ng-click="toggleSelect($index, true)"
+                                ng-dblclick="handleDoubleClick($index, true)"
+                                ng-class="{'selected' : (protectedSelectedIndex == $index )}"
+                                ng-hide="row.hideRow">
+                                <td width="30%">
+                                    <white-space ng-show="row.parent">&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
+                                       <span ng-show=" row.id != 'new-section'">
+                                           <i class="fa fa-fw fa-database {{row.hideChildren? 'fa-plus':'fa-minus'}} icon-silver1"
+                                              title="{{row.hideChildren? 'Expand':'Collapse'}}"
+                                              ng-click="toggleRow(row)"></i>
+                                     </span>
+                                    <span class="protected-line" ng-class="isLastName(row.name)" title="{{isActionApplicable()?'':'Actions disabled because not all CGs are in the same state'}}">
+                                        {{row.name}}
+                                     </span>
+                                    <div ng-hide="row.hideChildren" ng-repeat="vm in row.vms" draggable="true"
+                                         vmid="{{vm.id}}">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-fw fa-desktop"></i>
+                                        <white-space>&nbsp;&nbsp;</white-space>
+                                        {{vm.name}}
+                                    </div>
+                                </td>
+                                <td>{{row.productionCluster.name}}</td>
+                                <td>{{row.replicaClusters[0].name}}</td>
+                                <td>{{row.type == 'cg' ? getState('Enabled') : null}}</td>
+                                <td>
+                                    {{getReplicationStateIndicator(row.replicaClusters[0].groupCopySettings[0].replication,
+                                    row.replicaClusters[0].groupCopySettings[0].initCompletionPortion)}}
+                                </td>
+                                <td>{{row.maxVolumeSize}}</td>
+                                <td>
+                                    {{getImageAccessIndicator(row.replicaClusters[0].groupCopySettings[0].imageAccess)}}
+                                </td>
+                                <td ng-if="backupActive">
+
+                                    <div ng-hide="row.hideChildren"
+                                         ng-repeat="vm in row.vms"
+                                         vmid="{{vm.id}}"
+                                         ng-click="openBackupAccessModal(vm)"
+                                         title="Click to access backup">
+                                        <i class="fa {{vm.backupActive ? 'fa-check':'fa-close'}}"></i>
+                                        <span ng-show="vm.backupActive">{{vm.lastBackup | date}}</span>
+                                    </div>
+                                </td>
+
+
+                            </tr>
+                        </table >
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+            <div class="col-md-3 no-float">
+                <div class="box box-success-new  box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title centered-text"><strong>{{'HOME.UNPROTECTED' | translate}}</strong> ({{vmStructureData.unprotectedVms.length}} {{"HOME.VMS" | translate}})</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body no-padding" droppable="true">
+                        <table class="table table-striped">
+                            <tr>
+                                <td colspan="4">
+                                    <input class="form-control" type="search" ng-model="q"
+                                           placeholder="filter VMs..."
+                                           aria-label="filter VMs"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>{{'HOME.VM_NAME' | translate}}</th>
+                                <th>{{'HOME.IP_ADDRESS' | translate}}</th>
+                                <th style="width:30px;">&nbsp;</th>
+                            </tr>
+
+                            <tr ng-repeat="row in vmStructureData.unprotectedVms | filter:q | orderBy:'name' as filtered_result track by row.id"
+                                draggable="true" index="{{$index}}" vmid="{{row.id}}"
+                                ng-click="toggleSelect($index, false)"
+                                ng-class="{'selected' : unprotectedSelectedIndex == $index}">
+                                <td><i class="fa fa-fw fa-windows"></i></td>
+                                <td>{{row.name}}</td>
+                                <td>127.0.0.1:8000</td>
+                                <td><a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button" data-tooltip="Example for text text text" title="Example for text text text"><i class="fa fa-fw fa-info-circle"></i></a></td>
+                            </tr>
+
+                        </table>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div>
+    </div>
+</div>
+
+
+<div class="navbar-fixed-bottom row-fluid">
+    <div class="navbar-inner">
+        <div class="container">EMC DPaaS</div>
+    </div>
+</div>
+
+<script src="assets/js/angularjs/1.4.7/angular.min.js"></script>
+<script src="assets/js/angularjs/1.4.7/angular-route.min.js"></script>
+<script src="assets/js/jquery/1.11.3/jquery-1.11.3.min.js"></script>
+<script src="assets/js/bootstrap/3.3.2/bootstrap.min.js"></script>
+<script src="assets/js/angular-translate/2.6.1/angular-translate.min.js"></script>
+<script
+    src="assets/js/angular-translate/2.6.1/angular-translate-loader-static-files.min.js"></script>
+<script src="assets/js/angular-ui/0.13.0/ui-bootstrap-tpls-0.13.0.js"></script>
+<script src="assets/js/multi-select/1.1.3/angular-bootstrap-multiselect.min.js"></script>
+<script src="assets/js/angular-tablesort.js"></script>
+<script src="assets/js/icheck.min.js"></script>
+<script src="assets/components/angularjs-slider/2.11.0/rzslider.min.js"></script>
+
+<script src="app/app.js"></script>
+<script src="app/error-handling/error-handler.js"></script>
+<script src="app/locale/locale-service.js"></script>
+<script src="app/home/home-controller.js"></script>
+<script src="app/home/user-service.js"></script>
+<script src="app/home/vm-structure-service.js"></script>
+<script src="app/image-access/image-access-controller.js"></script>
+<script src="app/image-access/group-set-image-access-controller.js"></script>
+<script src="app/protect/protect-controller.js"></script>
+<script src="app/protect/protect-create-cg-controller.js"></script>
+<script src="app/unprotect/unprotect-controller.js"></script>
+<script src="app/edit-cg/edit-cg-controller.js"></script>
+<script src="app/bookmarks/bookmarks-controller.js"></script>
+<script src="app/failover/failover-controller.js"></script>
+<script src="app/failover/group-set-failover-controller.js"></script>
+<script src="app/failover/failover-alert-controller.js"></script>
+<script src="app/recover/recover-controller.js"></script>
+<script src="app/recover/group-set-recover-controller.js"></script>
+<script src="app/home/dnd-directives.js"></script>
+<script src="app/audit/audit-controller.js"></script>
+<script src="app/audit/audit-service.js"></script>
+<script src="app/backup-access/backup-access.service.js"></script>
+<script src="app/backup-access/backup-access.ctrl.js"></script>
+<script src="app/group-set/group-set-controller.js"></script>
+<script>
+    $(function () {
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+            checkboxClass: 'icheckbox_minimal-red',
+            radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-green',
+            radioClass: 'iradio_flat-green'
+        });
+
+
+    });
+</script>
+</body>
+</html>

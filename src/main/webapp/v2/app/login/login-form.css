@@ -1,0 +1,37 @@
+.login-form 
+{
+	max-width: 250px;
+	margin-top: 100px auto;
+	margin: 0 auto;
+}
+#inputUsername {
+	 margin-bottom: -1px;
+	 border-bottom-right-radius: 0;
+	 border-bottom-left-radius: 0;
+}
+#inputPassword {
+	border-top-left-radius: 0;
+			border-top-right-radius: 0;
+}
+#createAccount {
+	text-align: center;
+}
+
+#corp-footer {
+	color: #ffffff;
+}
+
+
+div.image {
+   width: 140px;
+   height: 140px;
+   margin: 0 auto 20px;
+   display: block;
+   background-size:contain;
+   background-image:url("../../assets/images/login.png");	
+}
+
+
+div.container-padding-top {
+    padding-top: 100px;
+}

@@ -1,0 +1,63 @@
+<div class="modal-header modal-header-primary">
+    <a class="close" ng-click="cancel()">x</a>
+	<h3 class="modal-title">
+		<div class="centered-text">{{'BOOKMARK.CREATE_BOOKMARK_MSG' | translate}} {{groupType}}: <b>{{groupName}}</b></div>
+	</h3>
+</div>
+<div class="modal-body">
+
+	<br/>
+	<table class="table table-condensed table-striped">
+		<thead>
+		</thead>
+		<tbody>
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								{{'BOOKMARK.BOOKAMARK_NAME_MSG' | translate}}	
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-9 col-sm-9 col-md-9 margin-top">
+								 <input type="text" class="form-control" ng-model="bookmarkName">
+							</div>	
+							<div class="col-xs-3 col-sm-3 col-md-3 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+			<tr>						
+				<td margin-top>
+				    <div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 radio">
+								{{'BOOKMARK.CONSISTENCY_TYPE_MSG' | translate}}	
+						</div>
+					</div>										
+				</td>			
+				<td>
+				        <div class="row">
+							<div class="col-xs-9 col-sm-9 col-md-9 margin-top">
+								<select class="form-control" ng-model="consistencyType">
+			                        <option value="crash-consistency">{{'BOOKMARK.CRASH_CONSISTENT_MSG' | translate}}</option>
+    								<option value="app-consistency">{{'BOOKMARK.APPLICATION_CONSISTENT_MSG' | translate}}</option>							
+								</select>
+							</div>	
+							<div class="col-xs-3 col-sm-3 col-md-3 margin-top">
+							</div>	
+						</div>
+
+				</td>
+			</tr>
+		</tbody>					    
+	</table>
+</div>
+<div class="modal-footer centered-text div-grey">
+	<button type="button" class="btn btn-primary" ng-disabled="!bookmarkName" ng-click="createBookmark()">
+	         {{'BOOKMARK.CREATE_MSG' | translate}}
+	</button>
+</div>
+

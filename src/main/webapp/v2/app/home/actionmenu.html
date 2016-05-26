@@ -1,0 +1,52 @@
+<div class="content" style="min-height: 10px;padding-top:0px;padding-bottom:0px;">
+    <div class="row center-block">
+        <div class="box box-primary">
+            <div class="col-xs-offset-1 box-body">
+                <button type="button" class="btn" ng-class="{'disabled' : !isActionApplicable()}" ng-click="openImageAccessModal()">
+                    <div class="info-box-icon bg-aqua buttons-custom"><i class="fa fa-fw fa-flask"></i></div>
+                    <div class="buttons-custom-text">{{'HOME.DR_TEST_MSG' | translate}}</div>
+                </button><!-- /.info-box -->
+
+                <button type="button" class="btn" ng-class="{'disabled' : !isActionApplicable()}" ng-click="openFailoverModal()">
+                    <div class="info-box-icon bg-aqua buttons-custom"><i class="fa fa-fw fa-files-o"></i></div>
+                    <div class="buttons-custom-text">{{'HOME.FAILOVER_MSG' | translate}}</div>
+                </button><!-- /.info-box -->
+
+                <button type="button" class="btn" ng-class="{'disabled' : !isActionApplicable()}" ng-click="openRecoverModal()">
+                    <div class="info-box-icon bg-aqua buttons-custom"><i class="fa fa-fw fa-cloud-download"></i></div>
+                    <div class="buttons-custom-text">{{'HOME.RESTORE_PRODUCTION_MSG' | translate}}</div>
+                </button><!-- /.info-box -->
+
+                <button type="button" class="btn"  ng-click="openAuditLogModal()">
+                    <div class="info-box-icon bg-aqua buttons-custom"><i class="fa fa-fw fa-building-o"></i></div>
+                    <div class="buttons-custom-text">{{'HOME.AUDIT_LOG' | translate}}</div>
+                </button><!-- /.info-box -->
+
+                <button type="button" class="btn"  ng-class="{'disabled' : !isActionApplicable()}" ng-click="openEditCgModal()">
+                    <div class="info-box-icon bg-aqua buttons-custom"><i class="fa fa-fw fa-edit"></i></div>
+                    <div class="buttons-custom-text">{{'HOME.EDIT_MSG' | translate}}</div>
+                </button><!-- /.info-box -->
+
+                <button type="button" class="btn"  ng-class="{'disabled' : !isActionApplicable()}" ng-click="openBookmarksModal()">
+                    <div class="info-box-icon bg-aqua buttons-custom"><i class="fa fa-fw fa-bookmark-o"></i></div>
+                    <div class="buttons-custom-text">{{'HOME.ADD_BOOKMARK_MSG' | translate}}</div>
+                </button><!-- /.info-box -->
+
+                <!--<button type="button" class="btn" ng-class="{'disabled' : !isActionApplicable()}">-->
+                <!--<div class="info-box-icon bg-aqua buttons-custom"><i class="fa fa-fw fa-history"></i></div>-->
+                <!--<div class="buttons-custom-text">{{'HOME.SHOW_HISTORY_MSG' | translate}}</div>-->
+                <!--</button>&lt;!&ndash; /.info-box &ndash;&gt;-->
+
+                <button type="button" class="btn" ng-class="{'disabled' : !isActionApplicable()}">
+                    <div class="info-box-icon bg-aqua buttons-custom"><i class="fa fa-fw fa-bullhorn"></i></div>
+                    <div class="buttons-custom-text">{{'HOME.SERVICE_REQUEST_MSG' |  translate}}</div>
+                </button><!-- /.info-box -->
+
+                <button type="button" class="btn" ng-click="openCreateCgModal()">
+                    <div class="info-box-icon bg-aqua buttons-custom"><i class="fa fa-fw fa-plus-circle"></i></div>
+                    <div class="buttons-custom-text">Create CG</div>
+                </button><!-- /.info-box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+</div>
