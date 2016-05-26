@@ -2,11 +2,11 @@ package com.emc.rpsp.virtualconfig.service.impl;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.emc.rpsp.core.service.impl.BaseServiceImpl;
@@ -29,6 +29,8 @@ import com.emc.rpsp.virtualconfig.service.VirtualConfigurationService;
 @Service
 public class VirtualConfigurationServiceImpl extends BaseServiceImpl implements
 		VirtualConfigurationService {
+	
+	private final Logger log = LoggerFactory.getLogger(VirtualConfigurationServiceImpl.class);
 
 	@Override
 	public VcenterConfig getVirtualConfiguration(Long clusterId) {
@@ -36,9 +38,16 @@ public class VirtualConfigurationServiceImpl extends BaseServiceImpl implements
 		VcenterConfig vcenterConfig = new VcenterConfig();
 		SystemSettings system = findSystemByCluster(clusterId);
 		Client client = getClient(system);
-		ClusterVirtualInfraConfiguration clusterVirtualConfig = 
-					client.getClusterVirtualInfraConfiguration(clusterId);
+		ClusterVirtualInfraConfiguration clusterVirtualConfig = null;
 		
+		try{
+			clusterVirtualConfig = client.getClusterVirtualInfraConfiguration(clusterId);
+		}
+		catch (Exception e){
+			log.error("Can't obtain virtual configuration for cluster - " + clusterId, e);
+		}
+		
+		if(clusterVirtualConfig != null){
 		HashSet<VirtualCenterConfiguration> clusterVcs = clusterVirtualConfig.getVirtualCentersConfiguration();
 		VirtualCenterConfiguration clusterVc = clusterVcs.stream().collect(Collectors.toList()).get(0);
 		vcenterConfig.setId(clusterVc.getVirtualCenterUID().getUuid());
@@ -80,6 +89,8 @@ public class VirtualConfigurationServiceImpl extends BaseServiceImpl implements
 					esxConfig.addDataStoreConfig(dataStoreConfig);
 				}
 			}
+		}
+		
 		}
 
 		
