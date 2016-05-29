@@ -44,6 +44,15 @@ header .logo{
     font-size:38px !important;
     line-height: 60px !important;
 }
+.action-menu-button{
+    background-color: #00a7d0 !important;
+    color: #fff !important;
+}
+.btn-app{
+    font-size:14px !important;
+    margin: 0 0 0px 10px !important;
+    height:72px !important;
+}
 
 header .logo-lg{
     color:#fff;
@@ -228,6 +237,9 @@ div.image {
 .minus-padding-left{
     padding-left:0px;
     padding-top:10px;
+}
+.minus-padding-left-top{
+    padding-left:0px;
 }
 .close{
     color:#fff;
