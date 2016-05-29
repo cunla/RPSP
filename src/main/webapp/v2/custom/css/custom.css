@@ -40,8 +40,9 @@ header .user a {
     color:#fff
 }
 header .logo{
-    width:600px !important;
+    width:70% !important;
     font-size:38px !important;
+    line-height: 60px !important;
 }
 
 header .logo-lg{
