@@ -17,6 +17,7 @@ import com.emc.rpsp.virtualconfig.domain.VcenterConfig;
 import com.emc.rpsp.virtualconfig.service.VirtualConfigurationService;
 import com.emc.rpsp.vms.domain.VmOwnership;
 import com.emc.rpsp.vms.service.VmOwnershipService;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -34,6 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class DataLoaderServiceImpl implements DataLoaderService {
@@ -65,6 +67,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         internalData.setUsers(userService.findUsers());
         internalData.setVms(vmOwnershipService.findAll());
         setPackageClustersData(internalData);
+        handleClustersFriendlyNames(internalData);
         if (includeVirtualConfig) {
             addVirtualConfigurationInfo(internalData.getSystems());
         }
@@ -256,6 +259,16 @@ public class DataLoaderServiceImpl implements DataLoaderService {
                 }
             }
         }
+    }
+    
+    
+    private void handleClustersFriendlyNames(InternalData internalData) {
+     		 
+        internalData.getSystems().stream()
+    	.forEach(s -> s.getClusters().stream()
+    		 .filter(c -> StringUtils.isEmpty(c.getFriendlyName()))
+    			 .forEach(cl -> cl.setFriendlyName(cl.getClusterName())));
+        
     }
 
 

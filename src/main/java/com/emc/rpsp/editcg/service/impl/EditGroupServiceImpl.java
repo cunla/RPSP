@@ -26,7 +26,8 @@ public class EditGroupServiceImpl extends BaseServiceImpl implements EditGroupSe
 	
 	@Autowired
 	private GroupSetService groupSetService = null;
-
+	
+	
 	
 	@Override
 	public void editConsistencyGroup(
@@ -38,31 +39,35 @@ public class EditGroupServiceImpl extends BaseServiceImpl implements EditGroupSe
     		ConsistencyGroup origGroup = consistencyGroupChanges.getOriginalConsistencyGroup();
     		ConsistencyGroup modifiedGroup = consistencyGroupChanges.getCurrentConsistencyGroup();
     		Long groupId = Long.parseLong(modifiedGroup.getId());
-    		Long packageId = Long.parseLong(modifiedGroup.getPackageId());
-    		List<PackageConfig> packageConfigs = findPackageConfigsByPackageId(packageId);
+    		Long packageId = modifiedGroup.getPackageId() != null ? 
+    				Long.parseLong(modifiedGroup.getPackageId()) : null;
+    		List<PackageConfig> packageConfigs = packageId != null ? 
+    				findPackageConfigsByPackageId(packageId) : null;
     		
     		if(!origGroup.getName().equals(modifiedGroup.getName())){
     			client.renameGroup(groupId, modifiedGroup.getName());
     		}
-    		if(!origGroup.getPackageName().equals(modifiedGroup.getPackageName())){
-    			client.setGroupPackage(groupId, packageId);
-    			PackageDefinition packageDefinition = findPackageById(packageId);
-    			int rpo = packageDefinition.getRpo();
-    			client.setRpoPolicy(groupId, rpo, packageDefinition);
-    		}    		
-    		for(VmDefinition currVmDefinition : modifiedGroup.getVms()){
-    			Stream<VmDefinition> origVmsStream = origGroup.getVms().stream();
-    			boolean isNewVm = origVmsStream.noneMatch(vm -> vm.getId().equals(currVmDefinition.getId()));
-    			if(isNewVm){
-    				client.addVmToCG(currVmDefinition.getId(), groupId, packageConfigs);
-    			}
-    		}
-    		for(VmDefinition currVmDefinition : origGroup.getVms()){
-    			Stream<VmDefinition> modifiedVmsStream = modifiedGroup.getVms().stream();
-    			boolean isDeletedVm = modifiedVmsStream.noneMatch(vm -> vm.getId().equals(currVmDefinition.getId()));
-    			if(isDeletedVm){
-    				client.removeVmsFromCG(currVmDefinition.getId(), groupId, packageConfigs);
-    			}
+    		if(packageId != null){
+	    		if(!origGroup.getPackageName().equals(modifiedGroup.getPackageName())){
+	    			client.setGroupPackage(groupId, packageId);
+	    			PackageDefinition packageDefinition = findPackageById(packageId);
+	    			int rpo = packageDefinition.getRpo();
+	    			client.setRpoPolicy(groupId, rpo, packageDefinition);
+	    		}    		
+	    		for(VmDefinition currVmDefinition : modifiedGroup.getVms()){
+	    			Stream<VmDefinition> origVmsStream = origGroup.getVms().stream();
+	    			boolean isNewVm = origVmsStream.noneMatch(vm -> vm.getId().equals(currVmDefinition.getId()));
+	    			if(isNewVm){
+	    				client.addVmToCG(currVmDefinition.getId(), groupId, packageConfigs);
+	    			}
+	    		}
+	    		for(VmDefinition currVmDefinition : origGroup.getVms()){
+	    			Stream<VmDefinition> modifiedVmsStream = modifiedGroup.getVms().stream();
+	    			boolean isDeletedVm = modifiedVmsStream.noneMatch(vm -> vm.getId().equals(currVmDefinition.getId()));
+	    			if(isDeletedVm){
+	    				client.removeVmsFromCG(currVmDefinition.getId(), groupId, packageConfigs);
+	    			}
+	    		}
     		}
     		
     		Map<String, VmDefinition> origVmsMap = origGroup
@@ -95,6 +100,8 @@ public class EditGroupServiceImpl extends BaseServiceImpl implements EditGroupSe
     	}
 		
 	}
+	
+	
 	
 	
 	private void handleGroupSetMembership(Client client, ConsistencyGroup origGroup, ConsistencyGroup modifiedGroup){
