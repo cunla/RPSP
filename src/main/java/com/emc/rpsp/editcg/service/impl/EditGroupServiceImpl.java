@@ -28,7 +28,7 @@ public class EditGroupServiceImpl extends BaseServiceImpl implements EditGroupSe
 	private GroupSetService groupSetService = null;
 
 	
-	@Override
+	/*@Override
 	public void editConsistencyGroup(
 			ConsistencyGroupChanges consistencyGroupChanges) {
 		
@@ -94,7 +94,84 @@ public class EditGroupServiceImpl extends BaseServiceImpl implements EditGroupSe
 
     	}
 		
+	}*/
+	
+	
+	
+	
+	@Override
+	public void editConsistencyGroup(
+			ConsistencyGroupChanges consistencyGroupChanges) {
+		
+		Client client = getClient();
+    	if(client != null){   	
+    		
+    		ConsistencyGroup origGroup = consistencyGroupChanges.getOriginalConsistencyGroup();
+    		ConsistencyGroup modifiedGroup = consistencyGroupChanges.getCurrentConsistencyGroup();
+    		Long groupId = Long.parseLong(modifiedGroup.getId());
+    		Long packageId = modifiedGroup.getPackageId() != null ? 
+    				Long.parseLong(modifiedGroup.getPackageId()) : null;
+    		List<PackageConfig> packageConfigs = packageId != null ? 
+    				findPackageConfigsByPackageId(packageId) : null;
+    		
+    		if(!origGroup.getName().equals(modifiedGroup.getName())){
+    			client.renameGroup(groupId, modifiedGroup.getName());
+    		}
+    		if(packageId != null){
+	    		if(!origGroup.getPackageName().equals(modifiedGroup.getPackageName())){
+	    			client.setGroupPackage(groupId, packageId);
+	    			PackageDefinition packageDefinition = findPackageById(packageId);
+	    			int rpo = packageDefinition.getRpo();
+	    			client.setRpoPolicy(groupId, rpo, packageDefinition);
+	    		}    		
+	    		for(VmDefinition currVmDefinition : modifiedGroup.getVms()){
+	    			Stream<VmDefinition> origVmsStream = origGroup.getVms().stream();
+	    			boolean isNewVm = origVmsStream.noneMatch(vm -> vm.getId().equals(currVmDefinition.getId()));
+	    			if(isNewVm){
+	    				client.addVmToCG(currVmDefinition.getId(), groupId, packageConfigs);
+	    			}
+	    		}
+	    		for(VmDefinition currVmDefinition : origGroup.getVms()){
+	    			Stream<VmDefinition> modifiedVmsStream = modifiedGroup.getVms().stream();
+	    			boolean isDeletedVm = modifiedVmsStream.noneMatch(vm -> vm.getId().equals(currVmDefinition.getId()));
+	    			if(isDeletedVm){
+	    				client.removeVmsFromCG(currVmDefinition.getId(), groupId, packageConfigs);
+	    			}
+	    		}
+    		}
+    		
+    		Map<String, VmDefinition> origVmsMap = origGroup
+    													.getVms()
+    													.stream()
+    													.collect(Collectors.toMap(VmDefinition::getId, v -> v));
+    		
+    		for(VmDefinition currVmDefinition : modifiedGroup.getVms()){
+    			VmDefinition origVm = origVmsMap.get(currVmDefinition.getId());
+    			if(origVm == null 
+    					|| origVm.isCritical() != currVmDefinition.isCritical()
+    							|| origVm.getSequenceNumber() != currVmDefinition.getSequenceNumber()){
+    				client.changeVmsPowerUpSequence(currVmDefinition.getId(), 
+    													groupId, currVmDefinition.isCritical(), 
+    															currVmDefinition.getSequenceNumber());
+    			}
+    		}
+    		
+    		
+    		handleGroupSetMembership(client, origGroup, modifiedGroup);
+    		
+    		
+    		if(origGroup.isEnableProtection() != modifiedGroup.isEnableProtection()){
+    			client.setCgProtectionState(groupId, modifiedGroup.isEnableProtection());
+    		}
+    		
+    		
+    		
+
+    	}
+		
 	}
+	
+	
 	
 	
 	private void handleGroupSetMembership(Client client, ConsistencyGroup origGroup, ConsistencyGroup modifiedGroup){
