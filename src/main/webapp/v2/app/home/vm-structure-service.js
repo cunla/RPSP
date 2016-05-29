@@ -22,6 +22,7 @@ app.service('vmStructureService', ['$http', function ($http) {
         return $http.get('/rpsp/account-vms')
             .then(function (response) {
                 vmStructureData = response.data;
+                //console.log("Data-----",response);
                 //flatten the hierarchical data to be displayed in table
                 var vmGsAndCgFlatDataArr = new Array();
                 var topLevelContainers = vmStructureData.protectedVms;
