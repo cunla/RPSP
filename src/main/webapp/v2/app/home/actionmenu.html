@@ -22,12 +22,53 @@
             <!--<a class="btn btn-app" ng-class="!isActionApplicable() ? 'disabled' : 'action-menu-button'"  ng-click="openImageAccessModal()">-->
             <!--<i class="fa fa-flask"></i> {{'HOME.DR_TEST_MSG' | translate}}-->
             <!--</a>-->
-            <a class="btn btn-app" ng-class="!isActionApplicable() ? 'disabled' : 'action-menu-button'"  >
+            <a class="btn btn-app action-menu-button"   ng-click="isCollapsed = !isCollapsed">
                 <i class="fa fa-bullhorn"></i> {{'HOME.SERVICE_REQUEST_MSG' |  translate}}
             </a>
+
             <a class="btn btn-app action-menu-button"   ng-click="openCreateCgModal()">
                 <i class="fa fa-plus-circle"></i> Create CG
             </a>
         </div>
+    </div>
+    <div ng-if="isCollapsed" class="service-request">
+        <div class="box  box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Services Request</h3>
+            </div><!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" ng-submit="closeisCollapsed()">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="fname" class="col-sm-1">First Name *</label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control" id="fname" placeholder="First Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lname" class="col-sm-1">Last Name *</label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control" id="lname" placeholder="Last Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-1">Email *</label>
+                        <div class="col-sm-11">
+                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1">Text</label>
+                        <div class="col-sm-11">
+                            <textarea class="form-control col-sm-10" rows="3" placeholder="Enter ..."></textarea>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-info pull-left">Submit</button>
+                    <button type="button" class="btn btn-default pull-right" ng-click="closeisCollapsed()">Cancel</button>
+                </div><!-- /.box-footer -->
+            </form>
+        </div><!-- /.box -->
     </div>
 </div>

@@ -26,8 +26,11 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     $scope.vmGsAndCgFlatData = {};
     $scope.totalVms = {};
     $scope.protectedVms = {};
-	$scope.finishedLoading = false;
-
+    $scope.finishedLoading = false;
+    $scope.isCollapsed = false;
+    function closeisCollapsed(){
+        $scope.isCollapsed = false;
+    }
     $scope.toggleRow = function (row) {
         if (row.type == 'gs') {
             for (cgInd in $scope.vmGsAndCgFlatData) {
@@ -39,6 +42,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
         }
         row.hideChildren = !row.hideChildren;
     }
+
 
     $scope.getVmStructureData = function () {
         vmStructureService.getVmStructureData().then(function (allData) {
@@ -421,7 +425,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
         return res;
     };
 
-
+    $scope.closeisCollapsed = closeisCollapsed;
 }]);
 
 app.directive('appHeader', function() {
