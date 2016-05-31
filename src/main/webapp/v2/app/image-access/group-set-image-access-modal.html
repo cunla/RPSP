@@ -1,98 +1,57 @@
-<div class="modal-header modal-header-primary">
-    <a class="close" ng-click="cancel()">x</a>
-	<h3 class="modal-title">
-		<div class="centered-text">{{'IMAGE-ACCESS.DR_TEST_MSG' | translate}} <b>{{vmGsAndCgFlatData[protectedSelectedIndex].name}}</b></div>
-	</h3>
-</div>
-<div class="modal-body">
-
-	<br/>
-	<table class="table table-condensed table-striped">
-		<thead>
-		</thead>
-		<tbody>
-			<tr>
-				<td margin-top>
-				    <div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								{{'IMAGE-ACCESS.SELECT_CLUSTER_MSG' | translate}}
-						</div>
-					</div>
-				</td>
-				<td>
-				        <div class="row">
-							<div class="col-xs-4 col-sm-4 col-md-4 margin-top">
-								<select ng-model="selectedCluster"
-	                                          ng-options="selectedCluster.name for selectedCluster in vmGsAndCgFlatData[protectedSelectedIndex].
+<div class="modal-content modal-primary">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">{{'IMAGE-ACCESS.DR_TEST_MSG' | translate}} <b>{{vmGsAndCgFlatData[protectedSelectedIndex].name}}</b></h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group">
+                <label for="SELECT_COPY_MSG" class="col-xs-3 control-label">{{'IMAGE-ACCESS.SELECT_CLUSTER_MSG' | translate}}</label>
+                <div class="col-xs-9">
+                    <div class="form-group">
+                        <select ng-model="selectedCluster"
+                                ng-options="selectedCluster.name for selectedCluster in vmGsAndCgFlatData[protectedSelectedIndex].
 	                                                      consistencyGroups[0].replicaClusters"
-	                                           ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled'"
-			                                              class="form-control">
-			                                                          <!-- <option value="" ng-if="false"></option> -->
+                                ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled'"
+                                class="form-control select2" id="SELECT_COPY_MSG" style="width: 100%;">
+                        </select>
+                    </div><!-- /.form-group -->
+                </div>
+            </div>
 
-								</select>
-							</div>
-							<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
-							</div>
-						</div>
-
-				</td>
-			</tr>
-			<tr>
-				<td margin-top>
-				    <div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								{{'IMAGE-ACCESS.SELECT_IMAGE_MSG' | translate}}
-						</div>
-					</div>
-				</td>
-				<td>
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-							<label>
-								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled'" value="latest">
-							{{'IMAGE-ACCESS.LATEST_IMAGE_MSG' | translate}}
-								</input>
-							</label>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-4 col-sm-4 col-md-4 radio">
-							<label>
-								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled' || selectedClsuter.groupCopySettings[0].bookmarks.length == 0" value="bookmark">
-							{{'IMAGE-ACCESS.SPECIFIC_BOOKMARK_MSG' | translate}}
-								</input>
-							</label>
-						</div>
-
-
-						<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
-								<select ng-model="selectedBookmark"
-	                                        ng-options="bookmark.name + ' (AC)' + ' - ' + bookmark.closingTimestamp for bookmark in selectedCluster.groupCopySettings[0].bookmarks"
-	                                             ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled' || selectedClsuter.groupCopySettings[0].bookmarks.length == 0"
-	                                                 class="form-control">
-								</select>
-						</div>
-					</div>
-
-
-
-
-				</td>
-			</tr>
-			<tr>
-				<td>
-						{{'IMAGE-ACCESS.TEST_NETWORK_MSG' | translate}}
-				</td>
-				<td>
-						{{'IMAGE-ACCESS.TENANT_TESTING_MSG' | translate}}
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-<div class="modal-footer centered-text div-grey">
-	<button type="button" class="btn btn-primary" ng-click="imageAccess()">
-	         {{selectedCluster.groupCopySettings[0].imageAccess == 'Disabled' ? ('IMAGE-ACCESS.ENABLE_MSG'|translate):('IMAGE-ACCESS.DISABLE_MSG'|translate)}}
-	</button>
+            <div class="form-group clearfix">
+                <label class="col-xs-3 control-label">{{'IMAGE-ACCESS.SELECT_IMAGE_MSG' | translate}}:</label>
+                <div class="col-xs-9">
+                    <div class="form-group">
+                        <label class="col-xs-12 minus-padding-left">
+                            <input type="radio" ng-model="imageAccessType" ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled'" value="latest">
+                            {{'IMAGE-ACCESS.LATEST_IMAGE_MSG' | translate}}
+                        </label>
+                        <label class="col-xs-12 minus-padding-left">
+                            <input type="radio" ng-model="imageAccessType" ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled' || selectedClsuter.groupCopySettings[0].bookmarks.length == 0" value="bookmark">
+                            {{'IMAGE-ACCESS.SPECIFIC_BOOKMARK_MSG' | translate}}
+                            <select ng-model="selectedBookmark"
+                                    ng-options="bookmark.name + ' (AC)' + ' - ' + bookmark.closingTimestamp for bookmark in selectedCluster.groupCopySettings[0].bookmarks"
+                                    ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled' || selectedClsuter.groupCopySettings[0].bookmarks.length == 0"
+                                    class="form-control">
+                            </select>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group clearfix ">
+                <label for="TEST_NETWORK_MSG" class="col-xs-3 control-label">{{'IMAGE-ACCESS.TEST_NETWORK_MSG' | translate}}</label>
+                <div class="col-xs-9">
+                    <div id="TEST_NETWORK_MSG"><strong>{{'IMAGE-ACCESS.TENANT_TESTING_MSG' | translate}}</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger  pull-left" ng-click="imageAccess()">
+            {{selectedCluster.groupCopySettings[0].imageAccess == 'Disabled' ? ('IMAGE-ACCESS.ENABLE_MSG'|translate):('IMAGE-ACCESS.DISABLE_MSG'|translate)}}
+        </button>
+        <button type="button" class="btn btn-outline pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
+    </div>
 </div>
 

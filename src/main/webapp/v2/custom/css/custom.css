@@ -40,7 +40,7 @@ header .user a {
     color:#fff
 }
 header .logo{
-    width:70% !important;
+    width:65% !important;
     font-size:38px !important;
     line-height: 60px !important;
 }
@@ -65,6 +65,49 @@ header .logo{
 }
 header .logo-lg{
     color:#fff;
+}
+.nav > li > a:hover{
+    background-color:#00a7d0 !important
+}
+.nav .open>a{
+    background-color:#00a7d0 !important
+}
+.navbar-nav>li>a{
+    height:61px;
+}
+.nav > li > a:hover, .nav > li > a:active, .nav > li > a:focus{
+    background: none;
+}
+.audit-modal .table-striped>tbody>tr:nth-of-type(odd){
+    background-color: #00a7d0 !important;
+}
+.audit-modal .table-hover>tbody>tr:hover{
+    background-color: #23527c !important;
+}
+.white{
+    color:#fff;
+}
+.scroll-table{
+    overflow: auto;
+    height: 400px;
+}
+input[type=checkbox], input[type=radio]{
+    width:15px;
+    height:15px;
+}
+.overlay>.fa{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -15px;
+    margin-top: -15px;
+    color: #000;
+    font-size: 40px;
+    color:#23527c
+}
+.header-blue{
+    background-color:#3c8dbc;
+    color:#fff !important;
 }
 /*header .navbar{*/
     /*border-top-left-radius:2px;*/
