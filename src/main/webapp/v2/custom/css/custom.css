@@ -20,14 +20,15 @@ body.body-grey {
 */
 html, body
 {
-    height: 100%;
+    height: 98% !important;
+    min-height: 98% !important;
 }
 .custom-border{
     border:3px solid #000;
     border-radius: 5px;
     margin:20px;
     padding:0px;
-    min-height:95%;
+    min-height:98%;
 }
 .main-header{
     background-color: #3c8dbc;
@@ -109,6 +110,10 @@ input[type=checkbox], input[type=radio]{
     background-color:#3c8dbc;
     color:#fff !important;
 }
+.dragdrop{
+    cursor: move;
+}
+
 /*header .navbar{*/
     /*border-top-left-radius:2px;*/
     /*padding:10px;*/
@@ -265,6 +270,10 @@ div.image {
 }
 .box.box-solid.box-success-new{
     border: 1px solid #205081;
+    min-height:600px;
+}
+.box.box-solid.box-success{
+    min-height:600px;
 }
 .box.box-solid.box-success-new > .box-header {
     color: #ffffff;
@@ -272,7 +281,19 @@ div.image {
     background: #205081;
     background-color: #205081;
 }
+.trlast:last-child{
+    border:2px dotted dimgray;
+    height: 100px;
+    margin: 10px;
+    width: 98%;
+    position: absolute;
+    background-color: lightgrey;
+    color:#333;
+    font-size:30px;
+    text-align: center;
+    opacity: 0.4;
 
+}
 
 .buttons-custom{
     float:none !important;

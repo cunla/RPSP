@@ -70,7 +70,8 @@
                                 ng-click="toggleSelect($index, true)"
                                 ng-dblclick="handleDoubleClick($index, true)"
                                 ng-class="{'selected' : (protectedSelectedIndex == $index )}"
-                                ng-hide="row.hideRow">
+                                ng-hide="row.hideRow"
+                                class="trlast">
                                 <td width="30%">
                                     <white-space ng-show="row.parent">&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
                                        <span ng-show=" row.id != 'new-section'">
@@ -92,8 +93,9 @@
                                 <td>{{row.replicaClusters[0].name}}</td>
                                 <td>{{row.type == 'cg' ? getState('Enabled') : null}}</td>
                                 <td>
-                                    {{getReplicationStateIndicator(row.replicaClusters[0].groupCopySettings[0].replication,
-                                    row.replicaClusters[0].groupCopySettings[0].initCompletionPortion)}}
+                                   <span class="label" ng-class='whatStatusIs(row.replicaClusters[0].groupCopySettings[0].replication,
+                                    row.replicaClusters[0].groupCopySettings[0].initCompletionPortion)'> {{getReplicationStateIndicator(row.replicaClusters[0].groupCopySettings[0].replication,
+                                    row.replicaClusters[0].groupCopySettings[0].initCompletionPortion)}}</span>
                                 </td>
                                 <td>{{row.maxVolumeSize}}</td>
                                 <td>
@@ -137,19 +139,18 @@
                                 <th>{{'HOME.IP_ADDRESS' | translate}}</th>
                                 <th style="width:30px;">&nbsp;</th>
                             </tr>
-
                             <tr ng-repeat="row in vmStructureData.unprotectedVms | filter:q | orderBy:'name' as filtered_result track by row.id"
                                 draggable="true"
                                 index="{{$index}}"
                                 vmid="{{row.id}}"
                                 ng-click="toggleSelect($index, false)"
-                                ng-class="{'selected' : unprotectedSelectedIndex == $index}">
+                                ng-class="{'selected' : unprotectedSelectedIndex == $index}"
+                                class="dragdrop">
                                 <td><i class="fa fa-fw fa-windows"></i></td>
                                 <td>{{row.name}}</td>
                                 <td>127.0.0.1:8000</td>
                                 <td><a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button" data-tooltip="Example for text text text" title="Example for text text text"><i class="fa fa-fw fa-info-circle"></i></a></td>
                             </tr>
-
                         </table>
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->

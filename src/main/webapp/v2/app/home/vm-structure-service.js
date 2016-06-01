@@ -48,6 +48,7 @@ app.service('vmStructureService', ['$http', function ($http) {
                 var newCg = {};
                 newCg.id = 'new-section';
               //  newCg.name = 'New ...';
+                newCg.name = 'Drop VM to Protect';
                 vmGsAndCgFlatDataArr.push(newCg);
                 vmGsAndCgFlatData = vmGsAndCgFlatDataArr;
                 //count protected vms

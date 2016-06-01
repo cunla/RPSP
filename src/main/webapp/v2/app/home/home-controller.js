@@ -407,7 +407,40 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
         }
         return res;
     };
+    $scope.whatStatusIs = function (status, initCompletionPortion) {
+        var res = status;
+        if (status != null && status !== undefined) {
 
+           
+
+            if (status == 'Initializing') {
+                res = 'label-warning';
+
+            }
+            else if (status == 'Active') {
+                res = 'label-success';
+            }
+            else if (status == 'Stand by') {
+                res = 'label-warning';
+            }
+            else if (status == 'Ready') {
+                res = 'label-primary';
+            }
+            else if (status == 'Paused') {
+                res = 'label-warning';
+            }
+            else if (status == 'Paused by system') {
+                res = 'label-warning';
+            }
+            else if (status == 'Error') {
+                res = 'label-danger';
+            }
+            else {
+                res = 'label-danger';
+            }
+        }
+        return res;
+    };
 
     $scope.getState = function (status) {
         var res = status;
