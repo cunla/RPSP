@@ -162,7 +162,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
             });
         }
     };
-
+    
     $scope.openCreateCgModal = function (vmId) {
         var modalInstance = $modal.open({
             templateUrl: 'app/protect/protect-create-cg-modal.html',
@@ -411,7 +411,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
         var res = status;
         if (status != null && status !== undefined) {
 
-           
+
 
             if (status == 'Initializing') {
                 res = 'label-warning';

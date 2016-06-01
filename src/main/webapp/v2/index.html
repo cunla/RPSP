@@ -46,7 +46,7 @@
                         <table class="table table-striped">
                             <tr>
                                 <td colspan="8">
-                                    <input class="form-control" type="search" ng-model="unprotect"
+                                    <input class="form-control" type="search" ng-model="protect"
                                            placeholder="filter VMs..."
                                            aria-label="filter VMs"/>
                                 </td>
@@ -61,7 +61,7 @@
                                 <th>{{'HOME.DR_TEST_MSG' | translate}}</th>
                                 <th ng-show="backupActive">{{'HOME.BACKUP_MSG'|translate}}</th>
                             </tr>
-                            <tr ng-repeat="row in vmGsAndCgFlatData  | filter:unprotect"
+                            <tr ng-repeat="row in vmGsAndCgFlatData | filter:protect as filtered"
                                 droppable="true"
                                 index="{{$index}}"
                                 cgid="{{row.id}}"
@@ -69,9 +69,8 @@
                                 replica-cluster-id="{{row.replicaClusters[0].id}}"
                                 ng-click="toggleSelect($index, true)"
                                 ng-dblclick="handleDoubleClick($index, true)"
-                                ng-class="{'selected' : (protectedSelectedIndex == $index )}"
-                                ng-hide="row.hideRow"
-                                class="trlast">
+                                ng-class="{'selected' : (protectedSelectedIndex == $index ),'trlast' : ((protect.length == null) || (protect.length == 0) )}"
+                                ng-hide="row.hideRow">
                                 <td width="30%">
                                     <white-space ng-show="row.parent">&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
                                        <span ng-show=" row.id != 'new-section'">
@@ -112,8 +111,6 @@
                                         <span ng-show="vm.backupActive">{{vm.lastBackup | date}}</span>
                                     </div>
                                 </td>
-
-
                             </tr>
                         </table >
                     </div><!-- /.box-body -->
