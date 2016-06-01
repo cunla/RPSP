@@ -287,7 +287,7 @@ div.image {
     margin: 10px;
     width: 98%;
     position: absolute;
-    background-color: lightgrey;
+    background-color: lightgrey !important;
     color:#333;
     font-size:30px;
     text-align: center;
