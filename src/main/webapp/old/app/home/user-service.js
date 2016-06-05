@@ -1,8 +1,8 @@
 var app = angular.module('home');
 
-app.service('userService',['$http', function($http) {
+app.service('userService',['$http', function($http) {	
  	 this.getUserData = function() {
- 		 return $http.get('/rpsp/users/current-user')
+ 		 return $http.get('users/current-user')
 		    .then(function(response){
 		    	var allData = {};
 		    	var currentUser = {};
@@ -21,17 +21,17 @@ app.service('userService',['$http', function($http) {
 			        else{
 			        	account = data.account.name;
 			        }
-			        user = data.firstName + ' ' + data.lastName;
+			        user = data.firstName + ' ' + data.lastName; 
 			        welcomeData = user + '@' + account;
 		        }
-
+		        
 		        allData.welcomeData = welcomeData;
 		        allData.currentUser = currentUser;
 
 		        return allData;
-		    })
+		    })		 
      };
-
+     
      this.getOther = function() {
    	  return 'Other!!!';
      };

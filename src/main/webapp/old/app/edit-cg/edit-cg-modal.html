@@ -1,0 +1,225 @@
+<div class="modal-header modal-header-primary">
+    <a class="close" ng-click="cancel()">x</a>
+	<h3 class="modal-title">
+		<div class="centered-text">Edit Consistency Group: <b>{{vmGsAndCgFlatData[protectedSelectedIndex].name}}</b></div>
+	</h3>
+</div>
+<div class="modal-body">
+
+	<br/>
+	<table class="table table-condensed table-striped">
+		<thead>
+		</thead>
+		<tbody>
+			<tr>
+	            <td margin-top>
+	                <div class="row">
+	                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
+	                        Group Name:
+	                    </div>
+	                </div>
+	            </td>
+	            <td>
+	                <div class="row">
+	                    <div class="col-xs-6 col-sm-6 col-md-6 margin-top">
+	                        <input ng-model="cgName"
+	                               class="form-control" type="text"/>
+	
+	                    </div>
+	                    <div class="col-xs-4 col-sm-4 col-md-4 margin-top">
+	                    </div>
+	                </div>
+	
+	            </td>
+	        </tr>
+	        
+ 	         <tr>
+	            <td margin-top>
+	                <div class="row">
+	                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
+	                        Group Set Membership:
+	                    </div>
+	                </div>
+	            </td>
+	            <td>
+	                <div class="row">
+	                    <div class="col-xs-6 col-sm-6 col-md-6 margin-top">
+	                    
+	
+	 
+								<!-- <multiselect ng-model="selectedGroupSet" options="groupSets" id-prop="id"
+	                                   display-prop="name" selection-limit="1" 
+	                                   		ng-change="selectGroupSet(selectedGroupSet, oldValue)" ng-click="oldValue = selectedGroupSet"></multiselect> -->
+	                                   		
+	                            <select ng-model="selectedGroupSet"
+	                                ng-options="currGroupSet.name for currGroupSet in groupSets"
+	                                	ng-change="selectGroupSet(selectedGroupSet, oldValue)" ng-click="oldValue = selectedGroupSet"
+	                                class="form-control">	
+	                        	</select>
+	                                   		
+	                           
+	 
+	                    </div>
+	                    <div class="col-xs-6 col-sm-6 col-md-6 margin-top">
+	                    	 <button type="button" class="btn btn-default" ng-click="removeGroupSetMemebership()">
+								         Clear
+							 </button>
+	                    </div>
+	                </div>
+	
+	            </td>
+            </tr>
+	        
+	        <tr>
+	            <td margin-top>
+	                <div class="row">
+	                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
+	                        Protected VMs:
+	                    </div>
+	                </div>
+	            </td>
+	            <td>
+	                   <div class="row" ng-repeat="vm in selectedVms">
+	                       		<div class="col-xs-4 col-sm-4 col-md-4 margin-top-lg">
+	                        		{{vm.name}}<white-space> </white-space>
+	                        	</div>
+	                        	<div class="col-xs-3 col-sm-3 col-md-3 margin-top-lg">
+		                         	<label class="checkbox-inline">
+								  		<input type="checkbox" id="criticalVmId" ng-model="vm.critical"> Critical
+									</label>
+								</div>
+		                        <div class="col-xs-5 col-sm-5 col-md-5 margin-top-lg">    
+			                        <div class="row">
+					                    <div class="col-xs-5 col-sm-5 col-md-5">
+					                        Priority
+					                    </div>
+					                    <div class="col-xs-7 col-sm-7 col-md-7">
+					                    	<select class="form-control" ng-model="vm.sequenceNumber" 
+					                        		ng-options="selectedItem 
+					                        		                      for selectedItem in sequenceNumbers">
+					                        </select>
+					                    </div>
+					                </div>
+				                </div>
+				                
+	                        
+	                        
+	                   </div>								
+	                          
+	                   <br/>
+	                   <div class="row">
+	                       <div class="col-xs-6 col-sm-6 col-md-6 margin-top-lg">
+	                          <multiselect ng-model="selectedVms" options="cgVmsJoinedCandidates" id-prop="id"
+	                                   display-prop="name"></multiselect>
+	                        </div>
+	                        <div class="col-xs-6 col-sm-6 col-md-6 margin-top-lg">
+	                        </div>
+	                   </div>
+	                   <br/>
+	
+	            </td>
+	        </tr>
+	        
+	        <tr>
+	            <td margin-top>
+	                <div class="row">
+	                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
+	                        Service Class:
+	                    </div>
+	                </div>
+	            </td>
+	            <td>
+	                <div class="row">
+	                    <div class="col-xs-5 col-sm-5 col-md-5 margin-top">
+	
+	
+	                        <!-- <select ng-model="selectedPackage"
+	                                ng-options="package.displayName for package in vmStructureData.systemInfo.packages"
+	                                class="form-control">	
+	                        </select> -->
+	                        
+	                        <select ng-model="selectedPackage"
+	                                ng-options="package.displayName for package in relevantPackages"
+	                                class="form-control">	
+	                        </select>
+	                        
+	
+	                    </div>
+	                    <div class="col-xs-7 col-sm-7 col-md-7 margin-top">
+	                    </div>
+	                </div>
+	
+	            </td>
+            </tr>
+            <tr>
+	            <td margin-top>
+	                <div class="row">
+	                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
+	                        Protect from: <label for="inputdefault">{{vmStructureData.systemInfo.productionCluster.name}}</label>
+	                    </div>
+	                </div>
+	            </td>
+	            <td>
+	                <div class="row">
+	                	<div class="col-xs-12 col-sm-12 col-md-12 radio">
+	                        To: <label for="inputdefault">{{vmStructureData.systemInfo.replicaClusters[0].name}}</label>
+	                    </div>
+	                </div>	
+	            </td>
+            </tr>
+            <tr>
+	            <td margin-top>
+	                <div class="row">
+	                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
+	                        Description:
+	                    </div>
+	                </div>
+	            </td>
+	            <td>
+	                <div class="row">
+	                    <div class="col-xs-8 col-sm-8 col-md-8 margin-top-x-lg radio">
+	                        {{selectedPackage.description}}
+	                    </div>
+	                    <div class="col-xs-4 col-sm-4 col-md-4 margin-top">
+	                    </div>
+	                </div>
+	
+	            </td>
+            </tr>
+            <tr>
+	        	<td margin-top>
+	                <div class="row">
+	                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
+	                        Journal Size:
+	                    </div>
+	                </div>
+	            </td>
+	            <td>
+		        	<div>
+					    <rzslider rz-slider-model="priceSlider"></rzslider>
+					</div>
+				</td>
+				
+	        </tr>
+            <tr>
+	            <td margin-top>
+	                <div class="row">
+	                    <div class="col-xs-12 col-sm-12 col-md-12 radio">
+	                        Enable Replication: <label><input type="checkbox" ng-model="enableReplication"/></label>
+	                    </div>
+	                </div>
+	            </td>
+	            <td></td>
+	        </tr>
+	       
+            
+			
+		</tbody>					    
+	</table>
+</div>
+<div class="modal-footer centered-text div-grey">
+	<button type="button" class="btn btn-primary" ng-click="editCg()">
+	         Save
+	</button>
+</div>
+

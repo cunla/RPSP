@@ -1,0 +1,59 @@
+/*
+body {
+  background: url("../images/background.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+
+body.body-grey {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color: #F5F5F5;
+}
+
+
+*/
+
+*.icon-white {color: white}
+*.icon-silver {color: silver}
+
+div.image {
+   width: 142px;
+   height: 86px;
+   margin: 0 auto 20px;
+   display: block;
+   background-size:contain;
+   background-image:url("../images/login.png");
+}
+
+
+div.logo-image {
+   width: 71px;
+   height: 43px;
+   margin-top: 8px;
+   margin-bottom: 8px;
+   display: block;
+   background-size:contain;
+   background-image:url("../images/login.png");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

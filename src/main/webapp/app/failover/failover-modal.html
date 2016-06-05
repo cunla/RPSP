@@ -1,122 +1,82 @@
-<div class="modal-header modal-header-primary">
-    <a class="close" ng-click="cancel()">x</a>
-	<h3 class="modal-title">
-		<div class="centered-text">Failover Consistency Group: <b>{{vmGsAndCgFlatData[protectedSelectedIndex].name}}</b></div>
-	</h3>
-</div>
-<div class="modal-body">
+<div class="modal-content modal-primary">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">Failover Consistency Group: <b>{{vmGsAndCgFlatData[protectedSelectedIndex].name}}</b></h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group">
 
-	<div ng-show="!showError"><br/></div> 
-	
-	<div ng-show="showError" class="alert alert-danger centered-text">
-  		<strong>Failover problem!</strong> Cannot start the requested recovery activity until all of the critical VMs in the group have powered up, 
-	      all of the user prompts have been dismissed, and all of the user scripts have been run successfully.
-	</div>
-	
-	<table class="table table-condensed table-striped">
-		<thead>
-		</thead>
-		<tbody>
-			<tr>						
-				<td margin-top>
-				    <div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								{{'IMAGE-ACCESS.SELECT_COPY_MSG' | translate}}	
-						</div>
-					</div>										
-				</td>			
-				<td>
-				        <div class="row">
-							<div class="col-xs-4 col-sm-4 col-md-4 margin-top">
-								<select ng-model="selectedCopy" 
-	                                          ng-options="copy.name for copy in vmGsAndCgFlatData[protectedSelectedIndex].
-	                                                      replicaClusters[0].groupCopySettings" 
-	                                               ng-disabled="selectedCopy.imageAccess != 'Disabled'"
-			                                              class="form-control">
-			                                                          <!-- <option value="" ng-if="false"></option> -->
-							
-								</select>
-							</div>	
-							<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
-							</div>	
-						</div>
+                <div ng-show="!showError"><br/></div>
+                <div ng-show="showError" class="alert alert-danger centered-text">
+                    <strong>Failover problem!</strong> Cannot start the requested recovery activity until all of the critical VMs in the group have powered up,
+                    all of the user prompts have been dismissed, and all of the user scripts have been run successfully.
+                </div>
 
-				</td>
-			</tr>
-			<tr>				
-				<td margin-top>
-				    <div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-								{{'IMAGE-ACCESS.SELECT_IMAGE_MSG' | translate}}	
-						</div>
-					</div>										
-				</td>				
-				<td>	
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 radio">
-							<label>
-								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess != 'Disabled'" value="latest">
-							{{'IMAGE-ACCESS.LATEST_IMAGE_MSG' | translate}}
-								</input>
-							</label>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-4 col-sm-4 col-md-4 radio" >
-							<label>
-								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess != 'Disabled'" value="snapshot">
-							{{'IMAGE-ACCESS.FROM_SNAPSHOT_LIST_MSG' | translate}}
-								</input>
-							</label>
-						</div>
-						<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
-							<select ng-model="selectedSnapshot" 
-	                                    ng-options="snapshot.closingTimestamp for snapshot in selectedCopy.snapshots" 
-	                                          ng-disabled="selectedCopy.imageAccess != 'Disabled'" 
-	                                                 class="form-control">												
-							</select>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-4 col-sm-4 col-md-4 radio">
-							<label>
-								<input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess != 'Disabled' || selectedCopy.bookmarks.length == 0" value="bookmark">
-							{{'IMAGE-ACCESS.SPECIFIC_BOOKMARK_MSG' | translate}}
-								</input>
-							</label>
-						</div>
-						
-						<div class="col-xs-8 col-sm-8 col-md-8 margin-top">
-								<select ng-model="selectedBookmark" 								         
-	                                        ng-options="bookmark.name + ' (AC)' + ' - ' + bookmark.closingTimestamp for bookmark in selectedCopy.bookmarks"
-	                                             ng-disabled="selectedCopy.imageAccess != 'Disabled' || selectedCopy.bookmarks.length == 0" 
-	                                                 class="form-control">											
-								</select>
-						</div>
-					</div>
-					
-				
-				</td>
-			</tr>
-			<tr>					
-				<td>
-						{{'IMAGE-ACCESS.TEST_NETWORK_MSG' | translate}}
-				</td>				
-				<td>
-						{{'IMAGE-ACCESS.TENANT_TESTING_MSG' | translate}}
-				</td>
-			</tr>
-		</tbody>					    
-	</table>
-	<div class="centered-text">
-		<button type="button" class="btn btn-primary" ng-disabled="selectedCopy.imageAccess != 'Disabled'" ng-click="imageAccess()">		
-	         DR Test - Enable Access
-		</button>		
-	</div>
-</div>
-<div class="modal-footer centered-text div-grey">
-	<button type="button" class="btn btn-primary" ng-disabled="selectedCopy.imageAccess == 'Disabled'" ng-click="activateFailover()">
-	         Activate Failover
-	</button>
+
+                <label for="SELECT_COPY_MSG" class="col-xs-3 control-label">{{'IMAGE-ACCESS.SELECT_COPY_MSG' | translate}}</label>
+                <div class="col-xs-9">
+                    <div class="form-group">
+                        <select ng-model="selectedCopy"
+                                ng-options="copy.name for copy in vmGsAndCgFlatData[protectedSelectedIndex].
+	                                                      replicaClusters[0].groupCopySettings"
+                                ng-disabled="selectedCopy.imageAccess != 'Disabled'"
+                                class="form-control select2" id="SELECT_COPY_MSG" style="width: 100%;">
+                        </select>
+                    </div><!-- /.form-group -->
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label class="col-xs-3 control-label">{{'IMAGE-ACCESS.SELECT_IMAGE_MSG' | translate}}:</label>
+                <div class="col-xs-9">
+                    <div class="form-group">
+
+
+                        <label class="col-xs-12 minus-padding-left">
+                            <input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess != 'Disabled'" value="latest" class="minimal">
+                            {{'IMAGE-ACCESS.LATEST_IMAGE_MSG' | translate}}
+                        </label>
+
+
+                        <label class="col-xs-12 minus-padding-left">
+                            <input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess != 'Disabled'" value="snapshot" class="minimal">
+                            {{'IMAGE-ACCESS.FROM_SNAPSHOT_LIST_MSG' | translate}}
+                            <select ng-model="selectedSnapshot"
+                                    ng-options="snapshot.closingTimestamp for snapshot in selectedCopy.snapshots"
+                                    ng-disabled="selectedCopy.imageAccess != 'Disabled'"
+                                    class="form-control">
+                            </select>
+                        </label>
+
+
+                        <label class="col-xs-12 minus-padding-left">
+                            <input type="radio" ng-model="imageAccessType" ng-disabled="selectedCopy.imageAccess != 'Disabled' || selectedCopy.bookmarks.length == 0" value="bookmark" class="minimal">
+                            {{'IMAGE-ACCESS.SPECIFIC_BOOKMARK_MSG' | translate}}
+                            <select ng-model="selectedBookmark"
+                                    ng-options="bookmark.name + ' (AC)' + ' - ' + bookmark.closingTimestamp for bookmark in selectedCopy.bookmarks"
+                                    ng-disabled="selectedCopy.imageAccess != 'Disabled' || selectedCopy.bookmarks.length == 0"
+                                    class="form-control">
+                            </select>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group clearfix ">
+                <label for="TEST_NETWORK_MSG" class="col-xs-3 control-label">{{'IMAGE-ACCESS.TEST_NETWORK_MSG' | translate}}</label>
+                <div class="col-xs-9">
+                    <div id="TEST_NETWORK_MSG"><strong>{{'IMAGE-ACCESS.TENANT_TESTING_MSG' | translate}}</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger  pull-left" ng-disabled="selectedCopy.imageAccess == 'Disabled'" ng-click="activateFailover()">Activate Failover</button>
+        <button type="button" class="btn btn-danger  pull-left" ng-disabled="selectedCopy.imageAccess != 'Disabled'" ng-click="imageAccess()">DR Test - Enable Access</button>
+
+        <button type="button" class="btn btn-outline pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
+    </div>
 </div>
 

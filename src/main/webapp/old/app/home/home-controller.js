@@ -10,7 +10,6 @@ app.controller('homeController', ['$scope', '$http', 'userService', function ($s
         userService.getUserData().then(function (allData) {
             $scope.currentUser = allData.currentUser;
             $scope.welcomeData = allData.welcomeData;
-
         });
 
     };
@@ -26,11 +25,8 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
     $scope.vmGsAndCgFlatData = {};
     $scope.totalVms = {};
     $scope.protectedVms = {};
-    $scope.finishedLoading = false;
-    $scope.isCollapsed = false;
-    function closeisCollapsed(){
-        $scope.isCollapsed = false;
-    }
+//	$scope.finishedLoading = false;
+
     $scope.toggleRow = function (row) {
         if (row.type == 'gs') {
             for (cgInd in $scope.vmGsAndCgFlatData) {
@@ -43,7 +39,6 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
         row.hideChildren = !row.hideChildren;
     }
 
-
     $scope.getVmStructureData = function () {
         vmStructureService.getVmStructureData().then(function (allData) {
                 $scope.isAdmin=allData.isAdmin;
@@ -52,14 +47,10 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
                 $scope.vmGsAndCgFlatData = allData.vmGsAndCgFlatData;
                 $scope.totalVms = allData.totalVms;
                 $scope.protectedVms = allData.protectedVms;
-
-                $scope.errorExpText = allData.errorExpText;
-                $scope.errorExp = allData.errorExp;
             })
             .finally(function (res) {
-
                 $scope.finishedLoading = true;
-            });
+            })
     };
 
     $scope.getVmStructureData();
@@ -162,7 +153,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
             });
         }
     };
-    
+
     $scope.openCreateCgModal = function (vmId) {
         var modalInstance = $modal.open({
             templateUrl: 'app/protect/protect-create-cg-modal.html',
@@ -180,11 +171,11 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
             }
         });
     };
-
-
+    
+    
     $scope.openEditCgModal = function () {
 
-
+      
         var modalInstance = {};
 
 
@@ -322,11 +313,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
 
     };
 
-    $scope.isLastName = function (value) {
-        if(value === 'New ...'){
-            return 'btn btn-primary';
-        }
-    };
+
     $scope.handleDoubleClick = function (ind, isProtected) {
         $scope.protectedSelectedIndex = vmStructureService.getProtectedSelectedIndex();
         $scope.unprotectedSelectedIndex = vmStructureService.getUnprotectedSelectedIndex();
@@ -407,40 +394,7 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
         }
         return res;
     };
-    $scope.whatStatusIs = function (status, initCompletionPortion) {
-        var res = status;
-        if (status != null && status !== undefined) {
 
-
-
-            if (status == 'Initializing') {
-                res = 'label-warning';
-
-            }
-            else if (status == 'Active') {
-                res = 'label-success';
-            }
-            else if (status == 'Stand by') {
-                res = 'label-warning';
-            }
-            else if (status == 'Ready') {
-                res = 'label-primary';
-            }
-            else if (status == 'Paused') {
-                res = 'label-warning';
-            }
-            else if (status == 'Paused by system') {
-                res = 'label-warning';
-            }
-            else if (status == 'Error') {
-                res = 'label-danger';
-            }
-            else {
-                res = 'label-danger';
-            }
-        }
-        return res;
-    };
 
     $scope.getState = function (status) {
         var res = status;
@@ -458,17 +412,5 @@ app.controller('vmStructureController', ['$scope', '$http', '$modal', '$translat
         return res;
     };
 
-    $scope.closeisCollapsed = closeisCollapsed;
+
 }]);
-
-app.directive('appHeader', function() {
-    return {
-        templateUrl: 'app/home/header.html'
-    };
-});
-app.directive('actionMenu', function() {
-    return {
-        templateUrl: 'app/home/actionmenu.html'
-    };
-});
-

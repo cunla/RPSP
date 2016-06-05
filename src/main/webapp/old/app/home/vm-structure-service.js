@@ -18,11 +18,12 @@ app.service('vmStructureService', ['$http', function ($http) {
 
 
     this.getVmStructureData = function () {
-        var errorExp = false;
+
         return $http.get('/rpsp/account-vms')
             .then(function (response) {
+
                 vmStructureData = response.data;
-                //console.log("Data-----",response);
+
                 //flatten the hierarchical data to be displayed in table
                 var vmGsAndCgFlatDataArr = new Array();
                 var topLevelContainers = vmStructureData.protectedVms;
@@ -47,8 +48,7 @@ app.service('vmStructureService', ['$http', function ($http) {
                 //new area
                 var newCg = {};
                 newCg.id = 'new-section';
-              //  newCg.name = 'New ...';
-                newCg.name = 'Drop VM to Protect';
+                newCg.name = 'New ...';
                 vmGsAndCgFlatDataArr.push(newCg);
                 vmGsAndCgFlatData = vmGsAndCgFlatDataArr;
                 //count protected vms
@@ -81,17 +81,10 @@ app.service('vmStructureService', ['$http', function ($http) {
                 allData.vmGsAndCgFlatData = vmGsAndCgFlatData;
                 allData.totalVms = totalVms;
                 allData.protectedVms = protectedVms;
+
                 return allData;
 
-            },function errorCallback(response) {
-                if(response.status !== "200")
-                {
-                    allData.errorExp = true;
-                    allData.errorExpText = response.statusText;
-                    return allData;
-                }
-                }
-            );
+            })
     };
 
     this.getCachedVmStructureData = function () {
@@ -450,8 +443,8 @@ app.service('vmStructureService', ['$http', function ($http) {
         then(this.getVmStructureData());
 
     };
-
-
+    
+    
     this.editCg = function (cgId, cgChanges) {
         var url = '/rpsp/groups/' + cgId;
 

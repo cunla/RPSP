@@ -2,7 +2,6 @@
 <html ng-app="home">
 
 <head>
-    <meta http-equiv="refresh" content="1;url=v2/index.html">
     <title>RPSP</title>
     <link rel="stylesheet" href="assets/css/bootstrap/3.3.2/bootstrap.min.css"/>
     <link rel="stylesheet" href="assets/css/font-awesome/4.4.0/font-awesome.min.css"/>
@@ -16,6 +15,7 @@
     <link rel="stylesheet" href="app/unprotect/unprotect.css">
     <link rel="stylesheet" href="app/audit/audit.css">
     <link rel="stylesheet" href="custom/css/custom.css">
+    <link rel="stylesheet" href="custom/css/AdminLTE.css">
     <style>
         [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
             display: none !important;
@@ -23,215 +23,145 @@
     </style>
 </head>
 
-<body ng-controller="vmStructureController">
-<div class="spinner-gif" ng-hide="finishedLoading"></div>
-<div class="ng-cloak">
-    <div class="div-grey">
-
-        <nav class="navbar navbar-default">
-            <div class="container" ng-controller="homeController">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/rpsp">{{'HOME.DISASTER_RECOVERY_MSG' |
-                        translate}}</a>
-                </div>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <div class="logo-image"></div>
-                    </li>
-                    <!-- <li><a> {{ 'HOME.WELCOME_MSG' | translate }}, {{currentUser.login}}</a></li> -->
-                    <li><a> {{'HOME.WELCOME_MSG' | translate}}, {{welcomeData}}</a></li>
-                    <li><a href="/rpsp/logout-action">{{'HOME.LOGOUT_MSG' | translate}}</a></li>
-                    <li ng-show="isAdmin"><a href="/rpsp/admin/index.html#/app/systems">Admin console</a></li>
-                </ul>
+<body ng-controller="vmStructureController" style="background-color: #ecf0f5"  }>
+<div class="container-fluid custom-border ">
+    <app-header></app-header>
+    <action-menu></action-menu>
+    <div class="content">
+        <div class="row">
+            <!-- Loading (remove the following to stop the loading)-->
+            <div class="overlay" ng-hide="finishedLoading">
+                <i class="fa fa-refresh fa-spin"></i>
             </div>
-        </nav>
-
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="col-xs-2 col-sm-2 col-md-2">
-                    <div class="msg-alert-info all-borders">
-                        <div class="centered-text">{{'HOME.PROTECTED_VMS_MSG' | translate}}
-                            {{protectedVms}}
-                        </div>
-                        <div class="centered-text">{{'HOME.TOTAL_VMS_MSG' | translate}} {{totalVms}}
-                        </div>
-                    </div>
+            <!-- end loading -->
+            <div ng-hide="!finishedLoading" class="col-md-9 no-float">
+                <div class="alert alert-danger fade in"  ng-if="errorExp">
+                    <strong>{{errorExpText}}</strong>
                 </div>
-                <div class="col-xs-2 col-sm-2 col-md-2">
-                    <div class="msg-alert-error all-borders">
-                        <div class="centered-text">{{'HOME.ERRORS_MSG' | translate}} 1</div>
-                        <div class="centered-text">{{'HOME.WARNINGS_MSG' | translate}} 3</div>
-                    </div>
-                </div>
-                <div class="col-xs-2 col-sm-2 col-md-2">
-                    <div class="msg-alert-info all-borders">
-                        <div class="centered-text">{{'HOME.NEW_MESSAGES_MSG' | translate}} 2</div>
-                        <div class="centered-text">
-                            <white-space></white-space>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6">
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-    <div class="col-xs-12 col-sm-12 col-md-12 container top-border div-solid-grey">
-        <button type="button" class="btn btn-primary margin-top"
-                ng-class="{'disabled' : !isActionApplicable()}" ng-click="openImageAccessModal()">
-            {{'HOME.DR_TEST_MSG' | translate}}
-        </button>
-        <button type="button" class="btn btn-primary margin-top"
-                ng-class="{'disabled' : !isActionApplicable()}" ng-click="openFailoverModal()">
-            {{'HOME.FAILOVER_MSG' | translate}}
-        </button>
-        <button type="button" class="btn btn-primary margin-top"
-                ng-class="{'disabled' : !isActionApplicable()}" ng-click="openRecoverModal()">
-            {{'HOME.RESTORE_PRODUCTION_MSG' | translate}}
-        </button>
-        <white-space></white-space>
-        <button type="button" class="btn btn-primary margin-top" ng-click="openAuditLogModal()">
-            {{'HOME.AUDIT_LOG' | translate}}
-        </button>
-        <button type="button" class="btn btn-primary margin-top"
-                ng-class="{'disabled' : !isActionApplicable()}" ng-click="openEditCgModal()">{{'HOME.EDIT_MSG' | translate}}
-        </button>
-        <button type="button" class="btn btn-primary margin-top"
-                ng-class="{'disabled' : !isActionApplicable()}" ng-click="openBookmarksModal()">
-            {{'HOME.ADD_BOOKMARK_MSG' | translate}}
-        </button>
-        <button type="button" class="btn btn-primary margin-top"
-                ng-class="{'disabled' : !isActionApplicable()}">{{'HOME.SHOW_HISTORY_MSG' | translate}}
-        </button>
-        <button type="button" class="btn btn-primary margin-top"
-                ng-class="{'disabled' : !isActionApplicable()}">{{'HOME.SERVICE_REQUEST_MSG' |
-            translate}}
-        </button>
-        <button type="button" class="btn btn-primary margin-top" ng-click="openCreateCgModal()">
-            Create Consistency Group
-        </button>
-    </div>
-
-    <br/>
-
-
-    <div class="panel padding-top panel-default">
-
-        <div class="panel-body full-height">
-            <div class="row row-height">
-                <div class="col-xs-10 col-sm-10 col-md-10 col-sm-height right-border">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>{{'HOME.PRODUCTION_MSG' | translate}}</th>
-                            <th>{{'HOME.REPLICA_MSG' | translate}}</th>
-                            <th>{{'HOME.STATE_MSG' | translate}}</th>
-                            <th>{{'HOME.REPLICATION_MSG' | translate}}</th>
-                            <th>{{'HOME.SIZE_MSG' | translate}}</th>
-                            <th>{{'HOME.DR_TEST_MSG' | translate}}</th>
-                            <th ng-show="backupActive">{{'HOME.BACKUP_MSG'|translate}}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="row in vmGsAndCgFlatData" droppable="true" index="{{$index}}"
-                            cgid="{{row.id}}" prod-cluster-id="{{row.productionCluster.id}}"
-                            replica-cluster-id="{{row.replicaClusters[0].id}}"
-                            ng-click="toggleSelect($index, true)"
-                            ng-dblclick="handleDoubleClick($index, true)"
-                            ng-class="{'selected' : (protectedSelectedIndex == $index )}"
-                            ng-hide="row.hideRow"
-                        >
-                            <td width="30%">
-                                <white-space ng-show="row.parent">&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
-                            <span ng-show=" row.id != 'new-section'">
-                                <i class="fa {{row.hideChildren? 'fa-plus':'fa-minus'}} icon-silver"
-                                   title="{{row.hideChildren? 'Expand':'Collapse'}}"
-                                   ng-click="toggleRow(row)"></i>
-                            </span>
-                                <span
-                                    title="{{isActionApplicable()?'':'Actions disabled because not all CGs are in the same state'}}">
-                                    {{row.name}}
-                                </span>
-                                <div ng-hide="row.hideChildren" ng-repeat="vm in row.vms" draggable="true"
-                                     vmid="{{vm.id}}">
-                                    <white-space ng-show="row.parent">&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
-                                    <white-space>&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
-                                    {{vm.name}}
-                                </div>
-                            </td>
-
-                            <td>{{row.productionCluster.name}}</td>
-                            <td>{{row.replicaClusters[0].name}}</td>
-                            <td>{{row.type == 'cg' ? getState('Enabled') : null}}</td>
-                            <td>
-                                {{getReplicationStateIndicator(row.replicaClusters[0].groupCopySettings[0].replication,
-                                row.replicaClusters[0].groupCopySettings[0].initCompletionPortion)}}
-                            </td>
-                            <td>{{row.maxVolumeSize}}</td>
-                            <td>
-                                {{getImageAccessIndicator(row.replicaClusters[0].groupCopySettings[0].imageAccess)}}
-                            </td>
-                            <td ng-show="backupActive">
-                                <div class="">.</div>
-                                <div ng-hide="row.hideChildren"
-                                     ng-repeat="vm in row.vms"
-                                     vmid="{{vm.id}}"
-                                     ng-click="openBackupAccessModal(vm)"
-                                     title="Click to access backup"
-                                >
-                                    <i class="fa {{vm.backupActive ? 'fa-check':'fa-close'}}"></i>
-                                    <span ng-show="vm.backupActive">{{vm.lastBackup | date}}</span>
-                                </div>
-                            </td>
-                            <!-- <td>{{row.replicaClusters[0].groupCopySettings[0].imageAccess == 'Enabled' ? ('HOME.DR_TEST_ENABLED_MSG' | translate) : ('HOME.DR_TEST_DISABLED_MSG' | translate)}}</td> -->
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-xs-2 col-sm-2 col-md-2 col-sm-height" droppable="true">
-                    <div class="inside inside-full-height">
-                        <table class="table table-condensed table-striped">
-                            <thead>
+                <div class="box box-success box-solid"  ng-if="!errorExp" >
+                    <div class="box-header with-border">
+                        <h3 class="box-title centered-text"><strong>{{"HOME.PROTECTED" | translate}}</strong> ({{protectedVms}} {{"HOME.VMS" | translate}})</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-striped">
                             <tr>
-                                <th class="centered-text">{{'HOME.UNPROTECTED_VMS_MSG' | translate}}</th>
+                                <td colspan="8">
+                                    <input class="form-control" type="search" ng-model="protect"
+                                           placeholder="filter VMs..."
+                                           aria-label="filter VMs"/>
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody>
                             <tr>
+                                <th style="width: 10px">Consistency Group</th>
+                                <th>{{'HOME.PRODUCTION_MSG' | translate}}</th>
+                                <th>{{'HOME.REPLICA_MSG' | translate}}</th>
+                                <th>{{'HOME.STATE_MSG' | translate}}</th>
+                                <th>{{'HOME.REPLICATION_MSG' | translate}}</th>
+                                <th>{{'HOME.SIZE_MSG' | translate}}</th>
+                                <th>{{'HOME.DR_TEST_MSG' | translate}}</th>
+                                <th ng-show="backupActive">{{'HOME.BACKUP_MSG'|translate}}</th>
+                            </tr>
+                            <tr ng-repeat="row in vmGsAndCgFlatData | filter:protect as filtered"
+                                droppable="true"
+                                index="{{$index}}"
+                                cgid="{{row.id}}"
+                                prod-cluster-id="{{row.productionCluster.id}}"
+                                replica-cluster-id="{{row.replicaClusters[0].id}}"
+                                ng-click="toggleSelect($index, true)"
+                                ng-dblclick="handleDoubleClick($index, true)"
+                                ng-class="{'selected' : (protectedSelectedIndex == $index ),'trlast' : ((protect.length == null) || (protect.length == 0) )}"
+                                ng-hide="row.hideRow">
+                                <td width="30%">
+                                    <white-space ng-show="row.parent">&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
+                                       <span ng-show=" row.id != 'new-section'">
+                                           <i class="fa fa-fw fa-database {{row.hideChildren? 'fa-plus':'fa-minus'}} icon-silver1"
+                                              title="{{row.hideChildren? 'Expand':'Collapse'}}"
+                                              ng-click="toggleRow(row)"></i>
+                                     </span>
+                                    <span class="protected-line" ng-class="isLastName(row.name)" title="{{isActionApplicable()?'':'Actions disabled because not all CGs are in the same state'}}">
+                                        {{row.name}}
+                                     </span>
+                                    <div ng-hide="row.hideChildren" ng-repeat="vm in row.vms" draggable="true"
+                                         vmid="{{vm.id}}">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-fw fa-desktop"></i>
+                                        <white-space>&nbsp;&nbsp;</white-space>
+                                        {{vm.name}}
+                                    </div>
+                                </td>
+                                <td>{{row.productionCluster.name}}</td>
+                                <td>{{row.replicaClusters[0].name}}</td>
+                                <td>{{row.type == 'cg' ? getState('Enabled') : null}}</td>
                                 <td>
+                                   <span class="label" ng-class='whatStatusIs(row.replicaClusters[0].groupCopySettings[0].replication,
+                                    row.replicaClusters[0].groupCopySettings[0].initCompletionPortion)'> {{getReplicationStateIndicator(row.replicaClusters[0].groupCopySettings[0].replication,
+                                    row.replicaClusters[0].groupCopySettings[0].initCompletionPortion)}}</span>
+                                </td>
+                                <td>{{row.maxVolumeSize}}</td>
+                                <td>
+                                    {{getImageAccessIndicator(row.replicaClusters[0].groupCopySettings[0].imageAccess)}}
+                                </td>
+                                <td ng-if="backupActive">
+
+                                    <div ng-hide="row.hideChildren"
+                                         ng-repeat="vm in row.vms"
+                                         vmid="{{vm.id}}"
+                                         ng-click="openBackupAccessModal(vm)"
+                                         title="Click to access backup">
+                                        <i class="fa {{vm.backupActive ? 'fa-check':'fa-close'}}"></i>
+                                        <span ng-show="vm.backupActive">{{vm.lastBackup | date}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table >
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+            <div ng-hide="!finishedLoading" class="col-md-3 no-float">
+                <div class="box box-success-new  box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title centered-text"><strong>{{'HOME.UNPROTECTED' | translate}}</strong> ({{vmStructureData.unprotectedVms.length}} {{"HOME.VMS" | translate}})</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body no-padding" droppable="true">
+                        <table class="table table-striped">
+                            <tr>
+                                <td colspan="4">
                                     <input class="form-control" type="search" ng-model="q"
                                            placeholder="filter VMs..."
                                            aria-label="filter VMs"/>
                                 </td>
                             </tr>
-                            <tr ng-repeat="row in vmStructureData.unprotectedVms | filter:q | orderBy:'name' as filtered_result track by row.id"
-                                draggable="true" index="{{$index}}" vmid="{{row.id}}"
-                                ng-click="toggleSelect($index, false)"
-                                ng-class="{'selected' : unprotectedSelectedIndex == $index}">
-                                <td class="centered-text">{{row.name}}</td>
+                            <tr>
+                                <th></th>
+                                <th>{{'HOME.VM_NAME' | translate}}</th>
+                                <th>{{'HOME.IP_ADDRESS' | translate}}</th>
+                                <th style="width:30px;">&nbsp;</th>
                             </tr>
-                            <tr></tr>
-                            </tbody>
+                            <tr ng-repeat="row in vmStructureData.unprotectedVms | filter:q | orderBy:'name' as filtered_result track by row.id"
+                                draggable="true"
+                                index="{{$index}}"
+                                vmid="{{row.id}}"
+                                ng-click="toggleSelect($index, false)"
+                                ng-class="{'selected' : unprotectedSelectedIndex == $index}"
+                                class="dragdrop">
+                                <td><i class="fa fa-fw fa-windows"></i></td>
+                                <td>{{row.name}}</td>
+                                <td>127.0.0.1:8000</td>
+                                <td><a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button" data-tooltip="Example for text text text" title="Example for text text text"><i class="fa fa-fw fa-info-circle"></i></a></td>
+                            </tr>
                         </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="navbar navbar-default navbar-fixed-bottom">
-        <div class="container">
-            {{'HOME.POWERED_BY_RECOVERPOINT_FOR_VMS' | translate}}
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
         </div>
     </div>
 </div>
 
-</div>
 
+<div class="navbar-fixed-bottom row-fluid">
+    <div class="navbar-inner">
+        <div class="container">EMC DPaaS</div>
+    </div>
+</div>
 
 <script src="assets/js/angularjs/1.4.7/angular.min.js"></script>
 <script src="assets/js/angularjs/1.4.7/angular-route.min.js"></script>
@@ -243,6 +173,8 @@
 <script src="assets/js/angular-ui/0.13.0/ui-bootstrap-tpls-0.13.0.js"></script>
 <script src="assets/js/multi-select/1.1.3/angular-bootstrap-multiselect.min.js"></script>
 <script src="assets/js/angular-tablesort.js"></script>
+
+
 <script src="assets/components/angularjs-slider/2.11.0/rzslider.min.js"></script>
 
 <script src="app/app.js"></script>
@@ -269,5 +201,7 @@
 <script src="app/backup-access/backup-access.service.js"></script>
 <script src="app/backup-access/backup-access.ctrl.js"></script>
 <script src="app/group-set/group-set-controller.js"></script>
+
+
 </body>
 </html>
