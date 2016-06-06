@@ -71,10 +71,11 @@
                                 ng-dblclick="handleDoubleClick($index, true)"
                                 ng-class="{'selected' : (protectedSelectedIndex == $index ),'trlast' : ((protect.length == null) || (protect.length == 0) )}"
                                 ng-hide="row.hideRow">
-                                <td width="30%">
+                                <td class="col-xs-4">
                                     <white-space ng-show="row.parent">&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
                                        <span ng-show=" row.id != 'new-section'">
-                                           <i class="fa fa-fw fa-database {{row.hideChildren? 'fa-plus':'fa-minus'}} icon-silver1"
+                                           <i class="fa fa-fw"
+                                              ng-class="row.consistencyGroups.length > 0 ? 'fa-list-ul' : 'fa-database'"
                                               title="{{row.hideChildren? 'Expand':'Collapse'}}"
                                               ng-click="toggleRow(row)"></i>
                                      </span>
@@ -83,7 +84,7 @@
                                      </span>
                                     <div ng-hide="row.hideChildren" ng-repeat="vm in row.vms" draggable="true"
                                          vmid="{{vm.id}}">
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-fw fa-desktop"></i>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-fw fa-desktop"></i>
                                         <white-space>&nbsp;&nbsp;</white-space>
                                         {{vm.name}}
                                     </div>

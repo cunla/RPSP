@@ -1,7 +1,7 @@
 var app = angular.module('home');
 
 
-app.controller('editCgController', ['$scope', '$http', '$modal', '$modalInstance','vmStructureService', function ($scope, $http, $modal, $modalInstance, vmStructureService) {
+app.controller('editCgController', ['$scope', '$http', '$modal', '$filter', '$modalInstance','vmStructureService', function ($scope, $http, $modal, $filter, $modalInstance, vmStructureService) {
 
     $scope.vmGsAndCgFlatData = {};
     $scope.protectedSelectedIndex = -1;

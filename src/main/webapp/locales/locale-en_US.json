@@ -7,10 +7,14 @@
         "PASSWORD_MSG": "Password",
         "SIGN_IN_MSG": "Sign in"
     },
+    "ALL":{
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+    },
     "HOME": {
         "BACKUP_MSG": "Backup",
         "VMS": "VMs",
-        "AUDIT_LOG": "Audit log",
+        "AUDIT_LOG": "Audit Log",
         "WELCOME_MSG": "Welcome",
         "HELLO_MSG": "Hello",
         "LOGOUT_MSG": "Logout",
@@ -64,8 +68,8 @@
         "SPECIFIC_BOOKMARK_MSG": "Specific Bookmark",
         "TEST_NETWORK_MSG": "Test Network:",
         "TENANT_TESTING_MSG": "Tenant Testing",
-        "ENABLE_MSG": "Start DR Test",
-        "DISABLE_MSG": "Stop DR Test"
+        "ENABLE_MSG": "Start",
+        "DISABLE_MSG": "Stop"
     },
     "PROTECT-UNPROTECT": {
         "BACKUP_TITLE": "Backup",
@@ -100,9 +104,9 @@
         "CREATE_MSG": "Create"
     },
     "AUDIT": {
-        "TITLE": "Audit log",
-        "DATETIME": "Date&Time",
-        "ACCOUNT_AND_USER": "Account/User",
+        "TITLE": "Audit Log",
+        "DATETIME": "Time",
+        "ACCOUNT_AND_USER": "User",
         "ACTION": "Action",
         "ENTITY": "Entity",
         "STATUS": "Status",

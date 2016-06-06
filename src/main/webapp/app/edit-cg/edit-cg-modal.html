@@ -46,15 +46,15 @@
                             <!--</div>-->
                             <div ng-repeat="vm in selectedVms" class="separator-vm">
                                 <div class="form-group clearfix">
-                                    <div class="col-xs-3"><b>Name Vm</b></div>
+                                    <div class="col-xs-3"><b>VM Name:</b></div>
                                     <div class="col-xs-9"><b>{{vm.name}}</b></div>
                                 </div>
                                 <div class="form-group clearfix">
-                                    <div class="col-xs-3"><b>Critical</b></div>
+                                    <div class="col-xs-3"><b>Critical:</b></div>
                                     <div class="col-xs-9"><input type="checkbox" id="criticalVmId" ng-model="vm.critical"></div>
                                 </div>
                                 <div class="form-group clearfix">
-                                    <div class="col-xs-3"><b>Priority</b></div>
+                                    <div class="col-xs-3"><b>Priority:</b></div>
                                     <div class="col-xs-9">
                                         <select class="form-control" ng-model="vm.sequenceNumber"
                                                 ng-options="selectedItem
@@ -130,8 +130,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-danger  pull-left" >Create</button>
-            <button type="button" class="btn btn-outline pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
+            <button type="submit" class="btn btn-success  pull-left" >{{'ALL.SAVE' | translate}}</button>
+            <button type="button" class="btn btn-default pull-right" data-dismiss="modal" ng-click="cancel()">{{'ALL.CANCEL' | translate}}</button>
         </div>
     </form>
 </div>

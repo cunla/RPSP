@@ -59,8 +59,10 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-danger  pull-left" ng-click="imageAccess()">{{selectedCopy.imageAccess == 'Disabled' ? ('IMAGE-ACCESS.ENABLE_MSG'|translate):('IMAGE-ACCESS.DISABLE_MSG'|translate)}}</button>
-        <button type="button" class="btn btn-outline pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
+        <button type="button" class="btn pull-left" ng-class="selectedCopy.imageAccess == 'Disabled' ? 'btn-success' : 'btn-danger'" ng-click="imageAccess()">
+            {{selectedCopy.imageAccess == 'Disabled' ? ('IMAGE-ACCESS.ENABLE_MSG'|translate):('IMAGE-ACCESS.DISABLE_MSG'|translate)}}
+        </button>
+        <button type="button" class="btn btn-default pull-right" data-dismiss="modal" ng-click="cancel()">{{'ALL.CANCEL' | translate}}</button>
     </div>
 </div>
 

@@ -67,10 +67,10 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-danger  pull-left" ng-disabled="selectedCluster.groupCopySettings[0].imageAccess == 'Disabled'" ng-click="restoreProduction()">Restore Production</button>
-        <button type="button" class="btn btn-danger  pull-left" ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled'" ng-click="imageAccess()">DR Test - Enable Access</button>
+        <button type="button" class="btn btn-success  pull-left" ng-disabled="selectedCluster.groupCopySettings[0].imageAccess == 'Disabled'" ng-click="restoreProduction()">Restore Production</button>
+        <button type="button" class="btn btn-success  pull-left" ng-disabled="selectedCluster.groupCopySettings[0].imageAccess != 'Disabled'" ng-click="imageAccess()">DR Test - Enable Access</button>
 
-        <button type="button" class="btn btn-outline pull-right" data-dismiss="modal" ng-click="cancel()">Close</button>
+        <button type="button" class="btn btn-default pull-right" data-dismiss="modal" ng-click="cancel()">{{'ALL.CANCEL' | translate}}</button>
     </div>
 </div>
 
