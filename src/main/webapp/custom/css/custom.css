@@ -274,25 +274,26 @@ div.image {
 }
 .box.box-solid.box-success{
     min-height:600px;
+    margin-bottom:10px;
 }
 .box.box-solid.box-success-new > .box-header {
     color: #ffffff;
-
     background: #205081;
     background-color: #205081;
 }
 .trlast:last-child{
-    border-top:2px solid dimgray;
-    height: 65px;
-    margin: 10px;
-    width: 98%;
-    /*position: absolute;*/
-    background-color: #7C7C7C !important;
+    height: 70px;
+    opacity: 0.4;
+}
+.trlast:last-child > td{
     color:#303030;
     font-size:30px;
     text-align: center;
-    opacity: 0.4;
-
+    border-top:2px dotted dimgray;
+    border-bottom:2px dotted dimgray;
+    background-color: #7C7C7C;
+    margin-top:10px;
+    margin-bottom:10px;
 }
 
 .buttons-custom{
