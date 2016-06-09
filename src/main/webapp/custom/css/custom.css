@@ -174,12 +174,13 @@ input[type=checkbox], input[type=radio]{
 *.icon-silver {color: silver}
 
 div.image {
-    width: 142px;
-    height: 86px;
-    margin: 0 auto 20px;
+    width: 100px;
+    height: 70px;
+    margin: 3px auto 20px;
     display: block;
     background-size:contain;
-    background-image:url("../images/login.png");
+    background-image:url("../images/logo.png");
+    background-repeat: no-repeat;
 }
 
 .title-user{
@@ -197,16 +198,16 @@ div.image {
 
 }
 .logo-image {
-    width: 46px;
-    margin: 3px auto 0 auto ;
-    height: 38px;
+    width: 60px;
+    margin: 3px auto 3px auto ;
+    height: 51px;
     display: block;
     background-size: contain;
-    background-image: url("../images/login.png");
+    background-image: url("../images/logo.png");
     background-repeat: no-repeat;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
     background-color: #fff;
-    background-position: 1px 6px;
+    /*background-position: 1px 6px;*/
 
 }
 .text-logo{
