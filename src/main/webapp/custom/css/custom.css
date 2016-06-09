@@ -64,6 +64,9 @@ header .logo{
     /*top:0px;*/
     /*right:0px;*/
 }
+.main-header .logo{
+    text-align:left !important
+}
 header .logo-lg{
     color:#fff;
 }
