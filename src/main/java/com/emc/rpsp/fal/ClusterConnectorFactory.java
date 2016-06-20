@@ -24,7 +24,7 @@ public class ClusterConnectorFactory {
         //String verPath = settings.getSystemVersion().contains("4.3") ? "4_3/": "4_1/";
         String verPath = "4_3/";
         RestAdapter restAdapter = new RestAdapter.Builder()
-        // .setLogLevel(RestAdapter.LogLevel.FULL)
+         .setLogLevel(RestAdapter.LogLevel.FULL)
         .setEndpoint("https://" + settings.getSystemIp() + ":" + port + "/fapi/rest/" + verPath)
         .setConverter(new JacksonConverter()).setRequestInterceptor(buildInterceptor(settings))
         .build();
@@ -49,7 +49,7 @@ public class ClusterConnectorFactory {
 		ClusterConnector service = restAdapter.create(ClusterConnector.class);
 		return service;
 	}*/
-	
+
 
     private static RequestInterceptor buildInterceptor(SystemSettings settings) {
         byte[] authEncBytes = Base64.encodeBase64(
