@@ -1,4 +1,4 @@
-.login-form 
+.login-form
 {
 	max-width: 250px;
 	margin-top: 100px auto;
@@ -28,7 +28,7 @@ div.image {
    margin: 0 auto 20px;
    display: block;
    background-size:contain;
-   background-image:url("../../assets/images/login.png");	
+   background-image:url("../../assets/images/logo.png");
 }
 
 

@@ -69,7 +69,7 @@
                                 replica-cluster-id="{{row.replicaClusters[0].id}}"
                                 ng-click="toggleSelect($index, true)"
                                 ng-dblclick="handleDoubleClick($index, true)"
-                                ng-class="{'selected' : (protectedSelectedIndex == $index ),'trlast' : ((protect.length == null) || (protect.length == 0) )}"
+                                ng-class="{'selected' : (protectedSelectedIndex == $index ),'trlast' : ((protect.length == null) || (protect.length === 0) )}"
                                 ng-hide="row.hideRow">
                                 <td class="col-xs-4">
                                     <white-space ng-show="row.parent">&nbsp;&nbsp;&nbsp;&nbsp;</white-space>
