@@ -4,6 +4,7 @@ import com.emc.rpsp.fal.ClusterConnector;
 import com.emc.rpsp.fal.ClusterConnectorFactory;
 import com.emc.rpsp.fal.commons.ClusterSplittersState;
 import com.emc.rpsp.fal.commons.FullRecoverPointSettings;
+import com.emc.rpsp.fal.wrappers.ClusterSplittersStateSet;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -24,7 +25,7 @@ public class TestSplitterState {
         FullRecoverPointSettings x = connector.getFullRecoverPointSettings();
 
         //This fails in deserialization...
-        ClusterSplittersState states = connector.getSplittersState();
+        ClusterSplittersStateSet states = connector.getSplittersState();
 
         ObjectMapper mapper = new ObjectMapper();
 

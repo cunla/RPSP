@@ -23,7 +23,7 @@ public interface ClusterConnector {
     public FullRecoverPointSettings getFullRecoverPointSettings();
 
     @GET(BASE_URL + "splitters/state")
-    ClusterSplittersState getSplittersState();
+    ClusterSplittersStateSet getSplittersState();
 
     @GET(BASE_URL + "time/current_time")
     public RecoverPointTimeStamp getSystemTime();
