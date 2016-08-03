@@ -22,6 +22,9 @@ public interface ClusterConnector {
     @GET(BASE_URL + "settings")
     public FullRecoverPointSettings getFullRecoverPointSettings();
 
+    @GET(BASE_URL + "splitters/state")
+    ClusterSplittersState getSplittersState();
+
     @GET(BASE_URL + "time/current_time")
     public RecoverPointTimeStamp getSystemTime();
 
@@ -151,27 +154,25 @@ public interface ClusterConnector {
 
     @GET(BASE_URL + "clusters/{clusterId}/settings")
     public ClusterSettings getClusterSettings(@Path("clusterId") long clusterId);
-    
+
     @GET(BASE_URL + "groups/settings")
     public ConsistencyGroupSettingsSet getAllGroupsSettings();
 
-    
 
     @GET(BASE_URL + "group_sets")
     public ConsistencyGroupSetSettingsSet getAllGroupSetsSettings();
-    
+
     @GET(BASE_URL + "group_sets/{groupSetId}")
     public ConsistencyGroupSetSettings getGroupSetSettings(@Path("groupSetId") long groupSetId);
-    
+
     @POST(BASE_URL + "group_sets")
     public ConsistencyGroupSetUID createGroupSet(@Body ConsistencyGroupSetSettings consistencyGroupSetSettings);
-    
+
     @PUT(BASE_URL + "group_sets/{groupSetId}/settings")
     public Response setGroupSetSettings(@Path("groupSetId") long groupSetId, @Body ConsistencyGroupSetSettings consistencyGroupSetSettings);
-    
+
     @DELETE(BASE_URL + "group_sets/{groupSetId}")
-    public Response removeGroupSet(@Path("groupSetId") long groupSetId);   
-    
+    public Response removeGroupSet(@Path("groupSetId") long groupSetId);
 
 
     @GET(BASE_URL + "system/user_properties")
@@ -182,13 +183,13 @@ public interface ClusterConnector {
 
     @PUT(BASE_URL + "groups/{groupId}/enable")
     public Response setCgProtectionState(@Path("groupId") long groupId, @Query("startTransfer") boolean state);
-    
+
     @PUT(BASE_URL + "groups/{groupId}/set_link_policy")
-    public Response setLinkPolicy(@Path("groupId") long groupId, @Body SetConsistencyGroupLinkPolicyParams setConsistencyGroupLinkPolicyParams); 
-     
-     
+    public Response setLinkPolicy(@Path("groupId") long groupId, @Body SetConsistencyGroupLinkPolicyParams setConsistencyGroupLinkPolicyParams);
+
+
     @PUT(BASE_URL + "groups/{groupId}/name")
     public Response renameGroup(@Path("groupId") long groupId, @Body String name);
-     
+
 
 }

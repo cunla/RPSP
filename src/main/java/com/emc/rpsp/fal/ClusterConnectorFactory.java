@@ -24,40 +24,42 @@ public class ClusterConnectorFactory {
         //String verPath = settings.getSystemVersion().contains("4.3") ? "4_3/": "4_1/";
         String verPath = "4_3/";
         RestAdapter restAdapter = new RestAdapter.Builder()
-         .setLogLevel(RestAdapter.LogLevel.FULL)
-        .setEndpoint("https://" + settings.getSystemIp() + ":" + port + "/fapi/rest/" + verPath)
-        .setConverter(new JacksonConverter()).setRequestInterceptor(buildInterceptor(settings))
-        .build();
+            .setLogLevel(RestAdapter.LogLevel.FULL)
+            .setEndpoint("https://" + settings.getSystemIp() + ":" + port + "/fapi/rest/" + verPath)
+            .setConverter(new JacksonConverter()).setRequestInterceptor(buildInterceptor(settings))
+            .build();
+
+        ClusterConnector service = restAdapter.create(ClusterConnector.class);
+        return service;
+    }
+
+    public static ClusterConnector getConnector(String ip, String user, String password) {
+        //String verPath = settings.getSystemVersion().contains("4.3") ? "4_3/": "4_1/";
+        String verPath = "4_3/";
+        RestAdapter restAdapter = new RestAdapter.Builder()
+            .setLogLevel(RestAdapter.LogLevel.FULL)
+            .setEndpoint("https://" + ip + ":" + port + "/fapi/rest/" + verPath)
+            .setConverter(new JacksonConverter())
+            .setRequestInterceptor(buildInterceptor(user, password))
+            .build();
 
         ClusterConnector service = restAdapter.create(ClusterConnector.class);
         return service;
     }
 
 
-
-	/*public static ClusterConnector getConnector(SystemSettings settings) {
-        //String verPath = settings.getSystemVersion().contains("4.3") ? "4_3/": "4_1/";
-		String verPath = "4_3/";
-		RestAdapter restAdapter = new RestAdapter.Builder()
-		        // .setLogLevel(RestAdapter.LogLevel.FULL)
-		        .setEndpoint(
-		                "https://" + "localhost" + ":" + "7777"
-		                        + "/fapi/rest/" + verPath)
-		        .setConverter(new JacksonConverter())
-		        .setRequestInterceptor(buildInterceptor(settings)).build();
-
-		ClusterConnector service = restAdapter.create(ClusterConnector.class);
-		return service;
-	}*/
-
-
     private static RequestInterceptor buildInterceptor(SystemSettings settings) {
+        return buildInterceptor(settings.getUser(), settings.getRealPassword());
+    }
+
+    private static RequestInterceptor buildInterceptor(String user, String password) {
         byte[] authEncBytes = Base64.encodeBase64(
-        String.format("%s:%s", settings.getUser(), settings.getRealPassword()).getBytes());
+            String.format("%s:%s", user, password).getBytes());
         String authStringEnc = new String(authEncBytes);
 
         RequestInterceptor requestInterceptor = new RequestInterceptor() {
-            @Override public void intercept(RequestFacade request) {
+            @Override
+            public void intercept(RequestFacade request) {
                 request.addHeader("Authorization", "Basic " + authStringEnc);
             }
         };
@@ -67,7 +69,7 @@ public class ClusterConnectorFactory {
     private static void disableSslVerification() {
         try {
             // Create a trust manager that does not validate certificate chains
-            TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+            TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
                 public java.security.cert.X509Certificate[] getAcceptedIssuers() {
                     return null;
                 }
@@ -77,7 +79,7 @@ public class ClusterConnectorFactory {
 
                 public void checkServerTrusted(X509Certificate[] certs, String authType) {
                 }
-            } };
+            }};
 
             // Install the all-trusting trust manager
             SSLContext sc = SSLContext.getInstance("SSL");
