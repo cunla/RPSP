@@ -1,13 +1,13 @@
 
 RecoverPoint Self-Service Portal (RPSP)
 =======================================
-#User Guide
+# User Guide
 
-###INTRODUCTION
+### INTRODUCTION
 The RecoverPoint self-service portal is a utility for service providers to enable tenants to use 
 RecoverPoint functionality in a secured manner that won't allow tenants to use VMs that do not belong to them.
 
-###OVERVIEW
+### OVERVIEW
 It can connect to multiple RecoverPoint for Virtual Machines clusters and uses a MySQL database 
 to assign VM per tenant. Each tenant can view the status of his VMs after login and do RP4VM operations
 with the portal. All activities are audited. 
@@ -24,9 +24,9 @@ Database holds information about
 
 All operations are done through RP4VM REST API.
 
-###INSTALLATION
+### INSTALLATION
 
-####Deploying as a docker
+#### Deploying as a docker
 It is possible to build a docker from this project. After building the project, in the project root directory
 To build the docker which is based on the java8 docker, run the command `docker build -t rpsp .` (use `sudo` if you are on a linux environment)
 
@@ -41,13 +41,13 @@ Notice you need to define the environment variables to connect to the database R
 `DB_USER` - User to connect to database
 `DB_PASSWORD` - User password to connect to database
 
-####Installation prerequisites:
+#### Installation prerequisites:
  1. Java ver 1.8 and above
  2. 100 MB of available disk space
  3. Connectivity to all RecoverPoint for Virtual Machines systems
  4. Open port (default 8080) on machine where RPSP is deployed
  
-####Installation instructions:
+#### Installation instructions:
  1. Download the RPSP code from GIT
     
  2. Set database assosiation:
@@ -64,10 +64,10 @@ Notice you need to define the environment variables to connect to the database R
  4.1. if you want to run in embedded DB mode use the profile `test` when running: `java -jar rpsp.1.0.SNAPSHOT.war --spring.profiles.active=test`
  5. You can also deploy the WAR on your own web-container (tomcat/etc.)
 
-####Installation as a windows service
+#### Installation as a windows service
 It is recommended to configure RPSP to run as a Windows Service as explained in this guide: https://nssm.cc/usage
 
-###Getting started
+### Getting started
 After running the app make sure that accessing the port brings a login screen.
 The initial account/user/password to work with are: system/admin/123.
 > Replace localhost:9999 with the host you are running on
@@ -181,12 +181,12 @@ and a configuration for default protection ESX and datastore.
 
 
 
-##USER OPERATIONS
+## USER OPERATIONS
 To access RPSP either AngularJS client or the REST API can be used
-##RPSP UI – AngularJS Client
+## RPSP UI – AngularJS Client
 The RPSP Web client can be accessed in: http://hostname:9999/rpsp (9999 is the default port) 
 
-###RPSP REST API
+### RPSP REST API
 The following methods are supported in the RPSP REST API, with base being http://*hostname*:*port*/rpsp
 
 1. RP systems API *(admin permissions only)*
@@ -324,7 +324,7 @@ from /internal-data/template.
  
    - `GET app/audit/log?page={page}&pageSize={pageSize}` - Get RPSP actions audit log for current tenant based on *page* and *pageSize* parameters
     
-###Development Environment Setup Process
+### Development Environment Setup Process
 In order to start working on a development environment we will install and configure the following applications.
 
 Download the following:
@@ -387,7 +387,7 @@ Create a fork of the project into your own repository.
 Make all your necessary changes and create a pull request with a description on what was added or removed and details explaining the changes in lines of code. If approved, project owners will merge it.
 
 ### Technologies used
-#####Server side
+##### Server side
 * JAVA + maven
 * Spring
 * Spring-boot
@@ -396,12 +396,12 @@ Make all your necessary changes and create a pull request with a description on 
 * jackson (json serialization)
 * logback (logger)
 
-#####Client side
+##### Client side
 * AngularJS + Bootstrap
 * angular-translate
 * jQuery
 
-###LICENSING
+### LICENSING
 The MIT License (MIT)
 Copyright (c) 2015, Daniel Moran & Boris Shpilyuck
 
